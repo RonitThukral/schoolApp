@@ -1,47 +1,52 @@
-import React, { useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView} from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-  import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
+  import { Dropdown } from 'react-native-element-dropdown';  
+  import Entypo from '@expo/vector-icons/Entypo';
+import { Alert } from 'react-native';
+import axios from 'axios'; // Assuming axios is installed
+
+
+const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
 
 
 
-const divisions = [
+
+// const divisions = [
   
-          {
-            "id": "1",
-            "name": "Group-4 (Roll no. 91-120)",
-            "description": "This Group is for students from roll no. 91 to 120",
-            "date": "16 August 2024"
-          },
-          {
-            "id": "2",
-            "name": "Group-3 (Roll no. 61-90)",
-            "description": "This Group is for students from roll no. 61 to 90",
-            "date": "16 August 2024"
-          },
-          {
-            "id": "3",
-            "name": "Group-2 (Roll no. 31-60)",
-            "description": "This Group is for students from roll no. 31 to 60",
-            "date": "16 August 2024"
-          },
-          {
-            "id": "4",
-            "name": "Group-1 (Roll no. 1-30)",
-            "description": "This Group is for students from roll no. 1 to 30",
-            "date": "16 August 2024"
-          },
-          {
-            "id": "5",
-            "name": "No Division",
-            "description": "This is when there are no groups in a Class",
-            "date": "16 August 2024"
-          }
+//           {
+//             "id": "1",
+//             "name": "Group-4 (Roll no. 91-120)",
+//             "description": "This Group is for students from roll no. 91 to 120",
+//             "date": "16 August 2024"
+//           },
+//           {
+//             "id": "2",
+//             "name": "Group-3 (Roll no. 61-90)",
+//             "description": "This Group is for students from roll no. 61 to 90",
+//             "date": "16 August 2024"
+//           },
+//           {
+//             "id": "3",
+//             "name": "Group-2 (Roll no. 31-60)",
+//             "description": "This Group is for students from roll no. 31 to 60",
+//             "date": "16 August 2024"
+//           },
+//           {
+//             "id": "4",
+//             "name": "Group-1 (Roll no. 1-30)",
+//             "description": "This Group is for students from roll no. 1 to 30",
+//             "date": "16 August 2024"
+//           },
+//           {
+//             "id": "5",
+//             "name": "No Division",
+//             "description": "This is when there are no groups in a Class",
+//             "date": "16 August 2024"
+//           }
         
     
       
-  ];
+//   ];
   
 
 
@@ -50,28 +55,53 @@ const divisions = [
   const DropdownComponent = () => {
     const [isFocus, setIsFocus] = useState<string | null>(null);
     const [selectedName, setSelectedName] = useState(null);
-    const [filteredCourses, setFilteredCourses] = useState(divisions);
+    const [ divisions , setDivisions] = useState([])
+    const [filteredDivisions, setfilteredDivisions] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+
+    // const router = useRouter();
 
 
-    const router = useRouter();
+    const fetchDivisions= async() => {
+      const res = await axios.get(`${baseUrl}/divisions`);
+// console.log(res.data)
+      const formattedData = res.data.map((div) => ({
+        id: div._id,
+        name: div.name || 'N/A',
+        description: div.description || 'N/A'
+      }))
+
+      // console.log(formattedData)
+      setDivisions(formattedData)
+      setfilteredDivisions(formattedData)
+    }
+
+
+
+    useEffect(() => {
+      fetchDivisions()
+    },[divisions])
 
    // Search Button Logic
   const handleSearch = () => {
     const filtered = divisions.filter((division) => {
       return (
-        // (!selectedTeacher || course.classTeacher === selectedTeacher) &&
+
         (!selectedName || division.name === selectedName) 
-        // &&
-        // (!selectedDepartment || course.department === selectedDepartment)
+        
       );
     });
-    setFilteredCourses(filtered);
+    setfilteredDivisions(filtered);
   };
 
   // Reset Button Logic
   const handleReset = () => {
     setSelectedName(null);
-    setFilteredCourses(divisions);
+    setfilteredDivisions(divisions);
   };
 
 
@@ -83,11 +113,115 @@ const divisions = [
       setIsFocus(null)
     }
 
-    const handlePress = () => {
-      router.navigate('/')
+
+     
+    const handleDelete = async (id) => {
+      try {
+        // Make the delete request
+        const res = await axios.delete(`${baseUrl}/divisions/delete/${id}`);
+        
+        // Check response and handle errors
+        if (res.data.error) {
+          Alert.alert("Error", "Failed to delete division. Please try again.");
+        } else {
+          Alert.alert("Success", "Division deleted successfully.");
+          
+        }
+      } catch (error) {
+        // Handle request errors
+        console.error("Error deleting division:", error);
+        Alert.alert("Error", "Something went wrong. Please try again later.");
+      }
+    };
+
+    const handleAdd = async () => {
+      try {
+        // Prepare the new division data
+        const newDiv = {
+          name,
+          description,
+        };
+    
+        // Make the POST request to create a new division
+        const res = await axios.post(`${baseUrl}/divisions/create`, newDiv);
+    
+        // Handle the response
+        if (res.data.error) {
+          // Show an error alert if the API response indicates a failure
+          Alert.alert("Error", "Failed to add the division. Please try again.");
+        } else {
+          // Show a success message
+          Alert.alert("Success", "Division added successfully.");
+          setIsOpen(false)
+          setName('');
+          setDescription('');
+    
+          
+        }
+      } catch (error) {
+        // Handle request errors
+        console.error("Error adding division:", error);
+        Alert.alert("Error", "Something went wrong. Please try again later.");
+      }
+    };
+
+    const handleEdit = (div) => {
+      setEdit(true)
+      setEditId(div.id)
+      setName(div.name)
+      setDescription(div.description)
     }
 
+    const handleSave = async () => {
+      try {
+        // Prepare the updated division data
+        const updatedDiv = {
+          name,
+          description,
+        };
     
+        // Make the PUT request to update the division
+        const res = await axios.put(`${baseUrl}/divisions/update/${editId}`, updatedDiv);
+    
+        // Handle the response
+        if (res.data.error) {
+          // Show an error alert if the API response indicates a failure
+          Alert.alert("Error", "Failed to update the division. Please try again.");
+        } else {
+          // Show a success message
+          Alert.alert("Success", "Division updated successfully.");
+    
+         
+          setName('');
+          setDescription('');
+          setEditId(null);
+          setEdit(false)
+    
+          
+        }
+      } catch (error) {
+        // Handle request errors
+        console.error("Error updating division:", error);
+        Alert.alert("Error", "Something went wrong. Please try again later.");
+      }
+    };
+    
+    
+
+    const handlePlus = () => {
+      setIsOpen(true)
+    }
+
+    const handleTitle = (text: string) => setName(text);
+  const handleDescription = (text: string) => setDescription(text);
+
+
+  const handleClose = () => {
+    setIsOpen(false)
+    setEdit(false)
+    setName('')
+   setDescription('')
+  }
    
 
     return (
@@ -126,26 +260,29 @@ const divisions = [
 
 
 {/* List of students section */}
-<ScrollView style={{marginTop: 20, marginBottom: 0}}>
-{filteredCourses.map((course, index) => {
+<ScrollView style={{paddingTop: 20, marginBottom: 0,backgroundColor:'white'}} contentContainerStyle={{paddingBottom: 50}}>
+{filteredDivisions?.map((div, index) => {
   return (
     <View style={styles.list} key={index} >
-      <Text style={{position:'relative', fontSize:18, left:30, color:'#58A8F9',marginTop:10}}>{course.name}</Text>
+      <Text style={{position:'relative', fontSize:18, left:30, color:'#58A8F9',marginTop:10}}>{div.name}</Text>
       <View style={{flex:1, flexDirection:'row'}}>
 
       <View style={styles.listContent}>
-          <Text style={{fontSize:13,width:"75%",color:'grey'}}>
-            {course.description}
+        <View style={{width:'80%'}}>
+
+          <Text style={{fontSize:13,color:'grey'}}>
+            {div.description}
           </Text>
-          <Text style={{fontSize:13,color:'grey'}}>{course.date}</Text>
+        </View>
+          <Text style={{fontSize:13,color:'grey'}}>{div.date}</Text>
           
       </View>
       <View style={styles.listBtns}>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:5}} >
+                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:5}} onPress={() => {handleEdit(div)}}>
                 <Image source={require('../../../../assets/images/images/edit.png')}/>
 
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} onPress={() => {handleDelete(div.id)}}>
                 <Image source={require('../../../../assets/images/images/delete.png')}/>
 
                 </TouchableOpacity>
@@ -155,6 +292,36 @@ const divisions = [
   )
 })}
 </ScrollView>
+
+
+
+
+<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
+      <Entypo name="plus" size={40} color="white" />
+      </TouchableOpacity>
+
+
+{(isOpen || edit) && <View style={styles.inputContainer}>
+        <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{edit ? 'Edit Notice' : 'Add Notice'}</Text>
+
+    <TextInput style={styles.input} placeholder={edit ? "Edit Name" : "Add Name"} onChangeText={handleTitle} value={name}/>
+
+    <TextInput style={styles.inputDesc} placeholder={edit ? "Edit Description" : "Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+  
+
+
+    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',alignItems:'flex-end',marginBottom:10}}>
+
+    <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
+    <Text style={{color:'#58A8F9',fontSize:16}}>Cancel</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.buttons} >
+    <Text style={{color:'white',fontSize:16, textAlign:'center'}} 
+    onPress={edit ? handleSave : handleAdd}
+    >{edit ? 'Save' : 'Add'}</Text>
+    </TouchableOpacity>
+    </View>
+    </View>}
 
 
       </>
@@ -268,7 +435,64 @@ const divisions = [
         position:'absolute',
         right:35,
         bottom:10
-      }
+      },
+
+      input: {
+        width: '80%',
+        height: 45,
+        backgroundColor: '#DAEDFF',
+        // backgroundColor: 'red',
+        // marginBottom: 10,
+        borderRadius: 10,
+        alignSelf: 'center',
+        paddingHorizontal: 25,
+      },
+      inputDesc:{
+        width: '80%',
+        height: 100,
+        backgroundColor: '#DAEDFF',
+        // backgroundColor: 'red',
+        marginBottom: 10,
+        marginTop: 10,
+        borderRadius: 10,
+        alignSelf: 'center',
+        paddingHorizontal: 25,
+      },
+      inputContainer:{
+        position:'absolute',
+        width:'85%',
+        height:290,
+        backgroundColor:'white',
+        // backgroundColor:'red',
+        borderRadius:10,
+        justifyContent:'center',
+        alignSelf:'center',
+        top:'30%',
+        flexDirection:'column',
+        zIndex:900000
+// marginVertical:15
+      },
+      buttons:{
+        width:80,
+        height:30,
+        backgroundColor: '#58A8F9',
+        position:'absolute',
+        bottom:13,
+        right:25,
+        borderRadius:20,
+        justifyContent:'center',
+        alignSelf:'flex-end',
+          },
+    
+        closeBtn:{
+        position:'absolute',
+        bottom:15,
+        left:150,
+        borderRadius:20,
+        justifyContent:'center',
+        alignSelf:'flex-end',
+          }
+    
     
 
   });

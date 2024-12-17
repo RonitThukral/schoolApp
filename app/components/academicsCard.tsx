@@ -16,7 +16,7 @@ const data = [
       { title: "Divisions", icon: require("../../assets/images/images/hierarchical.png"), linking:'./Academics/Divisions' },
       { title: "Calender", icon: require("../../assets/images/images/calender.png"), linking:'/' },
       { title: "Make Report", icon: require("../../assets/images/images/make-report.png"),linking:'./Academics/makeReport' },
-      { title: "Report Card", icon: require("../../assets/images/images/report-card.png"),linking:'./home' },
+      { title: "Report Card", icon: require("../../assets/images/images/report-card.png"),linking:'./Academics/progressReport' },
       { title: "Combined Report", icon: require("../../assets/images/images/combined.png"), linking:'./Academics/combinedReport' },
     ],
   

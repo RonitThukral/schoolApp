@@ -296,7 +296,7 @@ import { useRouter } from 'expo-router';
 {filteredStudents.map((student, index) => {
   return (
     <View style={styles.list} key={index}>
-        <Image source={require('../../assets/images/images/boy.png')} style={styles.setImg}/>
+        <Image source={require('../../../../assets/images/images/boy.png')} style={styles.setImg}/>
         <View style={styles.listContent}>
             <Text style={{fontSize:20,color:'#58A8F9'}}>{student.id}</Text>
             <Text style={{fontSize:13, color:'grey'}}>{student.name}</Text>
@@ -304,7 +304,7 @@ import { useRouter } from 'expo-router';
 
        
         <TouchableOpacity>
-        <Image source={require('../../assets/images/images/eye.png')} style={styles.eyeImg}/>        
+        <Image source={require('../../../../assets/images/images/eye.png')} style={styles.eyeImg}/>        
         </TouchableOpacity>
     </View>
   )

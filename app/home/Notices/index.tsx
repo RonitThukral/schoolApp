@@ -63,6 +63,7 @@ const DropdownComponent = () => {
   const [edit, setEdit] = useState(false);
   const [openCalendar, setOpenCalendar] = useState(false);
   const [date, setDate] = useState(dayjs());
+  const [editId, setEditId] = useState('');
 
 
   // Fetch Notices
@@ -177,7 +178,7 @@ const DropdownComponent = () => {
       const response = await axios.delete(`${baseUrl}/notification/delete/${id}`);
       
       // Debugging: Log the entire response object to ensure proper data structure
-      console.log('Delete response:', response);
+      // console.log('Delete response:', response);
   
       // Check if the response contains success status or any related flag
       if (response && response.status === 200 && response.data) {
@@ -212,8 +213,56 @@ const DropdownComponent = () => {
   };
   
   
+
+  const handleEdit = (notice) => {
+    setEdit(true)
+    setTitle(notice.title)
+    setCreatedAt(notice.date)
+    setCreatedBy(notice.createdBy)
+    setDescription(notice.description)
+    setEditId(notice.id)
   
+  }
+
+ 
   
+
+  const handleSave = async () => {
+    try {
+      const formattedDate = dayjs(createdAt, 'DD-MM-YYYY').toISOString();
+  
+      const updatedNotice = {
+        title,
+        date: formattedDate,
+        createdBy,
+        description,
+      };
+  
+      const response = await axios.put(`${baseUrl}/notification/update/${editId}`, updatedNotice);
+  
+      if (response.data.error) {
+        Alert.alert('Error', 'Failed to update notice');
+        return;
+      }
+  
+      Alert.alert('Success', 'Notice updated successfully');
+      fetchNotices(); // Refresh the list of notices after editing
+  
+      // Clear input fields and reset state
+      setEdit(false);
+      setTitle('');
+      setDescription('');
+      setCreatedBy('');
+      setCreatedAt('');
+      setEditId('');
+      setIsOpen(false);
+    } catch (error) {
+      console.error('Failed updating the notice:', error.message);
+      Alert.alert('Error', 'Failed to update the notice');
+    }
+  };
+  
+
 
   // Handlers for Form Inputs
   const handleTitle = (text: string) => setTitle(text);
@@ -225,6 +274,11 @@ const DropdownComponent = () => {
   }
   const handleClose = () => {
     setIsOpen(false)
+    setEdit(false)
+    setTitle('')
+    setCreatedBy('')
+    setDescription('')
+    setCreatedAt('')
   }
 
     return (
@@ -297,7 +351,7 @@ const DropdownComponent = () => {
           
       </View>
       <View style={styles.listBtns}>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:10}} >
+                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:10}} onPress={() => {handleEdit(notice)}}>
                 <Image source={require('../../../assets/images/images/edit.png')} style={{width:25,height:25}}/>
 
                 </TouchableOpacity>
@@ -319,12 +373,12 @@ const DropdownComponent = () => {
       </TouchableOpacity>
 
 
-{isOpen && <View style={styles.inputContainer}>
-        <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{'Add Notice'}</Text>
+{(isOpen || edit) && <View style={styles.inputContainer}>
+        <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{edit ? 'Edit Notice' : 'Add Notice'}</Text>
 
-    <TextInput style={styles.input} placeholder={"Add Title"} onChangeText={handleTitle} value={title}/>
+    <TextInput style={styles.input} placeholder={edit ? "Edit Title" : "Add Title"} onChangeText={handleTitle} value={title}/>
 
-    <TextInput style={styles.inputDesc} placeholder={"Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+    <TextInput style={styles.inputDesc} placeholder={edit ? "Edit Description" : "Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
 
     {openCalendar && (
             <View style={styles.calendarContainer}>
@@ -349,7 +403,7 @@ const DropdownComponent = () => {
             </TouchableOpacity>
           </View>
 
-          <TextInput style={styles.input} placeholder={"Created By"} onChangeText={handleCreatedBy} value={createdBy} />
+          <TextInput style={styles.input} placeholder={edit ? "Edit Created By" : "CreatedBy"} onChangeText={handleCreatedBy} value={createdBy} />
 
 
 
@@ -359,7 +413,7 @@ const DropdownComponent = () => {
     <Text style={{color:'#58A8F9',fontSize:16}}>Cancel</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.buttons} >
-    <Text style={{color:'white',fontSize:16, textAlign:'center'}} onPress={handleAdd}>Add</Text>
+    <Text style={{color:'white',fontSize:16, textAlign:'center'}} onPress={edit ? handleSave : handleAdd}>{edit ? 'Save' : 'Add'}</Text>
     </TouchableOpacity>
     </View>
     </View>}

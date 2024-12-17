@@ -22,7 +22,7 @@ const _layout = () => {
     <Stack.Screen name='home/Reports/index' options={{title: 'Reports',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='staffHistory/index' options={{title: 'Staff History',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='studentHistory/index' options={{title: 'Student History',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
-    <Stack.Screen name='progressReport/index' options={{title: 'Progress Report',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
+    <Stack.Screen name='home/Academics/progressReport/index' options={{title: 'Progress Report',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Academics/makeReport/index' options={{title: 'Make Report',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Notices/index' options={{title: 'Notices',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Academics/Divisions/index' options={{title: 'Divisions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
