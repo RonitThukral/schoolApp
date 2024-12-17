@@ -1,96 +1,114 @@
-import React, { useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
+import React, { useEffect, useState } from 'react';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert} from 'react-native';
   import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
   import { Dropdown } from 'react-native-element-dropdown';
   import Entypo from '@expo/vector-icons/Entypo';
   import { useRouter } from 'expo-router';
+  import axios from 'axios'; // Assuming axios is installed
 
 
 
-let notices = [
-      {
-        "id": "1",
-        "title": "Important Exam Notice",
-        "description": "The final exams will begin from 20th December. Please check the timetable on the notice board.",
-        "createdBy": "Deepak Kumar",
-        "createdOn": "16 August 2024"
-      },
-      {
-        "id": "2",
-        "title": "Holiday Announcement",
-        "description": "The school will remain closed on 25th December for Christmas. Happy Holidays!",
-        "createdBy": "Deepak Kumar",
-        "createdOn": "16 August 2024"
-      },
-      {
-        "id": "3",
-        "title": "Parent-Teacher Meeting",
-        "description": "A meeting for parents is scheduled on 10th January. Details are available on the school portal.",
-        "createdBy": "Deepak Kumar",
-        "createdOn": "18 August 2024"
-      },
-      {
-        "id": "4",
-        "title": "Sports Day Event",
-        "description": "Annual Sports Day will be held on 15th January. All students are encouraged to participate.",
-        "createdBy": "Deepak Kumar",
-        "createdOn": "15 August 2024"
-      },
-      {
-        "id": "5",
-        "title": "Library Updates",
-        "description": "New books have been added to the library. Students can borrow them starting next week.",
-        "createdBy": "Deepak Kumar",
-        "createdOn": "17 August 2024"
-      }
-    ]
+// let notices = [
+//       {
+//         "id": "1",
+//         "title": "Important Exam Notice",
+//         "description": "The final exams will begin from 20th December. Please check the timetable on the notice board.",
+//         "createdBy": "Deepak Kumar",
+//         "createdOn": "16 August 2024"
+//       },
+//       {
+//         "id": "2",
+//         "title": "Holiday Announcement",
+//         "description": "The school will remain closed on 25th December for Christmas. Happy Holidays!",
+//         "createdBy": "Deepak Kumar",
+//         "createdOn": "16 August 2024"
+//       },
+//       {
+//         "id": "3",
+//         "title": "Parent-Teacher Meeting",
+//         "description": "A meeting for parents is scheduled on 10th January. Details are available on the school portal.",
+//         "createdBy": "Deepak Kumar",
+//         "createdOn": "18 August 2024"
+//       },
+//       {
+//         "id": "4",
+//         "title": "Sports Day Event",
+//         "description": "Annual Sports Day will be held on 15th January. All students are encouraged to participate.",
+//         "createdBy": "Deepak Kumar",
+//         "createdOn": "15 August 2024"
+//       },
+//       {
+//         "id": "5",
+//         "title": "Library Updates",
+//         "description": "New books have been added to the library. Students can borrow them starting next week.",
+//         "createdBy": "Deepak Kumar",
+//         "createdOn": "17 August 2024"
+//       }
+//     ]
+
+const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+
+const DropdownComponent = () => {
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
+  const [allNotices, setAllNotices] = useState([]);
+  const [filteredNotices, setFilteredNotices] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [createdBy, setCreatedBy] = useState('');
+  const [createdAt, setCreatedAt] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [date, setDate] = useState(dayjs());
 
 
-  const DropdownComponent = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedTitle, setSelectedTitle] = useState(null);
-    const [allNotices, setAllNotices] = useState([...notices])
-    const [filteredNotices, setFilteredNotices] = useState(allNotices);
-    const[title,setTitle] = useState('')
-    const[description,setDescription] = useState('')
-    const[createdBy,setCreatedBy] = useState('')
-    const [isOpen, setIsOpen] = useState(false)
-    const [edit, setEdit] = useState(false)
+  // Fetch Notices
+  const fetchNotices = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/notification`);
+      const notices = response.data;
 
-    const [openCalendar, setOpenCalendar] = useState(false);
-    const [date, setDate] = useState(dayjs());
+      // Format the fetched notices
+      const formattedData = notices.map((notice) => ({
+        id: notice._id,
+        title: notice.title || 'N/A',
+        description: notice.description || 'N/A',
+        createdBy: notice.createdBy || 'N/A',
+        date: notice.date || 'N/A',
+      }));
 
-  const [dob, setDob] = useState('');
-//   const [activeField, setActiveField] = useState(''); // To track which date field is active
+      setAllNotices(formattedData);
+      setFilteredNotices(formattedData);
+    } catch (error) {
+      console.error('Error fetching notices:', error.message);
+    }
+  };
 
-    const router = useRouter();
+  // UseEffect to fetch notices on mount
+  useEffect(() => {
+    fetchNotices();
+  }, []); // Empty dependency array ensures it runs only once
 
+  // Handle Date Selection
+  const handleDate = () => {
+    setOpenCalendar(true);
+  };
 
-    const handleDate = () => {
-        // setActiveField(field)
-        setOpenCalendar(true);
-      };
+  const onDateChange = (params: any) => {
+    const formattedDate = dayjs(params.date).format('DD-MM-YYYY');
+    setCreatedAt(formattedDate);
+    setOpenCalendar(false); // Close the calendar
+  };
 
-      const onDateChange = (params: any) => {
-        const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
-        // if (activeField === 'dob') {
-          setDob(selectedDate);
-        // } else if (activeField === 'doa') {
-        //   setDoa(selectedDate);
-        // }
-        setOpenCalendar(false); // Close the calendar
-      };
-
-   // Search Button Logic
+  // Search Button Logic
   const handleSearch = () => {
     const filtered = allNotices.filter((notice) => {
       return (
         (!selectedTitle || notice.title === selectedTitle) &&
-        (!selectedDate || notice.createdOn === selectedDate) 
-        // (!selectedTitle || notice.title === selectedTitle) &&
-    //   (!selectedDate || dayjs(notice.createdOn).format('DD-MM-YYYY') === selectedDate) // Use dayjs to format the createdOn date
+        (!selectedDate || notice.date === selectedDate)
       );
     });
     setFilteredNotices(filtered);
@@ -103,59 +121,111 @@ let notices = [
     setFilteredNotices(allNotices);
   };
 
+  
+  const handleFocus = (id:string) => {
+    setIsFocus(id)
+  }
 
-    const handleFocus = (id:string) => {
-      setIsFocus(id)
+  const handleBlur = () => {
+    setIsFocus(null)
+  }
+
+
+  // Add New Notice
+  const handleAdd = async () => {
+    try {
+
+      const formattedDate = dayjs(createdAt, 'DD-MM-YYYY').toISOString();
+
+      const newNotice = {
+        title,
+        description,
+        createdBy,
+        date: formattedDate,
+      };
+
+      // console.log('Adding notice with data:', newNotice);
+
+
+      const response = await axios.post(`${baseUrl}/notification/create`, newNotice);
+      // console.log('response ::  ', response)
+      if (response.data.error) {
+        Alert.alert('Error', 'Failed to add Notice');
+        return;
+      }
+
+      Alert.alert('Success', 'Notice added successfully');
+      fetchNotices(); // Refresh the notices list
+
+    } catch (error) {
+      console.error('Error adding notice:', error.message);
+      Alert.alert('Error', 'Failed to add Noticess');
+    } finally {
+      // Clear input fields
+      setTitle('');
+      setDescription('');
+      setCreatedBy('');
+      setCreatedAt('');
+      setSelectedDate(null);
+      setIsOpen(false);
     }
+  };
 
-    const handleBlur = () => {
-      setIsFocus(null)
+  const handleDelete = async (id) => {
+    try {
+      // Send DELETE request to the backend
+      const response = await axios.delete(`${baseUrl}/notification/delete/${id}`);
+      
+      // Debugging: Log the entire response object to ensure proper data structure
+      console.log('Delete response:', response);
+  
+      // Check if the response contains success status or any related flag
+      if (response && response.status === 200 && response.data) {
+        if (response.data._id === id) {
+          // Successfully deleted, update the state
+          Alert.alert('Success', 'Notice deleted successfully');
+          fetchNotices(); // Refresh the list of notices
+        } else {
+          // Handle unexpected response format
+          console.error('Unexpected response data:', response.data);
+          Alert.alert('Error', 'Failed to delete notice');
+        }
+      } else {
+        console.error('Error in response:', response.data || 'Unknown error');
+        Alert.alert('Error', 'Failed to delete notice');
+      }
+    } catch (error) {
+      // Handle errors gracefully
+      console.error('Error deleting notice:', error.response?.data || error.message);
+  
+      // If the error is from the backend (status code not 200)
+      if (error.response) {
+        const backendErrorMessage = error.response?.data?.message || 'Unknown error from server';
+        console.error('Backend Error:', backendErrorMessage);
+        Alert.alert('Error', `Failed to delete notice. Reason: ${backendErrorMessage}`);
+      } else {
+        // If there is no response (likely a network issue)
+        console.error('Network error:', error.message);
+        Alert.alert('Error', 'Network error or server is down');
+      }
     }
+  };
+  
+  
+  
+  
 
-    const handlePress = () => {
-      router.navigate('/')
-    }
+  // Handlers for Form Inputs
+  const handleTitle = (text: string) => setTitle(text);
+  const handleDescription = (text: string) => setDescription(text);
+  const handleCreatedBy = (text: string) => setCreatedBy(text);
 
-    const handlePlus = () => {
-        setIsOpen(true)
-    }
-    const handleClose = () => {
-        setIsOpen(false),
-        setEdit(false)
-    }
-
-    const handleAdd = () => {
-        const newNotice = {
-            id: Math.random().toString(),
-            title: title,
-            description: description,
-            createdBy: createdBy,
-            createdOn: dob
-        };
-    
-        const updatedNotices = [...allNotices, newNotice];
-        setAllNotices(updatedNotices);
-        setFilteredNotices(updatedNotices); // Update the filtered notices as well
-        
-        // Clear input fields
-        setDob('');
-        setTitle('');
-        setDescription('');
-        setCreatedBy('');
-        setIsOpen(false);
-    };
-    
-
-    const handleTitle = (text) => {
-        setTitle(text)
-    }    
-    const handleDescription = (text) => {
-        setDescription(text)
-    }    
-    const handleCreatedBy = (text) => {
-        setCreatedBy(text)
-    }    
-   
+  const handlePlus = () => {
+    setIsOpen(true)
+  }
+  const handleClose = () => {
+    setIsOpen(false)
+  }
 
     return (
         <>
@@ -166,7 +236,7 @@ let notices = [
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={notices.map((notice) => ({ label: notice.createdOn, value: notice.createdOn }))}
+          data={allNotices.map((notice) => ({ label: notice.date, value: notice.date }))}
           search
           maxHeight={300}
           labelField="label"
@@ -184,7 +254,7 @@ let notices = [
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={notices.map((notice) => ({ label: notice.title, value: notice.title }))}
+          data={allNotices.map((notice) => ({ label: notice.title, value: notice.title }))}
           search
           maxHeight={300}
           labelField="label"
@@ -223,12 +293,17 @@ let notices = [
             {notice.description}
           </Text>
           <Text style={{fontSize:11,color:'grey',marginTop: 3}}>{notice.createdBy}</Text>
-          <Text style={{fontSize:11,color:'grey'}}>{notice.createdOn}</Text>
+          <Text style={{fontSize:11,color:'grey'}}>{notice.createdAt}</Text>
           
       </View>
       <View style={styles.listBtns}>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:5}} >
-                <Image source={require('../../../assets/images/images/edit.png')} style={{width:18,height:18}}/>
+                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:10}} >
+                <Image source={require('../../../assets/images/images/edit.png')} style={{width:25,height:25}}/>
+
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',marginBottom:0}} onPress={()=>{handleDelete(notice.id)}} >
+                <Image source={require('../../../assets/images/images/delete.png')} style={{width:20,height:25}}/>
 
                 </TouchableOpacity>
                 
@@ -266,7 +341,7 @@ let notices = [
             <TextInput
               style={styles.dateInput}
               placeholder="Date of Birth"
-              value={dob} // Display the formatted date
+              value={createdAt} // Display the formatted date
               editable={false} // Read-only input
             />
             <TouchableOpacity style={{ position: 'absolute', left: '80%', top: '25%' }} onPress={handleDate}>
@@ -417,7 +492,7 @@ let notices = [
       listBtns:{
         position:'absolute',
         right:25,
-        bottom:85
+        bottom:35
       },
 
       input: {

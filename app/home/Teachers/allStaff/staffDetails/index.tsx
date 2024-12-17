@@ -108,17 +108,17 @@ const StaffDetails = () => {
 
         {/* Profile Section */}
         <ImageBackground
-          source={require('../../assets/images/images/union.png')}
+          source={require('../../../../../assets/images/images/union.png')}
           style={styles.headerBackground}
         >
           <View style={styles.profileSection}>
             <View style={styles.avatarContainer}>
               <Image
-                source={require('../../assets/images/images/girl.png')} // Add your placeholder image
+                source={require('../../../../../assets/images/images/girl.png')} // Add your placeholder image
                 style={styles.avatar}
               />
               <View style={styles.verifiedBadge}>
-                <Image source={require('../../assets/images/images/edit2.png')}/>
+                <Image source={require('../../../../../assets/images/images/edit2.png')}/>
               </View>
             </View>
             <View style={styles.profileInfo}>
