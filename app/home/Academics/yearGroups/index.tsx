@@ -2,16 +2,27 @@ import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, Sty
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Import axios
+import { Dropdown } from "react-native-element-dropdown";
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual API URL
 
 const index = () => {
+  const [isFocus, setIsFocus] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false)
   const [edit, setEdit] = useState(false)
   const [yearGroups, setYearGroups] = useState([])
   const [yearGroup, setYearGroup] = useState('')
   const [loading, setLoading] = useState(true)
+  const [year, setYear] = useState(null)
+
+  const currentYear = new Date().getFullYear();
+
+// Generate an array of years for the next 10 years
+const years = Array.from({ length: 10 }, (_, i) => ({ 
+  label: `${currentYear + i}`, 
+  value: currentYear + i 
+}));
 
   // Fetch year groups when the component loads
   useEffect(() => {
@@ -32,7 +43,7 @@ const index = () => {
     if (!yearGroup) return; // Prevent empty names
     setLoading(true)
 
-    axios.post(`${baseUrl}/yeargroup/create`, { name: yearGroup })  // API call to create a new year group
+    axios.post(`${baseUrl}/yeargroup/create`, { name: yearGroup,year })  // API call to create a new year group
       .then(response => {
         setYearGroups([response?.data?.doc, ...yearGroups]);
         setIsOpen(false);
@@ -58,13 +69,20 @@ const index = () => {
   }
 
 
+    // Focus Handlers
+    const handleFocus = () => setIsFocus(true);
+    const handleBlur = () => setIsFocus(false);
+
 
   const renderYearGroups = useCallback(({ item }) => {
+    const formattedDate = new Date(item.createdAt).toLocaleDateString('en-GB');
     return (
       <View style={styles.list} key={item.id}>
         <View style={styles.listContent}>
           <Text style={{ color: "#58A8F9", fontSize: 20 }}>{item.name}</Text>
-          <Text style={{ color: "grey", fontSize: 13, paddingHorizontal: 5 }}>{item.createdAt}</Text>
+          <Text style={{ color: "grey", fontSize: 13, paddingHorizontal: 5 }}>{item.year}</Text>
+          <Text style={{ color: "grey", fontSize: 13, paddingHorizontal: 5 }}>{formattedDate}</Text>
+          
         </View>
         <View style={styles.listBtns}>
         
@@ -110,12 +128,35 @@ const index = () => {
               value={yearGroup}
             />
 
+
+<Dropdown
+        style={[styles.inputDropdown]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        data={years} // Use classOptions for the dropdown data
+        search
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={"Select Year"}
+        searchPlaceholder="Search..."
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        value={year}
+        onChange={(item) => {
+          setYear(item.value)
+          // console.log(item.value)
+          // handleStudents(item.value)
+        }} // Set selectedClass
+      />
+
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 10 }}>
               <TouchableOpacity style={styles.closeBtn} onPress={() => { setIsOpen(false); setEdit(false); }}>
-                <Text style={{ color: '#58A8F9', fontSize: 20 }}>Cancel</Text>
+                <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttons} onPress={edit ? saveEdit : handleAdd}>
-                <Text style={{ color: 'white', fontSize: 20, textAlign: 'center' }}>{edit ? 'Save' : 'Add'}</Text>
+                <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>{edit ? 'Save' : 'Add'}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -171,10 +212,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center', 
     paddingHorizontal: 25 
   },
+  inputDropdown: {
+    height: 45,
+    width: "80%",
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    backgroundColor: "#daedff",
+    marginVertical: 5,
+    alignSelf: "center",
+  },
   inputContainer: { 
     position: 'absolute', 
     width: '80%', 
-    height: 180, 
+    height: 250, 
     backgroundColor: 'white', 
     borderRadius: 10, 
     justifyContent: 'center', 
@@ -199,7 +249,31 @@ const styles = StyleSheet.create({
     borderRadius: 20, 
     justifyContent: 'center', 
     alignSelf: 'flex-end'
-   }
+   },
+   dropdown: {
+    height: 50,
+    width: "90%",
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    backgroundColor: "#daedff",
+    marginBottom: 15,
+    alignSelf: "center",
+  },
+  
+  placeholderStyle: {
+    fontSize: 15,
+    color: "grey",
+    paddingHorizontal: 15,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    paddingHorizontal: 15,
+  
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
 });
 
 export default index;

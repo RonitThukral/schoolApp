@@ -83,12 +83,12 @@ const Sales = () => {
 
   return (
   <>
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:30}}>
 {saleData.map((data,index) => {
   return(
 <View style={styles.list} key={index}>
 
-<View style={{flexDirection:'column',justifyContent:'space-between',paddingTop:5,marginHorizontal:15,marginVertical:8}}>
+<View style={{flexDirection:'column',justifyContent:'space-between',paddingTop:5,marginHorizontal:15,marginVertical:8,position:'relative',left:25}}>
 <Text style={{fontSize:18,color:'#58a8f9'}}>{data.studentId}</Text>
 
   <Text style={{fontSize:11, color:'grey',fontWeight:'400'}}>Amount: {data.amount}</Text>
@@ -97,7 +97,7 @@ const Sales = () => {
   <Text style={{fontSize:11, color:'grey',fontWeight:'400'}}>Date: {data.date}</Text>
 </View>
 
-<Image style={{ width:30,height:30,position:'absolute',right:40,top:30}} source={require('../../../assets/images/images/eye.png')}/>
+<Image style={{ width:30,height:30,position:'absolute',right:53,top:30}} source={require('../../../assets/images/images/eye.png')}/>
 
 
 </View>

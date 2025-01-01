@@ -96,7 +96,7 @@ import dayjs from 'dayjs';
     const [dob, setDob] = useState('');
 
 
-    const router = useRouter();
+    // const router = useRouter();
 
    // Search Button Logic
   const handleSearch = () => {
@@ -129,10 +129,7 @@ import dayjs from 'dayjs';
       setIsFocus(null)
     }
 
-    const handlePress = () => {
-      router.navigate('/')
-    }
-
+  
     const toggleSection = (id: string) => {
         setExpandedSectionId((prev) => (prev === id ? null : id));
       };

@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const { width } = Dimensions.get("window");
 
@@ -147,15 +148,15 @@ export default function Summary() {
             <Text style={styles.metricLabel}>Divisions</Text>
             <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
+            <Image style={{width:30,height:30}} source={require('../../../assets/images/images/webinar.png')}/>            
+                         <Text style={styles.metricNumber}>364</Text>
             </View>
           </View>
           <View style={styles.metricBox}>
             <Text style={styles.metricLabel}>Departments</Text>
             <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
+            <Image style={{width:30,height:30}} source={require('../../../assets/images/images/company.png')}/>
               <Text style={styles.metricNumber}>364</Text>
             </View>
           </View>
@@ -163,8 +164,8 @@ export default function Summary() {
             <Text style={styles.metricLabel}>Sections</Text>
             <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
+            <Image style={{width:25,height:25}} source={require('../../../assets/images/images/videos.png')}/>
+                          <Text style={styles.metricNumber}>364</Text>
             </View>
           </View>
         </View>
@@ -173,15 +174,15 @@ export default function Summary() {
             <Text style={styles.metricLabel}>Courses</Text>
             <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
+            <Image style={{width:33,height:33}} source={require('../../../assets/images/images/online-course.png')}/>
+            <Text style={styles.metricNumber}>364</Text>
             </View>
           </View>
           <View style={styles.metricBox}>
             <Text style={styles.metricLabel}>Classes</Text>
             <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
+            <Image style={{width:30,height:30}} source={require('../../../assets/images/images/virtual-class.png')}/> 
               <Text style={styles.metricNumber}>364</Text>
             </View>
           </View>
@@ -191,8 +192,8 @@ export default function Summary() {
 
             <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
+            <Image style={{width:30,height:30}} source={require('../../../assets/images/images/graduate.png')}/>              
+            <Text style={styles.metricNumber}>364</Text>
             </View>
           </View>
         </View>
@@ -281,11 +282,11 @@ const styles = StyleSheet.create({
   metricNumber: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#3b82f6",
+    color: "#4A90E2",
     marginHorizontal: 10
   },
   metricLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: "black",
     width: '100%',
     textAlign: 'center',
@@ -312,7 +313,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
     marginBottom: 35,
     textAlign: "center",
     marginTop:-10

@@ -15,21 +15,21 @@ const index = () => {
 
     // Fetch data from API on component mount
     useEffect(() => {
-      setLoading(true)
+        setLoading(true)
         axios.get(`${API_BASE_URL}/dormitories`)  // Replace with your actual API endpoint
             .then(response => {
                 setTransports(response.data);
                 setLoading(false)
             })
             .catch(error => {
-              setLoading(false)
+                setLoading(false)
 
                 console.error("Error fetching data: ", error);
             });
-    }, []);
+    }, [transports]);
 
     const handleAdd = () => {
-      setLoading(true)
+        setLoading(true)
 
         axios.post(`${API_BASE_URL}/dormitories/create`, { name: transport })  // API call to create transport
             .then(response => {
@@ -41,7 +41,7 @@ const index = () => {
 
             })
             .catch(error => {
-              setLoading(false)
+                setLoading(false)
 
                 console.error("Error adding transport: ", error);
             });
@@ -81,12 +81,12 @@ const index = () => {
     }
 
     const saveEdit = () => {
-      setLoading(true)
+        setLoading(true)
 
         axios.put(`${API_BASE_URL}/dormitories/update/${currentId}`, { name: transport })  // API call to update transport
             .then(response => {
                 // console.log(response.data);  // Log the response for debugging
-                setTransports(transports.map(item => 
+                setTransports(transports.map(item =>
                     item._id === currentId ? { ...item, name: transport } : item
                 ));
                 setEdit(false);
@@ -96,7 +96,7 @@ const index = () => {
 
             })
             .catch(error => {
-              setLoading(false)
+                setLoading(false)
 
                 console.error("Error updating transport: ", error);
             });
@@ -119,25 +119,29 @@ const index = () => {
                 </View>
             </View>
         );
-    },[transports])
+    }, [transports])
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={require('../../../../assets/images/images/union.png')} style={styles.background} imageStyle={{ resizeMode: 'cover', position: 'absolute', bottom: 580 }}>
-            {loading && transports.length === 0 ? (
-              <View style={{ position: "relative", marginTop: 65 }}>
-            <ActivityIndicator size="large" color="#58A8F9" />
-            </View>           
-             ) : (
-                <FlatList
-                    data={transports}
-                    keyExtractor={(item) => (item._id || item.id).toString()}
-                    renderItem={renderCampuses}
-                    contentContainerStyle={styles.lists}
-                />
-            )
-            }
-                <TouchableOpacity style={{ width: 80, height: 80, backgroundColor: '#58A8F9', zIndex: 90000, position: 'absolute', borderRadius: 100, bottom: 100, justifyContent: 'center', alignSelf: 'flex-end', right: 40, alignItems: 'center' }} onPress={handlePlus}>
+                {loading && transports.length === 0 ? (
+                    <View style={{ position: "relative", marginTop: 65 }}>
+                        <ActivityIndicator size="large" color="#58A8F9" />
+                    </View>
+                ) : (
+                    <FlatList
+                        data={Array.isArray(transports) ? transports : []} // Ensure transports is a valid array
+                        keyExtractor={(item, index) => {
+                            const key = item?._id || item?.id || index; // Fallback to index
+                            return key.toString(); // Safely convert to string
+                        }}
+                        renderItem={renderCampuses}
+                        contentContainerStyle={styles.lists}
+                    />
+
+                )
+                }
+                <TouchableOpacity style={{ width: 80, height: 80, backgroundColor: '#58A8F9', zIndex: 90000, position: 'absolute', borderRadius: 100, bottom: 100, justifyContent: 'center', alignSelf: 'flex-end', right: 43, alignItems: 'center' }} onPress={handlePlus}>
                     <Entypo name="plus" size={40} color="white" />
                 </TouchableOpacity>
 

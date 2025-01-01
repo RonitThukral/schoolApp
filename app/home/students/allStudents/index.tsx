@@ -1,15 +1,17 @@
 import React, { useState,useEffect } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,ActivityIndicator} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,ActivityIndicator,Button,Alert} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import * as Print from 'expo-print';
+
 
 
   const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
 
   const DropdownComponent = () => {
-    const [selectedValue, setSelectedValue] = useState('Transport');
+    const [selectedValue, setSelectedValue] = useState('');
     const [isFocus, setIsFocus] = useState<string | null>(null);
     const [selectedID, setSelectedID] = useState(null);
     const [selectedName, setSelectedName] = useState(null);
@@ -41,7 +43,9 @@ import axios from 'axios';
           name: `${student.name} ${student.surname || ''}`.trim(),
           class: student.classID || 'N/A',
           busRoute : student.dormitoryID || 'N/A' ,
-          userID : student.userID || 'N/A' 
+          userID : student.userID || 'N/A' ,
+          gender: student.gender || 'N/A',
+          guardian: student.guadian || 'N/A'
         }));
 
         setAllStudents(formattedData);
@@ -102,7 +106,9 @@ import axios from 'axios';
   const handleSearch = () => {
     const filtered = allStudents.filter((student) => {
       const hasTransport = student.busRoute && student.busRoute !== 'N/A';
-      const isTransportMatch = selectedValue === 'Transport' ? hasTransport : !hasTransport;
+      const isTransportMatch = 
+        selectedValue === '' || (selectedValue === 'Transport' ? hasTransport : !hasTransport);
+  
       return (
         isTransportMatch &&
         (!selectedID || student.userID === selectedID) &&
@@ -120,7 +126,7 @@ import axios from 'axios';
     setSelectedName(null);
     setSelectedClass(null);
     setSelectedRoute(null);
-    setSelectedValue('Transport'); // Reset to default filter
+    setSelectedValue(''); // Reset to default filter
     setFilteredStudents(allStudents); // Show all students
   };
 
@@ -142,6 +148,73 @@ import axios from 'axios';
       router.push(`/home/students/allStudents/studentDetails?studentId=${studentId}`);
       // console.log('Navigating to studentDetails with studentId:', studentId);
     };
+
+
+  const generatePdfAndPrint = async () => {
+    const studentRows = filteredStudents
+      .map(student => `
+        <tr>
+          <td>${student.userID}</td>
+          <td>${student.name}</td>
+          <td>${student.guardian[0]?.name || ''}
+          <br> ${student.guardian[1]?.name || ''}</td>
+          <td>${student.class}</td>
+          <td>${student.gender}</td>
+          <td>${student.busRoute}</td>
+        </tr>
+      `)
+      .join('');
+
+    const htmlContent = `
+      <style>
+      h1 {
+      text-align : center
+      }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          text-align: center;
+          padding: 8px;
+        }
+        th {
+          background-color: #2094e6;
+          color: white;
+        }
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+      </style>
+      <h1>Student List</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Guardian</th>
+            <th>Class</th>
+            <th>Gender</th>
+            <th>Bus Route</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${studentRows}
+        </tbody>
+      </table>
+    `;
+
+    try {
+      const { uri } = await Print.printToFileAsync({ html: htmlContent });
+      await Print.printAsync({ uri });
+      Alert.alert('PDF Generated', 'PDF is ready to print!');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      Alert.alert('Error', 'Failed to generate PDF');
+    }
+  };
     
     
    
@@ -262,15 +335,24 @@ import axios from 'axios';
           </TouchableOpacity>
           </View>
           
+
+          {/* PDF Button */}
+          <TouchableOpacity style={[selectedValue === 'Transport' ? {  position: 'relative',bottom:45,left:22,width:'40%'} : {  position: 'relative',bottom:60,left:20,width:'40%'}]} onPress={generatePdfAndPrint}>
+          <Text style={{color:'#58a8f9',fontSize:15}}>Generate Pdf</Text>
+        </TouchableOpacity>
       </View>
+
+      
 
       <View style={{width:'100%',height:1, borderBottomWidth:0.2,position:'relative',bottom:25}}>
 
       </View>
 
 
+
+
 {/* List of students section */}
-<ScrollView style={{ marginTop: -15, marginBottom: 0, backgroundColor: 'white' }}>
+<ScrollView style={{ marginTop: -15, marginBottom: 0, backgroundColor: 'white' }} contentContainerStyle={{paddingBottom:30}}>
   {loading && allStudents.length === 0 ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 200 }}>
       <ActivityIndicator size="large" color="#58A8F9" />

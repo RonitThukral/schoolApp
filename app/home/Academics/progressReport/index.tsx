@@ -1,188 +1,105 @@
-import React, { useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView , SafeAreaView} from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-  import AntDesign from '@expo/vector-icons/AntDesign';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, SafeAreaView,Image } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
+import axios from 'axios';
 
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
+const term = [
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+];
 
-  const studentData = [
-    {
-      "id": "BK202408",
-      "name": "Deepak Kumar",
-      "class": "10A",
-      "course": "Course 1",
-      "academicYear": "2024-2025",
-      "term": "Term 1"
-    },
-    {
-      "id": "BK202409",
-      "name": "Rohan Sharma",
-      "class": "10A",
-      "course": "Course 2",
-      "academicYear": "2024-2025",
-      "term": "Term 2"
-    },
-    {
-      "id": "3",
-      "name": "John Doe",
-      "class": "10A",
-      "course": "Course 3",
-      "academicYear": "2024-2025",
-      "term": "Term 3"
-    },
-    {
-      "id": "4",
-      "name": "John Doe",
-      "class": "10A",
-      "course": "Course 4",
-      "academicYear": "2024-2025",
-      "term": "Term 1"
-    },
-    {
-      "id": "5",
-      "name": "Jane Smith",
-      "class": "9B",
-      "course": "Course 5",
-      "academicYear": "2024-2025",
-      "term": "Term 2"
-    },
-    {
-      "id": "6",
-      "name": "Michael Brown",
-      "class": "11C",
-      "course": "Course 6",
-      "academicYear": "2024-2025",
-      "term": "Term 3"
-    },
-    {
-      "id": "7",
-      "name": "Emily Davis",
-      "class": "10A",
-      "course": "Course 7",
-      "academicYear": "2024-2025",
-      "term": "Term 1"
-    },
-    {
-      "id": "8",
-      "name": "Daniel Johnson",
-      "class": "8A",
-      "course": "Course 8",
-      "academicYear": "2024-2025",
-      "term": "Term 2"
-    },
-    {
-      "id": "9",
-      "name": "Sophia Wilson",
-      "class": "12B",
-      "course": "Course 9",
-      "academicYear": "2024-2025",
-      "term": "Term 3"
-    },
-    {
-      "id": "10",
-      "name": "Matthew Miller",
-      "class": "9C",
-      "course": "Course 10",
-      "academicYear": "2024-2025",
-      "term": "Term 1"
-    },
-    {
-      "id": "11",
-      "name": "James Taylor",
-      "class": "8B",
-      "course": "Course 11",
-      "academicYear": "2024-2025",
-      "term": "Term 2"
-    },
-    {
-      "id": "12",
-      "name": "Charlotte",
-      "class": "10C",
-      "course": "Course 12",
-      "academicYear": "2024-2025",
-      "term": "Term 3"
-    },
-    {
-      "id": "13",
-      "name": "Aarav Gupta",
-      "class": "11A",
-      "course": "Course 13",
-      "academicYear": "2024-2025",
-      "term": "Term 1"
-    },
-    {
-      "id": "14",
-      "name": "Ishita Kapoor",
-      "class": "9A",
-      "course": "Course 14",
-      "academicYear": "2024-2025",
-      "term": "Term 2"
-    },
-    {
-      "id": "15",
-      "name": "Nikhil Verma",
-      "class": "12A",
-      "course": "Course 15",
-      "academicYear": "2024-2025",
-      "term": "Term 3"
+const DropdownComponent = () => {
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedTerm, setSelectedTerm] = useState(null);
+  const [students, setStudents] = useState([]);
+
+  const [classes, setClasses] = useState([]);
+  const [years, setYears] = useState([]);
+
+  const router = useRouter();
+
+  // Fetch Initial Data (Classes & Years)
+  const fetchInitialData = async () => {
+    try {
+      const classesResponse = await axios.get(`${baseUrl}/classes`);
+      setClasses(classesResponse.data.map((cls) => ({ label: cls.name, value: cls.classCode })));
+
+      const yearResponse = await axios.get(`${baseUrl}/yeargroup`);
+      setYears(yearResponse.data.map((y) => ({ label: y.year, value: y.year })));
+    } catch (err) {
+      console.error('Error fetching initial data:', err);
     }
-  ]
-  
-  
+  };
 
+  // Fetch Students Based on Filters
+  const fetchStudents = async () => {
+    try {
+      if (!selectedClass) {
+        console.warn('Please select a class to fetch students.');
+        return;
+      }
 
-  
-  
+      const cst = await axios.get(`${baseUrl}/students/class/${selectedClass}`);
+      const classStudents = cst?.data?.users || [];
 
-  const DropdownComponent = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedTerm, setSelectedTerm] = useState(null);
-    const [selectedCourse, setSelectedCourse] = useState(null);
-    const [selectedClass, setSelectedClass] = useState(null);
-    const [selectedYear, setSelectedYear] = useState(null);
-    const [filteredStudents, setFilteredStudents] = useState(studentData);
+      const formattedData = classStudents.map((student) => ({
+        userID: student?.userID || 'N/A',
+        name: `${student?.name} ${student?.surname}`,
+      }));
 
+      setStudents(formattedData);
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    }
+  };
 
-    const router = useRouter();
+  // Fetch initial data on load
+  useEffect(() => {
+    fetchInitialData();
+  }, []);
 
-   // Search Button Logic
+  // Search Button Logic
   const handleSearch = () => {
-    const filtered = studentData.filter((student) => {
-      return (
-        (!selectedYear || student.academicYear === selectedYear) &&
-        (!selectedCourse || student.course === selectedCourse) &&
-        (!selectedClass || student.class === selectedClass) &&
-        (!selectedTerm || student.term === selectedTerm)
-      );
-    });
-    setFilteredStudents(filtered);
+    if (!selectedClass || !selectedYear || !selectedTerm) {
+      console.warn('Please select Class, Year, and Term before searching.');
+      return;
+    }
+    fetchStudents();
   };
 
   // Reset Button Logic
   const handleReset = () => {
     setSelectedTerm(null);
-    setSelectedCourse(null);
     setSelectedYear(null);
     setSelectedClass(null);
-    setFilteredStudents(studentData);
+    setStudents([]);  // Reset students on reset
   };
 
-   
+  const handleFocus = (id: string) => {
+    setIsFocus(id);
+  };
 
-    const handleFocus = (id:string) => {
-      setIsFocus(id)
-    }
+  const handleBlur = () => {
+    setIsFocus(null);
+  };
 
-    const handleBlur = () => {
-      setIsFocus(null)
-    }
-
-    const handlePress = () => {
-      router.navigate('/')
-    }
-   
-
+  const handlePress = (id) => {
+    router.push({
+      pathname: '/home/Academics/progressReport/reportCard',
+      params: { 
+        studentId: id,
+        term: selectedTerm,
+        year: selectedYear
+       },  // Use 'params' here instead of 'query'
+    });
+  };
     return (
         <>
       <View style={styles.container}>
@@ -192,7 +109,7 @@ import { useRouter } from 'expo-router';
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={studentData.map((student) => ({ label: student.class, value: student.class }))}
+          data={classes}
           search
           maxHeight={300}
           labelField="label"
@@ -207,32 +124,12 @@ import { useRouter } from 'expo-router';
         />
       
       
-        {/* <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          data={studentData.map((student) => ({ label: student.course, value: student.course }))}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Select Course'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('name')}
-          onBlur={handleBlur}
-          value={selectedCourse}
-          onChange={(item) => setSelectedCourse(item.value)}
-       
-        /> */}
-      
-      
         <Dropdown
           style={[styles.dropdown,]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={studentData.map((student) => ({ label: student.academicYear, value: student.academicYear }))}
+          data={years}
           search
           maxHeight={300}
           labelField="label"
@@ -253,7 +150,7 @@ import { useRouter } from 'expo-router';
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={studentData.map((student) => ({ label: student.term, value: student.term}))}
+          data={term}
           search
           maxHeight={300}
           labelField="label"
@@ -281,41 +178,28 @@ import { useRouter } from 'expo-router';
           
       </View>
 
-{/* <View style={{backgroundColor:'white'}}>
-<View style={{position:'relative', flexDirection:'row', justifyContent:'flex-end',marginHorizontal:15,backgroundColor:'white', right:40,marginBottom:8}}>
-    <Text style={{marginRight:17, fontSize:15}}>Internal</Text>
-    <Text style={{fontSize:15}}>External</Text>
-</View>
-</View> */}
 
+<SafeAreaView style={{backgroundColor:'white',flex:1}} >
 
-{/* List of students section */}
-<SafeAreaView style={{backgroundColor:'white',flex:1}}>
-
-<ScrollView style={{backgroundColor:'white',  marginBottom:10}}>
-{filteredStudents.map((student, index) => {
+<ScrollView style={{backgroundColor:'white',  marginBottom:10}} contentContainerStyle={{paddingBottom:40}}>
+{students.map((student, index) => {
   return (
-    <View style={styles.list} key={index}>
+    <TouchableOpacity style={styles.list} key={index} onPress={() => {handlePress(student.userID)}}>
         <Image source={require('../../../../assets/images/images/boy.png')} style={styles.setImg}/>
         <View style={styles.listContent}>
-            <Text style={{fontSize:20,color:'#58A8F9'}}>{student.id}</Text>
-            <Text style={{fontSize:13, color:'grey'}}>{student.name}</Text>
+            <Text style={{fontSize:20,color:'#58A8F9',width:'130%'}}>{student.name}</Text>
+            <Text style={{fontSize:13, color:'grey'}}>{student.userID}</Text>
         </View>
 
        
         <TouchableOpacity>
         <Image source={require('../../../../assets/images/images/eye.png')} style={styles.eyeImg}/>        
         </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   )
 })}
 </ScrollView>
 </SafeAreaView>
-
-
-
-
-
 
       </>
     );
@@ -336,7 +220,7 @@ import { useRouter } from 'expo-router';
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -426,7 +310,7 @@ right:40
       width:'30%',
       flexDirection:'column',
       position: 'relative',
-      right:50,
+      right:60,
       justifyContent:'flex-start'
     },
     

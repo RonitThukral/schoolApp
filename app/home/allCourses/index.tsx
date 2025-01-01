@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
+import axios from 'axios';
+
+
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+
 
 
 
@@ -39,17 +44,65 @@ const courseData = [
     const [selectedTeacher, setSelectedTeacher] = useState(null);
     const [selectedName, setSelectedName] = useState(null);
     const [selectedDepartment, setSelectedDepartment] = useState(null);
-    const [filteredCourses, setFilteredCourses] = useState(courseData);
+    const [courses, setCourses] = useState(null)
+    const [teachers, setTeachers] = useState([])
+    const [filteredCourses, setFilteredCourses] = useState([]);
 
 
-    const router = useRouter();
+    // const router = useRouter();
+
+
+    const fetchTeachers = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/teachers`);
+        const teachers = response.data; // Assuming the data returned is an array of teachers
+        const formatedData = teachers.map((teacher) => ({
+          id: teacher._id,
+          userID: teacher.userID || 'N/A',
+          designation: teacher.role || 'N/A',
+          name: `${teacher.name} ${teacher.surname}`
+        }))
+        setTeachers(formatedData)
+        console.log(teachers); // You can now use the teachers data as needed
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      }
+    }
+
+
+    const fetchCourses = async() => {
+      try {
+        const response = await axios.get(`${baseUrl}/courses`)
+
+        const formattedData = response.data.map((course) => {
+          const teacherData = teachers.find((t) => t.userID === course.teacher) 
+          return {
+          name: course.name || 'N/A',
+          classes : course.classes.length || 'N/A',
+          department : course.type ||'N/A',
+          teacher: teacherData ? `${teacherData.name}`: 'N/A'
+
+        }})
+        console.log('Response  :  ', response.data  )
+        setCourses(formattedData)
+        setFilteredCourses(formattedData)
+      } catch (error) {
+        
+      }
+    }
+
+
+    useEffect(() => {
+      fetchTeachers()
+      fetchCourses()
+    },[])
 
    // Search Button Logic
   const handleSearch = () => {
-    const filtered = courseData.filter((course) => {
+    const filtered = courses?.filter((course) => {
       return (
-        (!selectedTeacher || course.classTeacher === selectedTeacher) &&
-        (!selectedName || course.title === selectedName) &&
+        (!selectedTeacher || course.teacher === selectedTeacher) &&
+        (!selectedName || course.name === selectedName) &&
         (!selectedDepartment || course.department === selectedDepartment)
       );
     });
@@ -61,7 +114,7 @@ const courseData = [
     setSelectedTeacher(null);
     setSelectedName(null);
     setSelectedDepartment(null);
-    setFilteredCourses(courseData);
+    setFilteredCourses(courses);
   };
 
 
@@ -73,9 +126,9 @@ const courseData = [
       setIsFocus(null)
     }
 
-    const handlePress = () => {
-      router.navigate('../studentDetails')
-    }
+    // const handlePress = () => {
+    //   router.navigate('../studentDetails')
+    // }
 
     const InfoRow = ({ label, value ,isMultiLine = false}:any) => (
         <View style={styles.infoRow}>
@@ -98,7 +151,7 @@ const courseData = [
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={courseData.map((course) => ({ label: course.title, value: course.title }))}
+          data={filteredCourses.map((course) => ({ label: course.name, value: course.name }))}
           search
           maxHeight={300}
           labelField="label"
@@ -118,7 +171,7 @@ const courseData = [
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={courseData.map((course) => ({ label: course.department, value: course.department  }))}
+          data={filteredCourses.map((course) => ({ label: course.department, value: course.department  }))}
           search
           maxHeight={300}
           labelField="label"
@@ -138,12 +191,12 @@ const courseData = [
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={courseData.map((course) => ({ label: course.classTeacher, value: course.classTeacher }))}
+          data={filteredCourses.map((course) => ({ label: course.teacher, value: course.teacher }))}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Search by Class'}
+          placeholder={'Search by Teacher'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
@@ -167,15 +220,15 @@ const courseData = [
 
 
 {/* List of students section */}
-<ScrollView style={{marginTop: 20, marginBottom: 0}}>
+<ScrollView style={{paddingTop: 20, marginBottom: 0, backgroundColor:'white'}} contentContainerStyle={{paddingBottom:50}}>
 {filteredCourses.map((course, index) => {
   return (
     <View style={styles.list} key={index} >
-      <Text style={{position:'relative', fontSize:22 , left:35, color:'#58A8F9',marginTop:10}}>{course.title}</Text>
+      <Text style={{position:'relative', fontSize:22 , left:35, color:'#58A8F9',marginTop:10}}>{course?.name}</Text>
       <View style={{flex:1, flexDirection:'row'}}>
 
       <View style={styles.listContent}>
-          <InfoRow label="Head Teacher" value={course.classTeacher} />
+          <InfoRow label="Head Teacher" value={course.teacher} />
           <InfoRow label="Department" value={course.department} />
           <InfoRow label="Classes" value={course.classes} />
           
@@ -217,7 +270,7 @@ const courseData = [
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -309,7 +362,8 @@ const courseData = [
       value: {
         color:'grey',
         fontSize: 13,
-        marginLeft:25
+        marginLeft:25,
+        fontWeight:'500'
       },
       multiLine : {
         flexWrap:'wrap',
@@ -320,7 +374,7 @@ const courseData = [
       },
       listBtns:{
         position:'absolute',
-        right:35,
+        right:13,
         bottom:20
       }
     

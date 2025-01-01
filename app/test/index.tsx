@@ -1,368 +1,299 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  SafeAreaView,
-  ImageBackground
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-import { useRoute } from '@react-navigation/native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
+import axios from 'axios';
+import * as Print from 'expo-print';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
-
-
-const StudentDetails = ({navigation}) => {
-  const [expandedSections, setExpandedSections] = useState({
-    studentInfo: true,
-    academicInfo: true,
-    guardianInfo: false,
-    contactInfo: false,
-  });
-  const [loading , setLoading] = useState(false)
-  const [selectedStudent , setSelectedStudent] = useState({})
-  // const [id , setId] = useState(null)
+const DropdownComponent = () => {
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedID, setSelectedID] = useState(null);
+  const [selectedName, setSelectedName] = useState(null);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
   const router = useRouter();
-  console.log(router.query)
-  const { id } = router.query;  // Get the dynamic 'id' from the URL
-console.log("idss: ", id)
 
-
-
-const fetchStudents = async () => {
-  setLoading(true)
-  try {
-    const response = await fetch(`${baseUrl}/students`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch students');
-    }
-    const data = await response.json();
-
-    // Transform data to match the design format if needed
-    const student = data.find((student) => (student._id === id));
-    // console.log(student)
-setSelectedStudent(student)
-    // setAllStudents(formattedData);
-    setLoading(false)
-  } catch (error) {
-    console.error(error.message);
-    setLoading(false)
-
-  } 
-};
-
-useEffect(() => {
-  if (id) { // Fetch student data only if id is available
-    fetchStudents();
-  }
-},[id])
-
-console.log("studnet :" ,id)
-
-  const studentData = {
-    id: "PK302411",
-    name: "Ankita",
-    surname: "Gaur",
-    gender: "Female",
-    dob: "22-06-2000",
-    email: "ankita@dreamseducation.org.in",
-    caste: "Hindu",
-    category: "General",
-    admissionDate: "N/A",
-    academic: {
-      classSection: "IV-C",
-      studentStatus: "Border",
-      campus: "Roses N Lilies",
-      busRoot: "Bus No. 3",
-      scholarship: "N/A",
-      feeCategory: "P-NUR"
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/teachers`);
+      const teachers = response.data;
+      const formattedData = teachers.map((teacher) => ({
+        id: teacher._id,
+        userID: teacher.userID || 'N/A',
+        designation: teacher.role || 'N/A',
+        name: `${teacher.name} ${teacher.surname}`,
+      }));
+      setTeachers(formattedData);
+      setFilteredTeachers(formattedData);
+    } catch (error) {
+      console.error('Error fetching teachers:', error);
     }
   };
 
-// const findStudent = () => {
-//   const student = allStudents.map((student) => {
-//     student.id === id 
-//   })
-//   console.log(student)
-//   setSelectedStudent(student)
-// }
+  useEffect(() => {
+    fetchTeachers();
+  }, []);
 
-  const toggleSection = (section) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
+  const handleSearch = () => {
+    const filtered = teachers.filter((teacher) => {
+      return (
+        (!selectedID || teacher.userID === selectedID) &&
+        (!selectedName || teacher.name === selectedName)
+      );
+    });
+    setFilteredTeachers(filtered);
   };
 
-  const InfoRow = ({ label, value }) => (
-    <View style={styles.infoRow}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={{position:'absolute', left:130, top:3}}>
+  const handleReset = () => {
+    setSelectedID(null);
+    setSelectedName(null);
+    setFilteredTeachers(teachers);
+  };
 
-      <Text style={styles.value}>{value}</Text>
-      </View>
-    </View>
-  );
+  const handleFocus = (id: string) => {
+    setIsFocus(id);
+  };
 
-  const Section = ({ title, isExpanded, onPress, children }) => (
-    <View style={styles.section}>
-      <TouchableOpacity 
-        style={styles.sectionHeader} 
-        onPress={onPress}
-        activeOpacity={0.7}
-      >
-        <Text style={styles.sectionTitle}>{title}</Text>
-        <Ionicons 
-          name={isExpanded ? "chevron-up" : "chevron-down"} 
-          size={24} 
-          color="#58A8F9"
-        />
-      </TouchableOpacity>
-      {isExpanded && (
-        <View style={styles.sectionContent}>
-          {children}
-        </View>
-      )}
-    </View>
-  );
+  const handleBlur = () => {
+    setIsFocus(null);
+  };
+
+  const handleSelectStaff = (id) => {
+    router.push(`/home/Teachers/allStaff/staffDetails?staffId=${id}`);
+  };
+
+  // 📝 Generate PDF Logic with Print
+  const generatePDF = async () => {
+    try {
+      const teacherDetails = filteredTeachers
+        .map(
+          (teacher) => `
+          <tr>
+            <td>${teacher.userID}</td>
+            <td>${teacher.name}</td>
+            <td>${teacher.designation}</td>
+          </tr>`
+        )
+        .join('');
+
+      const htmlContent = `
+        <html>
+          <head>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              h1 { text-align: center; margin-bottom: 20px; }
+              table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+              th, td { border: 1px solid #ccc; text-align: left; padding: 8px; }
+              th { background-color: #58A8F9; color: white; }
+            </style>
+          </head>
+          <body>
+            <h1>Staff List</h1>
+            <table>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Designation</th>
+              </tr>
+              ${teacherDetails}
+            </table>
+          </body>
+        </html>
+      `;
+
+      // 🖨️ Print the PDF directly
+      await Print.printAsync({
+        html: htmlContent,
+      });
+    } catch (error) {
+      console.error('Error generating or printing PDF:', error);
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    <>
+      <View style={styles.container}>
+        <Dropdown
+          style={[styles.dropdown]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          data={filteredTeachers.map((teacher) => ({ label: teacher.userID, value: teacher.userID }))}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={'Search by ID'}
+          searchPlaceholder="Search..."
+          onFocus={() => handleFocus('student')}
+          onBlur={handleBlur}
+          value={selectedID}
+          onChange={(item) => setSelectedID(item.value)}
+        />
 
-        {/* Profile Section */}
-        <View
-          style={styles.headerBackground}
-        >
-          <Image source={require('../../assets/images/images/union.png')}/>
-          <View style={styles.profileSection}>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={require('../../assets/images/images/girl.png')} // Add your placeholder image
-                style={styles.avatar}
-              />
-              <View style={styles.verifiedBadge}>
-                <Image source={require('../../assets/images/images/editwhite.png')}/>
-              </View>
-            </View>
-            <View style={styles.profileInfo}>
-              <Text style={styles.studentId}>{studentData.id}</Text>
-              <Text style={styles.studentName}>
-                {`${studentData.name} ${studentData.surname}`}
-              </Text>
-            </View>
-          </View>
+        <Dropdown
+          style={[styles.dropdown]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          data={filteredTeachers.map((teacher) => ({ label: teacher.name, value: teacher.name }))}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={'Search by Name'}
+          searchPlaceholder="Search..."
+          onFocus={() => handleFocus('name')}
+          onBlur={handleBlur}
+          value={selectedName}
+          onChange={(item) => setSelectedName(item.value)}
+        />
+
+        <View style={styles.footer}>
+
+        <TouchableOpacity style={{position:'absolute',left:30,top:5}} onPress={generatePDF}>
+            <Text style={{ color: '#58a8f9', fontSize: 18 }}>Print PDF</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.reset} onPress={handleReset}>
+            <Text style={{ color: '#58A8F9' }}>Reset</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.search} onPress={handleSearch}>
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 15 }}>Search</Text>
+          </TouchableOpacity>
+
+          
         </View>
-        
-        <View style={[expandedSections.studentInfo ? styles.rule1 : styles.rule2]}></View>
+      </View>
 
-        {/* Student Information Section */}
-        <Section
-          title="Student Information"
-          isExpanded={expandedSections.studentInfo}
-          onPress={() => toggleSection('studentInfo')}
-        >
-          <InfoRow label="Name" value={studentData.name} />
-          <InfoRow label="Surname" value={studentData.surname} />
-          <InfoRow label="Gender" value={studentData.gender} />
-          <InfoRow label="DOB" value={studentData.dob} />
-          <InfoRow label="Email" value={studentData.email} />
-          <InfoRow label="Caste" value={studentData.caste} />
-          <InfoRow label="Category" value={studentData.category} />
-          <InfoRow label="Admission Date" value={studentData.admissionDate} />
-        </Section>
-
-
-        <View style={[expandedSections.academicInfo ? styles.rule1 : styles.rule2]}></View>
-
-
-        {/* Academic Information Section */}
-        <Section
-          title="Academic Information"
-          isExpanded={expandedSections.academicInfo}
-          onPress={() => toggleSection('academicInfo')}
-        >
-          <InfoRow label="Class/Section" value={studentData.academic.classSection} />
-          <InfoRow label="Student Status" value={studentData.academic.studentStatus} />
-          <InfoRow label="Campus" value={studentData.academic.campus} />
-          <InfoRow label="Bus Root" value={studentData.academic.busRoot} />
-          <InfoRow label="Scholarship" value={studentData.academic.scholarship} />
-          <InfoRow label="Fee Category" value={studentData.academic.feeCategory} />
-        </Section>
-
-
-        <View style={[expandedSections.guardianInfo ? styles.rule1 : styles.rule2]}></View>
-
-
-        {/* Guardian Information Section */}
-        <Section
-          title="Guardian Information"
-          isExpanded={expandedSections.guardianInfo}
-          onPress={() => toggleSection('guardianInfo')}
-        >
-          {/* Add guardian information content here */}
-        </Section>
-
-        <View style={[expandedSections.contactInfo ? styles.rule1 : styles.rule2]}></View>
-
-
-        {/* Contact Information Section */}
-        <Section
-          title="Contact Information"
-          isExpanded={expandedSections.contactInfo}
-          onPress={() => toggleSection('contactInfo')}
-        >
-          {/* Add contact information content here */}
-        </Section>
-
+      <ScrollView style={{ backgroundColor: 'white', flex: 1 }} contentContainerStyle={{ paddingBottom: 30 }}>
+        {filteredTeachers.map((teacher, index) => (
+          <TouchableOpacity
+            style={styles.list}
+            key={index}
+            onPress={() => handleSelectStaff(teacher.userID)}
+          >
+            <Image style={styles.stImg} source={require('../../assets/images/images/avatar.png')} />
+            <View style={styles.listContent}>
+              <Text style={{ color: '#58A8F9', fontSize: 20 }}>{teacher.name}</Text>
+              <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.userID}</Text>
+              <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.designation}</Text>
+            </View>
+            <AntDesign name="arrowright" size={24} color="#58A8F9" style={{ position: 'relative', right: 30 }} />
+          </TouchableOpacity>
+        ))}
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: '#F5F5F5',
-    backgroundColor: 'white',
-  },
-  scrollViewContent: {
-    paddingBottom: 20, // Add space at the bottom to prevent the last item from being cut off
-  },
-  headerBackground: {
-    width: '100%',
-    height: 300, // Adjust height according to your design
-    backgroundColor:'#daedff',
-  
-  },
-  profileSection: {
-    position:'absolute',
-    bottom: 25,
-    flexDirection: 'column',
-    alignItems: 'center',
-    alignSelf:'center',
-    marginTop: 25,
-    padding: 16,
-  },
-  avatarContainer: {
-    position: 'relative',
-    right:15,
-    top:25
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    backgroundColor: '#DDD',
-  },
-  verifiedBadge: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: '#58A8F9',
-    borderRadius: 12,
-    width: 27,
-    height: 27,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#daedff',
-  },
-  profileInfo: {
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  studentId: {
-    color: '#58A8F9',
-    fontSize: 24,
-    marginTop:15,
-    marginRight: 20
+export default DropdownComponent;
 
-  },
-  studentName: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 10,
-    marginRight: 15
 
-  },
-  section: {
-    width:"90%",
-    alignSelf:'center',
-    marginTop: 5,
-   
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    // backgroundColor: '#F8F8F8',
-    backgroundColor: 'transparent',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  sectionContent: {
-    padding: 16,
-    width:"90%",
-    alignSelf:'center',
-    height:'auto',
-    backgroundColor: '#FFF',
-    // backgroundColor: 'red',
-    marginHorizontal: 16,
-    borderRadius: 10,
-    overflow: 'hidden',
-    elevation: 4, // Adds shadow for Android
-    shadowColor: '#000', // Adds shadow for iOS
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    borderColor :'grey',
-    borderWidth:0.2,
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: 'white',
+      padding: 16,
+      paddingVertical:50,
+      paddingTop:60
+      
+    },
+    dropdown: {
+      height: 50,
+      width:"90%",
+    //   borderColor: 'gray',
+    //   borderWidth: 0.5,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+      backgroundColor:'#daedff',
+      marginBottom: 15,
+      alignSelf: 'center'
+    },
+    icon: {
+      marginRight: 5,
+    },
+    label: {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      left: 45,
+      top: 5,
+      zIndex: 999,
+      paddingHorizontal: 8,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 15,
+      color: 'grey',
+      paddingHorizontal: 15
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+      paddingHorizontal:15,
+      fontWeight:400
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+
+    footer :{
+      flex:1,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      
+    },
+    search: {
+      position:'relative',
+      right:18,
+      width: 130,
+      height:35,
+      borderRadius:15,
+      backgroundColor: '#58A8F9',
+      justifyContent: 'center',
+    },
+    reset: {
+      backgroundColor:'transparent',
+      width: 70,
+      height: 35,
+      justifyContent:'center',
+      marginRight: 15
+    },
+    list:{
+      width: "90%",
+      height: 100,
+      borderColor: 'grey',
+      borderRadius: 10,
+      // backgroundColor : 'red',
+      backgroundColor : '#FFFFFF',
+      justifyContent: 'space-between',
+      flexDirection:'row',
+      alignItems:'center',
+      alignSelf:'center',
+      marginBottom: 10,
+      marginTop: 6,
+      elevation:8
+    },
+    stImg:{
+      width:60,
+      height:60,
+      position:'absolute',
+      left: 40,
+      backgroundColor:'white',
+      borderRadius:100
+    },
+    listContent:{
+      flexDirection:'column',
+      position: 'relative',
+      left:130
+    },
     
-    
-  },
-  
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 1,
-  },
-  label: {
-    fontWeight:'bold',
-    color: '#666',
-    fontSize: 11.5,
-  },
-  value: {
-    color:'grey',
-    fontSize: 11.5,
-  },
-  rule1:{
-    height:0.5, 
-    width:'70%',
-    borderWidth:0.5,
-    borderColor:'grey', 
-    alignSelf:'center',
-    position:'fixed', 
-    top:62
-  },
-  rule2:{
-    height:0.5, 
-    width:'80%',
-    borderWidth:0.5,
-    borderColor:'grey', 
-    alignSelf:'center',
-    position:'fixed', 
-    top:70
-  }
-});
 
-export default StudentDetails;
+  });

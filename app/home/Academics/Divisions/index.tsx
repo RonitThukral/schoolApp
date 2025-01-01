@@ -84,7 +84,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
 
     useEffect(() => {
       fetchDivisions()
-    },[divisions])
+    },[])
 
    // Search Button Logic
   const handleSearch = () => {
@@ -125,7 +125,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
           Alert.alert("Error", "Failed to delete division. Please try again.");
         } else {
           Alert.alert("Success", "Division deleted successfully.");
-          
+          fetchDivisions()
         }
       } catch (error) {
         // Handle request errors
@@ -152,6 +152,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
         } else {
           // Show a success message
           Alert.alert("Success", "Division added successfully.");
+          fetchDivisions()
           setIsOpen(false)
           setName('');
           setDescription('');
@@ -190,7 +191,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
         } else {
           // Show a success message
           Alert.alert("Success", "Division updated successfully.");
-    
+    fetchDivisions()
          
           setName('');
           setDescription('');
@@ -344,7 +345,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -478,7 +479,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
         backgroundColor: '#58A8F9',
         position:'absolute',
         bottom:13,
-        right:25,
+        right:35,
         borderRadius:20,
         justifyContent:'center',
         alignSelf:'flex-end',

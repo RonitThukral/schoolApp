@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-
+import axios from 'axios';
 
 
   const studentData =[
@@ -171,24 +171,106 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
   //   [key: string]: string | null;
   // }
 
+  const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+
+
   const DropdownComponent = () => {
     const [isFocus, setIsFocus] = useState<string | null>(null);
     const [selectedID, setSelectedID] = useState(null);
-    const [selectedName, setSelectedName] = useState(null);
+    const [selectedCampuses, setSelectedCampuses] = useState(null)
     const [selectedClassTeacher, setSelectedClassTeacher] = useState(null);
-    const [filteredClasses, setFilteredClasses] = useState(listData);
     const [expandedSectionId, setExpandedSectionId] = useState<string | null>(null);
+    const [classes , setClasses] = useState([])
+    const [filteredClasses, setFilteredClasses] = useState([]);
+const [campuses, setCampuses] = useState([])
+const [teachers, setTeachers] = useState([])
+    // const router = useRouter();
+
+    const fetchClasses = async () => {
+      try {
+        // Fetch classes from the API
+        const classesResponse = await axios.get(`${baseUrl}/classes`);
+        
+        // Log campuses to ensure it's accessible
+        // console.log(campuses);
+    
+        // Check if campuses are loaded before mapping
+        if (!campuses || campuses.length === 0) {
+          console.error('Campuses data is not available.');
+          return;
+        }
+    
+        // Format class data with campus name
+        const formatedData = classesResponse.data.map((cls) => {
+          const campusData = campuses.find((campus) => campus._id === cls.campusID);
+          const teacherData = teachers.find((teacher) => teacher.userID === cls.teacherID) ;
+          return {
+            name: cls.name,
+            classCode: cls.classCode,
+            campus: campusData ? campusData.name : 'N/A', // Use campus name or fallback to 'N/A'
+            id: cls._id,
+            teacher: teacherData ? teacherData.name : 'N/A',
+            academic: cls.academic || 'N/A',
+            prefect: cls.prefect || 'N/A',
+            division: cls.division || 'N/A',
+            sba: cls.sba,
+            group: cls.group || 'N/A',
+            sbaStaff: cls.sbaStaff || 'N/A',
+          };
+        });
+    
+        // Set formatted classes to state
+        setClasses(formatedData);
+        setFilteredClasses(formatedData)
+      } catch (error) {
+        console.error('Error fetching classes:', error.message);
+      }
+    };
+    
+
+    const fetchCampuses = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/campuses`);
+        setCampuses(response.data);
+      } catch (error) {
+        console.error("Error fetching campuses:", error);
+      } 
+    };
 
 
-    const router = useRouter();
+    const fetchTeachers = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/teachers`);
+        const teachers = response.data; // Assuming the data returned is an array of teachers
+        const formatedData = teachers.map((teacher) => ({
+          id: teacher._id,
+          userID: teacher.userID || 'N/A',
+          designation: teacher.role || 'N/A',
+          name: `${teacher.name} ${teacher.surname}`
+        }))
+        setTeachers(formatedData)
+        // console.log(teachers); // You can now use the teachers data as needed
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      }
+    }
+
+
+
+    useEffect(() => {
+      fetchClasses();
+      fetchCampuses();
+      fetchTeachers();
+    },[])
+
 
    // Search Button Logic
   const handleSearch = () => {
-    const filtered = listData.filter((data) => {
+    const filtered = classes.filter((data) => {
       return (
-        (!selectedID || data.id === selectedID) &&
-        (!selectedName || data.name === selectedName) &&
-        (!selectedClassTeacher || data.classTeacher === selectedClassTeacher)
+        (!selectedID || data.classCode === selectedID) &&
+        (!selectedCampuses || data.campus === selectedCampuses) &&
+        (!selectedClassTeacher || data.teacher === selectedClassTeacher)
       );
     });
     setFilteredClasses(filtered);
@@ -197,9 +279,9 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
   // Reset Button Logic
   const handleReset = () => {
     setSelectedID(null);
-    setSelectedName(null);
+    setSelectedCampuses(null);
     setSelectedClassTeacher(null);
-    setFilteredClasses(listData);
+    setFilteredClasses(classes);
   };
 
    
@@ -212,9 +294,7 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
       setIsFocus(null)
     }
 
-    const handlePress = () => {
-      router.navigate('/')
-    }
+    
 
     const toggleSection = (id: string) => {
         setExpandedSectionId((prev) => (prev === id ? null : id));
@@ -244,7 +324,7 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
             <View style={{flex:1, flexDirection:'column'}}>
 
             <Text style={styles.sectionTitle}>{title}</Text>
-            <Text style={{color:'grey'}}>{subTitle}</Text>
+            <Text style={{color:'grey',position:'relative',left:15}}>{subTitle}</Text>
             </View>
             <Ionicons 
               name={isExpanded ? "chevron-up" : "chevron-down"} 
@@ -283,12 +363,12 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={listData.map((data) => ({ label: data.id, value: data.id }))}
+          data={classes.map((cls) => ({label: cls.classCode.toUpperCase(), value: cls.classCode}))}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Search by ID'}
+          placeholder={'Search by Class'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('student')}
           onBlur={handleBlur}
@@ -303,7 +383,7 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={listData.map((data) => ({ label: data.name, value: data.name }))}
+          data={campuses.map((data) => ({ label: data.name, value: data.name }))}
           search
           maxHeight={300}
           labelField="label"
@@ -312,8 +392,8 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('name')}
           onBlur={handleBlur}
-          value={selectedName}
-          onChange={(item) => setSelectedName(item.value)}
+          value={selectedCampuses}
+          onChange={(item) => setSelectedCampuses(item.value)}
        
         />
       
@@ -323,7 +403,7 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={listData.map((data) => ({ label: data.classTeacher, value: data.classTeacher }))}
+          data={teachers.map((data) => ({ label: data.name, value: data.name }))}
           search
           maxHeight={300}
           labelField="label"
@@ -350,22 +430,22 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
 
 
 {/* List of students section */}
-<ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
+<ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}} contentContainerStyle={{paddingBottom:40}}>
 
 {filteredClasses.map((data, index) => {
   return (
     <Section
     key={index}
     id={data.id}
-          title={data.title}
-          subTitle= {data.name}
+          title={data.name}
+          subTitle= {data.campus}
           
         >
-          <InfoRow label="Class Teacher" value={data.classTeacher} />
-          <InfoRow label="group" value={data.group} />
+          <InfoRow label="Class Teacher" value={data.teacher} />
+          <InfoRow label="SBA Staff" value={data.sbaStaff} />
           <InfoRow label="division" value={data.division} />
           <InfoRow label="prefect" value={data.prefect} />
-          <InfoRow label="SBA Staff" value={data.sbaStaff} />
+          <InfoRow label="group" value={data.group} />
           
         </Section>
   )
@@ -393,7 +473,7 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -507,8 +587,10 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
       },
       sectionTitle: {
         fontSize: 20,
-        fontWeight: '600',
-        color:'#58A8F9'
+        fontWeight: '500',
+        color:'#58A8F9',
+        position:'relative',
+        left:13
       },
       sectionContent: {
         padding: 16,
@@ -537,13 +619,16 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vect
         paddingVertical: 2,
       },
       label: {
-        fontWeight:'bold',
+        fontWeight:'600',
         color: '#666',
         fontSize: 12,
       },
       value: {
         color:'grey',
         fontSize: 12,
+        // fontWeight:'400'
+        position:'relative',
+        left:20
       },
       multiLine : {
         flexWrap:'wrap',

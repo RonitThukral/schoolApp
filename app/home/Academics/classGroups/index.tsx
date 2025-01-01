@@ -63,8 +63,8 @@ const index = () => {
     return (
       <View style={styles.list} key={item.id}>
         <View style={styles.listContent}>
-          <Text style={{ color: "#58A8F9", fontSize: 20 }}>{item.name}</Text>
-          <Text style={{ color: "grey", fontSize: 13, paddingHorizontal: 5 }}>{item.createdAt}</Text>
+          <Text style={{ color: "#58A8F9", fontSize: 20 }}>{item.name.toUpperCase()}</Text>
+          <Text style={{ color: "grey", fontSize: 13}}>{item.createdAt}</Text>
         </View>
         <View style={styles.listBtns}>
         

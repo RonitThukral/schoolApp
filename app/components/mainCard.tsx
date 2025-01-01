@@ -9,26 +9,28 @@ const screenWidth = Dimensions.get("window").width;
 
 const data = [
     [
-      { title: "Students", icon: require("../../assets/images/images/student1.png"),linking:'./home/students' },
-      { title: "Teachers", icon: require("../../assets/images/images/teacher1.png"), linking:'./home/Teachers' },
-      { title: "Classes", icon: require("../../assets/images/images/class1.png"), linking:'./home/allClasses' },
-      { title: "Attendance", icon: require("../../assets/images/images/attendance1.png"), linking:'./home/Attendance' },
-      { title: "Academics", icon: require("../../assets/images/images/liberary.png"), linking:'/home/Academics' },
-      { title: "Payrow", icon: require("../../assets/images/images/payrow1.png"), linking:'/home' },
-      { title: "Inventory", icon: require("../../assets/images/images/inventory.png"),linking:'/home/Inventory' },
-      { title: "Reports", icon: require("../../assets/images/images/report.png"),linking:'./home/Reports' },
-      { title: "Time Table", icon: require("../../assets/images/images/timetable.png"), linking:'/home' },
+      { title: "Students", icon: require("../../assets/images/images/kid.png"),linking:'./home/students' },
+      { title: "Teachers", icon: require("../../assets/images/images/women.png"), linking:'./home/Teachers' },
+      { title: "Classes", icon: require("../../assets/images/images/classdesk.png"), linking:'./home/allClasses' },
+      { title: "Finance", icon: require("../../assets/images/images/finan.png"),linking:'/home/Finance' },
+      { title: "Academics", icon: require("../../assets/images/images/acad.png"), linking:'/home/Academics' },
+      { title: "Payrow", icon: require("../../assets/images/images/invest.png"), linking:'/home' },
+      { title: "Attendance", icon: require("../../assets/images/images/atten.png"), linking:'./home/Attendance' },
+      { title: "Inventory", icon: require("../../assets/images/images/box1.png"),linking:'/home/Inventory' },
+      
+      { title: "Messages", icon: require("../../assets/images/images/cours.png") , linking:'./home/Message' },
+      
     ],
-  [
-    { title: "Courses", icon: require("../../assets/images/images/coursess.png"), linking:'./home/allCourses' },
-    { title: "SMS", icon: require("../../assets/images/images/sms.png"), linking:'/home/smsReminder' },
-    { title: "Finance", icon: require("../../assets/images/images/finance.png"),linking:'/home/Finance' },
-    { title: "Messages", icon: require("../../assets/images/images/messagess.png") , linking:'./home/Message' },
-    { title: "Buses", icon: require("../../assets/images/images/busses.png"),linking:'/' },
-    { title: "Certificates", icon: require("../../assets/images/images/certificate.png") , linking:'/home' },
-    { title: "Notices", icon: require("../../assets/images/images/notices.png") , linking:'./home/Notices' },
-    { title: "Liberary", icon: require("../../assets/images/images/lib.png") , linking:'/home' },
-    { title: "Settings", icon: require("../../assets/images/images/settings.png") , linking:'./home' },
+    [
+      { title: "Reports", icon: require("../../assets/images/images/rpo.png"),linking:'./home/Reports' },
+      { title: "Courses", icon: require("../../assets/images/images/coursess.png"), linking:'./home/allCourses' },
+      { title: "SMS", icon: require("../../assets/images/images/jj.png"), linking:'/home/smsReminder' },
+      { title: "Liberary", icon: require("../../assets/images/images/libe.png") , linking:'/home' },
+      { title: "Time Table", icon: require("../../assets/images/images/calendar.png"), linking:'/home' },
+      { title: "Certificates", icon: require("../../assets/images/images/guarantee.png") , linking:'/home' },
+      { title: "Notices", icon: require("../../assets/images/images/sent.png") , linking:'./home/Notices' },
+      { title: "Buses", icon: require("../../assets/images/images/vanes.png"),linking:'./home/students/Transport' },
+    { title: "Settings", icon: require("../../assets/images/images/setting.png") , linking:'./home' },
   ],
 ];
 
@@ -45,11 +47,11 @@ const Slider = () => {
       router.navigate(link)
     }
   
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item,index }) => (
       <TouchableOpacity style={styles.card} onPress={() => {handlePress(item.linking)}}>
         <View style={{width:'80%', height:'85%'}}>
 
-        <Image source={item.icon} style={styles.icon} />
+        <Image source={item.icon} style={[index === 1 ? styles.icon1 : styles.icon,index === 2 ? styles.icon3 : styles.icon , index === 3 ? styles.icon4 : styles.icon]} />
         </View>
 
         <View style={{width:'110%', }}>
@@ -117,13 +119,34 @@ const Slider = () => {
       // backgroundColor: "blue",
       borderRadius: 20,
       margin: 8,
-      height:110
+      height:105
     },
     icon: {
-      width: 55,
+      width:48 ,
+      height: 58,
+      marginBottom: 8,
+      alignSelf:'center'
+
+    },
+    icon1: {
+      width:65 ,
+      height: 58,
+      marginBottom: 8,
+      alignSelf:'center'
+    },
+    icon3: {
+      width: 70,
       height: 60,
       marginBottom: 8,
+      alignSelf:'center'
     },
+    icon4: {
+      width: 63,
+      height: 53,
+      marginBottom: 8,
+      alignSelf:'center'
+    },
+    
     text: {
       textAlign: "center",
       fontSize: 13,

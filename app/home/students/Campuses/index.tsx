@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     right: 30,
+    top:45,
     justifyContent: 'space-between',
   },
   lists: {
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
   closeBtn: {
     width: 100,
     height: 38,
-    backgroundColor: '#DAEDFF',
+    // backgroundColor: '#DAEDFF',
     position: 'absolute',
     left: 25,
     borderRadius: 20,

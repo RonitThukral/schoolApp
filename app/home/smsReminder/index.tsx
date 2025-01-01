@@ -8,20 +8,23 @@ const students = [
       "term": "Term 1" },
     { id: 'BK202409', name: 'Rohan Sharma', isSelected: false, class: '10B',"academicYear": "2024-2025",
       "term": "Term 2" },
-    { id: '3', name: 'John Doe', isSelected: false, class: '9A',"academicYear": "2024-2025",
+    { id: 'BK202401', name: 'Ruchi Sharma', isSelected: false, class: '9A',"academicYear": "2024-2025",
       "term": "Term 1" },
-    { id: '4', name: 'John Doe', isSelected: false, class: '9A',"academicYear": "2024-2025",
+    { id: 'BK202404', name: 'Ankita Gaur', isSelected: false, class: '9A',"academicYear": "2024-2025",
       "term": "Term 1" },
-    { id: '5', name: 'John Doe', isSelected: false, class: '9A',"academicYear": "2024-2025",
+    { id: 'BK202405', name: 'Jack Brown', isSelected: false, class: '9A',"academicYear": "2024-2025",
       "term": "Term 1" },
-    { id: '6', name: 'John Doe', isSelected: false, class: '9A',"academicYear": "2024-2025",
+    { id: 'BK202407', name: 'Gopal Chand', isSelected: false, class: '9A',"academicYear": "2024-2025",
       "term": "Term 1" },
-    { id: '7', name: 'John Doe', isSelected: false, class: '9A',"academicYear": "2024-2025",
+    { id: 'BK202406', name: 'Emily Jones', isSelected: false, class: '9A',"academicYear": "2024-2025",
       "term": "Term 1" },
   ]
 
 const Reminder = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [description, setDescription] = useState("Dear parent, please be reminded that your ward {student_name} owes an amount of {amount_owed}. Please pay as soon as possible.");
   const [selectedTerm, setSelectedTerm] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
@@ -51,6 +54,25 @@ const Reminder = () => {
     setSelectedYear('')
     setSelectedTerm('')
   }
+
+
+  const handlePlus = () => {
+    setIsOpen(true)
+  }
+
+  // const handleTitle = (text: string) => setName(text);
+const handleDescription = (text: string) => setDescription(text);
+
+
+const handleClose = () => {
+  setIsOpen(false)
+  setEdit(false)
+  // setName('')
+ setDescription("Dear parent, please be reminded that your ward {student_name} owes an amount of {amount_owed}. Please pay as soon as possible.")
+}
+const handleSend = () => {
+  setIsOpen(false)
+}
   
 
 
@@ -147,10 +169,38 @@ const Reminder = () => {
         )}
       />
 
-      <TouchableOpacity style={styles.submitButton} >
-        <Text style={styles.submitButtonText}>Send</Text>
-      </TouchableOpacity>
+      {!isOpen && <TouchableOpacity style={styles.submitButton} onPress={handlePlus} >
+        <Text style={styles.submitButtonText}>Proceed</Text>
+      </TouchableOpacity>}
+
+      {(isOpen || edit) && <View style={styles.inputContainer}>
+        <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{'Edit Message'}</Text>
+
+    {/* <TextInput style={styles.input} placeholder={edit ? "Edit Name" : "Add Name"} onChangeText={handleTitle} value={name}/> */}
+
+    <TextInput style={styles.inputDesc} placeholder={"Edit Message" } multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+  
+
+
+    <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',alignItems:'flex-end',marginBottom:10}}>
+
+    <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
+    <Text style={{color:'#58A8F9',fontSize:16}}>Cancel</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.buttons} >
+    <Text style={{color:'white',fontSize:16, textAlign:'center'}} 
+    onPress={handleSend}
+    >Send</Text>
+    </TouchableOpacity>
+    </View>
+    </View>}
+
+
     </SafeAreaView>
+
+
+
+
   );
 };
 
@@ -266,6 +316,62 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15,
   },
+  // input: {
+  //   width: '80%',
+  //   height: 45,
+  //   backgroundColor: '#DAEDFF',
+  //   // backgroundColor: 'red',
+  //   // marginBottom: 10,
+  //   borderRadius: 10,
+  //   alignSelf: 'center',
+  //   paddingHorizontal: 25,
+  // },
+  inputDesc:{
+    width: '80%',
+    height: 130,
+    backgroundColor: '#DAEDFF',
+    // backgroundColor: 'red',
+    marginBottom: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    alignSelf: 'center',
+    paddingHorizontal: 25,
+  },
+  inputContainer:{
+    position:'absolute',
+    width:'85%',
+    height:270,
+    backgroundColor:'white',
+    // backgroundColor:'red',
+    borderRadius:10,
+    justifyContent:'center',
+    alignSelf:'center',
+    top:'30%',
+    flexDirection:'column',
+    zIndex:900000
+// marginVertical:15
+  },
+  buttons:{
+    width:80,
+    height:30,
+    backgroundColor: '#58A8F9',
+    position:'absolute',
+    bottom:13,
+    right:35,
+    borderRadius:20,
+    justifyContent:'center',
+    alignSelf:'flex-end',
+      },
+
+    closeBtn:{
+    position:'absolute',
+    bottom:15,
+    left:120,
+    borderRadius:20,
+    justifyContent:'center',
+    alignSelf:'flex-end',
+      }
+
 });
 
 export default Reminder;

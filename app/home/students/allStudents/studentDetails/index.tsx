@@ -489,7 +489,7 @@ const StudentDetails = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.scrollViewContent}>
         <View style={styles.headerBackground}>
           <Image source={require('../../../../../assets/images/images/union.png')}/>
 
@@ -513,6 +513,8 @@ const StudentDetails = () => {
             </View>
           </View>
         </View>
+
+        <ScrollView contentContainerStyle={{paddingBottom:30}}>
 
         <View
           style={[expandedSections.studentInfo ? styles.rule1 : styles.rule2]}
@@ -586,7 +588,8 @@ const StudentDetails = () => {
           <InfoRow label="Postal Address" value={studentData.postalAddress} />
           <InfoRow label="Physical Address" value={studentData.physicalAddress} />
         </Section>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -598,7 +601,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   scrollViewContent: {
-    paddingBottom: 20, // Add space at the bottom to prevent the last item from being cut off
+    flex:1
+    // paddingBottom: 20, // Add space at the bottom to prevent the last item from being cut off
   },
   headerBackground: {
     width: '100%',

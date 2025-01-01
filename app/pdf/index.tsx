@@ -7,35 +7,80 @@ const App = () => {
 
   const generatePdfAndPrint = async () => {
     const htmlContent = `
-      <h1>Student Marksheet</h1>
-      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-top: 20px;">
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th>Marks</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mathematics</td>
-            <td>85</td>
-          </tr>
-          <tr>
-            <td>English</td>
-            <td>90</td>
-          </tr>
-          <tr>
-            <td>Science</td>
-            <td>88</td>
-          </tr>
-          <tr>
-            <td>History</td>
-            <td>92</td>
-          </tr>
-        </tbody>
-      </table>
-      <p><strong>Total: 355/400</strong></p>
-    `;
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      text-align: left;
+      padding: 10px;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    p {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+  <div class="container">
+    <h1>Student Marksheet</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Marks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mathematics</td>
+          <td>85</td>
+        </tr>
+        <tr>
+          <td>English</td>
+          <td>90</td>
+        </tr>
+        <tr>
+          <td>Science</td>
+          <td>88</td>
+        </tr>
+        <tr>
+          <td>History</td>
+          <td>92</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Total: 355/400</p>
+  </div>
+`;
+
 
     try {
       // Generate PDF using expo-print

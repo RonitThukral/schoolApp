@@ -113,7 +113,7 @@ const index = () => {
 
   return (
     <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
-        <Image style={{height:80}} source={require('../../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:120,backgroundColor:'#daedff'}} source={require('../../../../assets/images/images/union.png')}/>
 
 <ScrollView style={styles.container}   contentContainerStyle={{ paddingBottom: 50 }} // Add padding below the content
 >
@@ -367,13 +367,14 @@ const styles = StyleSheet.create({
     container: {
       flex:1,
         backgroundColor: 'white',
+        // backgroundColor: 'red',
         padding: 16,
         // position:'relative',
         // top:70,
         width:'100%',
         // height:500
         // marginBottom:10
-        
+        // marginTop:30
       },
     
       dropdown: {
@@ -383,7 +384,7 @@ const styles = StyleSheet.create({
       //   borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        backgroundColor:'#EEF7FF',
+        backgroundColor:'#daedff',
         marginBottom: 15,
         alignSelf: 'center'
       },

@@ -1,143 +1,127 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView} from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-  import AntDesign from '@expo/vector-icons/AntDesign';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import * as Print from 'expo-print';
 
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
+const DropdownComponent = () => {
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedID, setSelectedID] = useState(null);
+  const [selectedName, setSelectedName] = useState(null);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
-// const teacherData =  [
-//     {
-//         id: "TK20242",
-//         name: "Daksh Singh",
-//         designation: "Teacher",
-//         class: "10-A",
-//       },
-//       {
-//         id: "TK20244",
-//         name: "Nitesh Kumar",
-//         designation: "Senior Teacher",
-//         class: "12-B",
-//       },
-//       {
-//         id: "TK202437",
-//         name: "Emily Jones",
-//         designation: "Teacher",
-//         class: "8-C",
-//       },
-//       {
-//         id: "TK202411",
-//         name: "Ankita Gaur",
-//         designation: "Senior Teacher",
-//         class: "11-D",
-//       },
-//       {
-//         id: "TK202408",
-//         name: "Deepak Kumar",
-//         designation: "Senior Teacher",
-//         class: "9-E",
-//       },
-//     ];
-  
-  
+  const router = useRouter();
 
-
-//   const data = [
-//     { label: 'Item 1', value: '1' },
-//     { label: 'Item 2', value: '2' },
-//     { label: 'Item 3', value: '3' },
-//     { label: 'Item 4', value: '4' },
-//     { label: 'Item 5', value: '5' },
-//     { label: 'Item 6', value: '6' },
-//     { label: 'Item 7', value: '7' },
-//     { label: 'Item 8', value: '8' },
-//   ];
-
-  // interface Values {
-  //   [key: string]: string | null;
-  // }
-
-  const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
-
-
-  const DropdownComponent = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedID, setSelectedID] = useState(null);
-    const [selectedName, setSelectedName] = useState(null);
-    const [filteredTeachers, setFilteredTeachers] = useState([]);
-    const [teachers, setTeachers] = useState([]);
-
-
-    const router = useRouter();
-
-
-    const fetchTeachers = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/teachers`);
-        const teachers = response.data; // Assuming the data returned is an array of teachers
-        const formatedData = teachers.map((teacher) => ({
-          id: teacher._id,
-          userID: teacher.userID || 'N/A',
-          designation: teacher.role || 'N/A',
-          name: `${teacher.name} ${teacher.surname}`
-        }))
-        setTeachers(formatedData)
-        setFilteredTeachers(formatedData)
-        console.log(teachers); // You can now use the teachers data as needed
-      } catch (error) {
-        console.error('Error fetching teachers:', error);
-      }
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/teachers`);
+      const teachers = response.data;
+      const formattedData = teachers.map((teacher) => ({
+        id: teacher._id,
+        userID: teacher.userID || 'N/A',
+        designation: teacher.role || 'N/A',
+        name: `${teacher.name} ${teacher.surname}`,
+        gender: teacher.gender || 'N/A'
+      }));
+      setTeachers(formattedData);
+      setFilteredTeachers(formattedData);
+    } catch (error) {
+      console.error('Error fetching teachers:', error);
     }
+  };
 
+  useEffect(() => {
+    fetchTeachers();
+  }, []);
 
-
-    useEffect(() => {
-      fetchTeachers();
-    },[])
-
-   // Search Button Logic
   const handleSearch = () => {
-    const filtered = filteredTeachers.filter((teacher) => {
+    const filtered = teachers.filter((teacher) => {
       return (
         (!selectedID || teacher.userID === selectedID) &&
-        (!selectedName || teacher.name === selectedName) 
-        // &&
-        // (!selectedClass || student.class === selectedClass)
+        (!selectedName || teacher.name === selectedName)
       );
     });
     setFilteredTeachers(filtered);
   };
 
-  // Reset Button Logic
   const handleReset = () => {
     setSelectedID(null);
     setSelectedName(null);
-    // setSelectedClass(null);
     setFilteredTeachers(teachers);
   };
 
-   
+  const handleFocus = (id: string) => {
+    setIsFocus(id);
+  };
 
-    const handleFocus = (id:string) => {
-      setIsFocus(id)
+  const handleBlur = () => {
+    setIsFocus(null);
+  };
+
+  const handleSelectStaff = (id) => {
+    router.push(`/home/Teachers/allStaff/staffDetails?staffId=${id}`);
+  };
+
+  // 📝 Generate PDF Logic with Print
+  const generatePDF = async () => {
+    try {
+      const teacherDetails = filteredTeachers
+        .map(
+          (teacher) => `
+          <tr>
+            <td>${teacher.userID}</td>
+            <td>${teacher.name}</td>
+            <td>${teacher.gender}</td>
+            <td>${teacher.designation}</td>
+          </tr>`
+        )
+        .join('');
+
+      const htmlContent = `
+        <html>
+          <head>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              h1 { text-align: center; margin-bottom: 20px; }
+              table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+              th, td { border: 1px solid #ccc; text-align: left; padding: 8px; }
+              th { background-color: #58A8F9; color: white; }
+            </style>
+          </head>
+          <body>
+            <h1>Staff List</h1>
+            <table>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Position</th>
+              </tr>
+              ${teacherDetails}
+            </table>
+          </body>
+        </html>
+      `;
+
+      // 🖨️ Print the PDF directly
+      await Print.printAsync({
+        html: htmlContent,
+      });
+    } catch (error) {
+      console.error('Error generating or printing PDF:', error);
     }
+  };
 
-    const handleBlur = () => {
-      setIsFocus(null)
-    }
-
-    const handlePress = () => {
-      router.navigate('../staffDetails')
-    }
-   
-
-    return (
-        <>
+  return (
+    <>
       <View style={styles.container}>
-        {/* {renderLabel(value)} */}
         <Dropdown
-          style={[styles.dropdown,]}
+          style={[styles.dropdown]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -152,12 +136,10 @@ import axios from 'axios';
           onBlur={handleBlur}
           value={selectedID}
           onChange={(item) => setSelectedID(item.value)}
-       
         />
-      
-      
+
         <Dropdown
-          style={[styles.dropdown,]}
+          style={[styles.dropdown]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -172,51 +154,55 @@ import axios from 'axios';
           onBlur={handleBlur}
           value={selectedName}
           onChange={(item) => setSelectedName(item.value)}
-       
         />
 
-      
-          <View style ={styles.footer}>
+        <View style={styles.footer}>
+
+        <TouchableOpacity style={{position:'absolute',left:30,top:5}} onPress={generatePDF}>
+            <Text style={{ color: '#58a8f9', fontSize: 15 }}>Print PDF</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity style={styles.reset} onPress={handleReset}>
-            <Text  style={{color: '#58A8F9', }}>Reset</Text>
+            <Text style={{ color: '#58A8F9' }}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.search} onPress={handleSearch}>
-          <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
+          <TouchableOpacity style={styles.search} onPress={handleSearch}>
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 15 }}>Search</Text>
           </TouchableOpacity>
-          </View>
+
           
+        </View>
       </View>
 
+      <ScrollView style={{ backgroundColor: 'white', flex: 1 }} contentContainerStyle={{ paddingBottom: 30 }}>
+        {filteredTeachers.map((teacher, index) => (
+          <TouchableOpacity
+            style={styles.list}
+            key={index}
+            onPress={() => handleSelectStaff(teacher.userID)}
+          >
+            <Image style={styles.stImg} source={require('../../../../assets/images/images/avatar.png')} />
+            <View style={styles.listContent}>
+              <Text style={{ color: '#58A8F9', fontSize: 20 }}>{teacher.name}</Text>
+              <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.userID}</Text>
+              <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.designation}</Text>
+            </View>
+            <AntDesign name="arrowright" size={24} color="#58A8F9" style={{ position: 'relative', right: 30 }} />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </>
+  );
+};
 
-{/* List of students section */}
-<ScrollView style={{backgroundColor:'white',flex:1}}>
-{filteredTeachers.map((teacher, index) => {
-  return (
-    <TouchableOpacity style={styles.list} key={index} onPress={handlePress}>
-      <Image style={styles.stImg} source={require('../../../../assets/images/images/avatar.png')}/>
-      <View style={styles.listContent}>
-      <Text style={{color: '#58A8F9', fontSize:20}}>{teacher.name}</Text>
-      <Text style={{color: 'grey', fontSize:12, fontWeight:'condensedBold'}}>{teacher.userID}</Text>
-      <Text style={{color: 'grey', fontSize:12,fontWeight:'condensedBold'}}>{teacher.designation}</Text>
-      </View>
-      <AntDesign name="arrowright" size={24} color="#58A8F9" style={{position:'relative', right:30}} />
-    </TouchableOpacity>
-  )
-})}
-</ScrollView>
+export default DropdownComponent;
 
-
-      </>
-    );
-  };
-
-  export default DropdownComponent;
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: 'white',
       padding: 16,
-      paddingVertical:50
+      paddingVertical:50,
+      paddingTop:60
       
     },
     dropdown: {
@@ -226,7 +212,7 @@ import axios from 'axios';
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -249,7 +235,8 @@ import axios from 'axios';
     },
     selectedTextStyle: {
       fontSize: 16,
-      paddingHorizontal:15
+      paddingHorizontal:15,
+      fontWeight:400
     },
     iconStyle: {
       width: 20,
@@ -294,8 +281,8 @@ import axios from 'axios';
       alignItems:'center',
       alignSelf:'center',
       marginBottom: 10,
-      marginTop: 10,
-      elevation:3
+      marginTop: 6,
+      elevation:8
     },
     stImg:{
       width:60,

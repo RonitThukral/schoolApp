@@ -328,6 +328,8 @@ const Index = () => {
     {(isOpen || edit )&& <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{edit ? 'Edit Prefect' : 'Add Prefect'}</Text>
 
+
+
         <TextInput 
   style={styles.input} 
   placeholder={"Add Name"} 
@@ -422,14 +424,15 @@ container1: {
   paddingVertical: 55,
   position: "relative",
   top: 50,
-  opacity:0.4
+  opacity:0.3
 },
 scrollContainer : {
   maxHeight:610 ,
   minHeight:610, 
   marginVertical:50,
   position:'relative',
-  backgroundColor:'white' 
+  backgroundColor:'white' ,
+
 },
 scrollContainer1 : {
   maxHeight:610 ,
@@ -437,14 +440,14 @@ scrollContainer1 : {
   marginVertical:50,
   position:'relative',
   backgroundColor:'lightblue',
-  opacity:0.3 
+  opacity:0.3
 },
 dropdown: {
   height: 50,
   width: "90%",
   borderRadius: 8,
   paddingHorizontal: 8,
-  backgroundColor: "#EEF7FF",
+  backgroundColor: "#daedff",
   marginBottom: 15,
   alignSelf: "center",
 },
@@ -542,6 +545,7 @@ input: {
   borderRadius: 10,
   alignSelf: 'center',
   paddingHorizontal: 25,
+  fontSize:15
 },
 // inputDesc:{
 //   width: '80%',

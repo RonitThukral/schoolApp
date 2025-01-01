@@ -1,203 +1,115 @@
-import React, { useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-import DateTimePicker from 'react-native-ui-datepicker';
-import dayjs from 'dayjs';
 
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import axios from 'axios';
 
-  
-const feeData = [
-  {
-    classId: "1A",
-    fees: [
-      {
-        title: "With Transport",
-        totalFee: "₹ 700",
-        details: { Tuition: "₹ 500", Transport: "₹ 0", Maintenance: "₹ 100", Exam: "₹ 100" }
-      },
-      {
-        title: "Without Transport",
-        totalFee: "₹ 1700",
-        details: { Tuition: "₹ 500", Transport: "₹ 1000", Maintenance: "₹ 100", Exam: "₹ 100" }
-      }
-    ]
-  },
-  {
-    classId: "2B",
-    fees: [
-      {
-        title: "With Transport",
-        totalFee: "₹ 800",
-        details: { Tuition: "₹ 600", Transport: "₹ 50", Maintenance: "₹ 100", Exam: "₹ 50" }
-      },
-      {
-        title: "Without Transport",
-        totalFee: "₹ 1200",
-        details: { Tuition: "₹ 800", Transport: "₹ 0", Maintenance: "₹ 200", Exam: "₹ 200" }
-      }
-    ]
-  },
-  {
-    classId: "3C",
-    fees: [
-      {
-        title: "With Transport",
-        totalFee: "₹ 1000",
-        details: { Tuition: "₹ 800", Transport: "₹ 150", Maintenance: "₹ 30", Exam: "₹ 20" }
-      },
-      {
-        title: "Without Transport",
-        totalFee: "₹ 1300",
-        details: { Tuition: "₹ 1000", Transport: "₹ 0", Maintenance: "₹ 100", Exam: "₹ 200" }
-      }
-    ]
-  },
-  {
-    classId: "4D",
-    fees: [
-      {
-        title: "With Transport",
-        totalFee: "₹ 1500",
-        details: { Tuition: "₹ 1200", Transport: "₹ 200", Maintenance: "₹ 50", Exam: "₹ 50" }
-      },
-      {
-        title: "Without Transport",
-        totalFee: "₹ 1800",
-        details: { Tuition: "₹ 1500", Transport: "₹ 0", Maintenance: "₹ 200", Exam: "₹ 100" }
-      }
-    ]
-  }
-];
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
+const DropdownComponent = () => {
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [fees, setFees] = useState([]);
+  // const [filteredFees, setFilteredFees] = useState([]);
+  const [showFees, setShowFees] = useState(false);
 
+  const fetchFees = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/fees`);
+      const fees = response.data.map((fee) => ({
+        id: fee._id,
+        class: fee.code || 'N/A',
+        fees: [
+          {
+            title: 'With Transport',
+            details: {
+              Tuition: fee?.border?.tution || 0,
+              Transport: fee?.border?.facility || 0,
+              Maintenance: fee?.border?.maintenance || 0,
+              Exam: fee?.border?.exam || 0,
+            },
+          },
+          {
+            title: 'Without Transport',
+            details: {
+              Tuition: fee?.day?.tution || 0,
+              Transport: fee?.day?.facility || 0,
+              Maintenance: fee?.day?.maintenance || 0,
+              Exam: fee?.day?.exam || 0,
+          },
+        }
+        ],
+      }));
 
+      setFees(fees);
+      // setFilteredFees(fees);
+    } catch (error) {
+      console.error('Error fetching fees:', error);
+    }
+  };
 
-  const DropdownComponent = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    // const [selectedID, setSelectedID] = useState(null);
-    // const [selectedName, setSelectedName] = useState(null);
-    const [selectedClass, setSelectedClass] = useState(null);
-    // const [openCalendar, setOpenCalendar] = useState(false);
-    // const [date, setDate] = useState(dayjs());
-    const [filteredClasses, setFilteredClasses] = useState(feeData);
-    // const [expandedSectionId, setExpandedSectionId] = useState<string | null>(null);
-    // const [dob, setDob] = useState('');
+  useEffect(() => {
+    fetchFees();
+  }, []);
 
-
-    const router = useRouter();
-
-   // Search Button Logic
   const handleSearch = () => {
-    const filtered = feeData.filter((data) => {
-      return (
-       
-        (!selectedClass || data.classId === selectedClass)
-      );
-    });
-    setFilteredClasses(filtered);
+    if (selectedClass) {
+      setShowFees(true);
+    }
   };
 
-  // Reset Button Logic
   const handleReset = () => {
-    // setSelectedID(null);
-    // setSelectedName(null);
     setSelectedClass(null);
-    setFilteredClasses(feeData);
+    setShowFees(false)
+    // setFilteredFees(fees);
   };
 
-   
+  const handleFocus = (id: string) => setIsFocus(id);
 
-    const handleFocus = (id:string) => {
-      setIsFocus(id)
-    }
+  const handleBlur = () => setIsFocus(null);
 
-    const handleBlur = () => {
-      setIsFocus(null)
-    }
+  const InfoRow = ({ label, value }: any) => (
+    <View style={styles.infoRow}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={{ width: '70%', left: 20 }}>
+        <Text style={styles.value}>{value}</Text>
+      </View>
+    </View>
+  );
 
-    const handlePress = () => {
-      router.navigate('/')
-    }
-
-    // const toggleSection = (id: string) => {
-    //     setExpandedSectionId((prev) => (prev === id ? null : id));
-    //   };
-    //   const handleDate = (field:string) => {
-    //     setOpenCalendar(true);
-    //   };
-
-      // const onDateChange = (params: any) => {
-      //   const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
-      //     setDob(selectedDate);
-        
-      //   setOpenCalendar(false); // Close the calendar
-      // };
-
-
-
-      const InfoRow = ({ label, value}:any) => (
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>{label}</Text>
-          <View style={{width:'70%', left:20 }}>
-    
-          <Text style={styles.value}>{value}</Text>
-          </View>
+  const Section = ({ id, title, children }: any): any => (
+    <View style={styles.section}>
+      <TouchableOpacity style={styles.sectionHeader} activeOpacity={0.7}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <Text style={styles.sectionTitle}>{title}</Text>
         </View>
-      );
-    
-      const Section = ({ id,title,subTitle,subTitle2, children }:any):any => {
-          // const isExpanded = expandedSectionId === id
-        return(
-        <View style={styles.section}>
-          <TouchableOpacity 
-            style={styles.sectionHeader} 
-            activeOpacity={0.7}
-          >
-           
-            <View style={{flex:1, flexDirection:'column'}}>
-
-            <Text style={styles.sectionTitle}>{title}</Text>
-            </View>
-            {/* <Ionicons 
-              name={isExpanded ? "chevron-up" : "chevron-down"} 
-              size={24} 
-              color="#58A8F9"
-            /> */}
+      </TouchableOpacity>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={styles.sectionContent}>{children}</View>
+        <View style={styles.listBtns}>
+          <TouchableOpacity style={{ width: 30, height: 30, justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+              style={{ width: 20, height: 20, position: 'relative', left: 5, marginBottom: 30 }}
+              source={require('../../../../assets/images/images/edit.png')}
+            />
           </TouchableOpacity>
-         
-            <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
-            <View style={styles.sectionContent}>
-              {children}
-            </View>
-            <View style={styles.listBtns}>
-                <TouchableOpacity style={{ width:30,height:30,justifyContent:'center',alignItems:'center'}} >
-                <Image style={{width:20,height:20,position:'relative',left:5,marginBottom:30}} source={require('../../../../assets/images/images/edit.png')}/>
-
-                </TouchableOpacity>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
-                <Image  source={require('../../../../assets/images/images/delete.png')}/>
-
-                </TouchableOpacity>
-            </View>
-
-            </View>
-          
+          <TouchableOpacity style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}>
+            <Image source={require('../../../../assets/images/images/delete.png')} />
+          </TouchableOpacity>
         </View>
-      )};
-   
+      </View>
+    </View>
+  );
 
-    return (
-        <>
+  return (
+    <>
       <View style={styles.container}>
-
         <Dropdown
-          style={[styles.dropdown,]}
+          style={[styles.dropdown]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={feeData.map((data) => ({ label: data.classId, value: data.classId }))}
+          data={fees.map((data) => ({ label: data.class, value: data.class }))}
           search
           maxHeight={300}
           labelField="label"
@@ -208,47 +120,39 @@ const feeData = [
           onBlur={handleBlur}
           value={selectedClass}
           onChange={(item) => setSelectedClass(item.value)}
-       
         />
-      
-      
-       
-      
-      
 
-          <View style ={styles.footer}>
+        <View style={styles.footer}>
           <TouchableOpacity style={styles.reset} onPress={handleReset}>
-            <Text  style={{color: '#58A8F9', }}>Reset</Text>
+            <Text style={{ color: '#58A8F9' }}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.search} onPress={handleSearch}>
-          <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
+          <TouchableOpacity style={styles.search} onPress={handleSearch}>
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 15, paddingHorizontal: 10 }}>Search</Text>
           </TouchableOpacity>
-          </View>
-          
+        </View>
       </View>
 
+      <ScrollView style={{ marginTop: 0, marginBottom: 0, backgroundColor: '#FFFFFF' }}>
+      {showFees && fees
+          .filter((fee) => fee.class === selectedClass)
+          .map((fee) => (
+            fee.fees.map((item, index) => (
+              <Section key={`${fee.id}-${index}`} id={fee.id} title={item.title}>
+                <InfoRow label="Tuition Fees" value={item?.details?.Tuition} />
+                <InfoRow label="Transport Fees" value={item?.details?.Transport} />
+                <InfoRow label="Maintenance Fees" value={item?.details?.Maintenance} />
+                <InfoRow label="Exam Fees" value={item?.details?.Exam} />
+              </Section>
+            ))
+          ))}
+      </ScrollView>
+    </>
+  );
+};
 
-{/* List of students section */}
-<ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
-
-{feeData
-    .filter((item) => selectedClass === item.classId) // Filter the selected class
-    .map((filteredClass) =>
-      filteredClass.fees.map((fee, index) => (
-        <Section key={index} id={filteredClass.classId} title={fee.title}>
-          <InfoRow label="Tuition Fees" value={fee.details.Tuition} />
-          <InfoRow label="Transport Fees" value={fee.details.Transport} />
-          <InfoRow label="Maintenance Fees" value={fee.details.Maintenance} />
-          <InfoRow label="Exam Fees" value={fee.details.Exam} />
-        </Section>
-      ))
-    )}
-</ScrollView>
 
 
-      </>
-    );
-  };
+
 
   export default DropdownComponent;
 

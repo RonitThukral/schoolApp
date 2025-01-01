@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,9 +7,13 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
+import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams } from 'expo-router';
+import axios from 'axios';
+
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 const StaffDetails = () => {
   const [expandedSections, setExpandedSections] = useState({
@@ -19,194 +23,203 @@ const StaffDetails = () => {
     contactInfo: true,
   });
 
-  const teacherData = {
-    id: "PK302411",
-  title: "Ms.",
-  name: "Ankita",
-  surname: "Gaur",
-  gender: "Female",
-  email: "ankita@dreamseducation.org.in",
-  caste: "Hindu",
-  category: "General",
-  dob: "15-09-2024",
-    academic: {
-      classSection: "IV-C",
-      studentStatus: "Border",
-      campus: "Roses N Lilies",
-      busRoot: "Bus No. 3",
-      scholarship: "N/A",
-      feeCategory: "P-NUR"
-    },
-    employmentInformation: {
-    position: "Teacher",
-    qualification: "B.Ed Mathematics",
-    department: "Mathematics",
-    experience: "3 years",
-    campus: "N/A",
-    bank: "N/A",
-    accountNo: "N/A",
-    joiningDate: "02 September 2024"
-  },
-  contactInformation: {
-    telephoneNo: "9898988565",
-    mobileNo: "9565932685",
-    areaOfResidence: "N/A",
-    postalAddress: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  guardianInformation: {
-    name: "Manara",
-    relationship: "Mother",
-    occupation: "N/A",
-    contact: "4545586532",
-    email: "manara@gmail.com",
-    address: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
+  const [teacher, setTeacher] = useState(null);
+  const { staffId } = useLocalSearchParams();
+
+  const fetchTeacherDetails = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/teachers/${staffId}`);
+      if (response.status === 200) {
+        // console.log(response.data.teacher)
+        setTeacher(response.data.teacher);
+      } else {
+        console.error('Failed to fetch teacher details. Status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching teacher details:', error.message || error);
+    }
   };
 
-  const toggleSection = (section:any):any => {
-    setExpandedSections(prev => ({
+  useEffect(() => {
+    fetchTeacherDetails();
+  }, []);
+
+  const toggleSection = (section) => {
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
-  const InfoRow = ({ label, value ,isMultiLine = false}:any) => (
+  const InfoRow = ({ label, value, isMultiLine = false }) => (
     <View style={styles.infoRow}>
       <Text style={styles.label}>{label}</Text>
-      <View style={{width:'70%', left:10, top:0}}>
-
-      <Text style={[isMultiLine ? styles.multiLine : styles.value]}>{value}</Text>
+      <View style={{ width: '70%', left: 10, top: 0 }}>
+        <Text style={[isMultiLine ? styles.multiLine : styles.value]}>
+          {value || 'N/A'}
+        </Text>
       </View>
     </View>
   );
 
-  const Section = ({ title, isExpanded, onPress, children }:any):any => (
+  const Section = ({ title, isExpanded, onPress, children }) => (
     <View style={styles.section}>
-      <TouchableOpacity 
-        style={styles.sectionHeader} 
+      <TouchableOpacity
+        style={styles.sectionHeader}
         onPress={onPress}
         activeOpacity={0.7}
       >
         <Text style={styles.sectionTitle}>{title}</Text>
-        <Ionicons 
-          name={isExpanded ? "chevron-up" : "chevron-down"} 
-          size={24} 
+        <Ionicons
+          name={isExpanded ? 'chevron-up' : 'chevron-down'}
+          size={24}
           color="#58A8F9"
         />
       </TouchableOpacity>
-      {isExpanded && (
-        <View style={styles.sectionContent}>
-          {children}
-        </View>
-      )}
+      {isExpanded && <View style={styles.sectionContent}>{children}</View>}
     </View>
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.scrollViewContent}>
 
-        {/* Profile Section */}
-        <ImageBackground
-          source={require('../../../../../assets/images/images/union.png')}
-          style={styles.headerBackground}
-        >
-          <View style={styles.profileSection}>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={require('../../../../../assets/images/images/girl.png')} // Add your placeholder image
-                style={styles.avatar}
-              />
-              <View style={styles.verifiedBadge}>
-                <Image source={require('../../../../../assets/images/images/edit2.png')}/>
+        {teacher ? (
+          <>
+            <ImageBackground
+              source={require('../../../../../assets/images/images/union.png')}
+              style={styles.headerBackground}
+            >
+              <View style={styles.profileSection}>
+                <View style={styles.avatarContainer}>
+                  <Image
+                    source={require('../../../../../assets/images/images/girl.png')}
+                    style={styles.avatar}
+                  />
+                  <View style={styles.verifiedBadge}>
+                    <Image
+                      source={require('../../../../../assets/images/images/edit2.png')}
+                    />
+                  </View>
+                </View>
+                <View style={styles.profileInfo}>
+                  <Text style={styles.studentId}>{teacher?.userID || 'N/A'}</Text>
+                  <Text style={styles.studentName}>
+                    {`${teacher?.name || ''} ${teacher?.surname || ''}`}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.profileInfo}>
-              <Text style={styles.studentId}>{teacherData.id}</Text>
-              <Text style={styles.studentName}>
-                {`${teacherData.name} ${teacherData.surname}`}
-              </Text>
-            </View>
-          </View>
-        </ImageBackground>
-        
-        <View style={[expandedSections.contactInfo ? styles.rule1 : styles.rule2]}></View>
+            </ImageBackground>
+<ScrollView contentContainerStyle={{paddingBottom:40}}>
+            <View
+              style={[
+                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+              ]}
+            ></View>
 
+            <Section
+              title="Teacher Information"
+              isExpanded={expandedSections.studentInfo}
+              onPress={() => toggleSection('studentInfo')}
+            >
+              <InfoRow label="Title" value={teacher?.title} />
+              <InfoRow label="Name" value={teacher?.name} />
+              <InfoRow label="Surname" value={teacher?.surname} />
+              <InfoRow label="Gender" value={teacher?.gender} />
+              <InfoRow label="Email" value={teacher?.email} />
+              <InfoRow label="Caste" value={teacher?.caste} />
+              <InfoRow label="Category" value={teacher?.category} />
+              <InfoRow label="DOB" value={teacher?.dateOfBirth} />
+            </Section>
 
-        {/* Student Information Section */}
-        <Section
-          title="Teacher Information"
-          isExpanded={expandedSections.studentInfo}
-          onPress={() => toggleSection('studentInfo')}
-        >
-          <InfoRow label="Title" value={teacherData.title} />
-          <InfoRow label="Name" value={teacherData.name} />
-          <InfoRow label="Surname" value={teacherData.surname} />
-          <InfoRow label="Gender" value={teacherData.gender} />
-          <InfoRow label="Email" value={teacherData.email} />
-          <InfoRow label="Caste" value={teacherData.caste} />
-          <InfoRow label="Category" value={teacherData.category} />
-          <InfoRow label="DOB" value={teacherData.dob} />
-        </Section>
+            <View
+              style={[
+                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+              ]}
+            ></View>
 
-        <View style={[expandedSections.contactInfo ? styles.rule1 : styles.rule2]}></View>
+            <Section
+              title="Employment Information"
+              isExpanded={expandedSections.academicInfo}
+              onPress={() => toggleSection('academicInfo')}
+            >
+              <InfoRow label="Position" value={teacher.role} />
+              <InfoRow
+                label="Qualification"
+                value={teacher.qualifications || 'N/A'}
+              />
+              <InfoRow label="Department" value={teacher.department || 'N/A'} />
+              <InfoRow label="Campus" value={teacher.campusID || 'N/A'} />
+              <InfoRow label="Bank" value={teacher.bank || 'N/A'} />
+              <InfoRow
+                label="Account No."
+                value={teacher.accountNumber || 'N/A'}
+              />
+              <InfoRow
+                label="Joining Date"
+                value={teacher.employmentDate || 'N/A'}
+              />
+            </Section>
 
+            <View
+              style={[
+                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+              ]}
+            ></View>
 
-        {/* Academic Information Section */}
-        <Section
-          title="Employment Information"
-          isExpanded={expandedSections.academicInfo}
-          onPress={() => toggleSection('academicInfo')}
-        >
-          <InfoRow label="Postion" value={teacherData.employmentInformation.position} />
-          <InfoRow label="Qualification" value={teacherData.employmentInformation.qualification} />
-          <InfoRow label="Department" value={teacherData.employmentInformation.department} />
-          <InfoRow label="Campus" value={teacherData.employmentInformation.campus} />
-          <InfoRow label="Bank" value={teacherData.employmentInformation.bank} />
-          <InfoRow label="Account No." value={teacherData.employmentInformation.accountNo} />
-          <InfoRow label="Joining Date" value={teacherData.employmentInformation.joiningDate} />
-        </Section>
+            <Section
+              title="Contact Information"
+              isExpanded={expandedSections.contactInfo}
+              onPress={() => toggleSection('contactInfo')}
+            >
+              <InfoRow label="Telephone No." value={teacher.telephone} />
+              <InfoRow label="Mobile No." value={teacher.mobilenumber} />
+              <InfoRow label="Residence" value={teacher.physicalAddress} />
+              <InfoRow
+                label="Postal Address"
+                value={teacher.postalAddress}
+                isMultiLine
+              />
+            </Section>
 
+            <View
+              style={[
+                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+              ]}
+            ></View>
 
-        <View style={[expandedSections.contactInfo ? styles.rule1 : styles.rule2]}></View>
-
-
-{/* Contact Information Section */}
-<Section
-          title="Contact Information"
-          isExpanded={expandedSections.contactInfo}
-          onPress={() => toggleSection('contactInfo')}
-        >
-          {/* Add contact information content here */}
-
-          <InfoRow label="Telephone No." value={teacherData.contactInformation.telephoneNo} />
-          <InfoRow label="Mobile No." value={teacherData.contactInformation.mobileNo} />
-          <InfoRow label="Residance" value={teacherData.contactInformation.areaOfResidence} />
-          <InfoRow label="Postal Address" value={teacherData.contactInformation.postalAddress} isMultiLine={true}/>
-
-        </Section>
-
-        <View style={[expandedSections.contactInfo ? styles.rule1 : styles.rule2]}></View>
-
-
-        {/* Guardian Information Section */}
-        <Section
-          title="Guardian Information"
-          isExpanded={expandedSections.guardianInfo}
-          onPress={() => toggleSection('guardianInfo')}
-        >
-          {/* Add guardian information content here */}
-          <InfoRow label="Name" value={teacherData.guardianInformation.name} />
-          <InfoRow label="Relationship" value={teacherData.guardianInformation.relationship} />
-          <InfoRow label="Occupation" value={teacherData.guardianInformation.occupation} />
-          <InfoRow label="Contact" value={teacherData.guardianInformation.contact} />
-          <InfoRow label="Email" value={teacherData.guardianInformation.email} />
-          <InfoRow label="Address" value={teacherData.guardianInformation.address} isMultiLine = {true} />
-        </Section>
-
-        
-
-      </ScrollView>
+            <Section
+              title="Guardian Information"
+              isExpanded={expandedSections.guardianInfo}
+              onPress={() => toggleSection('guardianInfo')}
+            >
+              <InfoRow
+                label="Name"
+                value={`${teacher?.nextofKin?.name || ''} ${
+                  teacher?.nextofKin?.lastname || ''
+                }`}
+              />
+              <InfoRow
+                label="Relationship"
+                value={teacher?.nextofKin?.relationship}
+              />
+              <InfoRow label="Occupation" value={teacher?.nextofKin?.occupation} />
+              <InfoRow label="Contact" value={teacher?.nextofKin?.contact} />
+              <InfoRow label="Email" value={teacher?.nextofKin?.email} />
+              <InfoRow
+                label="Address"
+                value={teacher?.nextofKin?.address}
+                isMultiLine
+              />
+            </Section>
+            </ScrollView>
+          </>
+        ) : (
+          <Text style={{ textAlign: 'center', marginTop: 20 }}>
+            Loading teacher details...
+          </Text>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
@@ -218,7 +231,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   scrollViewContent: {
-    paddingBottom: 20, // Add space at the bottom to prevent the last item from being cut off
+    flex:1,
+    // paddingBottom: 20, // Add space at the bottom to prevent the last item from being cut off
   },
   headerBackground: {
     width: '100%',

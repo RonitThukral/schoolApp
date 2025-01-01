@@ -87,9 +87,12 @@ export default function Staff() {
 
       {/* Metrics Section */}
       <View style={styles.metricsSection}>
+      <Text style={{position:'relative',left:10,fontSize:16,bottom:10}}>
+        Birthdays
+        </Text>        
         <View style={styles.metricsRow}>
           <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Divisions</Text>
+            <Text style={styles.metricLabel}>Yesterday</Text>
             <View style={styles.metricsContent}>
 
               <Ionicons name="school" size={24} color="#3b82f6" />
@@ -97,7 +100,7 @@ export default function Staff() {
             </View>
           </View>
           <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Departments</Text>
+            <Text style={styles.metricLabel}>Today</Text>
             <View style={styles.metricsContent}>
 
               <Ionicons name="school" size={24} color="#3b82f6" />
@@ -105,7 +108,7 @@ export default function Staff() {
             </View>
           </View>
           <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Sections</Text>
+            <Text style={styles.metricLabel}>Tomorrow</Text>
             <View style={styles.metricsContent}>
 
               <Ionicons name="school" size={24} color="#3b82f6" />
@@ -113,34 +116,8 @@ export default function Staff() {
             </View>
           </View>
         </View>
-        <View style={styles.metricsRow}>
-          <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Courses</Text>
-            <View style={styles.metricsContent}>
 
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
-            </View>
-          </View>
-          <View style={styles.metricBox}>
-            <Text style={styles.metricLabel}>Classes</Text>
-            <View style={styles.metricsContent}>
-
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
-            </View>
-          </View>
-          <View style={styles.metricBox}>
-
-            <Text style={styles.metricLabel}>Prefects</Text>
-
-            <View style={styles.metricsContent}>
-
-              <Ionicons name="school" size={24} color="#3b82f6" />
-              <Text style={styles.metricNumber}>364</Text>
-            </View>
-          </View>
-        </View>
+        
       </View>
     </ScrollView>
   );
@@ -226,7 +203,7 @@ const styles = StyleSheet.create({
   metricNumber: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#3b82f6",
+    color: "#4A90E2",
     marginHorizontal: 10
   },
   metricLabel: {
@@ -257,7 +234,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
     marginBottom: 35,
     textAlign: "center",
     marginTop:-10

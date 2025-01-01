@@ -152,7 +152,7 @@ const Inventory = () => {
 
   return (
   <>
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:30}}>
 {filteredItems.map((data,index) => {
   return(
 <View style={styles.list} key={index}>

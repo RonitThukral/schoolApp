@@ -10,10 +10,10 @@ const screenWidth = Dimensions.get("window").width;
 const data = [
     [
       { title: "Message Students", icon: require("../../assets/images/images/boys.png"),linking:'./Message/messageStudent' },
-      { title: "Message Staff", icon: require("../../assets/images/images/staff.png"), linking:'/Message/messageStaff' },
-      { title: "Message Guardian", icon: require("../../assets/images/images/guardian.png"), linking:'/Message/messageGuardian' },
-      { title: "Bulk Message", icon: require("../../assets/images/images/bulk.png"), linking:'/Message/messageBulk' },
-      { title: "Bill Reminder", icon: require("../../assets/images/images/bill.png"), linking:'/smsReminder' },
+      { title: "Message Staff", icon: require("../../assets/images/images/staff.png"), linking:'./Message/messageStaff' },
+      { title: "Message Guardian", icon: require("../../assets/images/images/guardian.png"), linking:'./Message/messageGuardian' },
+      { title: "Bulk Message", icon: require("../../assets/images/images/bulk.png"), linking:'./Message/messageBulk' },
+      { title: "Bill Reminder", icon: require("../../assets/images/images/bill.png"), linking:'./smsReminder' },
       
     ],
  

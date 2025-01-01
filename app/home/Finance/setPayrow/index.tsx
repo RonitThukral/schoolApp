@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
   import Entypo from '@expo/vector-icons/Entypo';
-  import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-import DateTimePicker from 'react-native-ui-datepicker';
-import dayjs from 'dayjs';
+  import axios from 'axios';
 
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
 
   
 const feeData = [
@@ -34,57 +32,26 @@ const feeData = [
 
 
   const DropdownComponent = () => {
-    // const [isFocus, setIsFocus] = useState<string | null>(null);
-    // const [selectedClass, setSelectedClass] = useState(null);    
-    // const [filteredClasses, setFilteredClasses] = useState(feeData);
+  const [feeData, setFeeData] = useState([])
    
 
-    const router = useRouter();
+  const fetchPayrow = async() => {
+    try {
+      const response = await axios.get(`${baseUrl}/payrow`)
+      setFeeData(response.data)
+    } catch (error) {
+      
+      console.error(error.message);
 
-   // Search Button Logic
-  // const handleSearch = () => {
-  //   const filtered = feeData.filter((data) => {
-  //     return (
-       
-  //       (!selectedClass || data.classId === selectedClass)
-  //     );
-  //   });
-  //   setFilteredClasses(filtered);
-  // };
-
-  // Reset Button Logic
-  const handleReset = () => {
-    // setSelectedID(null);
-    // setSelectedName(null);
-  };
-
-   
-
-    // const handleFocus = (id:string) => {
-    //   setIsFocus(id)
-    // }
-
-    // const handleBlur = () => {
-    //   setIsFocus(null)
-    // }
-
-    const handlePress = () => {
-      router.navigate('/')
     }
+  }
 
-    // const toggleSection = (id: string) => {
-    //     setExpandedSectionId((prev) => (prev === id ? null : id));
-    //   };
-    //   const handleDate = (field:string) => {
-    //     setOpenCalendar(true);
-    //   };
 
-      // const onDateChange = (params: any) => {
-      //   const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
-      //     setDob(selectedDate);
-        
-      //   setOpenCalendar(false); // Close the calendar
-      // };
+  useEffect(() => {
+    fetchPayrow();
+  },[])
+
+
 
 
 
@@ -151,10 +118,10 @@ const feeData = [
 <ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
 
 {feeData.map((data, index) => (
-        <Section key={index} id={data.role} title={data.role} title2={data.total}>
-          <InfoRow label="Salary" value={data.details.Salary} />
-          <InfoRow label="Allowance" value={data.details.Allowance} />
-          <InfoRow label="Bonus" value={data.details.Bonus} />
+        <Section key={index} id={data._id} title={data.name} title2={`₹ ${data.salary}`}>
+          <InfoRow label="Salary" value={data.salary} />
+          <InfoRow label="Allowance" value={data.allowance} />
+          <InfoRow label="Bonus" value={data.bonus} />
         </Section>
       ))
     }
@@ -302,7 +269,7 @@ const feeData = [
       },
       sectionTitle2: {
         fontSize: 15,
-        fontWeight: '400',
+        fontWeight: '500',
         color:'black',
         position:'absolute',
         right:15,
@@ -342,31 +309,7 @@ const feeData = [
         
       },
      
-      calendarContainer: {
-        flex: 1,
-        backgroundColor: '#F5FCFF',
-        // backgroundColor: 'blue',
-        width: '80%',
-        height: 350,
-        alignSelf: 'center',
-        borderRadius: 15,
-        zIndex: 1000,
-        position:'absolute',
-        top:"90%",
-        paddingVertical:15
-      },
-      
-      dateInput: {
-        backgroundColor: '#EEF7FF',
-        // backgroundColor: 'green',
-        width: '90%',
-        height: 50,
-        alignSelf: 'center',
-        borderRadius: 10,
-        paddingHorizontal: 25,
-        position:'relative',
-        top:25
-      },
+  
     
 
   });
