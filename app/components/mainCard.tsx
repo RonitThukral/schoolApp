@@ -14,23 +14,22 @@ const data = [
       { title: "Classes", icon: require("../../assets/images/images/classdesk.png"), linking:'./home/allClasses' },
       { title: "Finance", icon: require("../../assets/images/images/finan.png"),linking:'/home/Finance' },
       { title: "Academics", icon: require("../../assets/images/images/acad.png"), linking:'/home/Academics' },
-      { title: "Payrow", icon: require("../../assets/images/images/invest.png"), linking:'/home' },
-      { title: "Attendance", icon: require("../../assets/images/images/atten.png"), linking:'./home/Attendance' },
-      { title: "Inventory", icon: require("../../assets/images/images/box1.png"),linking:'/home/Inventory' },
-      
-      { title: "Messages", icon: require("../../assets/images/images/cours.png") , linking:'./home/Message' },
+      { title: "Payrow", icon: require("../../assets/images/images/invest.png"), linking:'./home/Finance/setPayrow' },
+      { title: "Time Table", icon: require("../../assets/images/images/calendar.png"), linking:'./home/Timetable' },    
+      { title: "SMS", icon: require("../../assets/images/images/jj.png"), linking:'/home/smsReminder' },
+      { title: "Reports", icon: require("../../assets/images/images/dashboards.png"),linking:'./home/Reports' },
       
     ],
     [
-      { title: "Reports", icon: require("../../assets/images/images/rpo.png"),linking:'./home/Reports' },
-      { title: "Courses", icon: require("../../assets/images/images/coursess.png"), linking:'./home/allCourses' },
-      { title: "SMS", icon: require("../../assets/images/images/jj.png"), linking:'/home/smsReminder' },
-      { title: "Liberary", icon: require("../../assets/images/images/libe.png") , linking:'/home' },
-      { title: "Time Table", icon: require("../../assets/images/images/calendar.png"), linking:'/home' },
-      { title: "Certificates", icon: require("../../assets/images/images/guarantee.png") , linking:'/home' },
+      { title: "Messages", icon: require("../../assets/images/images/cours.png") , linking:'./home/Message' },
+      { title: "Inventory", icon: require("../../assets/images/images/invo.png"),linking:'/home/Inventory' },
+      { title: "Liberary", icon: require("../../assets/images/images/libe.png") , linking:'./home/Liberary' },
+      { title: "Attendance", icon: require("../../assets/images/images/atten.png"), linking:'./home/Attendance' },
       { title: "Notices", icon: require("../../assets/images/images/sent.png") , linking:'./home/Notices' },
+      { title: "Courses", icon: require("../../assets/images/images/coursess.png"), linking:'./home/allCourses' },
+      { title: "Certificates", icon: require("../../assets/images/images/guarantee.png") , linking:'./home/Certificates' },
       { title: "Buses", icon: require("../../assets/images/images/vanes.png"),linking:'./home/students/Transport' },
-    { title: "Settings", icon: require("../../assets/images/images/setting.png") , linking:'./home' },
+    { title: "Settings", icon: require("../../assets/images/images/setting.png") , linking:'./home/Settings' },
   ],
 ];
 
@@ -51,7 +50,26 @@ const Slider = () => {
       <TouchableOpacity style={styles.card} onPress={() => {handlePress(item.linking)}}>
         <View style={{width:'80%', height:'85%'}}>
 
-        <Image source={item.icon} style={[index === 1 ? styles.icon1 : styles.icon,index === 2 ? styles.icon3 : styles.icon , index === 3 ? styles.icon4 : styles.icon]} />
+        <Image
+  source={item.icon}
+  style={[
+    styles.icon,
+    item.title === 'Teachers' && styles.icon1 ,
+    item.title === 'Classes' && styles.icon3 ,
+    item.title === 'Finance' && styles.icon4,
+    item.title === 'SMS' && styles.icon7 ,
+    item.title === 'Time Table' && styles.icon6 ,
+    item.title === 'Liberary' && styles.icon11 ,
+    item.title === 'Buses' && styles.icon16 ,
+    item.title === 'Settings' && styles.icon17, 
+    item.title === 'Messages' && styles.icon9 ,
+    item.title === 'Notices' && styles.icon13 ,
+    item.title === 'Courses' && styles.icon14,
+    
+    // styles.icon,
+  ]}
+/>
+
         </View>
 
         <View style={{width:'110%', }}>
@@ -126,7 +144,62 @@ const Slider = () => {
       height: 58,
       marginBottom: 8,
       alignSelf:'center'
-
+    },
+    icon7: {
+      width:50 ,
+      height: 60,
+      marginBottom: 15,
+      alignSelf:'center',
+      marginRight:10
+    },
+    icon6: {
+      width:55 ,
+      height: 55,
+      marginTop: 5,
+      alignSelf:'center',
+      // marginRight:10
+    },
+    icon9: {
+      width:40 ,
+      height: 55,
+      marginTop: 5,
+      alignSelf:'center',
+      // marginRight:10
+    },
+    icon13: {
+      width:60 ,
+      height: 60,
+      marginTop: 5,
+      alignSelf:'center',
+      marginRight:15
+    },
+    icon16: {
+      width:55 ,
+      height: 55,
+      marginTop: 5,
+      alignSelf:'center',
+      // marginRight:10
+    },
+    icon17: {
+      width:55 ,
+      height: 55,
+      marginTop: 5,
+      alignSelf:'center',
+      // marginRight:10
+    },
+    icon14: {
+      width:65 ,
+      height: 60,
+      marginTop: 5,
+      alignSelf:'center',
+      // marginRight:10
+    },
+    icon11: {
+      width:50 ,
+      height: 50,
+      marginTop: 5,
+      alignSelf:'center',
+      // marginRight:10
     },
     icon1: {
       width:65 ,

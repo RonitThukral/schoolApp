@@ -10,10 +10,10 @@ const screenWidth = Dimensions.get("window").width;
 const data = [
     [
       { title: "All Staff", icon: require("../../assets/images/images/staffs.png"),linking:'./Teachers/allStaff' },
-      { title: "Add Staff", icon: require("../../assets/images/images/upgrade.png"), linking:'/home' },
-      { title: "Deductions", icon: require("../../assets/images/images/deduction1.png"), linking:'/home' },
-      { title: "Payment", icon: require("../../assets/images/images/pay.png"), linking:'/home' },
-      { title: "Payroll", icon: require("../../assets/images/images/payrol.png"), linking:'/home' },
+      { title: "Add Staff", icon: require("../../assets/images/images/upgrade.png"), linking:'./Teachers/addStaff/personalInfo' },
+      { title: "Deductions", icon: require("../../assets/images/images/deduction1.png"), linking:'./Teachers/Deductions' },
+      { title: "Payment", icon: require("../../assets/images/images/pay.png"), linking:'./Teachers/Payment' },
+      { title: "Payroll", icon: require("../../assets/images/images/payrol.png"), linking:'./Teachers/Payrow' },
       
     ],
  

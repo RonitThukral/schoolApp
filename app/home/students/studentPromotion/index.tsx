@@ -130,7 +130,7 @@ const index = () => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Search by Class'}
+          placeholder={'Select'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
@@ -148,7 +148,7 @@ const index = () => {
           maxHeight={300}
           labelField="name"
           valueField="name"
-          placeholder={'Select Student'}
+          placeholder={'Select'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('name')}
           onBlur={handleBlur}
@@ -168,7 +168,7 @@ const index = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={'Search by Class'}
+        placeholder={'Select'}
         searchPlaceholder="Search..."
         onFocus={() => handleFocus('class')}
         onBlur={handleBlur}
@@ -203,7 +203,7 @@ const index = () => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Search by Class'}
+          placeholder={'Select'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
@@ -224,7 +224,7 @@ const index = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={'Search by Class'}
+        placeholder={'Select'}
         searchPlaceholder="Search..."
         onFocus={() => handleFocus('class')}
         onBlur={handleBlur}
@@ -259,7 +259,7 @@ const index = () => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Search by Class'}
+          placeholder={'Select'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
@@ -280,7 +280,7 @@ const index = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={'Search by Class'}
+        placeholder={'Select'}
         searchPlaceholder="Search..."
         onFocus={() => handleFocus('class')}
         onBlur={handleBlur}
@@ -315,7 +315,7 @@ const index = () => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Search by Class'}
+          placeholder={'Select'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
@@ -336,7 +336,7 @@ const index = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={'Search by Class'}
+        placeholder={'Select'}
         searchPlaceholder="Search..."
         onFocus={() => handleFocus('class')}
         onBlur={handleBlur}

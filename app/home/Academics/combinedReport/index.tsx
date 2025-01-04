@@ -1,57 +1,170 @@
-import { View, Text , StyleSheet,TextInput,TouchableOpacity} from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { useState } from 'react';
-import React from 'react'
+import axios from 'axios';
+import * as Print from 'expo-print';
+
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 
-const classOptions = [
-   
-    { "id": "1", "name": "Class 1" },
-    { "id": "2", "name": "Class 2" },
-    { "id": "3", "name": "Class 3" },
-    { "id": "4", "name": "Class 4" },
-    { "id": "5", "name": "Class 5" },
-    { "id": "6", "name": "Class 6" },
-    { "id": "7", "name": "Class 7" },
-    { "id": "8", "name": "Class 8" },
-    { "id": "9", "name": "Class 9" },
-    { "id": "10", "name": "Class 10" }
-  
-  ];
-  
 
-
-const academicYearOptions= [
-    { "id": "1", "name": "2022-2023" },
-    { "id": "2", "name": "2023-2024" },
-    { "id": "3", "name": "2024-2025" },
-    { "id": "4", "name": "2025-2026" },
-    { "id": "5", "name": "2026-2027" }
-  ];
-  
-  const termOptions= [
-    { "id": "1", "name": "Term 1" },
-    { "id": "2", "name": "Term 2" },
-    { "id": "3", "name": "Term 3" },
-    { "id": "4", "name": "Term 4" }
-  ]
+const term = [
+  {label: "1", value: '1'},
+  {label: "2", value: '2'},
+  {label: "3", value: '3'}
+];
 
 const index = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedClass, setSelectedClass] = useState(null);
-    const [selectedYear, setSelectedYear] = useState(null);
-    const [selectedTerm, setSelectedTerm] = useState(null);
+  const [data, setData] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [years, setYears] = useState([]);
+  const [isFocus, setIsFocus] = useState<string | null>(null);
 
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedTerm, setSelectedTerm] = useState(null);
 
-    
-    const handleFocus = (id:string) => {
-        setIsFocus(id)
-      }
-  
-      const handleBlur = () => {
-        setIsFocus(null)
-      }
+  const fetchInitialData = async () => {
+    try {
+      const classesResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/classes');
+      setClasses(classesResponse.data || []);
+      
+      const yearResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/yeargroup');
+      setYears(yearResponse.data || []);
+    } catch (err) {
+      console.error('Error fetching initial data:', err);
+    }
+  };
 
+  useEffect(() => {
+    fetchInitialData();
+  },[]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (selectedClass === "" || selectedTerm === "" || selectedYear === "") {
+      return;
+    }
+    axios.get(`${baseUrl}/sba/class/${selectedClass}/${selectedYear}/${selectedTerm}`).then((result) => {
+      setData(result.data.docs);
+    });
+  };
+
+  const generatePDF = async () => {
+    const htmlContent = `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+          }
+          h2 {
+            text-align: center;
+            color: #00796b;
+            margin-bottom: 20px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+          }
+          th {
+            background-color: #00796b;
+            color: white;
+          }
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+          tr:nth-child(odd) {
+            background-color: #ffffff;
+          }
+          .grade-A {
+            background-color: #4caf50;
+            color: white;
+          }
+          .grade-B {
+            background-color: #ffeb3b;
+            color: black;
+          }
+          .grade-C {
+            background-color: #ff9800;
+            color: white;
+          }
+          .grade-F {
+            background-color: #f44336;
+            color: white;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Student Marks Report</h2>
+        <table>
+          <thead>
+            <tr>
+            <th>Subject</th>
+              <th>Student Name</th>
+              <th>Exam Marks</th>
+              <th>Classwork Marks</th>
+              <th>Total Marks</th>
+              <th>Grade</th>
+              <th>Position</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data?.map((subject) => subject.students.map((student) => `
+              <tr>
+              <td>${subject.course.toUpperCase()}</td>
+                <td>${student.name}</td>
+                <td>${student.exam}</td>
+                <td>${student.classWork}</td>
+                <td>${student.total}</td>
+                <td>${getGrade(student.total)}</td>
+                <td>${student.position}</td>
+              </tr>
+            `)).join('')}
+          </tbody>
+        </table>
+      </body>
+    </html>
+  `;
+
+  const { uri } = await Print.printAsync({
+    html: htmlContent,
+  });
+    console.log('PDF generated at:', uri);
+  };
+
+  const getGrade = (totalMarks) => {
+    if (totalMarks >= 90) return 'A+';
+    if (totalMarks >= 80) return 'A';
+    if (totalMarks >= 70) return 'B+';
+    if (totalMarks >= 60) return 'B';
+    if (totalMarks >= 50) return 'C+';
+    if (totalMarks >= 40) return 'C';
+    return 'F';
+  };
+
+   
+  const handleFocus = (id:string) => {
+    setIsFocus(id)
+  }
+
+  const handleBlur = () => {
+    setIsFocus(null)
+  }
+
+  const handleReset = () => {
+    setSelectedClass(null)
+    setSelectedYear(null)
+    setSelectedTerm(null)
+    setData([])
+  }
 
   return (
     <View style={styles.container}>
@@ -60,7 +173,7 @@ const index = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={classOptions.map((c) => ({ label: c.name, value: c.name }))}
+          data={classes.map((cls) => ({label: cls.name, value: cls.classCode}))}
           search
           maxHeight={300}
           labelField="label"
@@ -80,29 +193,30 @@ const index = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={academicYearOptions.map((year) => ({ label: year.name, value: year.name }))}
+          data={years.map((y) => ({label: y.year, value: y.year}))}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Select Student'}
+          placeholder={'Select Year'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('student')}
           onBlur={handleBlur}
           value={selectedYear}
           onChange={(item) => setSelectedYear(item.value)}
         />
+
       <Dropdown
           style={[styles.dropdown,]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={termOptions.map((term) => ({ label: term.name, value: term.name }))}
+          data={term}
           search
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={'Select Student'}
+          placeholder={'Select Term'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('student')}
           onBlur={handleBlur}
@@ -114,13 +228,19 @@ const index = () => {
 
 
 <View style ={styles.footer}>
-          <TouchableOpacity style={styles.reset} >
+          <TouchableOpacity style={styles.reset} onPress={handleReset} >
             <Text  style={{color: '#58A8F9', }}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.search} >
+          <TouchableOpacity style ={styles.search} onPress={handleSearch} >
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
           </TouchableOpacity>
           </View>
+
+
+         {data.length > 0 && <TouchableOpacity style={styles.printButton} onPress={generatePDF}>
+        <Text style={{ textAlign: 'center', color: 'white', fontSize: 15 }}>Generate PDF</Text>
+      </TouchableOpacity>}
+
           </View>
   )
 }
@@ -141,7 +261,7 @@ const styles = StyleSheet.create({
       //   borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        backgroundColor:'#EEF7FF',
+        backgroundColor:'#daedff',
         marginBottom: 15,
         alignSelf: 'center'
       },
@@ -201,6 +321,15 @@ const styles = StyleSheet.create({
         height: 35,
         justifyContent:'center',
         marginRight: 15
+      },
+      printButton: {
+        backgroundColor: '#58a8f9',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 20,
+        position:'absolute',
+        top:'70%',
+        alignSelf:'center'
       },
      
 })

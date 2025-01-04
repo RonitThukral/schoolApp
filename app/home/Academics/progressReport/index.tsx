@@ -96,7 +96,8 @@ const DropdownComponent = () => {
       params: { 
         studentId: id,
         term: selectedTerm,
-        year: selectedYear
+        year: selectedYear,
+        selectedClass: selectedClass
        },  // Use 'params' here instead of 'query'
     });
   };

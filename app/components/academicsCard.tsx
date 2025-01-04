@@ -14,7 +14,7 @@ const data = [
       { title: "Class Groups", icon: require("../../assets/images/images/class-group.png"), linking:'./Academics/classGroups' },
       { title: "Year Groups", icon: require("../../assets/images/images/target.png"), linking:'./Academics/yearGroups' },
       { title: "Divisions", icon: require("../../assets/images/images/hierarchical.png"), linking:'./Academics/Divisions' },
-      { title: "Calender", icon: require("../../assets/images/images/calender.png"), linking:'/' },
+      { title: "Calender", icon: require("../../assets/images/images/calender.png"), linking:'./Academics/Calender' },
       { title: "Make Report", icon: require("../../assets/images/images/make-report.png"),linking:'./Academics/makeReport' },
       { title: "Report Card", icon: require("../../assets/images/images/report-card.png"),linking:'./Academics/progressReport' },
       { title: "Combined Report", icon: require("../../assets/images/images/combined.png"), linking:'./Academics/combinedReport' },

@@ -335,19 +335,25 @@ const DropdownComponent = () => {
 
 
 {/* List of students section */}
-<ScrollView style={{marginTop: 20, marginBottom: 0}}>
+<ScrollView style={{paddingTop: 20, marginBottom: 0,backgroundColor:'white'}} contentContainerStyle={{paddingBottom:40}}>
 {filteredNotices.map((notice, index) => {
+const noticeDate = new Date(notice.date);
+const formattedDate = noticeDate.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
   return (
     <View style={styles.list} key={index} >
-      <Text style={{position:'relative', fontSize:18, left:20, color:'#58A8F9',marginTop:10}}>{notice.title}</Text>
+      <Text style={{position:'relative', fontSize:18, left:20, color:'#58A8F9',marginTop:10,maxWidth:'80%'}}>{notice.title}</Text>
       <View style={{flex:1, flexDirection:'row'}}>
 
       <View style={styles.listContent}>
-          <Text style={{fontSize:12,width:"45%",color:'black'}}>
+          <Text style={{fontSize:12,minWidth:"70%",maxWidth:'85%',color:'black'}}>
             {notice.description}
           </Text>
-          <Text style={{fontSize:11,color:'grey',marginTop: 3}}>{notice.createdBy}</Text>
-          <Text style={{fontSize:11,color:'grey'}}>{notice.createdAt}</Text>
+          <Text style={{fontSize:11,color:'grey',marginTop: 3}}>CreatedBy: {notice.createdBy}</Text>
+          <Text style={{fontSize:11,color:'grey'}}>CreatedAt: {formattedDate}</Text>
           
       </View>
       <View style={styles.listBtns}>
@@ -461,7 +467,7 @@ const DropdownComponent = () => {
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -520,7 +526,8 @@ const DropdownComponent = () => {
     },
     list:{
       width: "80%",
-      height: 130,
+      height: 150,
+      maxHeight:150,
       borderColor: 'grey',
       borderRadius: 10,
       // backgroundColor : 'red',

@@ -397,6 +397,7 @@ const [isVisible, setIsVisible] = useState(false)
    
 
     const handleSetMarks = (student) => {
+      // console.log(student.classWork)
       setEditClassWork(student.classWork)
       setEditExam(student.exam)
       setSelectedStudent(student)
@@ -484,9 +485,9 @@ const [isVisible, setIsVisible] = useState(false)
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('route')}
           onBlur={handleBlur}
-          onChange={() => {
-            setIsFocus(null);
-          }}
+          // onChange={() => {
+          //   setIsFocus(null);
+          // }}
           value={selectedTerm}
           onChange={(item) => setSelectedTerm(item.value)}
        
@@ -500,7 +501,7 @@ const [isVisible, setIsVisible] = useState(false)
           </TouchableOpacity>}
 
           <TouchableOpacity style={styles.reset} onPress={handleReset}>
-            <Text  style={{color: '#58A8F9', }}>Reset</Text>
+            <Text  style={{color: '#58A8F9', }} >Reset</Text>
           </TouchableOpacity>
           <TouchableOpacity style ={styles.search} onPress={handleSearch}>
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
@@ -512,32 +513,32 @@ const [isVisible, setIsVisible] = useState(false)
 {isVisible && <View style={{backgroundColor:'white'}}>
 <View style={{position:'relative', flexDirection:'row', justifyContent:'flex-end',marginHorizontal:15,backgroundColor:'white', right:50,marginBottom:0,paddingVertical:5}}>
        
-    <Text style={{marginRight:17, fontSize:10}}>Internal (25)</Text>
-    <Text style={{fontSize:10}}>External (75)</Text>
+    <Text style={{marginRight:17, fontSize:10}}>Internal ({classMarks})</Text>
+    <Text style={{fontSize:10}}>External ({examMarks})</Text>
 </View>
 </View>}
 
 {isOpen && <View style={styles.inputContainer}>
 
-<Text style={styles.inputHeader}>{'Set Marks'}</Text>
+<Text style={styles.inputHeader}>Set Marks</Text>
 
             
             <TextInput
               style={styles.input}
-              placeholder={"Class Work"}
+              placeholder={"ClassWork"}
               keyboardType="numeric"
               onChangeText={(text) => setClassMarks(text)}
-              value={classMarks}
+              value={classMarks.toString()}
             />
             <TextInput
               style={styles.input}
-              placeholder={"Exam Work"}
+              placeholder={"Exam"}
               // onChangeText={(text) => setExamwork(text)}
               // value={examwork}
               onChangeText={(text) => setExamMarks(text)}
               // value={examPercentage}
               keyboardType="numeric"
-              value={examMarks}
+              value={examMarks.toString()}
             />
 
 <View style={styles.inputButtonsContainer}>
@@ -545,32 +546,33 @@ const [isVisible, setIsVisible] = useState(false)
                 <Text style={styles.cancelText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttons} onPress={() => handleUpdateMarks(examMarks, classMarks)}>
-                <Text style={styles.addText}>{'Add'}</Text>
+                <Text style={styles.addText}>Set</Text>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.inputHeader}>{'Set Percentage'}</Text>
+            <Text style={styles.inputHeader}>Set Percentage</Text>
+
+           
 
             <TextInput
+              style={styles.input}
+              placeholder={"ClassWork Percentage"}
+              onChangeText={(text) => setClassWorkPercentage1(text)}
+              // value={classPercentage}
+              keyboardType="numeric"
+              value={classWorkPercentage1.toString()}
+              // onChangeText={setClassWorkPercentage1}
+            />
+
+ <TextInput
               style={styles.input}
               placeholder={"Exam Percentage"}
               onChangeText={(text) => setExamPercentage1(text)}
               // value={examPercentage}
               keyboardType="numeric"
-              value={examPercentage1}
+              value={examPercentage1.toString()}
               
             />
-
-            <TextInput
-              style={styles.input}
-              placeholder={"Class Percentage"}
-              onChangeText={(text) => setClassWorkPercentage1(text)}
-              // value={classPercentage}
-              keyboardType="numeric"
-              value={classWorkPercentage1}
-              onChangeText={setClassWorkPercentage1}
-            />
-
 
 
             <View style={styles.inputButtonsContainer}>
@@ -578,23 +580,23 @@ const [isVisible, setIsVisible] = useState(false)
                 <Text style={styles.cancelText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttons} onPress={() => handleSetPercentage(examPercentage1, classWorkPercentage1)}>
-                <Text style={styles.addText}>{'Add'}</Text>
+                <Text style={styles.addText}>Set</Text>
               </TouchableOpacity>
             </View>
           </View>}
         
 
-//A
+
           {submitMarks  && (
           <View style={styles.inputContainer1}>
-            <Text style={styles.inputHeader}>{'Set Marks'}</Text>
+            <Text style={styles.inputHeader}>Set Marks</Text>
 
             <TextInput
               style={styles.input}
               placeholder={"Add Class Marks"}
               keyboardType='numeric'
+              value={editclassWork.toString()}
               onChangeText={(text) => setEditClassWork(text)}
-              value={editclassWork}
             />
 
             <TextInput
@@ -602,7 +604,7 @@ const [isVisible, setIsVisible] = useState(false)
               placeholder={"Add Exam Marks"}
               keyboardType='numeric'
               onChangeText={(text) => setEditExam(text)}
-              value={editexam}
+              value={editexam.toString()}
             />
 
             <View style={styles.inputButtonsContainer}>
@@ -610,7 +612,7 @@ const [isVisible, setIsVisible] = useState(false)
                 <Text style={styles.cancelText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttons} onPress={()=>{handleSaveEdit(selectedStudent)}}>
-                <Text style={styles.addText}>{'Submit'}</Text>
+                <Text style={styles.addText}>Submit</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -646,14 +648,6 @@ const [isVisible, setIsVisible] = useState(false)
   )
 })}
 </ScrollView>
-
-
-<View style={{backgroundColor:'white'}}>
-<TouchableOpacity style={{width:'90%',height:40, backgroundColor:'#58A8F9',borderRadius:15,justifyContent:'center',alignSelf:'center',position:'relative',bottom:15}}>
-    <Text style={{fontSize:24, color:'white',textAlign:'center'}}>Save</Text>
-</TouchableOpacity>
-</View>
-{/* </KeyboardAvoidingView> */}
 
 
       </>
@@ -799,12 +793,13 @@ const [isVisible, setIsVisible] = useState(false)
       position: 'absolute',
       width: '80%',
       height: 250,
-      backgroundColor: 'whitesmoke',
+      backgroundColor: 'white',
       borderRadius: 10,
       justifyContent: 'center',
       alignSelf: 'center',
       top: '30%',
       flexDirection: 'column',
+      elevation:10,
       zIndex:463737
     },
     inputHeader: {

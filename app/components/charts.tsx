@@ -152,12 +152,12 @@ const FinanceChart = () => {
     labels: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
     datasets: [
       {
-        data: [30, 45, 28, 65, 45, 55, 40],
+        data: [30000, 45000, 28000, 65000, 45000, 55000, 40000],
         color: () => '#4A90E2', // Income
         strokeWidth: 2,
       },
       {
-        data: [20, 35, 40, 45, 35, 40, 30],
+        data: [20000, 35000, 40000, 45000, 35000, 40000, 30000],
         color: () => '#F44336', // Expense
         strokeWidth: 2,
       },
@@ -167,6 +167,14 @@ const FinanceChart = () => {
   return (
     <View style={styles.financeContainer}>
       <Text style={styles.financeTitle}>Finance</Text>
+      <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',position:'relative',bottom:28}}>
+        <View style={{width:10,height:10,backgroundColor:'#4A90E2'}}>
+        </View>
+        <Text style={{fontSize:12,position:'relative',bottom:5,marginLeft:8}}>Income</Text>
+        <View style={{width:10,height:10,backgroundColor:'#F44336',marginLeft:15}}>
+        </View>
+        <Text style={{fontSize:12, position:'relative',bottom:5,marginLeft:8}}>Expenses</Text>
+      </View>
       <LineChart
         data={data}
         width={Dimensions.get('window').width - 40}
@@ -180,6 +188,10 @@ const FinanceChart = () => {
           labelColor: () => '#999999',
           style: {
             borderRadius: 16,
+          },
+          propsForBackgroundLines: {
+            strokeWidth: 0, // This will remove the grid lines
+            strokeDasharray: '0', // Ensure no dashed lines
           },
         }}
         bezier
@@ -217,6 +229,8 @@ const styles = StyleSheet.create({
   chart: {
     marginVertical: 8,
     borderRadius: 16,
+    // backgroundColor:'red'
+    paddingRight:40
   },
   modalOverlay: {
         flex: 1,

@@ -4,14 +4,7 @@ import React from 'react'
 import { useState } from 'react';
 
 const storeData = [
-    {
-      "id": 1,
-      "name": "School Uniform - Boys",
-      "units": "set",
-      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid inventore modi vel dolorum perferendis. Maxime labore non soluta minima obcaecati sunt id nihil dignissimos.",
-      "price": 500,
-      "quantity": 50
-    },
+  
     {
       "id": 2,
       "name": "School Uniform - Girls",
@@ -188,7 +181,7 @@ const Inventory = () => {
 </TouchableOpacity>
 
 {isOpen && <View style={styles.inputContainer}>
-        <Text style={{fontSize:24,position:'absolute',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:5,top:15}}>{'Add Notice'}</Text>
+        <Text style={{fontSize:24,position:'absolute',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:5,top:15}}>{'Add Item'}</Text>
 
     <TextInput style={styles.input} placeholder={"Name"} onChangeText={handleName} value={name}/>
 

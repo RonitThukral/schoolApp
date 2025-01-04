@@ -13,13 +13,13 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 
   const ReportCard = () => {
-    const {studentId, term, year} = useLocalSearchParams();
+    const {studentId, term, year, selectedClass} = useLocalSearchParams();
     // const [filteredClasses, setFilteredClasses] = useState(listData);
     const [expandedSections, setExpandedSections] = useState<string[]>([]);
     const [subjects , setSubjects] = useState([])
     const [pdfPath, setPdfPath] = useState('');
     
-    const router = useRouter();
+    // const router = useRouter();
 
     const fetchData = async() => {
         try {
@@ -46,7 +46,7 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
         <style>
           body {
             font-family: 'Arial', sans-serif;
-            margin: 0;
+            margin-top: 50px;
             padding: 20px;
             background-color: #f9f9f9;
             color: #333;
@@ -57,10 +57,19 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
             text-align: center;
           }
           h1 {
-            font-size: 24px;
-            color: #4CAF50;
+            font-size: 28px;
+            color: red;
             margin-bottom: 20px;
           }
+          h2 {
+            font-size: 26px;
+            color: #58a8f9;
+            margin-bottom: 20px;
+          }
+            span{
+            font-size: 20px;
+            color: black;
+            }
           table {
             width: 100%;
             border-collapse: collapse;
@@ -73,7 +82,7 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
             padding: 10px;
           }
           th {
-            background-color: #4CAF50;
+            background-color: #58a8f9;
             color: white;
           }
           tr:nth-child(even) {
@@ -81,17 +90,22 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
           }
         </style>
         <div class="container">
-          <h1>Report Card</h1>
-          <p>Term: ${term} | Year: ${year}</p>
+          <h1>Roses N Lillies High School</h1>
+          <h2>Report Card</h2>
+          <p>Class: ${selectedClass.toUpperCase()} | Term: ${term} | Year: ${year} </p>
+          <span>${subjects[0].name}</span>
           <table>
             <thead>
               <tr>
                 <th>Subject</th>
-                <th>Position</th>
                 <th>Class Work</th>
                 <th>Exam</th>
                 <th>Exam Percentage</th>
                 <th>Class Work Percentage</th>
+                <th>Total</th>
+                <th>Grade</th>
+                <th>Interpretation</th>
+                <th>Position</th>
               </tr>
             </thead>
             <tbody>
@@ -100,11 +114,14 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
                   (data) => `
                 <tr>
                   <td>${data.course}</td>
-                  <td>${data.position || '--'}</td>
                   <td>${data.classWork || '--'}</td>
                   <td>${data.exam || '--'}</td>
                   <td>${data.examPercentage || '--'}</td>
                   <td>${data.classWorkPercentage || '--'}</td>
+                  <td>${getTotal(data.classWorkPercentage , data.examPercentage) || '--'}</td>
+                  <td>${getGrade(data.classWork, data.exam) || '--'}</td>
+                  <td>${getInterpretation(data.classWork, data.exam) || '--'}</td>
+                  <td>${data.position || '--'}</td>
                 </tr>`
                 )
                 .join('')}
@@ -133,9 +150,72 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
       prev.includes(id) ? prev.filter((sectionId) => sectionId !== id) : [...prev, id]
     );
   };
+
+
+  const getTotal = (exams, work) => {
+    if (!work && !exams) {
+      return "-";
+    }
+    return Number(exams || 0) + Number(work || 0);
+  };
+
+  const getGrade = (classwork, exam) => {
+    if (!classwork && !exam) {
+      return "-";
+    }
+    let num = getTotal(classwork, exam);
+    if (num >= 75 && num <= 100) {
+      return "A1";
+    } else if (num >= 70 && num <= 74) {
+      return "B2";
+    } else if (num >= 65 && num <= 69) {
+      return "B3";
+    } else if (num >= 60 && num <= 64) {
+      return "C4";
+    } else if (num >= 55 && num <= 59) {
+      return "C5";
+    } else if (num >= 50 && num <= 54) {
+      return "C6";
+    } else if (num >= 45 && num <= 49) {
+      return "D7";
+    } else if (num >= 40 && num <= 44) {
+      return "E8";
+    } else if (num >= 0 && num <= 39) {
+      return "F9";
+    } else {
+      return null;
+    }
+  };
       
 
-
+  const getInterpretation = (classwork, exam) => {
+    if (!classwork && !exam) {
+      return "-";
+    }
+    let num = getTotal(classwork, exam);
+    num = Number(num);
+    if (num > 75 && num <= 100) {
+      return "Excellent";
+    } else if (num >= 70 && num <= 74) {
+      return "Very good";
+    } else if (num >= 65 && num <= 69) {
+      return "Good";
+    } else if (num >= 60 && num <= 64) {
+      return "Credit";
+    } else if (num >= 55 && num <= 59) {
+      return "Credit";
+    } else if (num >= 50 && num <= 54) {
+      return "Credit";
+    } else if (num >= 45 && num <= 49) {
+      return "Pass";
+    } else if (num >= 40 && num <= 44) {
+      return "Pass";
+    } else if (num >= 0 && num <= 39) {
+      return "Failure";
+    } else {
+      return null;
+    }
+  };
 
     
       const InfoRow1 = ({ label, value}:any) => (
@@ -241,15 +321,15 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
         subTitle2={`Term: ${term} | Year: ${year}`}
       >
         <InfoRow1 label="Position" value={data.position || '--'} />
-        <InfoRow1 label="Grade" value={data.classWorkPercentage + data.examPercentage} />
-        <InfoRow1 label="Interpretation" value={'Very Good'} />
+        <InfoRow1 label="Grade" value={getGrade(data.classWorkPercentage, data.examPercentage)} />
+        <InfoRow1 label="Interpretation" value={getInterpretation(data.classWorkPercentage, data.examPercentage)} />
         {/* <br /> */}
         <Text style={{color:'#58a8f9',paddingLeft:100,fontWeight:'600',fontSize:16,paddingVertical:8}}>SCORE :</Text>
         <InfoRow1 label="Class Work" value={data.classWork || '--'} />
         <InfoRow1 label="Class Work (%)" value={data.classWorkPercentage || '--'} />
         <InfoRow1 label="Final Exam" value={data.exam || '--'} />
         <InfoRow1 label="Final Exam (%)" value={data.examPercentage || '--'} />
-        <InfoRow1 label="Total" value={data.classWorkPercentage + data.examPercentage} />
+        <InfoRow1 label="Total" value={getTotal(data.classWorkPercentage , data.examPercentage)} />
       </Section>
     ))
   )}

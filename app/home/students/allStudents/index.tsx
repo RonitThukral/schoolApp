@@ -1,8 +1,7 @@
 import React, { useState,useEffect } from 'react';
   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,ActivityIndicator,Button,Alert} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
-  import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter } from 'expo-router';
+  import Feather from '@expo/vector-icons/Feather';import { useRouter } from 'expo-router';
 import axios from 'axios';
 import * as Print from 'expo-print';
 
@@ -337,15 +336,14 @@ import * as Print from 'expo-print';
           
 
           {/* PDF Button */}
-          <TouchableOpacity style={[selectedValue === 'Transport' ? {  position: 'relative',bottom:45,left:22,width:'40%'} : {  position: 'relative',bottom:60,left:20,width:'40%'}]} onPress={generatePdfAndPrint}>
-          <Text style={{color:'#58a8f9',fontSize:15}}>Generate Pdf</Text>
+          <TouchableOpacity style={[selectedValue === 'Transport' ? {  position: 'relative',bottom:45,left:22,width:'40%'} : {  position: 'relative',bottom:57,left:30,width:'40%'}]} onPress={generatePdfAndPrint}>
+          <Text style={{color:'#58a8f9',fontSize:14}}>Generate Pdf</Text>
         </TouchableOpacity>
       </View>
 
       
 
-      <View style={{width:'100%',height:1, borderBottomWidth:0.2,position:'relative',bottom:25}}>
-
+      <View style={{width:'100%',height:1, borderBottomWidth:0.2,position:'relative',bottom:37,borderColor:'grey'}}>
       </View>
 
 
@@ -362,7 +360,7 @@ import * as Print from 'expo-print';
       <TouchableOpacity style={styles.list} key={index} onPress={() => handleSelectStudent(student.userID)}>
         <Image
           style={styles.stImg}
-          source={require('../../../../assets/images/images/avatar.png')}
+          source={require('../../../../assets/images/images/boy.png')}
         />
         <View style={styles.listContent}>
           <Text style={{ color: '#58A8F9', fontSize: 20 }}>{student.name}</Text>
@@ -373,12 +371,13 @@ import * as Print from 'expo-print';
             {student.class}
           </Text>
         </View>
-        <AntDesign
+        {/* <AntDesign
           name="arrowright"
           size={24}
           color="#58A8F9"
           style={{ position: 'relative', right: 30 }}
-        />
+        /> */}
+        <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: 35 }} />
       </TouchableOpacity>
     ))
   )}

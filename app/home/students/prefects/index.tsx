@@ -39,6 +39,7 @@ const Index = () => {
   const [classes, setClasses] = useState([]); // To store the current prefect ID for editing
   const [filteredStudents, setFilteredStudents] = useState([]); // To store the current prefect ID for editing
   const [selectedStudent, setSelectedStudent] = useState(null); // To store the current prefect ID for editing
+  const [studentName, setStudentName] = useState(null); // To store the current prefect ID for editing
 
   // Generate a list of years from the current year to 10 years ahead
   const currentYear = new Date().getFullYear();
@@ -119,17 +120,18 @@ const Index = () => {
     }
   };
 
-  const handleAddPrefect = async () => {
-    if (!prefectName || !role || !startYear || !endYear) return;
   
-    const newPrefect = { name: prefectName, position: role, userID : selectedStudent , startYear,endYear };
+  const handleAddPrefect = async () => {
+    if (!role || !startYear || !endYear) return;
+  
+    const newPrefect = { name: prefectName || studentName, position: role, userID : selectedStudent , startYear,endYear };
   
     try {
       const response = await axios.post(`${baseUrl}/prefects/add`, newPrefect);
   
       // Log the response to inspect its structure
-      // console.log(response.data);  // This will help understand the structure of the response
-  
+      console.log(response.data);  // This will help understand the structure of the response
+      
       // Check if the response contains the necessary data before accessing it
       if (response.data && response.data.doc) {
         setPrefects((prevPrefects) => [response.data.doc, ...prevPrefects]);
@@ -211,7 +213,7 @@ const Index = () => {
   // Search Button Logic
   const handleSearch = () => {
     if (selectedClass) {
-      const filtered = prefects.filter((prefect) => prefect.class === selectedClass);
+      const filtered = prefects.filter((prefect) => prefect.userID === selectedStudent);
       setFilteredPrefects(filtered);
     } else {
       setFilteredPrefects(prefects); // If no class is selected, show all prefects
@@ -226,6 +228,9 @@ const Index = () => {
   };
 
   const handlePlus = () => {
+    if(!selectedClass || !selectedStudent) {
+      return Alert.alert('Error', "Please select Class and Student first")
+    }
     setIsOpen(true);
   };
 
@@ -254,7 +259,7 @@ const Index = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={"Search by Class"}
+        placeholder={"Select Class"}
         searchPlaceholder="Search..."
         onFocus={handleFocus}
         onBlur={handleBlur}
@@ -276,12 +281,13 @@ const Index = () => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={"Search by Students"}
+        placeholder={"Select Students"}
         searchPlaceholder="Search..."
         onFocus={handleFocus}
         onBlur={handleBlur}
         value={selectedStudent}
         onChange={(item) => {
+          setStudentName(item.label)
           setSelectedStudent(item.value)
         }} // Set selectedClass
       />}
@@ -298,7 +304,9 @@ const Index = () => {
       </View>
     </View>
 
-    <ScrollView style={[isOpen || edit ? styles.scrollContainer1 : styles.scrollContainer]}>
+    <View style={{height:1,width:'100%',borderBottomWidth:0.5,position:'relative',top:50,alignSelf:'center',borderColor:'grey'}}></View>
+
+    <ScrollView style={[isOpen || edit ? styles.scrollContainer1 : styles.scrollContainer]} contentContainerStyle={{paddingBottom:90}}>
       {filteredPrefects.map((prefect, index):any => (
         <View style={styles.list} key={index}>
           <Image style={styles.stImg} source={require("../../../../assets/images/images/avatar.png")} /> 
@@ -321,7 +329,7 @@ const Index = () => {
         </View>
       ))}
       </ScrollView>
-    <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
+    <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:230, justifyContent:'center',alignSelf:'flex-end',right:45,alignItems:'center'}} onPress={handlePlus}>
     <Entypo name="plus" size={40} color="white" />
     </TouchableOpacity>
 
@@ -333,7 +341,7 @@ const Index = () => {
         <TextInput 
   style={styles.input} 
   placeholder={"Add Name"} 
-  value={prefectName} 
+  value={prefectName || studentName} 
   onChangeText={(text) => setPrefectName(text)} // Update the prefectName state with the input text 
 />
 

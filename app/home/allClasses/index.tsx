@@ -184,84 +184,63 @@ import axios from 'axios';
     const [filteredClasses, setFilteredClasses] = useState([]);
 const [campuses, setCampuses] = useState([])
 const [teachers, setTeachers] = useState([])
-    // const router = useRouter();
-
-    const fetchClasses = async () => {
-      try {
-        // Fetch classes from the API
-        const classesResponse = await axios.get(`${baseUrl}/classes`);
-        
-        // Log campuses to ensure it's accessible
-        // console.log(campuses);
-    
-        // Check if campuses are loaded before mapping
-        if (!campuses || campuses.length === 0) {
-          console.error('Campuses data is not available.');
-          return;
-        }
-    
-        // Format class data with campus name
-        const formatedData = classesResponse.data.map((cls) => {
-          const campusData = campuses.find((campus) => campus._id === cls.campusID);
-          const teacherData = teachers.find((teacher) => teacher.userID === cls.teacherID) ;
-          return {
-            name: cls.name,
-            classCode: cls.classCode,
-            campus: campusData ? campusData.name : 'N/A', // Use campus name or fallback to 'N/A'
-            id: cls._id,
-            teacher: teacherData ? teacherData.name : 'N/A',
-            academic: cls.academic || 'N/A',
-            prefect: cls.prefect || 'N/A',
-            division: cls.division || 'N/A',
-            sba: cls.sba,
-            group: cls.group || 'N/A',
-            sbaStaff: cls.sbaStaff || 'N/A',
-          };
-        });
-    
-        // Set formatted classes to state
-        setClasses(formatedData);
-        setFilteredClasses(formatedData)
-      } catch (error) {
-        console.error('Error fetching classes:', error.message);
-      }
-    };
-    
-
-    const fetchCampuses = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/campuses`);
-        setCampuses(response.data);
-      } catch (error) {
-        console.error("Error fetching campuses:", error);
-      } 
-    };
-
-
-    const fetchTeachers = async () => {
-      try {
-        const response = await axios.get(`${baseUrl}/teachers`);
-        const teachers = response.data; // Assuming the data returned is an array of teachers
-        const formatedData = teachers.map((teacher) => ({
-          id: teacher._id,
-          userID: teacher.userID || 'N/A',
-          designation: teacher.role || 'N/A',
-          name: `${teacher.name} ${teacher.surname}`
-        }))
-        setTeachers(formatedData)
-        // console.log(teachers); // You can now use the teachers data as needed
-      } catch (error) {
-        console.error('Error fetching teachers:', error);
-      }
-    }
+   
 
 
 
     useEffect(() => {
-      fetchClasses();
-      fetchCampuses();
-      fetchTeachers();
-    },[])
+      const fetchAllData = async () => {
+        try {
+          // Fetch campuses and teachers in parallel
+          const [campusResponse, teacherResponse] = await Promise.all([
+            axios.get(`${baseUrl}/campuses`),
+            axios.get(`${baseUrl}/teachers`)
+          ]);
+    
+          // Set campuses data
+          setCampuses(campusResponse.data);
+    
+          // Set teachers data
+          const formattedTeachers = teacherResponse.data.map((teacher) => ({
+            id: teacher._id,
+            userID: teacher.userID || 'N/A',
+            designation: teacher.role || 'N/A',
+            name: `${teacher.name} ${teacher.surname}`
+          }));
+          setTeachers(formattedTeachers);
+    
+          // Fetch classes after campuses and teachers are populated
+          const classesResponse = await axios.get(`${baseUrl}/classes`);
+          const formattedClasses = classesResponse.data.map((cls) => {
+            const teacherData = formattedTeachers.find((teacher) => teacher.userID === cls.teacherID);
+            const campusData = campusResponse.data.find((campus) => campus._id === cls.campusID);
+    
+            return {
+              name: cls.name,
+              classCode: cls.classCode,
+              campus: campusData ? campusData.name : 'N/A',
+              id: cls._id,
+              teacher: teacherData ? teacherData.name : 'N/A',
+              academic: cls.academic || 'N/A',
+              prefect: cls.prefect || 'N/A',
+              division: cls.division || 'N/A',
+              sba: cls.sba,
+              group: cls.group || 'N/A',
+              sbaStaff: cls.sbaStaff || 'N/A',
+            };
+          });
+    
+          setClasses(formattedClasses);
+          setFilteredClasses(formattedClasses);
+    
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      fetchAllData();
+    }, []);
+    
 
 
    // Search Button Logic
@@ -428,6 +407,7 @@ const [teachers, setTeachers] = useState([])
           
       </View>
 
+<View style={{height:1,width:'100%', borderBottomWidth:0.5,borderColor:'grey'}}></View>
 
 {/* List of students section */}
 <ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}} contentContainerStyle={{paddingBottom:40}}>
@@ -511,6 +491,9 @@ const [teachers, setTeachers] = useState([])
       flex:1,
       flexDirection: 'row',
       justifyContent: 'flex-end',
+      // paddingTop:15
+      position:'relative',
+      top:10
       
     },
     search: {

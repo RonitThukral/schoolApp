@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Image,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -23,6 +24,7 @@ const Login = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={{ flex: 1 }}
     >
+      <Image source={require('../../assets/images/images/Logooo.png')} style={{position:'absolute',width:300,height:100,zIndex:99999,top:50,left:35}}/>
       <ImageBackground
         source={require('../../assets/images/images/login.png')}
         style={styles.bgcontainer}

@@ -709,10 +709,13 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color: '#666',
     fontSize: 11.5,
+    paddingLeft:10
+
   },
   value: {
     color:'grey',
     fontSize: 11.5,
+    paddingLeft:50
   },
   rule1:{
     height:0.5, 

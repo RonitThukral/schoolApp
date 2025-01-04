@@ -10,7 +10,7 @@ const screenWidth = Dimensions.get("window").width;
 const data = [
     [
       { title: "Record Students", icon: require("../../assets/images/images/graduate.png"), linking:'./Attendance/recordStudents' },
-      { title: "Record Staff", icon: require("../../assets/images/images/team.png"), linking:'/' },
+      { title: "Record Staff", icon: require("../../assets/images/images/team.png"), linking:'./Attendance/recordStaff' },
       { title: "Student History", icon: require("../../assets/images/images/historyStu.png"),linking:'./Attendance/studentHistory' },
       { title: "Staff History", icon: require("../../assets/images/images/education.png"), linking:'./Attendance/staffHistory' },
       

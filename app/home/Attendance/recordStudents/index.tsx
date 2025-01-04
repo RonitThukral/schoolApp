@@ -8,8 +8,13 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 const StudentRecord = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    today.setHours(today.getHours() + 5); // Add 5 hours
+    today.setMinutes(today.getMinutes() + 30); // Add 30 minutes
+    return today.toISOString().split('T')[0];
+  });
+    const [selectedClass, setSelectedClass] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [classStudents, setClassStudents] = useState([]);
   const [classes, setClasses] = useState([]);

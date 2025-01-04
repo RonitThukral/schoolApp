@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import * as Print from 'expo-print';
@@ -186,8 +186,8 @@ const DropdownComponent = () => {
               <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.userID}</Text>
               <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.designation}</Text>
             </View>
-            <AntDesign name="arrowright" size={24} color="#58A8F9" style={{ position: 'relative', right: 30 }} />
-          </TouchableOpacity>
+            <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: 35 }} />
+            </TouchableOpacity>
         ))}
       </ScrollView>
     </>
@@ -270,7 +270,7 @@ export default DropdownComponent;
       marginRight: 15
     },
     list:{
-      width: "90%",
+      width: "85%",
       height: 100,
       borderColor: 'grey',
       borderRadius: 10,
