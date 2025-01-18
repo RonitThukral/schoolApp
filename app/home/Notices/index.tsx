@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert, SafeAreaView, Platform} from 'react-native';
   import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
   import { Dropdown } from 'react-native-element-dropdown';
   import Entypo from '@expo/vector-icons/Entypo';
   import { useRouter } from 'expo-router';
   import axios from 'axios'; // Assuming axios is installed
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 
@@ -78,9 +79,9 @@ const DropdownComponent = () => {
         title: notice.title || 'N/A',
         description: notice.description || 'N/A',
         createdBy: notice.createdBy || 'N/A',
-        date: notice.date || 'N/A',
+        date: dayjs(notice.date).format('DD-MM-YYYY') || 'N/A',
+        
       }));
-
       setAllNotices(formattedData);
       setFilteredNotices(formattedData);
     } catch (error) {
@@ -130,6 +131,7 @@ const DropdownComponent = () => {
   const handleBlur = () => {
     setIsFocus(null)
   }
+  
 
 
   // Add New Notice
@@ -282,7 +284,7 @@ const DropdownComponent = () => {
   }
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         {/* {renderLabel(value)} */}
         <Dropdown
@@ -335,7 +337,7 @@ const DropdownComponent = () => {
 
 
 {/* List of students section */}
-<ScrollView style={{paddingTop: 20, marginBottom: 0,backgroundColor:'white'}} contentContainerStyle={{paddingBottom:40}}>
+<ScrollView style={{paddingTop: 0, marginBottom: 0,backgroundColor:'white'}} contentContainerStyle={{paddingBottom:40}}>
 {filteredNotices.map((notice, index) => {
 const noticeDate = new Date(notice.date);
 const formattedDate = noticeDate.toLocaleDateString('en-GB', {
@@ -382,9 +384,9 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
 {(isOpen || edit) && <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{edit ? 'Edit Notice' : 'Add Notice'}</Text>
 
-    <TextInput style={styles.input} placeholder={edit ? "Edit Title" : "Add Title"} onChangeText={handleTitle} value={title}/>
+    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Title" : "Add Title"} onChangeText={handleTitle} value={title}/>
 
-    <TextInput style={styles.inputDesc} placeholder={edit ? "Edit Description" : "Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+    <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={edit ? "Edit Description" : "Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
 
     {openCalendar && (
             <View style={styles.calendarContainer}>
@@ -401,6 +403,7 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
             <TextInput
               style={styles.dateInput}
               placeholder="Date of Birth"
+              placeholderTextColor={'grey'}
               value={createdAt} // Display the formatted date
               editable={false} // Read-only input
             />
@@ -409,7 +412,7 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
             </TouchableOpacity>
           </View>
 
-          <TextInput style={styles.input} placeholder={edit ? "Edit Created By" : "CreatedBy"} onChangeText={handleCreatedBy} value={createdBy} />
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Created By" : "CreatedBy"} onChangeText={handleCreatedBy} value={createdBy} />
 
 
 
@@ -424,7 +427,7 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
     </View>
     </View>}
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -539,6 +542,20 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
       marginTop: 20,
       elevation:5,
     //   borderWidth: 0.5
+
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height:1 },
+        shadowOpacity: 0.20,
+        shadowRadius: 3.84,
+        borderWidth:0.5,
+        borderColor:'grey',
+        
+      },
+      
+    }),
+
     },
    
     listContent:{
@@ -588,29 +605,28 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
         alignSelf:'center',
         top:'30%',
         flexDirection:'column',
-        zIndex:900000
+        zIndex:900000,
+        elevation:5
 // marginVertical:15
       },
-      buttons:{
-        width:80,
-        height:30,
-        backgroundColor: '#58A8F9',
-        position:'absolute',
-        bottom:13,
-        right:25,
-        borderRadius:20,
-        justifyContent:'center',
-        alignSelf:'flex-end',
-          },
-    
-        closeBtn:{
-        position:'absolute',
-        bottom:15,
-        left:150,
-        borderRadius:20,
-        justifyContent:'center',
-        alignSelf:'flex-end',
-          }
+      buttons: { 
+        width: 100, 
+        height: 38, 
+        backgroundColor: '#58A8F9', 
+        position: 'relative', 
+        right: 25,
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignSelf: 'flex-end' 
+      },
+      closeBtn: { 
+        position: 'relative', 
+        bottom: 5, 
+        right: responsiveWidth(14), 
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignSelf: 'flex-end'
+       },
     
 
   });

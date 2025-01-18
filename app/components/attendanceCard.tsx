@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity, Platform } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -71,7 +71,13 @@ const AttendanceCard = () => {
     position:'relative',
     left:2,
     top:30,
-    backgroundColor:'white'
+    backgroundColor:'white',
+    ...Platform.select({
+      ios: {
+       height:1000
+      },
+      
+    }),
     },
     slide: {
       width: screenWidth,

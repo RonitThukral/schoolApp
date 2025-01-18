@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     top: '30%',
     flexDirection: 'column',
+    elevation:5
   },
   inputHeader: {
     fontSize: 24,

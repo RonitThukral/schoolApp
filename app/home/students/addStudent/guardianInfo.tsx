@@ -87,12 +87,12 @@ const contactInfo = () => {
           
         </View>
         <View style={styles.container}>
-          <TextInput style={styles.input} placeholder="First Name" onChangeText={setName} value={name}/>
-          <TextInput style={styles.input} placeholder="Last Name" onChangeText={setLastName} value={lastName}/>
-          <TextInput style={styles.input} placeholder="Relationship" onChangeText={setRelationship} value={relationship}/>
-          <TextInput style={styles.input} placeholder="Email" onChangeText={setOccupation} value={occupation}/>
-          <TextInput style={styles.input} placeholder="Occupation" onChangeText={setEmail} value={email}/>
-          <TextInput style={styles.areaInputResi} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top' onChangeText={setAddress} value={address}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="First Name" onChangeText={setName} value={name}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name" onChangeText={setLastName} value={lastName}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Relationship" onChangeText={setRelationship} value={relationship}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Email" onChangeText={setOccupation} value={occupation}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Occupation" onChangeText={setEmail} value={email}/>
+          <TextInput style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top' onChangeText={setAddress} value={address}/>
           </View>
 
           <View style={{flex:1, flexDirection:'row',position:'relative',paddingVertical:10 ,width:"80%",justifyContent:'space-between',alignSelf:'center',bottom:10}}>
@@ -120,7 +120,7 @@ const contactInfo = () => {
           )}
         />    
 
-    <TouchableOpacity style={{width:'80%', height:60, backgroundColor:"#58A8F9", borderRadius:10, alignSelf:'center', justifyContent:'center',marginVertical:10}} onPress={handleAdd}>
+    <TouchableOpacity style={{width:'80%', height:60, backgroundColor:"#58A8F9", borderRadius:40, alignSelf:'center', justifyContent:'center',marginVertical:10}} onPress={handleAdd}>
         <Text style={{color:'white',textAlign:'center', fontSize:26}}>Add Student</Text>
     </TouchableOpacity>
         </ScrollView>

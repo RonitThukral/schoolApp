@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,ImageBackground,Alert} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,ImageBackground,Alert, Platform, SafeAreaView} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
 import * as Print from 'expo-print';
@@ -255,9 +255,9 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
             <View style={styles.sectionContent}>
               {children}
             </View>
-            <View style={styles.listBtns}>
+            {/* <View style={styles.listBtns}>
                 
-            </View>
+            </View> */}
 
             </View>
           )}
@@ -266,7 +266,7 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>    
       
       <ImageBackground
@@ -306,7 +306,7 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 
 {/* List of students section */}
-<ScrollView style={{ marginTop: 0, marginBottom: 0, backgroundColor: '#FFFFFF' }} contentContainerStyle={{paddingBottom:40}}>
+<ScrollView style={{backgroundColor: '#FFFFFF' }} contentContainerStyle={{paddingBottom:40}}>
   {subjects.length === 0 ? (
     <View style={{ alignItems: 'center', marginTop: 20 }}>
       <Text>No scores yet</Text>
@@ -336,7 +336,7 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 </ScrollView>
 
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -462,10 +462,24 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
          borderRadius: 8,
          overflow: 'hidden',
          elevation: 3, // Adds shadow for Android
-         shadowColor: '#000', // Adds shadow for iOS
-         shadowOffset: { width: 0, height: 1 },
-         shadowOpacity: 0.1,
-         shadowRadius: 3,
+        //  shadowColor: '#000', // Adds shadow for iOS
+        //  shadowOffset: { width: 0, height: 1 },
+        //  shadowOpacity: 0.1,
+        //  shadowRadius: 3,
+
+
+         ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height:1 },
+        shadowOpacity: 0.20,
+        shadowRadius: 3.84,
+        borderWidth:0.5,
+        borderColor:'grey'
+      },
+      
+    }),
+
       },
       sectionHeader: {
         flexDirection: 'row',
@@ -484,13 +498,13 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
       },
       sectionContent: {
         padding: 16,
-        width:"100%",
+        width:"90%",
         alignSelf:'center',
-        height:'auto',
+        height:'95%',
         backgroundColor: '#FFF',
-        // backgroundColor: 'red',
+        // backgroundColor: 'yellow',
         marginHorizontal: 16,
-        paddingTop: 0 ,
+        // paddingBottom: 0 ,
         borderRadius: 10,
         overflow: 'hidden',
         
@@ -500,6 +514,8 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 2,
+                // backgroundColor:'green',
+
       },
       // infoRow: {
       //   flexDirection: 'row',

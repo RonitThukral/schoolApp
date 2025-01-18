@@ -2,6 +2,7 @@ import { View, Text,ImageBackground,TouchableOpacity,Image, SafeAreaView , Style
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
@@ -227,29 +228,27 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         top:'30%',
         flexDirection:'column',
-        zIndex:9999999
-
+        zIndex:9999999,
+        elevation:5
       },
-    buttons:{
-    width:100,
-    height:38,
-    backgroundColor: '#58A8F9',
-    position:'absolute',
-    // bottom:40,
-    right:25,
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
+      buttons: { 
+        width: 100, 
+        height: 38, 
+        backgroundColor: '#58A8F9', 
+        position: 'relative', 
+        right: 25,
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignSelf: 'flex-end' 
       },
-
-    closeBtn:{
-    position:'absolute',
-    bottom:5,
-    left:120,
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
-      }
+      closeBtn: { 
+        position: 'relative', 
+        bottom: 5, 
+        right: responsiveWidth(14), 
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignSelf: 'flex-end'
+       },
 })
 
 export default index

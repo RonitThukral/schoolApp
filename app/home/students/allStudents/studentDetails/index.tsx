@@ -388,6 +388,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
+import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -472,7 +473,8 @@ const StudentDetails = () => {
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <ActivityIndicator size="large" color="#58A8F9" />
+        <ActivityIndicator style={{position:'relative',
+    top:'50%'}} size="large" color="#58A8F9" />
       </SafeAreaView>
     );
   }
@@ -599,6 +601,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: '#F5F5F5',
     backgroundColor: 'white',
+    
   },
   scrollViewContent: {
     flex:1
@@ -709,13 +712,13 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color: '#666',
     fontSize: 11.5,
-    paddingLeft:10
+    paddingLeft:responsiveWidth(2)
 
   },
   value: {
     color:'grey',
     fontSize: 11.5,
-    paddingLeft:50
+    paddingLeft:responsiveWidth(3)
   },
   rule1:{
     height:0.5, 

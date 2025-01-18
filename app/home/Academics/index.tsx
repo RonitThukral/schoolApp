@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image, Platform } from 'react-native'
 import 'react-native-reanimated';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import AcademicsCard from '../../components/academicsCard';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 
@@ -54,10 +55,10 @@ const router = useRouter();
 
   return (
     <>
-    <View style={styles.container1}>
+    <ScrollView style={styles.container1}>
 
       <View style ={styles.bgimg}>
-        <Image style={{height:255}} source={require('../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:responsiveWidth(60)}} source={require('../../../assets/images/images/Vector.png')}/>
       </View>
 
       {/* Statistics section */}
@@ -90,13 +91,13 @@ const router = useRouter();
 
 
           {/* main card grid section */}
-<View style= {{position: 'absolute', top: '43%',backgroundColor:'white'}}>
+<View style= {{position: 'relative', top: responsiveHeight(17),}} pointerEvents="box-none">
 
       <AcademicsCard /> 
 
 </View>
       
-      </View>
+      </ScrollView>
     
     </>
 
@@ -106,26 +107,33 @@ const router = useRouter();
 export const styles = StyleSheet.create({
   container : {
     zIndex: 300,
-     maxWidth : 350,
+     maxWidth : responsiveWidth(90),
      maxHeight : 220,
-     boxShadow: '20px',
-     shadowColor: 'black',
+    
      flex: 1,
      flexDirection: 'column',
      backgroundColor: 'white',
     //  backgroundColor: 'red',
      position: 'relative',
-     top: '15%',
+     top: responsiveHeight(14),
      alignSelf: 'center' ,
      borderRadius: '10%',
      borderColor: 'black',
      elevation: 1.5,
-     shadowOffset: {
-       width: 1,
-       height: 1
-     },
-     shadowOpacity: 10,
+     
      paddingHorizontal:10,
+
+     ...Platform.select({
+      ios: {
+        top:responsiveHeight(15),
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.10,
+        shadowRadius: 3.84,
+      },
+      
+    }),
+    
      
   },
   heading:{
@@ -180,6 +188,7 @@ export const styles = StyleSheet.create({
     container1: {
       flex: 1,
       backgroundColor: 'white',
+      height:responsiveWidth(10)
     },
    
     bgimg: {
@@ -188,6 +197,15 @@ export const styles = StyleSheet.create({
         height: 'auto',
         position: 'absolute',
         // backgroundColor:'#daedff'
+
+        ...Platform.select({
+          ios: {
+            width:responsiveWidth(10),
+            transform: [{ scale: 1.02 }],
+          },
+          
+        }),
+
     },
 
     birthdays:{

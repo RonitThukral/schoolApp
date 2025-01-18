@@ -2,6 +2,7 @@ import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, Sty
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Make sure Axios is installed
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
 
@@ -123,7 +124,7 @@ const index = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <ImageBackground source={require('../../../../assets/images/images/union.png')} style={styles.background} imageStyle={{ resizeMode: 'cover', position: 'absolute', bottom: 580 }}>
+            <ImageBackground source={require('../../../../assets/images/images/union.png')} style={styles.background} imageStyle={{ resizeMode: 'cover', position: 'absolute', bottom: responsiveHeight(70) }}>
                 {loading && transports.length === 0 ? (
                     <View style={{ position: "relative", marginTop: 65 }}>
                         <ActivityIndicator size="large" color="#58A8F9" />
@@ -218,26 +219,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         top: '30%',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        elevation:5
     },
-    buttons: {
-        width: 100,
-        height: 38,
-        backgroundColor: '#58A8F9',
-        position: 'absolute',
+    buttons: { 
+        width: 100, 
+        height: 38, 
+        backgroundColor: '#58A8F9', 
+        position: 'relative', 
         right: 25,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignSelf: 'flex-end',
-    },
-    closeBtn: {
-        position: 'absolute',
-        bottom: 5,
-        left: 120,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignSelf: 'flex-end',
-    }
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignSelf: 'flex-end' 
+      },
+      closeBtn: { 
+        position: 'relative', 
+        bottom: 5, 
+        right: responsiveWidth(14), 
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignSelf: 'flex-end'
+       },
 });
 
 export default index;

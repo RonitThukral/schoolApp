@@ -4,6 +4,7 @@ import React, { useState,useEffect } from 'react';
   import Feather from '@expo/vector-icons/Feather';import { useRouter } from 'expo-router';
 import axios from 'axios';
 import * as Print from 'expo-print';
+import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 
 
@@ -326,31 +327,31 @@ import * as Print from 'expo-print';
         />}
 
           <View style ={styles.footer}>
+          {/* PDF Button */}
+          <TouchableOpacity style={[selectedValue === 'Transport' ? {  position: 'relative',left:'7%',width:'40%',top:responsiveHeight(1)} : {  position: 'relative',left:'5%',width:'40%',top:responsiveHeight(0.9)}]} onPress={generatePdfAndPrint}>
+          <Text style={{color:'#58a8f9',fontSize:14}}>Generate Pdf</Text>
+        </TouchableOpacity>
           <TouchableOpacity style={styles.reset} onPress={handleReset}>
             <Text  style={{color: '#58A8F9', }}>Reset</Text>
           </TouchableOpacity>
           <TouchableOpacity style ={styles.search} onPress={handleSearch}>
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
           </TouchableOpacity>
-          </View>
-          
 
-          {/* PDF Button */}
-          <TouchableOpacity style={[selectedValue === 'Transport' ? {  position: 'relative',bottom:45,left:22,width:'40%'} : {  position: 'relative',bottom:57,left:30,width:'40%'}]} onPress={generatePdfAndPrint}>
-          <Text style={{color:'#58a8f9',fontSize:14}}>Generate Pdf</Text>
-        </TouchableOpacity>
+
+          </View>
+
+     
+
       </View>
 
       
-
-      <View style={{width:'100%',height:1, borderBottomWidth:0.2,position:'relative',bottom:37,borderColor:'grey'}}>
-      </View>
 
 
 
 
 {/* List of students section */}
-<ScrollView style={{ marginTop: -15, marginBottom: 0, backgroundColor: 'white' }} contentContainerStyle={{paddingBottom:30}}>
+<ScrollView style={{ marginTop: -15, marginBottom: 0, backgroundColor: 'white' ,borderTopWidth:0.5,borderColor:'grey'}} contentContainerStyle={{paddingBottom:30,}}>
   {loading && allStudents.length === 0 ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 200 }}>
       <ActivityIndicator size="large" color="#58A8F9" />
@@ -371,12 +372,7 @@ import * as Print from 'expo-print';
             {student.class}
           </Text>
         </View>
-        {/* <AntDesign
-          name="arrowright"
-          size={24}
-          color="#58A8F9"
-          style={{ position: 'relative', right: 30 }}
-        /> */}
+        
         <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: 35 }} />
       </TouchableOpacity>
     ))
@@ -441,15 +437,20 @@ import * as Print from 'expo-print';
       alignSelf: 'center',
       marginTop: 13,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '70%',
-      marginRight: 175
+      // justifyContent: 'space-between',
+
+      width: responsiveWidth(70),
+      // marginRight: 17
+      position: 'relative',
+      right:responsiveWidth(20),
+      paddingLeft:responsiveWidth(8),
+      // paddingRight:responsiveWidth(15)
       
     },
     radioButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginLeft: 60
+      marginLeft: 44
     },
     radioCircle: {
       width: 17,
@@ -505,20 +506,22 @@ import * as Print from 'expo-print';
       flex:1,
       flexDirection: 'row',
       justifyContent: 'flex-end',
+      // position:'relative',
+      // top:responsiveHeight(1)
       
     },
     search: {
       position:'relative',
       right:18,
-      width: 130,
-      height:35,
+      width: responsiveWidth(30),
+      height:responsiveHeight(4.5),
       borderRadius:15,
       backgroundColor: '#58A8F9',
       justifyContent: 'center',
     },
     reset: {
       backgroundColor:'transparent',
-      width: 70,
+      width: responsiveWidth(18),
       height: 35,
       justifyContent:'center',
       marginRight: 15

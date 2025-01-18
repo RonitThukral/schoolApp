@@ -1,15 +1,12 @@
 import React from 'react';
-import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image,Platform } from 'react-native'
 import 'react-native-reanimated';
-import Entypo from '@expo/vector-icons/Entypo';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Foundation from '@expo/vector-icons/Foundation';
 import StudentCard from '../../components/studentcard';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 
 
@@ -61,7 +58,7 @@ const router = useRouter();
     <ScrollView style={styles.container1}>
 
       <View style ={styles.bgimg}>
-        <Image style={{height:245}}  source={require('../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:responsiveWidth(60)}}  source={require('../../../assets/images/images/Vector.png')}/>
       </View>
 
       {/* Statistics section */}
@@ -80,7 +77,7 @@ const router = useRouter();
             <Text style={styles.cardHeading}>{item.name}</Text>
             <View style={styles.cardContent}>
               {item.icon}
-              <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 0 }}>{item.content}</Text>
             </View>
           
           </TouchableOpacity>
@@ -94,7 +91,7 @@ const router = useRouter();
 
 
           {/* main card grid section */}
-<View style= {{position: 'relative', top: 135}}>
+<View style= {{position: 'relative', top: responsiveHeight(15)}}>
 
       <StudentCard /> 
 
@@ -110,25 +107,28 @@ const router = useRouter();
 export const styles = StyleSheet.create({
   container : {
     zIndex: 300,
-     maxWidth : 370,
+     maxWidth : responsiveWidth(90),
      maxHeight : 220,
-     boxShadow: '20px',
-     shadowColor: 'black',
      flex: 1,
      flexDirection: 'column',
      backgroundColor: 'white',
     //  backgroundColor: 'red',
      position: 'relative',
-     top: '19%',
+     top: responsiveHeight(13),
      alignSelf: 'center' ,
      borderRadius: '10%',
      borderColor: 'black',
      elevation: 1.5,
-     shadowOffset: {
-       width: 1,
-       height: 1
-     },
-     shadowOpacity: 10,
+    
+     ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.10,
+        shadowRadius: 3.84,
+      },
+      
+    }),
      
   },
   heading:{
@@ -169,7 +169,7 @@ export const styles = StyleSheet.create({
      
   },
   cardHeading: {
-     fontSize: 12,
+     fontSize: 11,
      padding: 5,
      
   },
@@ -264,6 +264,14 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         // bottom:'60%',
         // backgroundColor:'#daedff',
+
+        ...Platform.select({
+          ios: {
+            width:responsiveWidth(10),
+            transform: [{ scale: 1.02 }],
+          },
+          
+        }),
         
     },
     avatar: 

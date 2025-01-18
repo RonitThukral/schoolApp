@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -138,7 +138,7 @@ const StudentRecord = () => {
       )}
 
       {/* Dropdown Section */}
-      <View>
+      <View style={styles.main}>
         <Dropdown
           style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
@@ -161,6 +161,7 @@ const StudentRecord = () => {
         <TextInput
           style={styles.searchBar}
           placeholder="Search by Id or Name"
+          placeholderTextColor={'grey'}
           value={searchQuery}
           onChangeText={(text) => setSearchQuery(text)}
         />
@@ -224,7 +225,14 @@ const styles = StyleSheet.create({
      alignSelf:'center',
     //  backgroundColor:'red',
     
-     elevation:4
+     elevation:4,
+
+     ...Platform.select({
+      ios: {
+        marginTop:0
+      },
+      
+    }),
     },
     submitButtonText: { color: '#fff', fontSize: 18 },
     submitButton: {
@@ -329,6 +337,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15,
   },
+  main: {
+    ...Platform.select({
+      ios: {
+        marginTop:-50
+      },
+      
+    }),
+  }
 });
 
 export default StudentRecord

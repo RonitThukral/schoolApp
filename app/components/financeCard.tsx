@@ -36,7 +36,7 @@ const FinanceCard = () => {
         <Image source={item.icon} style={[index === 1 ? styles.icon1 : styles.icon , index === 0 ? styles.icon2:styles.icon]} />
         </View>
 
-        <View style={{width:'110%', }}>
+        <View style={{width:'120%', }}>
 
         <Text style={styles.text}>{item.title}</Text>
         </View>

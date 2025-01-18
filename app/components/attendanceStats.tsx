@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Platform } from "react-native";
+import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import { Svg, G, Rect, Text as SvgText } from "react-native-svg";
 
 const { width } = Dimensions.get("window");
@@ -61,7 +62,7 @@ const GroupedBarChart = ({ data1, data2, fullStrength1, fullStrength2, classLabe
             <SvgText
               x={x + barWidth / 1}
               y={chartHeight + 13.5}
-              fontSize={9}
+              fontSize={8}
               textAnchor="middle"
               fill="#666"
               fontWeight="bold"
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     zIndex:8989099
   },
   card: {
-    width: "80%",
+    width: responsiveWidth(90),
     backgroundColor: "#EEF7FF",
     borderRadius: 12,
     padding: 20,
@@ -156,6 +157,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     height: 220,
+    ...Platform.select({
+      ios: {
+width :'85%'
+      },
+      
+    }),
   },
   header: {
     flexDirection: "row",
@@ -195,6 +202,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#888",
     marginLeft: 10,
+    ...Platform.select({
+      ios: {
+        marginLeft:10
+      },
+      
+    }),
   },
   chartContainer: {
     marginBottom: 20,
@@ -205,7 +218,7 @@ const styles = StyleSheet.create({
   },
   yAxisLabel: {
     position: "absolute",
-    left: -50,
+    left: responsiveWidth(-10),
     top: 50,
     fontSize: 11,
     fontWeight: "900",
@@ -215,7 +228,7 @@ const styles = StyleSheet.create({
   },
   svgs: {
     position: "relative",
-    left: 80,
+    left: responsiveWidth(20),
     bottom: 10,
   },
 });

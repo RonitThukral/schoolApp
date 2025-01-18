@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -130,7 +130,7 @@ const StaffAttendance = () => {
       )}
 
       {/* Dropdown Section */}
-      <View>
+      <View style={styles.main}>
         <Dropdown
           style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
@@ -148,6 +148,7 @@ const StaffAttendance = () => {
         <TextInput
           style={styles.searchBar}
           placeholder="Search by Id or Name"
+          placeholderTextColor={'grey'}
           value={searchQuery}
           onChangeText={(text) => setSearchQuery(text)}
         />
@@ -211,7 +212,15 @@ const StaffAttendance = () => {
        alignSelf:'center',
       //  backgroundColor:'red',
       
-       elevation:4
+       elevation:4,
+       
+        ...Platform.select({
+          ios: {
+            marginTop:0
+          },
+          
+        }),
+      
       },
       submitButtonText: { color: '#fff', fontSize: 18 },
       submitButton: {
@@ -250,7 +259,14 @@ const StaffAttendance = () => {
     },
     studentTextid: { fontSize: 18, color: '#007bff' },
     studentText: { fontSize: 14 },
-   
+    main: {
+      ...Platform.select({
+        ios: {
+          marginTop:-50
+        },
+        
+      }),
+    },
     dayContainer: {
       // padding: 10,
       alignItems: 'center',

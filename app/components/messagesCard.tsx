@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity, Platform } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -71,7 +71,9 @@ const MessageCard = () => {
     //   alignSelf:'center'
     position:'relative',
     left:30,
-    top:30
+    top:30,
+    
+
     },
     slide: {
       width: screenWidth,

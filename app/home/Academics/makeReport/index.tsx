@@ -1,9 +1,10 @@
 import React, { useEffect, useState,useCallback } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView , TextInput,KeyboardAvoidingView,Alert} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView , TextInput,KeyboardAvoidingView,Alert, SafeAreaView, Platform} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
 //   import AntDesign from '@expo/vector-icons/AntDesign';
 // import { useRouter } from 'expo-router';
 import axios from 'axios';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
@@ -351,7 +352,7 @@ const [isVisible, setIsVisible] = useState(false)
       const newStudents = filteredStudents.map((s) =>
         s.userID === selectedstu.userID ? selectedstu : s
       );
-      console.log(selectedstu)
+      // console.log(selectedstu)
       const updatedStudents = updateStudentPercentages(newStudents, examMarks, classMarks, examPercentage1, classWorkPercentage1);
       
       await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
@@ -406,7 +407,7 @@ const [isVisible, setIsVisible] = useState(false)
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
         {/* <KeyboardAvoidingView enabled= {true} behavior='padding'> */}
 
       <View style={styles.container}>
@@ -495,7 +496,7 @@ const [isVisible, setIsVisible] = useState(false)
 
           <View style ={styles.footer}>
 
-          {isVisible && <TouchableOpacity style={{flex:1, flexDirection:'row',width:'80%',position:'absolute',right:50,top:4}} onPress={handleSetPercentage1}>
+          {isVisible && <TouchableOpacity style={styles.setPercentBtn} onPress={handleSetPercentage1}>
             <Image style={{width:20,height:20,marginRight:10}} source={require('../../../../assets/images/images/edit.png')}/>
             <Text style={{color:'#58a8f9',fontSize:14}}>Set Percentage</Text>
           </TouchableOpacity>}
@@ -511,10 +512,10 @@ const [isVisible, setIsVisible] = useState(false)
       </View>
 
 {isVisible && <View style={{backgroundColor:'white'}}>
-<View style={{position:'relative', flexDirection:'row', justifyContent:'flex-end',marginHorizontal:15,backgroundColor:'white', right:50,marginBottom:0,paddingVertical:5}}>
+<View style={styles.internalContainer}>
        
-    <Text style={{marginRight:17, fontSize:10}}>Internal ({classMarks})</Text>
-    <Text style={{fontSize:10}}>External ({examMarks})</Text>
+    <Text style={styles.internal}>Internal ({classMarks})</Text>
+    <Text style={styles.external}>External ({examMarks})</Text>
 </View>
 </View>}
 
@@ -526,6 +527,7 @@ const [isVisible, setIsVisible] = useState(false)
             <TextInput
               style={styles.input}
               placeholder={"ClassWork"}
+              placeholderTextColor={'grey'}
               keyboardType="numeric"
               onChangeText={(text) => setClassMarks(text)}
               value={classMarks.toString()}
@@ -533,6 +535,7 @@ const [isVisible, setIsVisible] = useState(false)
             <TextInput
               style={styles.input}
               placeholder={"Exam"}
+              placeholderTextColor={'grey'}
               // onChangeText={(text) => setExamwork(text)}
               // value={examwork}
               onChangeText={(text) => setExamMarks(text)}
@@ -557,6 +560,7 @@ const [isVisible, setIsVisible] = useState(false)
             <TextInput
               style={styles.input}
               placeholder={"ClassWork Percentage"}
+              placeholderTextColor={'grey'}
               onChangeText={(text) => setClassWorkPercentage1(text)}
               // value={classPercentage}
               keyboardType="numeric"
@@ -567,6 +571,7 @@ const [isVisible, setIsVisible] = useState(false)
  <TextInput
               style={styles.input}
               placeholder={"Exam Percentage"}
+              placeholderTextColor={'grey'}
               onChangeText={(text) => setExamPercentage1(text)}
               // value={examPercentage}
               keyboardType="numeric"
@@ -594,6 +599,7 @@ const [isVisible, setIsVisible] = useState(false)
             <TextInput
               style={styles.input}
               placeholder={"Add Class Marks"}
+              placeholderTextColor={'grey'}
               keyboardType='numeric'
               value={editclassWork.toString()}
               onChangeText={(text) => setEditClassWork(text)}
@@ -602,6 +608,7 @@ const [isVisible, setIsVisible] = useState(false)
             <TextInput
               style={styles.input}
               placeholder={"Add Exam Marks"}
+              placeholderTextColor={'grey'}
               keyboardType='numeric'
               onChangeText={(text) => setEditExam(text)}
               value={editexam.toString()}
@@ -634,13 +641,13 @@ const [isVisible, setIsVisible] = useState(false)
         <View style={{ flexDirection:'row'}}>
 <View style={{flexDirection:'row',position:'relative',left:20}}>
 
-            <TextInput style={styles.input1} value={`${student?.classWork || ''}`} editable={false} textAlign='center'/>
-            <TextInput style={styles.input1} value={`${student?.exam || ''}`} editable={false} textAlign='center'  />
+            <TextInput style={styles.input1} placeholderTextColor={'grey'} value={`${student?.classWork || ''}`} editable={false} textAlign='center'/>
+            <TextInput style={styles.input1} placeholderTextColor={'grey'} value={`${student?.exam || ''}`} editable={false} textAlign='center'  />
 
 </View>
             
-          <TouchableOpacity style={{flex:1, flexDirection:'row',position:'relative',left:25,top:4}}  onPress={() => {handleSetMarks(student)}}>
-            <Image style={{width:20,height:20,marginLeft:10}} source={require('../../../../assets/images/images/edit.png')}/>
+          <TouchableOpacity style={{flex:1, flexDirection:'row',position:'relative',left:responsiveWidth(5),top:responsiveHeight(1.5)}}  onPress={() => {handleSetMarks(student)}}>
+            <Image style={styles.edit} source={require('../../../../assets/images/images/edit.png')}/>
           </TouchableOpacity>
 
         </View>
@@ -650,7 +657,7 @@ const [isVisible, setIsVisible] = useState(false)
 </ScrollView>
 
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -741,7 +748,20 @@ const [isVisible, setIsVisible] = useState(false)
       marginBottom: 0,
       marginTop: 20,
       resizeMode:'cover',
-      elevation:3
+      elevation:3,
+
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height:1 },
+          shadowOpacity: 0.20,
+          shadowRadius: 3.84,
+          borderWidth:0.5,
+          borderColor:'grey',
+          
+        },
+        
+      }),
 
     },
     setImg:{
@@ -757,8 +777,8 @@ const [isVisible, setIsVisible] = useState(false)
       
     },
     input1:{
-        width:50,
-        height:40,
+        width:responsiveWidth(11),
+        height:responsiveHeight(6),
         // backgroundColor:'blue',
         marginHorizontal:5,
         borderRadius:10,
@@ -808,6 +828,7 @@ const [isVisible, setIsVisible] = useState(false)
       alignSelf: 'flex-start',
       paddingHorizontal: 35,
       paddingVertical: 15,
+
     },
     inputButtonsContainer: {
       flex: 1,
@@ -865,7 +886,68 @@ const [isVisible, setIsVisible] = useState(false)
       color: 'white',
       fontWeight: '600',
     },
-    
+    setPercentBtn: {
+      flex:1, 
+      flexDirection:'row',
+      width:'80%',
+      position:'absolute',
+      right:50,
+      top:responsiveHeight(1),
+
+     
+    },
+    internal: {
+      marginRight:17, 
+      fontSize:10,
+
+      ...Platform.select({
+        ios: {
+          fontSize:11,
+        },
+        
+      }),
+
+    },
+    external:{
+      fontSize:10,
+
+      ...Platform.select({
+        ios: {
+          fontSize:11,
+        },
+        
+      }),
+    },
+    internalContainer:{
+      position:'relative', 
+      flexDirection:'row', 
+      justifyContent:'flex-end',
+      marginHorizontal:15,
+      backgroundColor:'white', 
+      right:50,
+      marginBottom:0,
+      paddingVertical:5,
+
+      ...Platform.select({
+        ios: {
+          right:35       
+        },
+        
+      }),
+
+    },
+    edit: {
+      width:20,
+      height:20,
+      marginLeft:10,
+      ...Platform.select({
+        ios: {
+          marginLeft:0,
+          top:5       
+        },
+        
+      }),
+    }
 
   });
 

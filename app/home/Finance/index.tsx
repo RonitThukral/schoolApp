@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import FinancialStatistics from '../../components/financeStats';
 import FinanceCard from '../../components/financeCard';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 
@@ -58,19 +59,18 @@ const router = useRouter();
     <ScrollView style={styles.container1}>
 
       <View style ={styles.bgimg}>
-        <Image style={{height:255}} source={require('../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:responsiveWidth(60)}} source={require('../../../assets/images/images/Vector.png')}/>
       </View>
 
       {/* Financial Statistics section */}
-<View style={{position:'relative', top:135,backgroundColor:'white'}}>
+<View style={{position:'relative', top:responsiveHeight(15),backgroundColor:'white'}}>
 
      <FinancialStatistics />
 </View>
 
 
-
           {/* main card grid section */}
-<View style= {{position: 'relative', top: 130,backgroundColor:'white'}}>
+<View style= {{position: 'relative', top: responsiveHeight(13),backgroundColor:'white'}}>
 
       <FinanceCard /> 
 

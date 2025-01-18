@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaView, Platform } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import * as Print from 'expo-print';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -118,7 +119,7 @@ const DropdownComponent = () => {
   };
 
   return (
-    <>
+    <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         <Dropdown
           style={[styles.dropdown]}
@@ -158,7 +159,7 @@ const DropdownComponent = () => {
 
         <View style={styles.footer}>
 
-        <TouchableOpacity style={{position:'absolute',left:30,top:5}} onPress={generatePDF}>
+        <TouchableOpacity style={{position:'absolute',left:30,top:responsiveHeight(0.8)}} onPress={generatePDF}>
             <Text style={{ color: '#58a8f9', fontSize: 15 }}>Print PDF</Text>
           </TouchableOpacity>
 
@@ -190,7 +191,7 @@ const DropdownComponent = () => {
             </TouchableOpacity>
         ))}
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
@@ -282,7 +283,16 @@ export default DropdownComponent;
       alignSelf:'center',
       marginBottom: 10,
       marginTop: 6,
-      elevation:8
+      elevation:8,
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.20,
+          shadowRadius: 3.84,
+        },
+        
+      }),
     },
     stImg:{
       width:60,

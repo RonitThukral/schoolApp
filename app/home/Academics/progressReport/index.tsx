@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, SafeAreaView,Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, SafeAreaView,Image, Platform } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
@@ -102,7 +102,7 @@ const DropdownComponent = () => {
     });
   };
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         {/* {renderLabel(value)} */}
         <Dropdown
@@ -202,7 +202,7 @@ const DropdownComponent = () => {
 </ScrollView>
 </SafeAreaView>
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -293,7 +293,17 @@ const DropdownComponent = () => {
       marginBottom: 0,
       marginTop: 20,
       resizeMode:'cover',
-      elevation:3
+      elevation:3,
+
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.20,
+          shadowRadius: 3.84,
+        },
+        
+      }),
 
     },
     setImg:{

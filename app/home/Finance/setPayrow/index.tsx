@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView} from 'react-native';
   import Entypo from '@expo/vector-icons/Entypo';
   import axios from 'axios';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
 
@@ -104,7 +105,7 @@ const feeData = [
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
 
       
@@ -127,12 +128,12 @@ const feeData = [
     }
 </ScrollView>
 
-<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'relative', borderRadius:100, bottom:100, justifyContent:'center',left:270,alignItems:'center'}} >
+<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'relative', borderRadius:100, bottom:100, justifyContent:'center',left:responsiveWidth(65),alignItems:'center'}} >
       <Entypo name="plus" size={40} color="white" />
       </TouchableOpacity>
 
 </View>
-      </>
+      </SafeAreaView>
     );
   };
 

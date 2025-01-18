@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image,SafeAreaView,Platform } from 'react-native'
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -10,6 +10,7 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import Feather from '@expo/vector-icons/Feather';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 
@@ -55,6 +56,8 @@ export default function Home(): any {
 
   return (
     <>
+
+    <SafeAreaView style={{flex:1}}>
     <ScrollView style={styles.container1}>
       {/* Header Section */}
       <View style={styles.header}>
@@ -109,16 +112,18 @@ export default function Home(): any {
       </View>
 
           {/* main card grid section */}
-<View style= {{position: 'relative', top: 80}}>
+<View style= {{position: 'relative', top: '5%'}}>
 
       <MainCard /> 
 
 </View>
+
       <View style ={styles.dashboardSection}>
       <Dashboard/>
       </View>
       </ScrollView>
-    
+
+      </SafeAreaView>
     </>
 
   );
@@ -127,10 +132,10 @@ export default function Home(): any {
 export const styles = StyleSheet.create({
   container : {
     zIndex: 300,
-     maxWidth : 350,
+     maxWidth : responsiveWidth(85) ,
      maxHeight : 220,
-     boxShadow: '20px',
-     shadowColor: 'black',
+    //  boxShadow: '20px',
+    //  shadowColor: 'black',
      flex: 1,
      flexDirection: 'column',
      backgroundColor: 'white',
@@ -141,11 +146,18 @@ export const styles = StyleSheet.create({
      borderRadius: '10%',
      borderColor: 'black',
      elevation: 1.5,
-     shadowOffset: {
-       width: 1,
-       height: 1
-     },
-     shadowOpacity: 10,
+
+     ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.10,
+        shadowRadius: 3.84,
+      },
+      
+    }),
+    
+    //  shadowOpacity: 10,
      
   },
   heading:{
@@ -251,7 +263,6 @@ export const styles = StyleSheet.create({
       opacity: 1,
       zIndex:500,
       
-
     },
     noticesSection: {
       position: 'relative',
@@ -262,14 +273,31 @@ export const styles = StyleSheet.create({
       borderRadius: 10,
       width: '80%',
       alignSelf: 'center',
-      top: '4%'
+      top: '4%',
+
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+        },
+        
+      }),
     },
     noticeText: {
       fontSize: 12,
       color: '#7e7e7e',
+
+      ...Platform.select({
+        ios: {
+         fontSize:12
+        },
+       
+      }),
     },
     dashboardSection: {
-      marginTop: 120,
+      marginTop: '30%',
       marginBottom: 20,
       backgroundColor: '#ffffff',
       borderRadius: 16,
@@ -285,8 +313,14 @@ export const styles = StyleSheet.create({
         height: 'auto',
         position: 'absolute',
         
-        
-        
+        ...Platform.select({
+          ios: {
+            width:responsiveWidth(10),
+            // left:5,
+            transform: [{ scale: 1.02 }],
+          },
+          
+        }),
     },
     avatar: 
     {
@@ -299,3 +333,5 @@ export const styles = StyleSheet.create({
     }
  }
 )
+
+

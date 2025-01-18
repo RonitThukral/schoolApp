@@ -33,10 +33,11 @@ const contactInfo = () => {
           
         </View>
         <View style={styles.container}>
-          <TextInput style={styles.input} placeholder="Sms Number" />
-          <TextInput style={styles.input} placeholder="Mobile Number" />
-          <TextInput style={styles.areaInputResi} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top'/>
-          <TextInput style={styles.areaInputPost} placeholder="Postal Address" numberOfLines={3} multiline textAlignVertical='top'/>
+          <TextInput style={styles.input} placeholder="Sms Number" placeholderTextColor={'grey'}
+ />
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Mobile Number" />
+          <TextInput style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top'/>
+          <TextInput style={styles.areaInputPost} placeholderTextColor={'grey'} placeholder="Postal Address" numberOfLines={3} multiline textAlignVertical='top'/>
           </View>
 
           <View style={{flex:1, flexDirection:'row',position:'relative',paddingVertical:120 ,width:"80%",justifyContent:'space-between',alignSelf:'center',bottom:1}}>

@@ -2,6 +2,7 @@ import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, Sty
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -110,7 +111,7 @@ const index = () => {
       <ImageBackground
         source={require('../../../../assets/images/images/union.png')}
         style={styles.background}
-        imageStyle={{ resizeMode: 'cover', position: 'absolute', bottom: 580 }}
+        imageStyle={{ resizeMode: 'cover', position: 'absolute', bottom: responsiveHeight(70) }}
       >
                 
 
@@ -223,6 +224,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     top: '30%',
     flexDirection: 'column',
+    elevation:5
   },
   inputHeader: {
     fontSize: 24,

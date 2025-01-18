@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 
@@ -102,7 +102,7 @@ const DropdownComponent = () => {
   );
 
   return (
-    <>
+    <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         <Dropdown
           style={[styles.dropdown]}
@@ -146,7 +146,7 @@ const DropdownComponent = () => {
             ))
           ))}
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

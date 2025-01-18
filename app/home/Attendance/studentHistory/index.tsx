@@ -299,7 +299,7 @@
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -437,7 +437,7 @@ const StudentHistory = () => {
         )}
 
         {/* Dropdown Section */}
-        <View style={{ marginTop: 0 }}>
+        <View style={styles.main}>
           <Dropdown
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
@@ -460,6 +460,7 @@ const StudentHistory = () => {
           <TextInput
             style={styles.searchBar}
             placeholder="Search by Id or Name"
+            placeholderTextColor={'grey'}
             value={searchQuery}
             onChangeText={(text) => setSearchQuery(text)}
           />
@@ -525,7 +526,23 @@ const styles = StyleSheet.create({
      alignSelf:'center',
     //  backgroundColor:'red',
     
-     elevation:4
+     elevation:4,
+  
+      ...Platform.select({
+        ios: {
+          marginTop:0
+        },
+        
+      }),
+    
+    },
+    main: {
+      ...Platform.select({
+        ios: {
+          marginTop:-50
+        },
+        
+      }),
     },
   searchBar: {
     width: '90%',

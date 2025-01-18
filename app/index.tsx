@@ -11,16 +11,16 @@ const index = () => {
   const router = useRouter()
 
  const  handlePress = () => {
-  router.navigate('/auth/login')
+  router.navigate('/home')
   }
   
   return (
-    <Login/>
-    // <TouchableOpacity onPress={handlePress} style={{width:'60%', height:100, backgroundColor:'grey'}}>
-    // <View style={{justifyContent: 'center', flex: 1, alignItems:'center'}}>
-    //   <Text>Home</Text>
-    // </View>
-    // </TouchableOpacity>
+    // <Login/>
+    <TouchableOpacity onPress={handlePress} style={{ alignSelf:'center' ,width:'60%', height:100, backgroundColor:'grey',position:'relative',top:'50%'}}>
+    <View style={{justifyContent: 'center', flex: 1, alignItems:'center'}}>
+      <Text>Home</Text>
+    </View>
+    </TouchableOpacity>
   )
 }
 

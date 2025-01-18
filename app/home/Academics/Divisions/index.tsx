@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';  
   import Entypo from '@expo/vector-icons/Entypo';
 import { Alert } from 'react-native';
 import axios from 'axios'; // Assuming axios is installed
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
@@ -226,7 +227,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         {/* {renderLabel(value)} */}
         <Dropdown
@@ -305,9 +306,9 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
 {(isOpen || edit) && <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{edit ? 'Edit Notice' : 'Add Notice'}</Text>
 
-    <TextInput style={styles.input} placeholder={edit ? "Edit Name" : "Add Name"} onChangeText={handleTitle} value={name}/>
+    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Name" : "Add Name"} onChangeText={handleTitle} value={name}/>
 
-    <TextInput style={styles.inputDesc} placeholder={edit ? "Edit Description" : "Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+    <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={edit ? "Edit Description" : "Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
   
 
 
@@ -325,7 +326,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
     </View>}
 
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -434,7 +435,7 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
       },
       listBtns:{
         position:'absolute',
-        right:35,
+        right:responsiveWidth(3),
         bottom:10
       },
 
@@ -470,14 +471,15 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
         alignSelf:'center',
         top:'30%',
         flexDirection:'column',
-        zIndex:900000
+        zIndex:900000,
 // marginVertical:15
+elevation:5
       },
       buttons:{
         width:80,
         height:30,
         backgroundColor: '#58A8F9',
-        position:'absolute',
+        position:'relative',
         bottom:13,
         right:35,
         borderRadius:20,
@@ -486,12 +488,13 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
           },
     
         closeBtn:{
-        position:'absolute',
+        position:'relative',
         bottom:15,
-        left:150,
+        right:responsiveWidth(15),
         borderRadius:20,
         justifyContent:'center',
         alignSelf:'flex-end',
+
           }
     
     

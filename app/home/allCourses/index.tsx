@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView, SafeAreaView, Platform} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
@@ -63,7 +63,7 @@ const courseData = [
           name: `${teacher.name} ${teacher.surname}`
         }))
         setTeachers(formatedData)
-        console.log(teachers); // You can now use the teachers data as needed
+        // console.log(teachers); // You can now use the teachers data as needed
       } catch (error) {
         console.error('Error fetching teachers:', error);
       }
@@ -83,7 +83,7 @@ const courseData = [
           teacher: teacherData ? `${teacherData.name}`: 'N/A'
 
         }})
-        console.log('Response  :  ', response.data  )
+        // console.log('Response  :  ', response.data  )
         setCourses(formattedData)
         setFilteredCourses(formattedData)
       } catch (error) {
@@ -143,7 +143,7 @@ const courseData = [
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         {/* {renderLabel(value)} */}
         <Dropdown
@@ -250,7 +250,7 @@ const courseData = [
 </ScrollView>
 
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -339,6 +339,18 @@ const courseData = [
       marginTop: 20,
       elevation:5,
     //   borderWidth: 0.5
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height:1 },
+        shadowOpacity: 0.20,
+        shadowRadius: 3.84,
+        borderWidth:0.5,
+        borderColor:'grey'
+      },
+      
+    }),
+    
     },
    
     listContent:{

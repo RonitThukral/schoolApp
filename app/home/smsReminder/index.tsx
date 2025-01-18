@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView,ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView,ScrollView, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const students = [
     { id: 'BK202408', name: 'Deepak Kumar', isSelected: true, class: '10A',"academicYear": "2024-2025",
@@ -78,7 +79,7 @@ const handleSend = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{height:'40%'}}>
+      <View style={{height:responsiveHeight(38)}}>
 <View style={{marginTop:50}}>
 
         <Dropdown
@@ -152,7 +153,7 @@ const handleSend = () => {
         data={filteredStudents}
         keyExtractor={(item) => item.id}
         style={styles.list}
-        contentContainerStyle={{ paddingBottom: 20}} // Adds spacing at the bottom for better scrolling
+        contentContainerStyle={{ paddingBottom: 20,paddingTop:20}} // Adds spacing at the bottom for better scrolling
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.studentCard} onPress={() => selectStudent(item.id)} >
             <Image source={require('../../../assets/images/images/boy.png')} style={styles.img} />
@@ -178,7 +179,7 @@ const handleSend = () => {
 
     {/* <TextInput style={styles.input} placeholder={edit ? "Edit Name" : "Add Name"} onChangeText={handleTitle} value={name}/> */}
 
-    <TextInput style={styles.inputDesc} placeholder={"Edit Message" } multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+    <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={"Edit Message" } multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
   
 
 
@@ -247,6 +248,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center',
+    width:'90%',
+    alignSelf:'center',
+    ...Platform.select({
+      ios:{
+        width:'90%',
+        alignSelf:'center'
+      }
+    })
   },
   submitButtonText: { color: '#fff', fontSize: 18 },
   dayContainer: {
@@ -268,7 +277,8 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height:responsiveHeight(80),
+    // backgroundColor:'red'
   },
   dropdown: {
     height: 50,
@@ -300,7 +310,8 @@ const styles = StyleSheet.create({
     // zIndex: 100000,
     position:'relative',
     right:20,
-    top:10
+    top:responsiveHeight(0.7),
+    // bottom:responsiveHeight(4),
   },
   search: {
     width: 110,
@@ -348,29 +359,27 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     top:'30%',
     flexDirection:'column',
-    zIndex:900000
-// marginVertical:15
+    zIndex:900000,
+    elevation:5
   },
-  buttons:{
-    width:80,
-    height:30,
-    backgroundColor: '#58A8F9',
-    position:'absolute',
-    bottom:13,
-    right:35,
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
-      },
-
-    closeBtn:{
-    position:'absolute',
-    bottom:15,
-    left:120,
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
-      }
+  buttons: { 
+    width: 100, 
+    height: 38, 
+    backgroundColor: '#58A8F9', 
+    position: 'relative', 
+    right: 25,
+    borderRadius: 20, 
+    justifyContent: 'center', 
+    alignSelf: 'flex-end' 
+  },
+  closeBtn: { 
+    position: 'relative', 
+    bottom: 5, 
+    right: responsiveWidth(14), 
+    borderRadius: 20, 
+    justifyContent: 'center', 
+    alignSelf: 'flex-end'
+   },
 
 });
 

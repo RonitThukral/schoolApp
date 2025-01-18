@@ -2,6 +2,7 @@ import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, Sty
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Import axios
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual API URL
 
@@ -180,26 +181,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignSelf: 'center', 
     top: '30%', 
-    flexDirection: 'column'
+    flexDirection: 'column',
+    elevation:5
    },
-  buttons: { 
+   buttons: { 
     width: 100, 
     height: 38, 
     backgroundColor: '#58A8F9', 
-    position: 'absolute', 
+    position: 'relative', 
     right: 25,
     borderRadius: 20, 
     justifyContent: 'center', 
     alignSelf: 'flex-end' 
   },
   closeBtn: { 
-    position: 'absolute', 
+    position: 'relative', 
     bottom: 5, 
-    left: 120, 
+    right: responsiveWidth(14), 
     borderRadius: 20, 
     justifyContent: 'center', 
     alignSelf: 'flex-end'
-   }
+   },
 });
 
 export default index;

@@ -122,9 +122,9 @@ const Slider = () => {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-    //   alignSelf:'center'
+      alignSelf:'center',
       position:'relative',
-      left:30
+      left:'6%'
     },
     slide: {
       width: screenWidth,
@@ -222,7 +222,7 @@ const Slider = () => {
     
     text: {
       textAlign: "center",
-      fontSize: 13,
+      fontSize: 12,
       color: "#333",
       fontWeight:'500',
       marginBottom:10
@@ -231,10 +231,9 @@ const Slider = () => {
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      marginVertical: 10,
-      position:'absolute',
-      left:"42%",
-      top:"105%"
+      position:'relative',
+      right:"5%",
+      top:"6%"
     },
     dot: {
       width: 8,

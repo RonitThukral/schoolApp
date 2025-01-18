@@ -72,17 +72,18 @@ const AddStudent = () => {
         <Text style={{position:'absolute', top:210 , left:40, fontSize:22,fontWeight:'600', marginVertical:5}}>Personal Information</Text>
 
         <View style={styles.container}>
-          <TextInput style={styles.input} placeholder="First Name" editable={activeField==='doa'? false : true}/>
-          <TextInput style={styles.input} placeholder="Last Name" editable={activeField==='doa' ? false : true}/>
-          <TextInput style={styles.input} placeholder="Category" editable={activeField==='doa'  ? false : true}/>
-          <TextInput style={styles.input} placeholder="Caste" editable={activeField==='doa' ? false : true}/>
-          <TextInput style={styles.input} placeholder="Email" editable={activeField==='doa' ? false : true}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="First Name" editable={activeField==='doa'? false : true}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name" editable={activeField==='doa' ? false : true}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Category" editable={activeField==='doa'  ? false : true}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Caste" editable={activeField==='doa' ? false : true}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Email" editable={activeField==='doa' ? false : true}/>
 
           {/* Date of Admission */}
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
             <TextInput
               style={styles.dateInput}
               placeholder="Date of Birth"
+              placeholderTextColor={'grey'}
               value={dob} // Display the formatted date
               editable={false} // Read-only input
             />
@@ -91,15 +92,6 @@ const AddStudent = () => {
             </TouchableOpacity>
           </View>
 
-          {/* {openCalendar && (
-            <View style={[ activeField === 'dob' ? styles.calendarContainer : styles.calendarContainer1]}>
-              <DateTimePicker
-                mode="single"
-                date={date.toDate()} // Pass date as a JavaScript Date object
-                onChange={onDateChange} // Handle date selection
-              />
-            </View>
-          )} */}
 
           {/* Dropdown */}
           <Dropdown
@@ -117,17 +109,7 @@ const AddStudent = () => {
             onChange={(item) => setSelectedID(item.value)}
           />
 
-{/* <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-            <TextInput
-              style={styles.dateInput}
-              placeholder="Date of Admission"
-              value={doa} // Display the formatted date
-              editable={false} // Read-only input
-            />
-            <TouchableOpacity style={{ position: 'absolute', left: '80%', top: '25%' }} onPress={()=>{handleDate('doa')}}>
-              <Image source={require('../../../../assets/images/images/Frame.png')} />
-            </TouchableOpacity>
-          </View> */}
+
 
 
         </View>

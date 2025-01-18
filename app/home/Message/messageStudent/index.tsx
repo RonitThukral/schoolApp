@@ -1,7 +1,8 @@
-import { View, Text , StyleSheet,TextInput,TouchableOpacity} from 'react-native'
+import { View, Text , StyleSheet,TextInput,TouchableOpacity, Platform} from 'react-native'
 import { Dropdown } from 'react-native-element-dropdown';
 import { useState } from 'react';
 import React from 'react'
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 
 const classes = [
@@ -83,7 +84,8 @@ const index = () => {
         />
 
 
-<TextInput style={styles.areaInputResi} placeholder="Enter Message" numberOfLines={4} multiline textAlignVertical='top'/>
+<TextInput style={styles.areaInputResi} placeholder="Enter Message"           placeholderTextColor={'grey'}
+ numberOfLines={4} multiline textAlignVertical='top'/>
 
 
 <View style ={styles.footer}>
@@ -101,7 +103,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 16,
         paddingVertical:80,
-        flex:1
+        flex:1,
+
+        
+        ...Platform.select({
+          ios: {
+            position:'relative',
+            top:responsiveHeight(3)
+        },
+          
+        }),
         
       },
       dropdown: {
@@ -111,7 +122,7 @@ const styles = StyleSheet.create({
       //   borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-        backgroundColor:'#EEF7FF',
+        backgroundColor:'#daedff',
         marginBottom: 15,
         alignSelf: 'center'
       },
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
       areaInputResi: {
         width: '90%',
         height: 180,
-        backgroundColor: '#EEF7FF',
+        backgroundColor: '#daedff',
         // backgroundColor: 'red',
         marginBottom: 15,
         borderRadius: 10,

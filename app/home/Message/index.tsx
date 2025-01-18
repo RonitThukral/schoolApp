@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image, Platform } from 'react-native'
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -9,6 +9,7 @@ import MessageCard from '../../components/messagesCard';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 
@@ -60,7 +61,7 @@ const router = useRouter();
     <ScrollView style={styles.container1}>
 
       <View style ={styles.bgimg}>
-        <Image style={{height:255}} source={require('../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:responsiveWidth(60)}} source={require('../../../assets/images/images/Vector.png')}/>
       </View>
 
       {/* Statistics section */}
@@ -93,7 +94,7 @@ const router = useRouter();
 
 
           {/* main card grid section */}
-<View style= {{position: 'relative', top: 120}}>
+<View style= {{position: 'relative', top: responsiveHeight(14)}}>
 
       <MessageCard /> 
 
@@ -109,7 +110,7 @@ const router = useRouter();
 export const styles = StyleSheet.create({
   container : {
     zIndex: 300,
-     maxWidth : 350,
+     maxWidth : responsiveWidth(90),
      maxHeight : 220,
      boxShadow: '20px',
      shadowColor: 'black',
@@ -118,17 +119,24 @@ export const styles = StyleSheet.create({
      backgroundColor: 'white',
     //  backgroundColor: 'red',
      position: 'relative',
-     top: '28%',
+     top: responsiveWidth(30),
      alignSelf: 'center' ,
      borderRadius: '10%',
      borderColor: 'black',
      elevation: 1.5,
-     shadowOffset: {
-       width: 1,
-       height: 1
-     },
-     shadowOpacity: 10,
-     paddingHorizontal:10
+     paddingHorizontal:10,
+     ...Platform.select({
+      ios:{
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height:1 },
+            shadowOpacity: 0.20,
+            shadowRadius: 3.84,
+            // borderWidth:0.5,
+            // borderColor:'grey',
+            height:1000
+
+      }
+    }),
      
   },
   heading:{

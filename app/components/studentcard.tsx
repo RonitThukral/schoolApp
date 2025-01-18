@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity,ScrollView } from "react-native";
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity,ScrollView, Platform } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -35,13 +35,13 @@ const StudentCard = () => {
     }
   
     const renderItem = ({ item,index }) => (
-      <TouchableOpacity style={[index <= 5 ? styles.card: styles.card1]} onPress={() => {handlePress(item.linking)}}>
+      <TouchableOpacity style={[index <= 5 ? styles.card : styles.card1]} onPress={() => {handlePress(item.linking)}}>
         <View style={{width:'80%', height:'85%'}}>
 
         <Image source={item.icon} style={styles.icon} />
         </View>
 
-        <View style={{width:'110%', }}>
+        <View style={{width:'115%', }}>
 
         <Text style={styles.text}>{item.title}</Text>
         </View>
@@ -77,9 +77,15 @@ const StudentCard = () => {
       justifyContent: "center",
     //   alignSelf:'center'
     position:'relative',
-    left:30,
+    left:'5%',
     // backgroundColor:'red',
-    height:400
+    height:400,
+
+    ...Platform.select({
+      ios:{
+height:1000
+      }
+    })
     },
     slide: {
       width: screenWidth,
@@ -105,7 +111,8 @@ const StudentCard = () => {
       height:100,
       position:'relative',
       left:'15%',
-      top:5
+      top:5,
+      zIndex:9999999
     },
     icon: {
       width: 52,

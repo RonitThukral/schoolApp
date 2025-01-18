@@ -14,7 +14,7 @@ const _layout = () => {
     <Stack.Screen name='home/Inventory/index' options={{title: 'Store',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/Banking/index' options={{title: 'Banking',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/feePayment/feeDetails/index' options={{title: 'Fee Details',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
-    <Stack.Screen name='home/Finance/Transactions/index' options={{title: 'Transactions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true, headerTitleStyle:{color: 'white'}, headerTintColor:'white'}}/>
+    <Stack.Screen name='home/Finance/Transactions/index' options={{title: 'Transactions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/recordFeePayment/index' options={{title: 'Record Fee Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true, headerTitleStyle:{color: 'white'}, headerTintColor:'white'}}/>
     <Stack.Screen name='home/Finance/feePayment/index' options={{title: 'Fee Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/setPayrow/index' options={{title: 'Set Payrow',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
@@ -35,7 +35,7 @@ const _layout = () => {
 
     <Stack.Screen name='home/Academics/progressReport/reportCard/index' options={{title: 'Report Card',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Academics/progressReport/index' options={{title: 'Progress Report',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
-    <Stack.Screen name='home/Academics/Calender/index' options={{title: 'Calender',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true, headerTitleStyle:{color: 'white'}, headerTintColor:'white'}}/>
+    <Stack.Screen name='home/Academics/Calender/index' options={{title: 'Calender',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Academics/makeReport/index' options={{title: 'Make Report',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Academics/Divisions/index' options={{title: 'Divisions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Academics/combinedReport/index' options={{title: 'Combined Reports',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
@@ -55,8 +55,9 @@ const _layout = () => {
 
     <Stack.Screen name='home/Teachers/allStaff/staffDetails/index' options={{title: 'Staff Details',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
 
-    <Stack.Screen name='home/Teachers/Payrow/index' options={{title: 'Payrow',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
-    <Stack.Screen name='home/Teachers/Payment/index' options={{title: 'Payment',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
+    <Stack.Screen name='home/Teachers/Payment/Payrow/index' options={{title: 'Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
+    <Stack.Screen name='home/Teachers/Payment/index' options={{title: 'Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
+    <Stack.Screen name='home/Teachers/Payment/Payslip/index' options={{title: 'Make Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Teachers/Deductions/index' options={{title: 'Deductions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
 
     <Stack.Screen name='home/Teachers/addStaff/nextOfKinInfo' options={{title: 'Next Of Kin',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
@@ -66,7 +67,7 @@ const _layout = () => {
     <Stack.Screen name='home/Teachers/allStaff/index' options={{title: 'All Staff',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Teachers/index' options={{title: 'Teachers',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/students/studentPromotion/index' options={{title: 'Student Promotions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
-    <Stack.Screen name='home/students/Scholarships/index' options={{title: 'Scholarships',headerStyle:{backgroundColor:'#daedff'}, headerTransparent:true}}/>
+    <Stack.Screen name='home/students/Scholarships/index' options={{title: 'Scholarships',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/students/Transport/index' options={{title: 'Transport',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/students/Campuses/index' options={{title: 'Campuses',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/students/prefects/index' options={{title: 'Prefects',headerStyle:{backgroundColor:'#FFFFFF'}, headerTransparent:true}}/>
@@ -78,9 +79,9 @@ const _layout = () => {
     <Stack.Screen name='home/students/allStudents/index' options={{title: 'All Students'}}/>
 
     <Stack.Screen name='home/Timetable/index' options={{title: 'Timetable',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
-    <Stack.Screen name='home/Settings/index' options={{title: 'Settings',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
-    <Stack.Screen name='home/Certificates/index' options={{title: 'Certificates',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
-    <Stack.Screen name='home/Liberary/index' options={{title: 'Liberary',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
+    <Stack.Screen name='home/Settings/index' options={{title: 'Settings',headerStyle:{backgroundColor:'white'},headerTransparent:true}}/>
+    <Stack.Screen name='home/Certificates/index' options={{title: 'Certificates',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
+    <Stack.Screen name='home/Liberary/index' options={{title: 'Library',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
     {/* <Stack.Screen name='auth/login' options={{title: 'login',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/> */}
     <Stack.Screen name='home/index' options={{title: 'Home',headerShown:false}}/>
     <Stack.Screen name='home/students/index' options={{title: 'Students',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>

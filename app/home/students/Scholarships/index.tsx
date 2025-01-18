@@ -205,7 +205,7 @@ const index = () => {
           )}
           </View>
 
-          <TouchableOpacity
+          {!(isOpen || edit) && <TouchableOpacity
             style={{
               width: 80,
               height: 80,
@@ -222,7 +222,7 @@ const index = () => {
             onPress={handlePlus}
           >
             <Entypo name="plus" size={40} color="white" />
-          </TouchableOpacity>
+          </TouchableOpacity>}
 
           {isOpen && (
             <View style={styles.inputContainer}>
@@ -363,6 +363,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     top: '21%',
     paddingVertical: 20,
+    zIndex:8898,
+    elevation:5
   },
   buttons: {
     width: 100,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image, Platform } from 'react-native'
 import 'react-native-reanimated';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import TeacherCard from '../../components/teacherCard';
@@ -7,6 +7,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 export default function Home(): any {
@@ -57,7 +58,7 @@ const router = useRouter();
     <ScrollView style={styles.container1}>
 
       <View style ={styles.bgimg}>
-        <Image style={{height:250}} source={require('../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:responsiveWidth(60)}} source={require('../../../assets/images/images/Vector.png')}/>
       </View>
 
       {/* Statistics section */}
@@ -90,7 +91,7 @@ const router = useRouter();
 
 
           {/* main card grid section */}
-<View style= {{position: 'relative', top:115}}>
+<View style= {{position: 'relative', top:responsiveHeight(12)}}>
 
       <TeacherCard /> 
 
@@ -106,25 +107,28 @@ const router = useRouter();
 export const styles = StyleSheet.create({
   container : {
     zIndex: 300,
-     maxWidth : 350,
+     maxWidth : responsiveWidth(92),
      maxHeight : 220,
-     boxShadow: '20px',
-     shadowColor: 'black',
      flex: 1,
      flexDirection: 'column',
      backgroundColor: 'white',
     //  backgroundColor: 'red',
      position: 'relative',
-     top: '28%',
+     top: responsiveHeight(14),
      alignSelf: 'center' ,
      borderRadius: '10%',
      borderColor: 'black',
      elevation: 1.5,
-     shadowOffset: {
-       width: 1,
-       height: 1
-     },
-     shadowOpacity: 10,
+   
+     ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.20,
+        shadowRadius: 3.84,
+      },
+      
+    }),
      
   },
   heading:{
@@ -259,6 +263,15 @@ export const styles = StyleSheet.create({
         height: 'auto',
         position: 'absolute',
         
+        ...Platform.select({
+          ios: {
+            width:responsiveWidth(10),
+            transform: [{ scale: 1.02 }],
+          },
+          
+        }),
+        
+
     },
     avatar: 
     {

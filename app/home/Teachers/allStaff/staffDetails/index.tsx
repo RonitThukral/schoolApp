@@ -8,10 +8,12 @@ import {
   ScrollView,
   SafeAreaView,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
+import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -30,7 +32,6 @@ const StaffDetails = () => {
     try {
       const response = await axios.get(`${baseUrl}/teachers/${staffId}`);
       if (response.status === 200) {
-        // console.log(response.data.teacher)
         setTeacher(response.data.teacher);
       } else {
         console.error('Failed to fetch teacher details. Status:', response.status);
@@ -215,9 +216,9 @@ const StaffDetails = () => {
             </ScrollView>
           </>
         ) : (
-          <Text style={{ textAlign: 'center', marginTop: 20 }}>
-            Loading teacher details...
-          </Text>
+<View style={{ position: "relative",top:'45%'}}>
+          <ActivityIndicator size="large" color="#58A8F9" />
+          </View>
         )}
       </View>
     </SafeAreaView>
@@ -343,6 +344,7 @@ const styles = StyleSheet.create({
   value: {
     color:'grey',
     fontSize: 11.5,
+    paddingLeft:responsiveWidth(4)
   },
   rule1:{
     height:0.5, 
@@ -367,7 +369,9 @@ const styles = StyleSheet.create({
     // width:'70%',
     // marginTop:10,
     fontSize:12,
-    color:'grey'
+    color:'grey',
+    paddingLeft:responsiveWidth(4)
+
   }
 });
 

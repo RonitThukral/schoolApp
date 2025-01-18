@@ -225,87 +225,13 @@ const academicInfo = () => {
         />
 
 
-         <TextInput style={styles.input} placeholder="Account Number" />
-         <TextInput style={styles.input} placeholder="Qualification" />
-         <TextInput style={styles.input} placeholder="Basic Salary" keyboardType='numeric' />
-         <TextInput style={styles.input} placeholder="Allowance" keyboardType='numeric'/>
-         <TextInput style={styles.input} placeholder="Year Of Experience" keyboardType='numeric'/>
+         <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Account Number" />
+         <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Qualification" />
+         <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Basic Salary" keyboardType='numeric' />
+         <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Allowance" keyboardType='numeric'/>
+         <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Year Of Experience" keyboardType='numeric'/>
 
-    {/* <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-        //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.busVan}
-        //   search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Bus/Van'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('class')}
-          onBlur={handleBlur}
-          value={dummyData.busVan.value}
-          onChange={(item) => (item.value)}
-       
-        />
-    <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-        //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.scholarship}
-        //   search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Scolarship'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('class')}
-          onBlur={handleBlur}
-          value={dummyData.scholarship.value}
-          onChange={(item) => (item.value)}
-       
-        />
-    <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          dropdownPosition='top'
-        //   containerStyle={styles.dropdownContainer}
-        //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.feeCategory}
-        //   search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Fee Category'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('class')}
-          onBlur={handleBlur}
-          value={dummyData.feeCategory.value}
-          onChange={(item) => (item.value)}
-       
-        />
-    <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          dropdownPosition='top'
-        //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.campus}
-        //   search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Campus'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('class')}
-          onBlur={handleBlur}
-          value={dummyData.campus.value}
-          onChange={(item) => (item.value)}
-       
-        /> */}
+   
     </View>
 
     <View style={{flex:1, flexDirection:'row',position:'relative',paddingVertical:120 ,width:"80%",justifyContent:'space-between',alignSelf:'center',bottom:1}}>

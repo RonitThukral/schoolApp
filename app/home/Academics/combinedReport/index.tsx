@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import * as Print from 'expo-print';
@@ -63,6 +63,7 @@ const index = () => {
             text-align: center;
             color: #00796b;
             margin-bottom: 20px;
+            margin-top: 60px;
           }
           table {
             width: 100%;
@@ -167,6 +168,7 @@ const index = () => {
   }
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <Dropdown
           style={[styles.dropdown,]}
@@ -242,6 +244,7 @@ const index = () => {
       </TouchableOpacity>}
 
           </View>
+          </SafeAreaView>
   )
 }
 
@@ -303,7 +306,8 @@ const styles = StyleSheet.create({
         position:'fixed',
         top:25,
         borderBottomWidth:0.5,
-        paddingBottom:15
+        paddingBottom:15,
+       
 
       },
       search: {

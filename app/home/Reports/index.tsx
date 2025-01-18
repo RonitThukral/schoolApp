@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Dimensions,TouchableOpacity,ImageBackground, useWindowDimensions } from 'react-native';
+import { StyleSheet, View, Text, Dimensions,TouchableOpacity,ImageBackground, useWindowDimensions, Platform } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import Summary from './summary';
 import Students from './totalStudents';
@@ -7,6 +7,7 @@ import Staff from './totalStaff';
 import Finance from './finance';
 import Academics from './acedemics';
 import Attendance from './attendance';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const TabCarousel = () => {
   const layout = useWindowDimensions();
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     // height:'100%',
    
     
@@ -123,7 +124,14 @@ const styles = StyleSheet.create({
     // backgroundColor:'blue',
     zIndex:837,
     position:'relative',
-    marginTop:-50
+    marginTop:-50,
+
+    ...Platform.select({
+      ios: {
+marginTop:-33
+      },
+      
+    }),
 
   },
   tabBar: {
@@ -135,7 +143,8 @@ const styles = StyleSheet.create({
     height: 2,
     width:Dimensions.get('window').width*0.25,
     marginLeft:30,
-    marginBottom:10
+    marginBottom:10,
+
   },
   labelStyle: {
     fontSize: 16,
@@ -145,16 +154,32 @@ const styles = StyleSheet.create({
     height:60,
     width: Dimensions.get('window').width*0.4,
     textAlign:'center',
-    textAlignVertical:'center'
-  },
-  tabStyle: {
-    
+    textAlignVertical:'center',
+    ...Platform.select({
+      ios: {
+        height:responsiveHeight(5),
 
+      },
+      
+    }),
   },
+  // tabStyle: {
+  //   ...Platform.select({
+  //     ios: {
+  //       height:responsiveHeight(5),
+
+  //     },
+      
+  //   }),
+
+  // },
+
   bgImg:{
     backgroundColor:'#daedff',
-    height:270,
-    width:'100%'
+    height:responsiveHeight(35),
+    width:'100%',
+    
+
   },
  
   schoolInfo: {
@@ -169,6 +194,13 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     color: "#1f2937",
+    
+    ...Platform.select({
+      ios: {
+      width:'85%'
+      },
+      
+    }),
   },
   schoolSub: {
     fontSize: 14,

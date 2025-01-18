@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert,TextInput } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert,TextInput, Platform } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { setOptions } from "expo-splash-screen";
+import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual base URL
 
@@ -304,9 +305,9 @@ const Index = () => {
       </View>
     </View>
 
-    <View style={{height:1,width:'100%',borderBottomWidth:0.5,position:'relative',top:50,alignSelf:'center',borderColor:'grey'}}></View>
+    <View style={styles.rule}></View>
 
-    <ScrollView style={[isOpen || edit ? styles.scrollContainer1 : styles.scrollContainer]} contentContainerStyle={{paddingBottom:90}}>
+    <ScrollView style={[isOpen || edit ? styles.scrollContainer1 : styles.scrollContainer]} contentContainerStyle={{paddingBottom:90,}}>
       {filteredPrefects.map((prefect, index):any => (
         <View style={styles.list} key={index}>
           <Image style={styles.stImg} source={require("../../../../assets/images/images/avatar.png")} /> 
@@ -426,13 +427,29 @@ container: {
   paddingVertical: 55,
   position: "relative",
   top: 50,
+  ...Platform.select({
+    ios: {
+      top:0
+    },
+    
+  }),
+  
 },
 container1: {
   backgroundColor: "lightblue",
   paddingVertical: 55,
   position: "relative",
   top: 50,
-  opacity:0.3
+  opacity:0.3,
+
+  ...Platform.select({
+    ios: {
+      top:0,
+      flex:1
+    },
+    
+  }),
+  
 },
 scrollContainer : {
   maxHeight:610 ,
@@ -441,6 +458,13 @@ scrollContainer : {
   position:'relative',
   backgroundColor:'white' ,
 
+  ...Platform.select({
+    ios: {
+      // flex:1,
+      marginVertical:0
+    },
+    
+  }),
 },
 scrollContainer1 : {
   maxHeight:610 ,
@@ -522,6 +546,16 @@ list: {
   marginTop: 20,
   flex:1,
   elevation:4,
+
+  ...Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.20,
+      shadowRadius: 3.84,
+    },
+    
+  }),
 },
 stImg: {
   width: 50,
@@ -575,30 +609,46 @@ inputContainer:{
   borderRadius:10,
   justifyContent:'center',
   alignSelf:'center',
-  top:'30%',
+  top:responsiveHeight(25),
   flexDirection:'column',
   zIndex:900000,
 // marginVertical:15
 },
-buttons:{
-  width:80,
-  height:30,
+buttons: {
+  width: 100,
+  height: 38,
   backgroundColor: '#58A8F9',
-  position:'absolute',
-  bottom:13,
-  right:25,
-  borderRadius:20,
-  justifyContent:'center',
-  alignSelf:'flex-end',
-    },
+  position: 'absolute',
+  right: 25,
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+closeBtn: {
+  width: 100,
+  height: 38,
+  // backgroundColor: '#DAEDFF',
+  position: 'absolute',
+  left: 25,
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+    rule:{
+      height:1,
+      width:'100%',
+      borderBottomWidth:0.5,
+      position:'relative',
+      top:50,
+      alignSelf:'center',
+      borderColor:'grey',
 
-  closeBtn:{
-  position:'absolute',
-  bottom:15,
-  left:150,
-  borderRadius:20,
-  justifyContent:'center',
-  alignSelf:'flex-end',
+      ...Platform.select({
+        ios: {
+          top:0
+        },
+        
+      }),
     }
 
 });

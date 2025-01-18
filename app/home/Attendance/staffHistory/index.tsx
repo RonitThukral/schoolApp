@@ -238,9 +238,10 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -350,7 +351,7 @@ const StaffHistory = () => {
         data={filteredStaff}
         keyExtractor={(item) => item.id}
         style={styles.list}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: responsiveHeight(4),  }}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.studentCard}>
             <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
@@ -389,8 +390,26 @@ const styles = StyleSheet.create({
      alignSelf:'center',
     //  backgroundColor:'red',
     
-     elevation:4
+     elevation:4,
+     
+      ...Platform.select({
+        ios: {
+          marginTop:0
+        },
+        
+      }),
+    
     },
+
+    main: {
+      ...Platform.select({
+        ios: {
+          marginTop:-50
+        },
+        
+      }),
+    },
+
   searchBar: {
     width: '90%',
     borderRadius: 8,
@@ -443,7 +462,9 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height:'80%',
+    position:'relative',
+    top:responsiveHeight(5)
   },
   dropdown: {
     height: 50,

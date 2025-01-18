@@ -4,6 +4,7 @@ import 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import AttendanceCard from '../../components/attendanceCard';
 import AttendanceStats from '../../components/attendanceStats';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 
 
@@ -23,11 +24,11 @@ const router = useRouter();
     <ScrollView style={styles.container1}>
 
       <View style ={styles.bgimg}>
-        <Image style={{height:255}} source={require('../../../assets/images/images/Vector.png')}/>
+        <Image style={{height:responsiveWidth(60)}} source={require('../../../assets/images/images/Vector.png')}/>
       </View>
 
       {/* Financial Statistics section */}
-<View style={{position:'relative', top:130}}>
+<View style={{position:'relative', top:responsiveHeight(15)}}>
 
      <AttendanceStats />
 </View>
@@ -35,7 +36,7 @@ const router = useRouter();
 
 
           {/* main card grid section */}
-<View style= {{position: 'relative', top: 130}}>
+<View style= {{position: 'relative', top: responsiveHeight(14)}}>
 
       <AttendanceCard /> 
 

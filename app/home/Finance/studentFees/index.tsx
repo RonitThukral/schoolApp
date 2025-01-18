@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView, Platform} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
@@ -201,7 +201,7 @@ import dayjs from 'dayjs';
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
 
         <Dropdown
@@ -322,7 +322,7 @@ import dayjs from 'dayjs';
 </ScrollView>
 
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -439,6 +439,15 @@ import dayjs from 'dayjs';
          shadowOffset: { width: 0, height: 1 },
          shadowOpacity: 0.1,
          shadowRadius: 3,
+
+         ...Platform.select({
+          ios: {
+            shadowColor: '#000', // Adds shadow for iOS
+         shadowOffset: { width: 0, height: 1 },
+         shadowOpacity: 0.1,
+         shadowRadius: 3,
+          }
+         })
       },
       sectionHeader: {
         flexDirection: 'row',

@@ -11,9 +11,11 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
+  Platform,
 } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import axios from "axios";
+import { responsiveWidth } from "react-native-responsive-dimensions";
 
 const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -244,6 +246,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     flex: 1,
     elevation: 4,
+
+    
   },
   listContent: {
     flexDirection: "column",
@@ -259,6 +263,13 @@ const styles = StyleSheet.create({
   lists: {
     paddingTop: 20, // Added padding to avoid mix-up
     paddingBottom: 70,
+    ...Platform.select({
+      ios: {
+        paddingTop: 0, // Added padding to avoid mix-up
+        paddingBottom: 20,
+      },
+      
+    }),
   },
   addButton: {
     width: 80,
@@ -282,6 +293,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     top: "30%",
+    elevation:5
   },
   inputHeader: {
     fontSize: 24,
@@ -307,7 +319,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
+    marginRight: responsiveWidth(5),
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: "#F5F5F5",
@@ -323,6 +335,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: "#58A8F9",
+    marginRight:responsiveWidth(8)
   },
   saveBtnText: {
     color: "white",

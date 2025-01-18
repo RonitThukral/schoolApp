@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView, SafeAreaView, Platform} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
@@ -334,7 +334,7 @@ const [teachers, setTeachers] = useState([])
    
 
     return (
-        <>
+        <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         {/* {renderLabel(value)} */}
         <Dropdown
@@ -433,7 +433,7 @@ const [teachers, setTeachers] = useState([])
 </ScrollView>
 
 
-      </>
+      </SafeAreaView>
     );
   };
 
@@ -444,7 +444,8 @@ const [teachers, setTeachers] = useState([])
       backgroundColor: 'white',
       padding: 16,
       paddingVertical:70,
-      marginTop:0
+      marginTop:0,
+      
     },
     dropdown: {
       height: 50,
@@ -460,15 +461,7 @@ const [teachers, setTeachers] = useState([])
     icon: {
       marginRight: 5,
     },
-    // label: {
-    //   position: 'absolute',
-    //   backgroundColor: 'transparent',
-    //   left: 45,
-    //   top: 5,
-    //   zIndex: 999,
-    //   paddingHorizontal: 8,
-    //   fontSize: 14,
-    // },
+   
     placeholderStyle: {
       fontSize: 15,
       color: 'grey',
@@ -524,7 +517,8 @@ const [teachers, setTeachers] = useState([])
       alignItems:'center',
       alignSelf:'center',
       marginBottom: 0,
-      marginTop: 20
+      marginTop: 20,
+      
     },
     listBtns:{
         position:'absolute',
@@ -555,10 +549,22 @@ const [teachers, setTeachers] = useState([])
          borderRadius: 8,
          overflow: 'hidden',
          elevation: 3, // Adds shadow for Android
-         shadowColor: '#000', // Adds shadow for iOS
-         shadowOffset: { width: 0, height: 1 },
-         shadowOpacity: 0.1,
-         shadowRadius: 3,
+        //  shadowColor: '#000', // Adds shadow for iOS
+        //  shadowOffset: { width: 0, height: 1 },
+        //  shadowOpacity: 0.1,
+        //  shadowRadius: 3,
+
+         ...Platform.select({
+          ios: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height:1 },
+            shadowOpacity: 1,
+            shadowRadius: 6,
+            borderWidth:0.5,
+            borderColor:'grey'
+          },
+          
+        }),
       },
       sectionHeader: {
         flexDirection: 'row',
@@ -567,6 +573,9 @@ const [teachers, setTeachers] = useState([])
         padding: 16,
         // backgroundColor: '#F8F8F8',
         backgroundColor: 'transparent',
+
+        
+
       },
       sectionTitle: {
         fontSize: 20,

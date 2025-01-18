@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity,TextInput } from 'react-native'
+import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity,TextInput, Platform } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import React from 'react'
 import { useState } from 'react';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const storeData = [
   
@@ -183,13 +184,13 @@ const Inventory = () => {
 {isOpen && <View style={styles.inputContainer}>
         <Text style={{fontSize:24,position:'absolute',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:5,top:15}}>{'Add Item'}</Text>
 
-    <TextInput style={styles.input} placeholder={"Name"} onChangeText={handleName} value={name}/>
+    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name}/>
 
-    <TextInput style={styles.inputDesc} placeholder={"Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
+    <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={"Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
 
-    <TextInput style={styles.input} placeholder={"Units (e.g kg)"} onChangeText={handleUnits} value={units} />
-    <TextInput style={styles.input} placeholder={"Price"} onChangeText={handlePrice} value={price} />
-    <TextInput style={styles.input} placeholder={"Quantity"} onChangeText={handleQuantity} value={quantity} />
+    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Units (e.g kg)"} onChangeText={handleUnits} value={units} />
+    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Price"} onChangeText={handlePrice} value={price} />
+    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Quantity"} onChangeText={handleQuantity} value={quantity} />
 
     <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
     <Text style={{color:'#58A8F9',fontSize:16}}>Cancel</Text>
@@ -218,7 +219,21 @@ list:{
   elevation:4,
   alignSelf:'center',
   backgroundColor:'white',
-  marginVertical:10
+  marginVertical:10,
+
+  ...Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height:1 },
+      shadowOpacity: 0.20,
+      shadowRadius: 3.84,
+      // borderWidth:0.5,
+      // borderColor:'grey',
+    
+      
+    },
+    
+  }),
 
 },
 input: {
@@ -253,8 +268,9 @@ input: {
     justifyContent:'center',
     alignSelf:'center',
     flexDirection:'column',
-    top:0,
+    top:responsiveHeight(1),
     zIndex:900000,
+    elevation:8
 // marginVertical:15
   },
   buttons:{
@@ -272,7 +288,7 @@ input: {
     closeBtn:{
     position:'absolute',
     bottom:15,
-    left:150,
+    right:responsiveWidth(35),
     borderRadius:20,
     justifyContent:'center',
     alignSelf:'flex-end',
