@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackg
 import {useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs'; // Make sure to import dayjs
 
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 
@@ -17,6 +17,7 @@ const FeeDetails = () => {
   const [transactions, setTransactions] = useState([]);
   const [expandedSections, setExpandedSections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [scholar, setScholar] = useState(null);
 
   const fetchDetails = async () => {
     try {
@@ -46,11 +47,23 @@ const FeeDetails = () => {
   };
 
 
+  const fetchScholarship = async () => {
+    // if (!selectedStudent?.scholarship) return;  // Check that scholarship exists
+    try {
+      const response = await axios.get(`${baseUrl}/scholarships/${studentDetails.scholarship}`);
+
+      // console.log(response?.data?.doc, 'adokanlf')
+      setScholar(response.data?.doc?.name);
+    } catch (error) {
+      console.error("Error fetching SCHOLARSHIP:", error);
+    }
+  };
+
   // Fetch data from API
   useEffect(() => {
     
     fetchDetails();
-
+fetchScholarship()
 
 
   }, [studentId]);
@@ -74,7 +87,7 @@ const FeeDetails = () => {
     <View style={styles.infoRow}>
       <Text style={styles.label}>{label}</Text>
       <View style={{ width: '70%', left: 20 }}>
-        <Text style={styles.value}>{`₹ ${value}`}</Text>
+        <Text style={styles.value}>{` ${value}`}</Text>
       </View>
     </View>
   );
@@ -104,7 +117,7 @@ const FeeDetails = () => {
             <Text style={{ color: 'grey', fontSize: 12 }}>{subTitle}</Text>
             <Text style={{ color: 'grey', fontSize: 11 }}>{subTitle2}</Text>
           </View>
-          <Ionicons style={{marginRight:20}} name={isExpanded ? "chevron-up" : "chevron-down"} size={24} color="#58A8F9" />
+          <AntDesign style={{marginRight:20}} name={isExpanded ? "up" : "down"} size={24} color="#58A8F9" />
         </TouchableOpacity>
         {isExpanded && (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -155,22 +168,22 @@ const FeeDetails = () => {
         </ImageBackground>
 
         <View style={styles.content}>
-          <InfoRow label="Tuition Fee" value={fees?.tution || '500'} />
-          <InfoRow label="Maintenance Fee" value={fees?.maintenance || '100'} />
-          <InfoRow label="Transport Fee" value={fees?.facility || '0'} />
-          <InfoRow label="Exam Fee" value={fees?.exam || '100'} />
-          <InfoRow label="Total Bill" value={totalBill || '700'} />
-          <InfoRow label="Scholarship" value={studentDetails?.scholarship || 'N/A'} />
-          <InfoRow label="Total Paid" value={totalPaid || '0'} />
-          <InfoRow label="Balance" value={balance || '700'} />
+          <InfoRow label="Tuition Fee" value={`₹${fees?.tution}` || '500'} />
+          <InfoRow label="Maintenance Fee" value={`₹${fees?.maintenance}` || '100'} />
+          <InfoRow label="Transport Fee" value={`₹${fees?.facility}` || '0'} />
+          <InfoRow label="Exam Fee" value={`₹${fees?.exam}` || '100'} />
+          <InfoRow label="Total Bill" value={`₹${totalBill}` || '700'} />
+          <InfoRow label="Scholarship" value={scholar || 'N/A'} />
+          <InfoRow label="Total Paid" value={`₹${totalPaid}` || '0'} />
+          <InfoRow label="Balance" value={`₹${balance}` || '700'} />
         </View>
-      </View>
+      </View> 
 
       <Text style={{ fontSize: 20, backgroundColor: 'white', color: 'grey', paddingHorizontal: 35, paddingVertical: 10 }}>Transactions</Text>
 
       <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle = {{paddingBottom:40}}>
         {transactions.map((txn, index) => (
-          <Section key={index} id={txn.id} title={`₹ ${txn.amount}`} subTitle={`${studentDetails?.name} ${studentDetails?.surname}` || 'N/A'} subTitle2={dayjs(txn.date).format("DD MMMM YYYY")}>
+          <Section key={index} id={txn._id} title={`₹ ${txn.amount}`} subTitle={`${studentDetails?.name} ${studentDetails?.surname}` || 'N/A'} subTitle2={dayjs(txn.date).format("DD MMMM YYYY")}>
             <InfoRow1 label="Roll Number" value={studentDetails?.userID} />
             <InfoRow1 label="Class" value={studentDetails?.classID} />
             <InfoRow1 label="Guardian" value={studentDetails?.guadian[0] || 'N/A'} />

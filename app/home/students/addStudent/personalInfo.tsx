@@ -15,16 +15,20 @@ const AddStudent = () => {
 
   const router = useRouter();
 
+ 
   const [isFocus, setIsFocus] = useState<string | null>(null);
-  const [selectedID, setSelectedID] = useState(null);
+  const [selectedID, setSelectedID] = useState<string | null>(null);
   const [date, setDate] = useState(dayjs());
-  const [formattedDate, setFormattedDate] = useState('');
-  const [openCalendar, setOpenCalendar] = useState(false);
-
   const [dob, setDob] = useState('');
   const [doa, setDoa] = useState('');
-  const [activeField, setActiveField] = useState(''); // To track which date field is active
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [activeField, setActiveField] = useState<string | null>(null);
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [category, setCategory] = useState('');
+  const [caste, setCaste] = useState('');
+  const [email, setEmail] = useState('');
   const handleFocus = (id: string) => {
     setIsFocus(id);
   };
@@ -49,9 +53,18 @@ const AddStudent = () => {
   };
 
   const handleNext = () => {
-    router.navigate('./academicInfo')
-  }
-
+    const personalData = {
+      firstName,
+      lastName,
+      category,
+      caste,
+      email,
+      dob,
+      gender: selectedID,
+      doa,
+    };
+    router.navigate({ pathname: './academicInfo', params: { personalData: JSON.stringify(personalData) } });
+  };
   return (
     <SafeAreaView>
       <ScrollView style={{backgroundColor:'#FFFFFF'}}>
@@ -72,11 +85,11 @@ const AddStudent = () => {
         <Text style={{position:'absolute', top:210 , left:40, fontSize:22,fontWeight:'600', marginVertical:5}}>Personal Information</Text>
 
         <View style={styles.container}>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="First Name" editable={activeField==='doa'? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name" editable={activeField==='doa' ? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Category" editable={activeField==='doa'  ? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Caste" editable={activeField==='doa' ? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Email" editable={activeField==='doa' ? false : true}/>
+        <TextInput style={styles.input} placeholder="First Name" placeholderTextColor="grey" value={firstName} onChangeText={setFirstName} />
+          <TextInput style={styles.input} placeholder="Last Name" placeholderTextColor="grey" value={lastName} onChangeText={setLastName} />
+          <TextInput style={styles.input} placeholder="Category" placeholderTextColor="grey" value={category} onChangeText={setCategory} />
+          <TextInput style={styles.input} placeholder="Caste" placeholderTextColor="grey" value={caste} onChangeText={setCaste} />
+          <TextInput style={styles.input} placeholder="Email" placeholderTextColor="grey" value={email} onChangeText={setEmail} />
 
           {/* Date of Admission */}
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>

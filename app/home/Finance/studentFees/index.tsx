@@ -1,108 +1,410 @@
-import React, { useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView, Platform} from 'react-native';
-  import { Dropdown } from 'react-native-element-dropdown';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-import DateTimePicker from 'react-native-ui-datepicker';
-import dayjs from 'dayjs';
+// import React, { useState } from 'react';
+//   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView, Platform} from 'react-native';
+//   import { Dropdown } from 'react-native-element-dropdown';
+// import { useRouter } from 'expo-router';
+// import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
+// import DateTimePicker from 'react-native-ui-datepicker';
+// import dayjs from 'dayjs';
 
 
   
 
-  const listData = [
-    {
-      id: "73739739753",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20246",
-      class: "II-A",
-      guardian: "Richa Sharma",
-      paymentMethod: "Bank Deposit",
-    },
-    {
-      id: "7373973975",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20247",
-      class: "II-B",
-      guardian: "Ravi Sharma",
-      paymentMethod: "Bank Deposit",
-    },
-    {
-      id: "737397397",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20248",
-      class: "II-C",
-      guardian: "Anita Sharma",
-      paymentMethod: "Bank Deposit",
-    },
-    {
-      id: "7373939753",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20249",
-      class: "II-D",
-      guardian: "Kavita Singh",
-      paymentMethod: "Bank Deposit",
-    },
-    {
-      id: "7379739753",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20250",
-      class: "II-E",
-      guardian: "Priya Mehta",
-      paymentMethod: "Bank Deposit",
-    },
-    {
-      id: "7339739753",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20251",
-      class: "II-F",
-      guardian: "Neha Sharma",
-      paymentMethod: "Bank Deposit",
-    },
-    {
-      id: "7739739753",
-      name: "Deepak Kumar",
-      amount: "₹5,000",
-      date: "7 September 2024",
-      rollNumber: "BK20252",
-      class: "II-G",
-      guardian: "Ajay Kumar",
-      paymentMethod: "Bank Deposit",
-    },
-  ]
+//   const listData = [
+//     {
+//       id: "73739739753",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20246",
+//       class: "II-A",
+//       guardian: "Richa Sharma",
+//       paymentMethod: "Bank Deposit",
+//     },
+//     {
+//       id: "7373973975",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20247",
+//       class: "II-B",
+//       guardian: "Ravi Sharma",
+//       paymentMethod: "Bank Deposit",
+//     },
+//     {
+//       id: "737397397",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20248",
+//       class: "II-C",
+//       guardian: "Anita Sharma",
+//       paymentMethod: "Bank Deposit",
+//     },
+//     {
+//       id: "7373939753",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20249",
+//       class: "II-D",
+//       guardian: "Kavita Singh",
+//       paymentMethod: "Bank Deposit",
+//     },
+//     {
+//       id: "7379739753",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20250",
+//       class: "II-E",
+//       guardian: "Priya Mehta",
+//       paymentMethod: "Bank Deposit",
+//     },
+//     {
+//       id: "7339739753",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20251",
+//       class: "II-F",
+//       guardian: "Neha Sharma",
+//       paymentMethod: "Bank Deposit",
+//     },
+//     {
+//       id: "7739739753",
+//       name: "Deepak Kumar",
+//       amount: "₹5,000",
+//       date: "7 September 2024",
+//       rollNumber: "BK20252",
+//       class: "II-G",
+//       guardian: "Ajay Kumar",
+//       paymentMethod: "Bank Deposit",
+//     },
+//   ]
 
 
 
-  const DropdownComponent = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedID, setSelectedID] = useState(null);
-    const [selectedName, setSelectedName] = useState(null);
-    const [selectedClass, setSelectedClass] = useState(null);
-    const [openCalendar, setOpenCalendar] = useState(false);
-    const [date, setDate] = useState(dayjs());
-    const [filteredClasses, setFilteredClasses] = useState(listData);
-    const [expandedSectionId, setExpandedSectionId] = useState<string | null>(null);
-    const [dob, setDob] = useState('');
+//   const DropdownComponent = () => {
+//     const [isFocus, setIsFocus] = useState<string | null>(null);
+//     const [selectedID, setSelectedID] = useState(null);
+//     const [selectedName, setSelectedName] = useState(null);
+//     const [selectedClass, setSelectedClass] = useState(null);
+//     const [openCalendar, setOpenCalendar] = useState(false);
+//     const [date, setDate] = useState(dayjs());
+//     const [filteredClasses, setFilteredClasses] = useState(listData);
+//     const [expandedSectionId, setExpandedSectionId] = useState<string | null>(null);
+//     const [dob, setDob] = useState('');
 
 
-    // const router = useRouter();
+//     // const router = useRouter();
 
-   // Search Button Logic
+//    // Search Button Logic
+//   const handleSearch = () => {
+//     const filtered = listData.filter((data) => {
+//       return (
+//         (!selectedID || data.id === selectedID) &&
+//         (!selectedName || data.name === selectedName) &&
+//         (!selectedClass || data.class === selectedClass)
+//       );
+//     });
+//     setFilteredClasses(filtered);
+//   };
+
+//   // Reset Button Logic
+//   const handleReset = () => {
+//     setSelectedID(null);
+//     setSelectedName(null);
+//     setSelectedClass(null);
+//     setFilteredClasses(listData);
+//     setDob('')
+//   };
+
+   
+
+//     const handleFocus = (id:string) => {
+//       setIsFocus(id)
+//     }
+
+//     const handleBlur = () => {
+//       setIsFocus(null)
+//     }
+
+  
+//     const toggleSection = (id: string) => {
+//         setExpandedSectionId((prev) => (prev === id ? null : id));
+//       };
+//       const handleDate = (field:string) => {
+//         setOpenCalendar(true);
+//       };
+
+//       const onDateChange = (params: any) => {
+//         const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
+//           setDob(selectedDate);
+        
+//         setOpenCalendar(false); // Close the calendar
+//       };
+
+
+
+//       const InfoRow = ({ label, value}:any) => (
+//         <View style={styles.infoRow}>
+//           <Text style={styles.label}>{label}</Text>
+//           <View style={{width:'70%', left:20 }}>
+    
+//           <Text style={styles.value}>{value}</Text>
+//           </View>
+//         </View>
+//       );
+    
+//       const Section = ({ id,title,subTitle,subTitle2, children }:any):any => {
+//           const isExpanded = expandedSectionId === id
+//         return(
+//         <View style={styles.section}>
+//           <TouchableOpacity 
+//             style={styles.sectionHeader} 
+//             onPress={() => {toggleSection(id)}}
+//             activeOpacity={0.7}
+//           >
+//             <Image style={{width:50,height:50,marginHorizontal:15}} source={require('../../../../assets/images/images/boy.png')}/>
+//             <View style={{flex:1, flexDirection:'column'}}>
+
+//             <Text style={styles.sectionTitle}>{title}</Text>
+//             <Text style={{color:'grey',fontSize:12}}>{subTitle}</Text>
+//             <Text style={{color:'grey',fontSize:11}}>{subTitle2}</Text>
+//             </View>
+//             <Ionicons 
+//               name={isExpanded ? "chevron-up" : "chevron-down"} 
+//               size={24} 
+//               color="#58A8F9"
+//             />
+//           </TouchableOpacity>
+//           {isExpanded && (
+//             <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+//             <View style={styles.sectionContent}>
+//               {children}
+//             </View>
+//             <View style={styles.listBtns}>
+//                 <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+//                 <Image style={{width:27,height:27}} source={require('../../../../assets/images/images/eye.png')}/>
+
+//                 </TouchableOpacity>
+//                 <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+//                 <Image  source={require('../../../../assets/images/images/delete.png')}/>
+
+//                 </TouchableOpacity>
+//             </View>
+
+//             </View>
+//           )}
+//         </View>
+//       )};
+   
+
+//     return (
+//         <SafeAreaView style={{flex:1}}>
+//       <View style={styles.container}>
+
+//         <Dropdown
+//           style={[styles.dropdown,]}
+//           placeholderStyle={styles.placeholderStyle}
+//           selectedTextStyle={styles.selectedTextStyle}
+//           inputSearchStyle={styles.inputSearchStyle}
+//           data={listData.map((data) => ({ label: data.id, value: data.id }))}
+//           search
+//           maxHeight={300}
+//           labelField="label"
+//           valueField="value"
+//           placeholder={'Search by ID'}
+//           searchPlaceholder="Search..."
+//           onFocus={() => handleFocus('student')}
+//           onBlur={handleBlur}
+//           value={selectedID}
+//           onChange={(item) => setSelectedID(item.value)}
+       
+//         />
+      
+      
+//         <Dropdown
+//           style={[styles.dropdown,]}
+//           placeholderStyle={styles.placeholderStyle}
+//           selectedTextStyle={styles.selectedTextStyle}
+//           inputSearchStyle={styles.inputSearchStyle}
+//           data={listData.map((data) => ({ label: data.name, value: data.name }))}
+//           search
+//           maxHeight={300}
+//           labelField="label"
+//           valueField="value"
+//           placeholder={'Search by Name'}
+//           searchPlaceholder="Search..."
+//           onFocus={() => handleFocus('name')}
+//           onBlur={handleBlur}
+//           value={selectedName}
+//           onChange={(item) => setSelectedName(item.value)}
+       
+//         />
+      
+      
+//         <Dropdown
+//           style={[styles.dropdown,]}
+//           placeholderStyle={styles.placeholderStyle}
+//           selectedTextStyle={styles.selectedTextStyle}
+//           inputSearchStyle={styles.inputSearchStyle}
+//           data={listData.map((data) => ({ label: data.class, value: data.class }))}
+//           search
+//           maxHeight={300}
+//           labelField="label"
+//           valueField="value"
+//           placeholder={'Search by Class'}
+//           searchPlaceholder="Search..."
+//           onFocus={() => handleFocus('class')}
+//           onBlur={handleBlur}
+//           value={selectedClass}
+//           onChange={(item) => setSelectedClass(item.value)}
+       
+//         />
+
+// <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+//             <TextInput
+//               style={styles.dateInput}
+//               placeholder="Date of Birth"
+//               placeholderTextColor={'grey'}
+//               value={dob} // Display the formatted date
+//               editable={false} // Read-only input
+//             />
+//             <TouchableOpacity style={{ position: 'absolute', left: '87%',top:15 }} onPress={()=>{handleDate('dob')}}>
+//               <Image source={require('../../../../assets/images/images/Frame.png')} />
+//             </TouchableOpacity>
+//           </View>
+
+//           {openCalendar && (
+//             <View style={[styles.calendarContainer]}>
+//               <DateTimePicker
+//                 mode="single"
+//                 date={date.toDate()} // Pass date as a JavaScript Date object
+//                 onChange={onDateChange} // Handle date selection
+                
+//               />
+//             </View>
+//           )}
+
+//           <View style ={styles.footer}>
+//           <TouchableOpacity style={styles.reset} onPress={handleReset}>
+//             <Text  style={{color: '#58A8F9', }}>Reset</Text>
+//           </TouchableOpacity>
+//           <TouchableOpacity style ={styles.search} onPress={handleSearch}>
+//           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
+//           </TouchableOpacity>
+//           </View>
+          
+//       </View>
+
+
+// {/* List of students section */}
+// <ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
+
+// {filteredClasses.map((data, index) => {
+//   return (
+//     <Section
+//     key={index}
+//     id={data.id}
+//           title={data.amount}
+//           subTitle= {data.name}
+//           subTitle2={data.date}
+//         >
+//           <InfoRow label="Roll Number" value={data.rollNumber} />
+//           <InfoRow label="Class" value={data.class} />
+//           <InfoRow label="Guardian" value={data.guardian} />
+//           <InfoRow label="Payment Method" value={data.paymentMethod} />
+          
+//         </Section>
+//   )
+// })}
+// </ScrollView>
+
+
+//       </SafeAreaView>
+//     );
+//   };
+
+
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TextInput, SafeAreaView, Platform, ActivityIndicator } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from 'react-native-ui-datepicker';
+import dayjs from 'dayjs';
+import axios from 'axios';
+
+
+const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"
+
+const DropdownComponent = () => {
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedID, setSelectedID] = useState(null);
+  const [selectedName, setSelectedName] = useState(null);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [date, setDate] = useState(dayjs());
+  const [filteredClasses, setFilteredClasses] = useState([]);
+  const [expandedSectionId, setExpandedSectionId] = useState<string | null>(null);
+  const [dob, setDob] = useState('');
+  const [studentsData, setStudentsData] = useState([]);
+  const [transactionsData, setTransactionsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const transactionsResponse = await axios.get(`${baseUrl}/transactions/students/fees`);
+        const studentsResponse = await axios.get(`${baseUrl}/students`);
+
+        setTransactionsData(transactionsResponse.data);
+        setStudentsData(studentsResponse.data);
+
+        // Map transactions to UI format
+        const formattedData = transactionsResponse.data.map((transaction) => {
+          const student = studentsResponse.data.find((s) => s.userID === transaction.userID);
+          return {
+            id: transaction._id,
+            name: student?.name || "Unknown", // Fix: Ensure student name appears
+            amount: `₹${transaction.amount}`,
+            date: dayjs(transaction.date).format('DD MMMM YYYY'),
+            rollNumber: student?.userID || "N/A",
+            class: student?.classID || "N/A", // Fix: Use `classID` from student API
+            guardian: student?.guardian?.[0]?.name || "N/A",
+            paymentMethod: transaction.paymentMethod,
+          };
+        });
+
+        setFilteredClasses(formattedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  const handleDate = (field:string) => {
+            setOpenCalendar(true);
+          };
+
+          const onDateChange = (params: any) => {
+                    const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
+                      setDob(selectedDate);
+                    
+                    setOpenCalendar(false); // Close the calendar
+                  };
+    
+
   const handleSearch = () => {
-    const filtered = listData.filter((data) => {
+    const filtered = filteredClasses.filter((data) => {
       return (
-        (!selectedID || data.id === selectedID) &&
+        (!selectedID || data.rollNumber === selectedID) &&
         (!selectedName || data.name === selectedName) &&
         (!selectedClass || data.class === selectedClass)
       );
@@ -110,42 +412,19 @@ import dayjs from 'dayjs';
     setFilteredClasses(filtered);
   };
 
-  // Reset Button Logic
   const handleReset = () => {
     setSelectedID(null);
     setSelectedName(null);
     setSelectedClass(null);
-    setFilteredClasses(listData);
-    setDob('')
+    setDob('');
   };
 
-   
 
-    const handleFocus = (id:string) => {
-      setIsFocus(id)
-    }
-
-    const handleBlur = () => {
-      setIsFocus(null)
-    }
+  const toggleSection = (id: string) => {
+            setExpandedSectionId((prev) => (prev === id ? null : id));
+          };
 
   
-    const toggleSection = (id: string) => {
-        setExpandedSectionId((prev) => (prev === id ? null : id));
-      };
-      const handleDate = (field:string) => {
-        setOpenCalendar(true);
-      };
-
-      const onDateChange = (params: any) => {
-        const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
-          setDob(selectedDate);
-        
-        setOpenCalendar(false); // Close the calendar
-      };
-
-
-
       const InfoRow = ({ label, value}:any) => (
         <View style={styles.infoRow}>
           <Text style={styles.label}>{label}</Text>
@@ -156,7 +435,9 @@ import dayjs from 'dayjs';
         </View>
       );
     
-      const Section = ({ id,title,subTitle,subTitle2, children }:any):any => {
+
+
+        const Section = ({ id,title,subTitle,subTitle2, children }:any):any => {
           const isExpanded = expandedSectionId === id
         return(
         <View style={styles.section}>
@@ -172,8 +453,8 @@ import dayjs from 'dayjs';
             <Text style={{color:'grey',fontSize:12}}>{subTitle}</Text>
             <Text style={{color:'grey',fontSize:11}}>{subTitle2}</Text>
             </View>
-            <Ionicons 
-              name={isExpanded ? "chevron-up" : "chevron-down"} 
+            <AntDesign 
+              name={isExpanded ? "up" : "down"} 
               size={24} 
               color="#58A8F9"
             />
@@ -200,68 +481,60 @@ import dayjs from 'dayjs';
       )};
    
 
-    return (
-        <SafeAreaView style={{flex:1}}>
-      <View style={styles.container}>
 
-        <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          data={listData.map((data) => ({ label: data.id, value: data.id }))}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Search by ID'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('student')}
-          onBlur={handleBlur}
-          value={selectedID}
-          onChange={(item) => setSelectedID(item.value)}
-       
-        />
-      
-      
-        <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          data={listData.map((data) => ({ label: data.name, value: data.name }))}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Search by Name'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('name')}
-          onBlur={handleBlur}
-          value={selectedName}
-          onChange={(item) => setSelectedName(item.value)}
-       
-        />
-      
-      
-        <Dropdown
-          style={[styles.dropdown,]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          data={listData.map((data) => ({ label: data.class, value: data.class }))}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={'Search by Class'}
-          searchPlaceholder="Search..."
-          onFocus={() => handleFocus('class')}
-          onBlur={handleBlur}
-          value={selectedClass}
-          onChange={(item) => setSelectedClass(item.value)}
-       
-        />
+  return (
+    <SafeAreaView style={{ flex: 1,backgroundColor:'white' }}>
+      {loading ? (
+        <ActivityIndicator size="large" color="#58A8F9" />
+      ) : (
+        <View style={styles.container}>
+          <Dropdown
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            data={filteredClasses.map((data) => ({ label: data.rollNumber, value: data.rollNumber }))}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={'Search by ID'}
+            searchPlaceholder="Search..."
+            value={selectedID}
+            onChange={(item) => setSelectedID(item.value)}
+          />
+
+          <Dropdown
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            data={filteredClasses.map((data) => ({ label: data.name, value: data.name }))}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={'Search by Name'}
+            searchPlaceholder="Search..."
+            value={selectedName}
+            onChange={(item) => setSelectedName(item.value)}
+          />
+
+          <Dropdown
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            data={filteredClasses.map((data) => ({ label: data.class, value: data.class }))}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={'Search by Class'}
+            searchPlaceholder="Search..."
+            value={selectedClass}
+            onChange={(item) => setSelectedClass(item.value)}
+          />
 
 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
             <TextInput
@@ -287,44 +560,39 @@ import dayjs from 'dayjs';
             </View>
           )}
 
-          <View style ={styles.footer}>
-          <TouchableOpacity style={styles.reset} onPress={handleReset}>
-            <Text  style={{color: '#58A8F9', }}>Reset</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style ={styles.search} onPress={handleSearch}>
-          <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Search</Text>
-          </TouchableOpacity>
+
+
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.reset} onPress={handleReset}>
+              <Text style={{ color: '#58A8F9' }}>Reset</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.search} onPress={handleSearch}>
+              <Text style={{ textAlign: 'center', color: 'white', fontSize: 15 }}>Search</Text>
+            </TouchableOpacity>
           </View>
-          
-      </View>
 
-
-{/* List of students section */}
-<ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
-
-{filteredClasses.map((data, index) => {
-  return (
-    <Section
-    key={index}
-    id={data.id}
-          title={data.amount}
-          subTitle= {data.name}
-          subTitle2={data.date}
-        >
-          <InfoRow label="Roll Number" value={data.rollNumber} />
-          <InfoRow label="Class" value={data.class} />
-          <InfoRow label="Guardian" value={data.guardian} />
-          <InfoRow label="Payment Method" value={data.paymentMethod} />
-          
-        </Section>
-  )
-})}
-</ScrollView>
-
-
-      </SafeAreaView>
-    );
-  };
+          <ScrollView style={{marginTop: 120, marginBottom: 0, backgroundColor:'white'}} contentContainerStyle={{ paddingBottom:100}} >
+            {filteredClasses.map((item,index) => (
+              <Section
+                  key={index}
+                  id={item.id}
+                        title={item.name}
+                        subTitle= {item.amount}
+                        subTitle2={item.date}
+                      >
+                        <InfoRow label="Roll Number" value={item.rollNumber} />
+                        <InfoRow label="Class" value={item.class} />
+                        <InfoRow label="Guardian" value={item.guardian} />
+                        <InfoRow label="Payment Method" value={item.paymentMethod} />
+                        
+                      </Section>
+            ))}
+          </ScrollView>
+        </View>
+      )}
+    </SafeAreaView>
+  );
+};
 
   export default DropdownComponent;
 
@@ -343,7 +611,7 @@ import dayjs from 'dayjs';
     //   borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
-      backgroundColor:'#EEF7FF',
+      backgroundColor:'#daedff',
       marginBottom: 15,
       alignSelf: 'center'
     },
@@ -425,7 +693,7 @@ import dayjs from 'dayjs';
     },
     section: {
 
-        width:"80%",
+        width:"90%",
         alignSelf:'center',
         height:'auto',
         backgroundColor: '#FFF',
@@ -517,7 +785,7 @@ import dayjs from 'dayjs';
       },
       
       dateInput: {
-        backgroundColor: '#EEF7FF',
+        backgroundColor: '#daedff',
         // backgroundColor: 'green',
         width: '90%',
         height: 50,

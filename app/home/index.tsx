@@ -11,6 +11,7 @@ import Feather from '@expo/vector-icons/Feather';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { useRouter } from 'expo-router';
 
 
 
@@ -50,6 +51,13 @@ export default function Home(): any {
       content: 20
     }
   ]
+
+  const router = useRouter()
+
+
+  const handlePress = () => {
+    router.navigate('./home/Chat')
+  }
   
 
  
@@ -67,7 +75,10 @@ export default function Home(): any {
         <View style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end',top:'15%'}}>
 
         <View style={styles.headerIcons}>
+          <TouchableOpacity onPress={handlePress}>
         <Feather name="message-square" size={22} color="black"style={{position:'relative',top:3}}/>
+
+          </TouchableOpacity>
         <Fontisto name="bell" size={22} color="black" />          
         </View>
         <View style={styles.userInfo}>

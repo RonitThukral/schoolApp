@@ -1,9 +1,22 @@
 import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Feather from '@expo/vector-icons/Feather';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 const contactInfo = () => {
+  const {personalData, academicData} = useLocalSearchParams();
+
+  // console.log(personalData, academicData)
+
+
+  const [smsNumber, setSmsNumber] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [areaOfResidence, setAreaOfResidence] = useState('');
+  const [postalAddress, setPostalAddress] = useState('');
+
+
+
+
 
     const router =useRouter()
 
@@ -11,8 +24,24 @@ const contactInfo = () => {
         router.back()
     }
     const handleNext = () => {
-        router.navigate('./guardianInfo')
-    }
+      // Collect contact data
+      const contactData = {
+        smsNumber,
+        mobileNumber,
+        areaOfResidence,
+        postalAddress,
+      };
+  
+      // Navigate to guardianInfo with all collected data
+      router.navigate({
+        pathname: './guardianInfo',
+        params: {
+          personalData,
+          academicData,
+          contactData: JSON.stringify(contactData),
+        },
+      });
+    };
 
   return (
     <SafeAreaView>
@@ -33,11 +62,18 @@ const contactInfo = () => {
           
         </View>
         <View style={styles.container}>
-          <TextInput style={styles.input} placeholder="Sms Number" placeholderTextColor={'grey'}
+          <TextInput style={styles.input} placeholder="Sms Number" placeholderTextColor={'grey'} keyboardType='numeric'  value={smsNumber}
+            onChangeText={setSmsNumber}
  />
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Mobile Number" />
-          <TextInput style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top'/>
-          <TextInput style={styles.areaInputPost} placeholderTextColor={'grey'} placeholder="Postal Address" numberOfLines={3} multiline textAlignVertical='top'/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Mobile Number" keyboardType='numeric' value={mobileNumber}
+            onChangeText={setMobileNumber} />
+
+          <TextInput style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top' value={areaOfResidence}
+            onChangeText={setAreaOfResidence}/>
+
+          <TextInput style={styles.areaInputPost} placeholderTextColor={'grey'} placeholder="Postal Address" numberOfLines={3} multiline textAlignVertical='top' value={postalAddress}
+            onChangeText={setPostalAddress}/>
+
           </View>
 
           <View style={{flex:1, flexDirection:'row',position:'relative',paddingVertical:120 ,width:"80%",justifyContent:'space-between',alignSelf:'center',bottom:1}}>

@@ -88,7 +88,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackg
 import {useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs'; // Make sure to import dayjs
 
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 
@@ -116,7 +116,8 @@ const FeeDetails = () => {
         description: trans.description || 'N/A',
         method: trans.paymentMethod || 'N/A',
         amount: trans.amount || 'N/A',
-        date: trans.date || 'N/A'
+        date: trans.date || 'N/A',
+        id: trans._id
       }))
 
       setTransactions(formattedData);
@@ -172,7 +173,7 @@ const FeeDetails = () => {
   );
 
   // Section Component
-  const Section = ({ id, title, subTitle, subTitle2, children }) => {
+  const Section = ({ id, title, subTitle2, children }) => {
     const isExpanded = expandedSections.includes(id);
     return (
       <View style={styles.section}>
@@ -186,7 +187,7 @@ const FeeDetails = () => {
             <Text style={styles.sectionTitle}>{title}</Text>
             <Text style={{ color: 'grey', fontSize: 11 }}>{subTitle2}</Text>
           </View>
-          <Ionicons style={{marginRight:20}} name={isExpanded ? "chevron-up" : "chevron-down"} size={24} color="#58A8F9" />
+          <AntDesign style={{marginRight:20}} name={isExpanded ? "up" : "down"} size={24} color="#58A8F9" />
         </TouchableOpacity>
         {isExpanded && (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>

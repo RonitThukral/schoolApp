@@ -53,6 +53,10 @@
       "eas": {
         "projectId": "088e33fd-075f-41c9-a6f1-dd434256e747"
       }
+    },
+    "owner": "rrrttt",
+    "updates": {
+      "enabled": false  
     }
   }
 }

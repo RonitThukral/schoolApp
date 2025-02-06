@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image } from 'react-native'
 import React from 'react'
 import Feather from '@expo/vector-icons/Feather';
+import * as Updates from 'expo-updates';  // Correct import after installation
+
 import { useRouter } from 'expo-router';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { clearUserData } from '@/app/utils/storage';
 
 const contactInfo = () => {
 
@@ -14,6 +17,20 @@ const contactInfo = () => {
     const handleNext = () => {
         // router.navigate('./guardianInfo')
     }
+
+    
+const handleLogout = async () => {
+  try {
+    await clearUserData();
+   // Assuming userData is stored after login
+   await Updates.reloadAsync();  // This will reload the app to the initial state
+
+      router.replace('/'); // Redirect to login if not authenticated
+    // Navigate to the root of your app
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
+};
 
   return (
     <SafeAreaView style={{flex:1}}>
@@ -79,6 +96,13 @@ const contactInfo = () => {
         </TouchableOpacity>
     </View>
 
+
+<View style={{flexDirection:'row',marginTop:40,marginLeft:30}}>
+  <Text>You are logged in as: Nilesh shr</Text>
+  <TouchableOpacity style={{width:80, height:40, backgroundColor:'red',borderRadius:10,marginHorizontal:15,marginVertical:-10,paddingVertical:7}} onPress={handleLogout}>
+<Text style={{alignSelf:'center',textAlignVertical:'center',color:'white'}}>Log Out</Text>
+  </TouchableOpacity>
+</View>
 
 
         </ScrollView>

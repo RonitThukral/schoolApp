@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 const screenWidth = Dimensions.get("window").width;
 
 
-const data = [
+const data = [ 
     [
       { title: "Students", icon: require("../../assets/images/images/kid.png"),linking:'./home/students' },
       { title: "Teachers", icon: require("../../assets/images/images/women.png"), linking:'./home/Teachers' },

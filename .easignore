@@ -1,0 +1,34 @@
+# Ignore node_modules (Expo handles dependencies separately)
+node_modules/
+
+# Ignore build and cache directories
+.expo/
+.expo-shared/
+dist/
+build/
+android/
+ios/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Ignore version control files
+.git/
+.gitignore
+.hg/
+.hgignore
+
+# Ignore IDE and editor-specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore large assets that are not required for the build
+assets/raw-videos/
+assets/raw-audio/
+assets/large-files/

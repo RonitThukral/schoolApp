@@ -7,91 +7,133 @@ import { Dropdown } from 'react-native-element-dropdown';
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 const StudentRecord = () => {
-  const [isFocus, setIsFocus] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    today.setHours(today.getHours() + 5); // Add 5 hours
-    today.setMinutes(today.getMinutes() + 30); // Add 30 minutes
-    return today.toISOString().split('T')[0];
-  });
+    const [isFocus, setIsFocus] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState(() => {
+      const today = new Date();
+      return today.toISOString().split('T')[0];
+    });
     const [selectedClass, setSelectedClass] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [classStudents, setClassStudents] = useState([]);
-  const [classes, setClasses] = useState([]);
-  const [isCalendarVisible, setIsCalendarVisible] = useState(true); // Calendar visibility
-  const [isSearched, setIsSearched] = useState(false); // Track if search is clicked
-
-  const fetchStudents = async () => {
-    try {
-      if (selectedClass) {
-        const res = await axios.get(`${baseUrl}/students/class/${selectedClass}`);
-        if (!res.data.users) {
-          setSelectedClass(null);
-          Alert.alert('Error', 'There are No Students in This Class Yet!');
-        } else {
-          const formattedData = res.data.users.map((student) => ({
-            ...student,
-            status: student.status ? 'Present' : 'Absent', // Ensure default status mapping
-          }));
-          setClassStudents(formattedData);
-        }
+    const [searchQuery, setSearchQuery] = useState('');
+    const [classStudents, setClassStudents] = useState([]);
+    const [filteredStudents, setFilteredStudents] = useState([]);
+    const [classes, setClasses] = useState([]);
+    const [isCalendarVisible, setIsCalendarVisible] = useState(true);
+    const [isSearched, setIsSearched] = useState(false);
+  
+    const fetchClasses = async () => {
+      try {
+        const res = await axios.get(`${baseUrl}/classes`);
+        const formattedData = res.data.map((cls) => ({
+          label: cls.name,
+          value: cls.classCode,
+        }));
+        setClasses(formattedData);
+      } catch (error) {
+        console.error('Error fetching classes:', error.message);
+        Alert.alert('Error', 'Unable to fetch classes. Please try again.');
       }
-    } catch (error) {
-      console.error('Error fetching students:', error.message);
-    }
-  };
-
-  const fetchClasses = async () => {
-    try {
-      const classes = await axios.get(`${baseUrl}/classes`);
-      const formatedData = classes.data.map((cls) => ({
-        label: cls.name,
-        value: cls.classCode,
-      }));
-      setClasses(formatedData);
-    } catch (error) {
-      console.error('Error fetching classes:', error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchClasses();
-  }, []);
-
-  // Handle Class Selection
-  const handleClassSelection = (item) => {
-    setSelectedClass(item.value);
-    setIsCalendarVisible(false);
-    setIsSearched(false); // Reset search state
-  };
-
-  // Handle Search Button Click
-  const handleSearch = () => {
-    if (!selectedDate || !selectedClass) {
-      Alert.alert('Error', 'Please select both date and class before searching.');
-      return;
-    }
-    fetchStudents(); // Fetch students based on class
-    setIsSearched(true);
-  };
-
-  // Handle Reset Button Click
-  const handleReset = () => {
-    setSelectedDate('');
-    setSelectedClass('');
-    setSearchQuery('');
-    setClassStudents([]);
-    setIsCalendarVisible(true);
-    setIsSearched(false);
-  };
-
-  // Toggle Attendance Status
-  const toggleAttendance = (id) => {
-    const updatedStudents = classStudents.map((student) => 
-      student._id === id ? { ...student, status: student.status === 'Present' ? 'Absent' : 'Present' } : student
-    );
-    setClassStudents(updatedStudents);
-  };
+    };
+  
+    const fetchStudents = async () => {
+      try {
+        if (selectedClass) {
+          const res = await axios.get(`${baseUrl}/students/class/${selectedClass}`);
+          if (!res.data.users || res.data.users.length === 0) {
+            setClassStudents([]);
+            Alert.alert('Error', 'There are no students in this class yet!');
+          } else {
+            const formattedData = res.data.users.map((student) => ({
+              ...student,
+              status: 'Absent', // Default status is absent
+            }));
+            setClassStudents(formattedData);
+            setFilteredStudents(formattedData);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching students:', error.message);
+        Alert.alert('Error', 'Unable to fetch students. Please try again.');
+      }
+    };
+  
+    useEffect(() => {
+      fetchClasses();
+    }, []);
+  
+    const handleClassSelection = (item) => {
+      setSelectedClass(item.value);
+      setIsCalendarVisible(false);
+      setIsSearched(false);
+    };
+  
+    const handleSearch = () => {
+      if (!selectedDate || !selectedClass) {
+        Alert.alert('Error', 'Please select both date and class before searching.');
+        return;
+      }
+      fetchStudents();
+      setIsSearched(true);
+    };
+  
+    const handleReset = () => {
+      setSelectedDate('');
+      setSelectedClass('');
+      setSearchQuery('');
+      setClassStudents([]);
+      setFilteredStudents([]);
+      setIsCalendarVisible(true);
+      setIsSearched(false);
+    };
+  
+    const toggleAttendance = (id) => {
+      const updatedStudents = classStudents.map((student) =>
+        student._id === id
+          ? { ...student, status: student.status === 'Present' ? 'Absent' : 'Present' }
+          : student
+      );
+      setClassStudents(updatedStudents);
+      setFilteredStudents(updatedStudents);
+    };
+  
+    const registerAttendance = async () => {
+      try {
+        const users = classStudents.map((student) => ({
+          userID: student.userID,
+          name: student.name,
+          surname: student.surname,
+          status: student.status === 'Present', // Convert status to boolean
+        }));
+  
+        const res = await axios.post(`${baseUrl}/attendance/register`, {
+          users,
+          classID: selectedClass,
+          role: 'students',
+        });
+  
+        if (res.data.error) {
+          Alert.alert('Error', res.data.error);
+        } else {
+          Alert.alert('Success', 'Attendance registered successfully.');
+        }
+      } catch (error) {
+        console.error('Error registering attendance:', error.message);
+        Alert.alert('Error', 'Sorry, something went wrong.');
+      }
+    };
+  
+    const filterStudents = (query) => {
+      const filtered = classStudents.filter(
+        (student) =>
+          student.name.toLowerCase().includes(query.toLowerCase()) ||
+          student.userID.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredStudents(filtered);
+    };
+  
+    useEffect(() => {
+      filterStudents(searchQuery);
+    }, [searchQuery]);
+  
 
   // Render day component with styling for selected date
   const renderDay = ({ date, state }) => {
@@ -102,11 +144,7 @@ const StudentRecord = () => {
         style={[styles.dayContainer, selectedDate === date.dateString && styles.selectedDay]}
       >
         <Text
-          style={[
-            styles.dayText,
-            state === 'disabled' && styles.disabledDayText,
-            isSunday && styles.sundayText,
-          ]}
+          style={[styles.dayText, state === 'disabled' && styles.disabledDayText, isSunday && styles.sundayText]}
         >
           {date.day}
         </Text>
@@ -183,7 +221,7 @@ const StudentRecord = () => {
           data={classStudents}
           keyExtractor={(item) => item._id}
           style={styles.list}
-          contentContainerStyle={{ paddingTop: 70 ,}}
+          contentContainerStyle={{ paddingTop: 70 }}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.studentCard} onPress={() => toggleAttendance(item._id)}>
               <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
@@ -203,48 +241,43 @@ const StudentRecord = () => {
         />
       )}
 
-{!isCalendarVisible && <TouchableOpacity style={styles.submitButton}  >
-        <Text style={styles.submitButtonText}>Save</Text>
-      </TouchableOpacity>}
+      {/* Save Button to Register Attendance */}
+      {!isCalendarVisible && (
+        <TouchableOpacity style={styles.submitButton} onPress={registerAttendance}>
+          <Text style={styles.submitButtonText}>Save</Text>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };
 
-// export default StudentHistory;
-
-
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: 'white' },
-  container1: { flex: 1, padding: 20, backgroundColor: 'white' ,paddingTop:70},
+  container1: { flex: 1, padding: 20, backgroundColor: 'white', paddingTop: 70 },
   calendar: {
-     borderRadius: 15, 
-     marginTop: 50 ,
-     height:'85%',
-     width:'95%',
-     alignSelf:'center',
-    //  backgroundColor:'red',
-    
-     elevation:4,
-
-     ...Platform.select({
+    borderRadius: 15,
+    marginTop: 50,
+    height: '85%',
+    width: '95%',
+    alignSelf: 'center',
+    elevation: 4,
+    ...Platform.select({
       ios: {
-        marginTop:0
+        marginTop: 0
       },
-      
     }),
-    },
-    submitButtonText: { color: '#fff', fontSize: 18 },
-    submitButton: {
-        position:'absolute',
-        bottom: 20  ,
-        backgroundColor: '#58A8F9',
-        paddingVertical: 10,
-        borderRadius: 8,
-        alignItems: 'center',
-        width:'80%',
-        alignSelf:'center'
-      },
+  },
+  submitButtonText: { color: '#fff', fontSize: 18 },
+  submitButton: {
+    position: 'absolute',
+    bottom: 20,
+    backgroundColor: '#58A8F9',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center',
+  },
   searchBar: {
     width: '90%',
     borderRadius: 8,
@@ -253,7 +286,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
     backgroundColor: '#daedff',
-
   },
   studentCard: {
     flexDirection: 'row',
@@ -271,14 +303,11 @@ const styles = StyleSheet.create({
   },
   studentTextid: { fontSize: 18, color: '#007bff' },
   studentText: { fontSize: 14 },
- 
   dayContainer: {
-    // padding: 10,
+    height: 35,
+    width: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor:'green',
-    height:35,
-    width:35
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },
@@ -291,7 +320,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height: '80%',
   },
   dropdown: {
     height: 50,
@@ -309,7 +338,7 @@ const styles = StyleSheet.create({
   placeholderStyle: {
     fontSize: 15,
     color: 'grey',
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   selectedTextStyle: {
     fontSize: 16,
@@ -318,10 +347,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    // zIndex: 100000,
-    position:'relative',
-    right:20,
-    top:10
+    position: 'relative',
+    right: 20,
+    top: 10,
   },
   search: {
     width: 110,
@@ -340,11 +368,10 @@ const styles = StyleSheet.create({
   main: {
     ...Platform.select({
       ios: {
-        marginTop:-50
+        marginTop: -50,
       },
-      
     }),
   }
 });
 
-export default StudentRecord
+export default StudentRecord;

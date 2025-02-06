@@ -21,6 +21,7 @@ import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-nat
     const [filteredStudents, setFilteredStudents] = useState([]);
     const [classes, setClasses] = useState([]);
     const [busRoutes, setBusRoutes] = useState([]);
+    // const [bus, setBus] = useState(null);
     const [loading, setLoading] = useState(false);
     // const [studentNames, setStudentNames] useState([])
     
@@ -93,10 +94,22 @@ import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-nat
     }
 
 
+    // const fetchBus = async () => {
+    //   // if (!selectedStudent?.dormitoryID) return;  // Check that dormitoryID exists
+    //   try {
+    //     const response = await axios.get(`${baseUrl}/dormitories/${selectedRoute}`);
+    //     setBus(response?.data?.doc?.name);
+    //   } catch (error) {
+    //     console.error("Error fetching BUS:", error);
+    //   }
+    // };
+
+
     useEffect(() => {
       fetchStudents();
       fetchClasses();
       fetchBusRoutes()
+      // fetchBus()
     }, []);
 
 
@@ -149,72 +162,72 @@ import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-nat
       // console.log('Navigating to studentDetails with studentId:', studentId);
     };
 
-
-  const generatePdfAndPrint = async () => {
-    const studentRows = filteredStudents
-      .map(student => `
-        <tr>
-          <td>${student.userID}</td>
-          <td>${student.name}</td>
-          <td>${student.guardian[0]?.name || ''}
-          <br> ${student.guardian[1]?.name || ''}</td>
-          <td>${student.class}</td>
-          <td>${student.gender}</td>
-          <td>${student.busRoute}</td>
-        </tr>
-      `)
-      .join('');
-
-    const htmlContent = `
-      <style>
-      h1 {
-      text-align : center
+    const generatePdfAndPrint = async () => {
+      const studentRows = filteredStudents
+        .map(student => {
+          const busRouteName = busRoutes.find(route => route.value === student.busRoute)?.label || 'N/A';
+    
+          return `
+            <tr>
+              <td>${student.userID}</td>
+              <td>${student.name}</td>
+              <td>${student.guardian[0]?.name || ''}<br>${student.guardian[1]?.name || ''}</td>
+              <td>${student.class}</td>
+              <td>${student.gender}</td>
+              <td>${busRouteName}</td>
+            </tr>
+          `;
+        })
+        .join('');
+    
+      const htmlContent = `
+        <style>
+          h1 { text-align: center; }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 8px;
+          }
+          th {
+            background-color: #2094e6;
+            color: white;
+          }
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+        </style>
+        <h1>Student List</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Guardian</th>
+              <th>Class</th>
+              <th>Gender</th>
+              <th>Bus Route</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${studentRows}
+          </tbody>
+        </table>
+      `;
+    
+      try {
+        const { uri } = await Print.printToFileAsync({ html: htmlContent });
+        await Print.printAsync({ uri });
+        Alert.alert('PDF Generated', 'PDF is ready to print!');
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        Alert.alert('Error', 'Failed to generate PDF');
       }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-top: 20px;
-        }
-        th, td {
-          border: 1px solid #ddd;
-          text-align: center;
-          padding: 8px;
-        }
-        th {
-          background-color: #2094e6;
-          color: white;
-        }
-        tr:nth-child(even) {
-          background-color: #f2f2f2;
-        }
-      </style>
-      <h1>Student List</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Guardian</th>
-            <th>Class</th>
-            <th>Gender</th>
-            <th>Bus Route</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${studentRows}
-        </tbody>
-      </table>
-    `;
-
-    try {
-      const { uri } = await Print.printToFileAsync({ html: htmlContent });
-      await Print.printAsync({ uri });
-      Alert.alert('PDF Generated', 'PDF is ready to print!');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      Alert.alert('Error', 'Failed to generate PDF');
-    }
-  };
+    };
     
     
    

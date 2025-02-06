@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackground, ActivityIndicator, TextInput } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
@@ -166,6 +166,14 @@ const handleClose = () => {
       </View>
     </View>
   );
+  const InfoRow1 = ({ label, value }) => (
+    <View style={styles.infoRow1}>
+      <Text style={styles.label1}>{label}</Text>
+      <View style={{ width: '70%', left: 20 }}>
+        <Text style={styles.value1}>{value}</Text>
+      </View>
+    </View>
+  );
 
   // Section Component
   const Section = ({ id, title, subTitle, subTitle2, children }) => {
@@ -183,7 +191,7 @@ const handleClose = () => {
             <Text style={{ color: 'grey', fontSize: 12 }}>{subTitle}</Text>
             <Text style={{ color: 'grey', fontSize: 11 }}>{subTitle2}</Text>
           </View>
-          <Ionicons style={{ marginRight: 20 }} name={isExpanded ? "chevron-up" : "chevron-down"} size={24} color="#58A8F9" />
+          <AntDesign style={{ marginRight: 20 }} name={isExpanded ? "up" : "down"} size={24} color="#58A8F9" />
         </TouchableOpacity>
         {isExpanded && (
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -227,7 +235,7 @@ const handleClose = () => {
               <Text style={styles.studentpos}>
                 {position}
               </Text>
-              <TouchableOpacity style={{width: responsiveWidth(15),height:responsiveHeight(3), backgroundColor:'red',borderRadius:8}} onPress={handlePayslip}>
+              <TouchableOpacity style={{width: responsiveWidth(15),height:responsiveHeight(3), backgroundColor:'red',borderRadius:8,position:'relative',right:10}} onPress={handlePayslip}>
                 <Text style={{fontSize:14,textAlign:'center', color:'white'}}>Pay</Text>
               </TouchableOpacity>
             </View>
@@ -236,19 +244,19 @@ const handleClose = () => {
 
         <View style={styles.content}>
           <InfoRow label="Payrow" value={'Amount'} />
-          <InfoRow label="Salary" value={details?.salary || '100'} />
-          <InfoRow label="Allowance" value={details?.allowance || '0'} />
-          <InfoRow label="Bonus" value={details?.bonus || '100'} />
-          <InfoRow label="Total Salary" value={
+          <InfoRow label="Salary" value={`₹${details?.salary}` || '100'} />
+          <InfoRow label="Allowance" value={`₹${details?.allowance}` || '0'} />
+          <InfoRow label="Bonus" value={`₹${details?.bonus}` || '100'} />
+          <InfoRow label="Total Salary" value={`₹${
       Number(details?.salary) +
       Number(details?.allowance) +
-      Number(details?.bonus)} />
-          <InfoRow label="Total Paid" value={totalPaid || '0'} />
-          <InfoRow label="Balance" value={
+      Number(details?.bonus)}`} />
+          <InfoRow label="Total Paid" value={`₹${totalPaid}` || '0'} />
+          <InfoRow label="Balance" value={`₹${
             (Number(details?.salary) +
         Number(details?.allowance) +
         Number(details?.bonus)) -
-      Number(totalPaid)} />
+      Number(totalPaid)}`} />
         </View>
       </View>
 
@@ -264,11 +272,11 @@ const handleClose = () => {
               subTitle={`Bank: ${txn.bank}`}
               subTitle2={dayjs(txn.date).format("DD MMMM YYYY")}
             >
-              <InfoRow label="Account Number" value={txn.accountNumber || "N/A"} />
-              <InfoRow label="Transaction ID" value={txn._id} />
-              <InfoRow label="Payment Date" value={dayjs(txn.date).format("DD-MM-YYYY")} />
-              <InfoRow label="Month" value={getMonthDetails(txn.month).monthName} />
-              <InfoRow label="Year" value={txn.year} />
+              <InfoRow1 label="Account Number" value={txn.accountNumber || "N/A"} />
+              {/* <InfoRow1 label="Transaction ID" value={txn._id} /> */}
+              <InfoRow1 label="Payment Date" value={dayjs(txn.date).format("DD-MM-YYYY")} />
+              <InfoRow1 label="Month" value={getMonthDetails(txn.month).monthName} />
+              <InfoRow1 label="Year" value={txn.year} />
             </Section>
           ))
         ) : (
@@ -329,7 +337,7 @@ const styles = StyleSheet.create({
     height: responsiveHeight(35), // Adjust height according to your design
     backgroundColor:'#daedff',
     borderBottomWidth:0.8,
-    borderBottomColor:'black'
+    borderBottomColor:'grey'
   
   },
   profileSection: {

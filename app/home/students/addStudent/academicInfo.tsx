@@ -1,9 +1,10 @@
-import { View, Text,StyleSheet, SafeAreaView,ScrollView,Image,TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text,StyleSheet, SafeAreaView,ScrollView,Image,TouchableOpacity, Alert } from 'react-native'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import Feather from '@expo/vector-icons/Feather';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import axios from 'axios';
 
 const dummyData = {
     class: [
@@ -27,9 +28,8 @@ const dummyData = {
       { label: "D", value: "D" },
     ],
     status: [
-      { label: "Active", value: "active" },
-      { label: "Inactive", value: "inactive" },
-      { label: "Suspended", value: "suspended" },
+      { label: "With Transport", value: "border" },
+      { label: "Without Transport", value: "day" },
     ],
     busVan: [
       { label: "Bus 1", value: "bus_1" },
@@ -43,12 +43,11 @@ const dummyData = {
       { label: "Full Fee Waiver", value: "full" },
     ],
     feeCategory: [
-      { label: "Regular", value: "regular" },
-      { label: "Discounted", value: "discounted" },
-      { label: "Scholarship", value: "scholarship" },
-      { label: "Scholarship1", value: "scholarship1" },
-      { label: "Scholarship2", value: "scholarship2" },
-      { label: "Scholarship3", value: "scholarship3" },
+      { label: "p-nur", value: "p-nur" },
+      { label: "nur", value: "nur" },
+      { label: "iv-a", value: "iv-a" },
+      { label: "ii-a", value: "ii-a" },
+    
     ],
     campus: [
       { label: "Main Campus", value: "main" },
@@ -59,18 +58,151 @@ const dummyData = {
       { label: "West Wing", value: "west_wing" },
     ],
   };
+
+  const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+
   
 
 const academicInfo = () => {
 
+const {personalData} = useLocalSearchParams();
+// console.log(personalData, ' djfskjbgkjs')
+
     const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedID, setSelectedID] = useState(null);
+    const [selectedStatus, setSelectedStatus] = useState(null);
+    const [selectedClass, setSelectedClass] = useState(null);
+    const [selectedSection, setSelectedSection] = useState(null);
+    const [selectedDiv, setSelectedDiv] = useState(null);
+    const [selectedDorm, setSelectedDorm] = useState(null);
+    const [selectedScholarship, setSelectedScholarship] = useState(null);
+    const [selectedCampus, setSelectedCampus] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [classes, setClasses] = useState([]);
+    const [sections, setSections] = useState([]);
+    const [divs, setDivs] = useState([]);
+    const [dorms, setDorms] = useState([]);
+    const [scholarships, setScholarships] = useState([]);
+    const [campuses, setCampuses] = useState([]);
 
 
     const router = useRouter();
 
-   
+    const fetchSections = async () => {
+      // setLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/sections`);
+        const formatedData = response.data.map((sec) => ({
+          label: sec.name,
+          value: sec.name,
+        }))
 
+        setSections(formatedData)
+      } catch (error) {
+        console.error("Error fetching sections", error);
+        Alert.alert("Error", "Failed to fetch sections.");
+      }
+      
+    };
+
+
+    const fetchCampus = async () => {
+      // setLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/campuses`);
+        const formatedData = response.data.map((camp) => ({
+          label: camp.name,
+          value: camp._id,
+        }))
+
+        setCampuses(formatedData)
+      } catch (error) {
+        console.error("Error fetching sections", error);
+        Alert.alert("Error", "Failed to fetch sections.");
+      }
+      
+    };
+
+
+    const fetchScholarships = async () => {
+      // setLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/scholarships`);
+        const formatedData = response.data.map((sec) => ({
+          label: sec.percentage,
+          value: sec.name,
+        }))
+
+        setScholarships(formatedData)
+      } catch (error) {
+        console.error("Error fetching sections", error);
+        Alert.alert("Error", "Failed to fetch sections.");
+      }
+      
+    };
+
+
+    const fetchDorm = async () => {
+      // setLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/dormitories`);
+        const formatedData = response.data.map((dorm) => ({
+          label: dorm.name,
+          value: dorm._id,
+        }))
+
+        setDorms(formatedData)
+      } catch (error) {
+        console.error("Error fetching sections", error);
+        Alert.alert("Error", "Failed to fetch sections.");
+      }
+      
+    };
+  
+    const fetchDivision = async () => {
+      // setLoading(true);
+      try {
+        const response = await axios.get(`${baseUrl}/divisions`);
+        const formatedData = response.data.map((div) => ({
+          label: div.name,
+          value: div.name,
+        }))
+
+        setDivs(formatedData)
+      } catch (error) {
+        console.error("Error fetching sections", error);
+        Alert.alert("Error", "Failed to fetch sections.");
+      }
+      
+    };
+  
+
+    const fetchClasses = async() => {
+
+      try {
+        const response = await axios.get(`${baseUrl}/classes`)
+  //  console.log(classes, 'classed')
+        const formatedData = response.data.map((cls) => ({
+          label: cls.name,
+          value: cls.classCode,
+        }))
+
+        setClasses(formatedData)
+
+
+      } catch (error) {
+        console.error('Error fetching classes:', error.message);
+      }
+
+    }
+
+    useEffect(() => {
+      fetchClasses()
+      fetchSections()
+      fetchDivision()
+      fetchDorm()
+      fetchScholarships()
+      fetchCampus()
+    },[])
  
    
 
@@ -86,7 +218,17 @@ const academicInfo = () => {
         router.back()
     }
     const handleNext = () => {
-        router.navigate('./contactInfo')
+      const academicData = {
+        class: selectedClass,
+        section: selectedSection,
+        division: selectedDiv,
+        status: selectedStatus,
+        dormitories: selectedDorm,
+        scholarship: selectedScholarship,
+        category: selectedCategory,
+        campus: selectedCampus,
+      };
+      router.navigate({ pathname: './contactInfo', params: { academicData: JSON.stringify(academicData),personalData } });
     }
 
 
@@ -115,7 +257,7 @@ const academicInfo = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
         //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.class}
+          data={classes}
         //   search
           maxHeight={300}
           labelField="label"
@@ -124,15 +266,15 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.class.value}
-          onChange={(item) => (item.value)}
+          value={selectedClass}
+          onChange={(item) => setSelectedClass(item.value)}
         />
     <Dropdown
           style={[styles.dropdown,]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
         //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.sectionHouse}
+          data={sections}
         //   search
           maxHeight={300}
           labelField="label"
@@ -141,8 +283,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.sectionHouse.value}
-          onChange={(item) => (item.value)}
+          value={selectedSection}
+          onChange={(item) => setSelectedSection(item.value)}
        
         />
     <Dropdown
@@ -150,7 +292,7 @@ const academicInfo = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
         //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.division}
+          data={divs}
         //   search
           maxHeight={300}
           labelField="label"
@@ -159,8 +301,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.division.value}
-          onChange={(item) => (item.value)}
+          value={selectedDiv}
+          onChange={(item) => setSelectedDiv(item.value)}
        
         />
     <Dropdown
@@ -177,8 +319,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.status.value}
-          onChange={(item) => (item.value)}
+          value={selectedStatus}
+          onChange={(item) => setSelectedStatus(item.value)}
        
         />
     <Dropdown
@@ -186,7 +328,7 @@ const academicInfo = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
         //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.busVan}
+          data={dorms}
         //   search
           maxHeight={300}
           labelField="label"
@@ -195,8 +337,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.busVan.value}
-          onChange={(item) => (item.value)}
+          value={selectedDorm}
+          onChange={(item) => setSelectedDorm(item.value)}
        
         />
     <Dropdown
@@ -204,7 +346,7 @@ const academicInfo = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
         //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.scholarship}
+          data={scholarships}
         //   search
           maxHeight={300}
           labelField="label"
@@ -213,8 +355,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.scholarship.value}
-          onChange={(item) => (item.value)}
+          value={selectedScholarship}
+          onChange={(item) => setSelectedScholarship(item.value)}
        
         />
     <Dropdown
@@ -233,8 +375,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.feeCategory.value}
-          onChange={(item) => (item.value)}
+          value={selectedCategory}
+          onChange={(item) => setSelectedCategory(item.value)}
        
         />
     <Dropdown
@@ -243,7 +385,7 @@ const academicInfo = () => {
           selectedTextStyle={styles.selectedTextStyle}
           dropdownPosition='top'
         //   inputSearchStyle={styles.inputSearchStyle}
-          data={dummyData.campus}
+          data={campuses}
         //   search
           maxHeight={300}
           labelField="label"
@@ -252,8 +394,8 @@ const academicInfo = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={dummyData.campus.value}
-          onChange={(item) => (item.value)}
+          value={selectedCampus}
+          onChange={(item) => setSelectedCampus(item.value)}
        
         />
     </View>

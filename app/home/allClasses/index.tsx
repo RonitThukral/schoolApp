@@ -305,8 +305,8 @@ const [teachers, setTeachers] = useState([])
             <Text style={styles.sectionTitle}>{title}</Text>
             <Text style={{color:'grey',position:'relative',left:15}}>{subTitle}</Text>
             </View>
-            <Ionicons 
-              name={isExpanded ? "chevron-up" : "chevron-down"} 
+            <AntDesign 
+              name={isExpanded ? "up" : "down"} 
               size={24} 
               color="#58A8F9"
             />

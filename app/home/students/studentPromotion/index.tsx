@@ -4,25 +4,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useState } from 'react';
 import axios from 'axios';
 
-const dummyData = {
-    classes: [
-      { id: 1, name: "Class 1" },
-      { id: 2, name: "Class 2" },
-      { id: 3, name: "Class 3" },
-      { id: 4, name: "Class 4" },
-      { id: 5, name: "Class 5" },
-    ],
-    students: [
-      { id: 101, name: "John Doe", currentClass: "Class 1" },
-      { id: 102, name: "Jane Smith", currentClass: "Class 2" },
-      { id: 103, name: "Sam Wilson", currentClass: "Class 3" },
-      { id: 104, name: "Lisa Brown", currentClass: "Class 4" },
-      { id: 105, name: "Tom Holland", currentClass: "Class 5" },
-    ],
-    
-  };
-  
-  
   
   const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
 
@@ -36,6 +17,10 @@ const index = () => {
     const [filteredStudents , setFilteredStudents] = useState([])
     const [currentClass , setCurrentClass] = useState(null)
     const [nextClass , setNextClass] = useState(null)
+    const [currentCampus , setCurrentCampus] = useState(null)
+    const [Campuses , setCampuses] = useState([])
+    const [nextCampus , setNextCampus] = useState(null)
+    const [buses , setBuses] = useState([])
     const [fromBus , setFromBus] = useState(null)
     const [toBus , setToBus] = useState(null)
 
@@ -55,10 +40,10 @@ const index = () => {
   // console.log(data)
         // Transform data to match the design format if needed
         const formattedData = data.users.map((student) => ({
-          id: student._id,
-          name: `${student.name} ${student.surname || ''}`.trim(),
-          class: student.classID || 'N/A',
-          userID : student.userID || 'N/A' 
+          // id: student._id,
+          label: `${student.name} ${student.surname || ''}`.trim(),
+          // class: student.classID || 'N/A',
+          value : student.userID || 'N/A' 
         }));
         
         setFilteredStudents(formattedData);
@@ -94,10 +79,44 @@ const index = () => {
     }
 
 
+    const fetchCampuses = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/campuses`);
+        const formattedData = response.data.map((camp) => ({
+          label: camp.name,
+          value: camp.name
+        }))
+        setCampuses(formattedData);
+      } catch (error) {
+        console.error("Error fetching campuses:", error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+
+    const fetchBuses = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/dormitories`);
+        const formattedData = response.data.map((bus) => ({
+          label: bus.name,
+          value: bus.name
+        }))
+        setBuses(formattedData);
+      } catch (error) {
+        console.error("Error fetching campuses:", error);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+
 
     useEffect(() => {
       fetchClasses();
       fetchStudents();
+      fetchCampuses();
+      fetchBuses();
     },[])
 
 
@@ -110,6 +129,114 @@ const index = () => {
         setIsFocus(null)
       }
 
+
+      const resetSelections = () => {
+        setSelectedClass(null);
+        setToSelectedClass(null);
+        setSelectedStudent(null);
+        setCurrentClass(null);
+        setNextClass(null);
+        setCurrentCampus(null);
+        setNextCampus(null);
+        setFromBus(null);
+        setToBus(null);
+    };
+    
+
+
+      const handlePromoteToClass = async () => {
+        if (!selectedStudent || !toSelectedClass) {
+          return alert("Please select both a student and a class.");
+        }
+      
+        try {
+          // setLoading(true);
+          const res = await axios.put(`${baseUrl}/students/update/${selectedStudent}`, { classID: toSelectedClass });
+      
+          // setLoading(false);
+          if (res.data.error) {
+            return alert(res.data.error);
+          }
+      
+          alert("Student promoted successfully!");
+          fetchStudents(); // Refresh students list after promotion
+        } catch (error) {
+          // setLoading(false);
+          console.error("Error promoting student:", error);
+          alert("Failed to promote student.");
+        }
+      };
+
+
+      const handleNextClass = async () => {
+        if (!currentClass || !nextClass) {
+          return alert('Please select both current and next class.');
+        }
+        try {
+          const res = await axios.post(`${baseUrl}/students/upgrade/class`, { currentclass: currentClass, nextclass: nextClass });
+          if (res.data.error) {
+            return alert(res.data.error);
+          }
+          alert('Students promoted to the next class successfully!');
+          fetchStudents();
+        } catch (error) {
+          console.error('Error promoting students:', error);
+          alert('Failed to promote students.');
+        }
+      };
+  
+      const handleCampus = async () => {
+        if (!currentCampus || !nextCampus) {
+          return alert("Please select both current and next campus.");
+        }
+      
+        try {
+          // setLoading(true);
+          const res = await axios.post(`${baseUrl}/students/upgrade/campus`, {
+            currentcampus: currentCampus,
+            nextcampus: nextCampus,
+          });
+      
+          // setLoading(false);
+      
+          if (res.data.error) {
+            return alert(res.data.error);
+          }
+      
+          alert("Students promoted to the next campus successfully!");
+          fetchStudents(); // Refresh student list if needed
+        } catch (error) {
+          // setLoading(false);
+          console.error("Error promoting students:", error);
+          alert("Failed to promote students.");
+        }
+      };
+
+      const handleBus = async () => {
+        if (!fromBus || !toBus) {
+            return alert("Please select both the current and next bus.");
+        }
+      
+        try {
+            const res = await axios.post(`${baseUrl}/students/upgrade/dormitories`, {
+              currentdormitories: fromBus,
+              nextdormitories: toBus,
+            });
+          
+            if (res.data.error) {
+                return alert(res.data.error);
+            }
+          
+            alert("Students promoted to the next bus successfully!");
+            fetchStudents(); // Refresh student list if needed
+        } catch (error) {
+            console.error("Error promoting students:", error);
+            alert("Failed to promote students.");
+        }
+    };
+    
+      
+  
 
   return (
     <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
@@ -146,8 +273,8 @@ const index = () => {
           data={filteredStudents}
           search
           maxHeight={300}
-          labelField="name"
-          valueField="name"
+          labelField="label"
+          valueField="value"
           placeholder={'Select'}
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('name')}
@@ -178,10 +305,10 @@ const index = () => {
       />
         }
 <View style ={styles.footer}>
-          <TouchableOpacity style={styles.reset} >
+          <TouchableOpacity style={styles.reset} onPress={resetSelections}>
             <Text  style={{color: '#58A8F9', fontSize:15}}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.promote} >
+          <TouchableOpacity style ={styles.promote} onPress={handlePromoteToClass}>
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Promote</Text>
           </TouchableOpacity>
           </View>
@@ -235,9 +362,9 @@ const index = () => {
         
 <View style ={styles.footer}>
           <TouchableOpacity style={styles.reset} >
-            <Text  style={{color: '#58A8F9', fontSize:15}}>Reset</Text>
+            <Text  style={{color: '#58A8F9', fontSize:15}} onPress={resetSelections}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.promote} >
+          <TouchableOpacity style ={styles.promote} onPress={handleNextClass}>
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Promote</Text>
           </TouchableOpacity>
           </View>
@@ -254,7 +381,7 @@ const index = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={classes}
+          data={Campuses}
           search
           maxHeight={300}
           labelField="label"
@@ -263,8 +390,8 @@ const index = () => {
           searchPlaceholder="Search..."
           onFocus={() => handleFocus('class')}
           onBlur={handleBlur}
-          value={currentClass}
-          onChange={(item) => setCurrentClass(item.value)}
+          value={currentCampus}
+          onChange={(item) => setCurrentCampus(item.value)}
        
         />
       
@@ -275,7 +402,7 @@ const index = () => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
-        data={classes}
+        data={Campuses}
         search
         maxHeight={300}
         labelField="label"
@@ -284,16 +411,16 @@ const index = () => {
         searchPlaceholder="Search..."
         onFocus={() => handleFocus('class')}
         onBlur={handleBlur}
-        value={nextClass}
-        onChange={(item) => setNextClass(item.value)}
+        value={nextCampus}
+        onChange={(item) => setNextCampus(item.value)}
      
       />
         
 <View style ={styles.footer}>
-          <TouchableOpacity style={styles.reset} >
+          <TouchableOpacity style={styles.reset} onPress={resetSelections}>
             <Text  style={{color: '#58A8F9', fontSize:15}}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.promote} >
+          <TouchableOpacity style ={styles.promote}onPress={handleCampus} >
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Promote</Text>
           </TouchableOpacity>
           </View>
@@ -310,8 +437,9 @@ const index = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={classes}
+          data={buses}
           search
+          dropdownPosition='top'
           maxHeight={300}
           labelField="label"
           valueField="value"
@@ -331,7 +459,7 @@ const index = () => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
-        data={classes}
+        data={buses}
         search
         maxHeight={300}
         labelField="label"
@@ -346,10 +474,10 @@ const index = () => {
       />
         
 <View style ={styles.footer}>
-          <TouchableOpacity style={styles.reset} >
+          <TouchableOpacity style={styles.reset} onPress={resetSelections}>
             <Text  style={{color: '#58A8F9', fontSize:15}}>Reset</Text>
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.promote} >
+          <TouchableOpacity style ={styles.promote} onPress={handleBus}>
           <Text style={{textAlign: 'center', color:'white', fontSize: 15,paddingHorizontal:10,}}>Promote</Text>
           </TouchableOpacity>
           </View>

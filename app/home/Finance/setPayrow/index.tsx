@@ -1,141 +1,441 @@
-import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView} from 'react-native';
-  import Entypo from '@expo/vector-icons/Entypo';
-  import axios from 'axios';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+// import React, { useEffect, useState } from 'react';
+//   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView} from 'react-native';
+//   import Entypo from '@expo/vector-icons/Entypo';
+//   import axios from 'axios';
+// import { responsiveWidth } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
 
   
-const feeData = [
-  {
-    "role": "Senior Teacher",
-    "total": "₹ 82,000",
-    "details": {
-      "Salary": "₹ 70,000",
-      "Allowance": "₹ 10,000",
-      "Bonus": "₹ 2,000"
-    }
-  },
-  {
-    "role": "Teacher",
-    "total": "₹ 56,000",
-    "details": {
-      "Salary": "₹ 50,000",
-      "Allowance": "₹ 5,000",
-      "Bonus": "₹ 1,000"
-    }
-  }
-];
+// const feeData = [
+//   {
+//     "role": "Senior Teacher",
+//     "total": "₹ 82,000",
+//     "details": {
+//       "Salary": "₹ 70,000",
+//       "Allowance": "₹ 10,000",
+//       "Bonus": "₹ 2,000"
+//     }
+//   },
+//   {
+//     "role": "Teacher",
+//     "total": "₹ 56,000",
+//     "details": {
+//       "Salary": "₹ 50,000",
+//       "Allowance": "₹ 5,000",
+//       "Bonus": "₹ 1,000"
+//     }
+//   }
+// ];
 
 
 
 
 
-  const DropdownComponent = () => {
-  const [feeData, setFeeData] = useState([])
+//   const DropdownComponent = () => {
+//   const [feeData, setFeeData] = useState([])
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [edit, setEdit] = useState(false);
+//   const [salary, setSalary] = useState(null);
+//   const [allow, setAllow] = useState(null);
+//   const [bonus, setBonus] = useState(null);
+//   const [name, setName] = useState(null);
+
+//   const fetchPayrow = async() => {
+//     try {
+//       const response = await axios.get(`${baseUrl}/payrow`)
+//       setFeeData(response.data)
+//     } catch (error) {
+      
+//       console.error(error.message);
+
+//     }
+//   }
+
+
+//   useEffect(() => {
+//     fetchPayrow();
+//   },[])
+
+
+//   const handleAdd = () => {
+//     setIsOpen(true)
+//   }
+//   const handleEdit = () => {
+//     setEdit(true)
+//   }
+
+//  const handleAddPayrow = () => {
+  
+//  }
+//  const saveEdit = () => {
+
+//  }
+//  const handleDelte = () => {
+
+//  }
+
+ 
+
+
+//       const InfoRow = ({ label, value}:any) => (
+//         <View style={styles.infoRow}>
+//           <Text style={styles.label}>{label}</Text>
+//           <View style={{width:'70%', left:20 }}>
+    
+//           <Text style={styles.value}>{value}</Text>
+//           </View>
+//         </View>
+//       );
+    
+//       const Section = ({ id,title,title2, children }:any):any => {
+//           // const isExpanded = expandedSectionId === id
+//         return(
+//         <View style={styles.section}>
+//           <TouchableOpacity 
+//             style={styles.sectionHeader} 
+//             activeOpacity={0.7}
+//           >
+           
+//             <View style={{flex:1, flexDirection:'row',justifyContent:'space-between'}}>
+
+//             <Text style={styles.sectionTitle}>{title}</Text>
+//             <Text style={styles.sectionTitle2}>{title2}</Text>
+//             </View>
+            
+//           </TouchableOpacity>
+         
+//             <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+//             <View style={styles.sectionContent}>
+//               {children}
+//             </View>
+//             <View style={styles.listBtns}>
+//                 <TouchableOpacity style={{ width:30,height:30,justifyContent:'center',alignItems:'center'}}onPress={handleEdit} >
+//                 <Image style={{width:20,height:20,position:'relative',left:5,marginBottom:20}} source={require('../../../../assets/images/images/edit.png')}/>
+
+//                 </TouchableOpacity>
+//                 <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} onPress={handleDelte}>
+//                 <Image  source={require('../../../../assets/images/images/delete.png')}/>
+
+//                 </TouchableOpacity>
+//             </View>
+
+//             </View>
+          
+//         </View>
+//       )};
    
 
-  const fetchPayrow = async() => {
+//     return (
+//         <SafeAreaView style={{flex:1}}>
+//       <View style={styles.container}>
+
+// {/* List of students section */}
+// <ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
+
+// {feeData.map((data, index) => (
+//         <Section key={index} id={data._id} title={data.name} title2={`₹ ${data.salary}`}>
+//           <InfoRow label="Salary" value={data.salary} />
+//           <InfoRow label="Allowance" value={data.allowance} />
+//           <InfoRow label="Bonus" value={data.bonus} />
+//         </Section>
+//       ))
+//     }
+// </ScrollView>
+
+
+// {(isOpen || edit) && (
+//           <View style={styles.inputContainer}>
+//             <Text style={styles.inputHeader}>{edit ? 'Edit Payrow' : 'Add Payrow'}</Text>
+
+//             <TextInput
+//               style={styles.input}
+//               placeholder={edit ? "Edit Name" : "Add Name"}
+//               onChangeText={(text) => setName(text)}
+//               value={name}
+//             />
+
+//             <TextInput
+//               style={styles.input}
+//               placeholder={edit ? "Edit Salary" : "Add Salary"}
+//               onChangeText={(text) => setSalary(text)}
+//               value={salary}
+//             />
+//             <TextInput
+//               style={styles.input}
+//               placeholder={edit ? "Edit Allowance" : "Add Allowance"}
+//               onChangeText={(text) => setAllow(text)}
+//               value={allow}
+//             />
+//             <TextInput
+//               style={styles.input}
+//               placeholder={edit ? "Edit Bonus" : "Add Bonus"}
+//               onChangeText={(text) => setBonus(text)}
+//               value={bonus}
+//             />
+
+//             <View style={styles.inputButtonsContainer}>
+//               <TouchableOpacity style={styles.closeBtn} onPress={() => { setIsOpen(false); setEdit(false); }}>
+//                 <Text style={styles.cancelText}>Cancel</Text>
+//               </TouchableOpacity>
+//               <TouchableOpacity style={styles.buttons} onPress={edit ? saveEdit : handleAddPayrow}>
+//                 <Text style={styles.addText}>{edit ? 'Save' : 'Add'}</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </View>
+//         )}
+
+// <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'relative', borderRadius:100, bottom:100, justifyContent:'center',left:responsiveWidth(65),alignItems:'center'}} onPress={handleAdd} >
+//       <Entypo name="plus" size={40} color="white" />
+//       </TouchableOpacity>
+
+// </View>
+//       </SafeAreaView>
+//     );
+//   };
+
+
+
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View , TouchableOpacity, Image, ScrollView, TextInput, SafeAreaView } from 'react-native';
+import Entypo from '@expo/vector-icons/Entypo';
+import axios from 'axios';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
+
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+
+const DropdownComponent = () => {
+  const [feeData, setFeeData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [salary, setSalary] = useState(null);
+  const [allow, setAllow] = useState(null);
+  const [bonus, setBonus] = useState(null);
+  const [name, setName] = useState(null);
+
+  const fetchPayrow = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/payrow`)
-      setFeeData(response.data)
+      const response = await axios.get(`${baseUrl}/payrow`);
+      setFeeData(response.data);
     } catch (error) {
-      
       console.error(error.message);
-
     }
-  }
-
+  };
 
   useEffect(() => {
     fetchPayrow();
-  },[])
+  }, []);
 
+  const handleAdd = () => {
+    setIsOpen(true);
+  };
 
+  const handleEdit = (data) => {
+    setEdit(true);
+    setName(data.name);
+    setSalary(data.salary);
+    setAllow(data.allowance);
+    setBonus(data.bonus);
+  };
 
+  const handleAddPayrow = () => {
+    axios
+      .post(`${baseUrl}/payrow/add`, {
+        name,
+        salary,
+        allowance: allow,
+        bonus,
+      })
+      .then((res) => {
+        if (res.data.error) {
+          alert(res.data.error);
+          return;
+        }
+        setFeeData([res.data.doc, ...feeData]);
+        setName(null);
+        setSalary(null);
+        setAllow(null);
+        setBonus(null);
+        setIsOpen(false);
+        alert("Payrow added successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Failed to add payrow");
+      });
+  };
 
+  const saveEdit = () => {
+    axios
+      .put(`${baseUrl}/payrow/update`, {
+        
+        salary,
+        allowance: allow,
+        bonus,
+      })
+      .then((res) => {
+        if (res.data.error) {
+          alert(res.data.error);
+          return;
+        }
+        const updatedFeeData = feeData.map((item) =>
+          item._id === res.data.doc._id ? res.data.doc : item
+        );
+        setFeeData(updatedFeeData);
+        setName(null);
+        setSalary(null);
+        setAllow(null);
+        setBonus(null);
+        setEdit(false);
+        alert("Payrow updated successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Failed to update payrow");
+      });
+  };
 
-      const InfoRow = ({ label, value}:any) => (
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>{label}</Text>
-          <View style={{width:'70%', left:20 }}>
-    
-          <Text style={styles.value}>{value}</Text>
-          </View>
-        </View>
-      );
-    
-      const Section = ({ id,title,title2, children }:any):any => {
-          // const isExpanded = expandedSectionId === id
-        return(
-        <View style={styles.section}>
-          <TouchableOpacity 
-            style={styles.sectionHeader} 
-            activeOpacity={0.7}
-          >
-           
-            <View style={{flex:1, flexDirection:'row',justifyContent:'space-between'}}>
+  const handleDelete = (id) => {
+    axios
+      .delete(`${baseUrl}/payrow/delete/${id}`)
+      .then((res) => {
+        if (res.data.error) {
+          alert(res.data.error);
+          return;
+        }
+        setFeeData(feeData.filter((item) => item._id !== id));
+        alert("Payrow deleted successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Failed to delete payrow");
+      });
+  };
 
+  const InfoRow = ({ label, value }) => (
+    <View style={styles.infoRow}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={{ width: '70%', left: 20 }}>
+        <Text style={styles.value}>{value}</Text>
+      </View>
+    </View>
+  );
+
+  const Section = ({ id, title, title2, children }) => {
+    return (
+      <View style={styles.section}>
+        <TouchableOpacity style={styles.sectionHeader} activeOpacity={0.7}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.sectionTitle}>{title}</Text>
             <Text style={styles.sectionTitle2}>{title2}</Text>
-            </View>
-            
-          </TouchableOpacity>
-         
-            <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
-            <View style={styles.sectionContent}>
-              {children}
-            </View>
-            <View style={styles.listBtns}>
-                <TouchableOpacity style={{ width:30,height:30,justifyContent:'center',alignItems:'center'}} >
-                <Image style={{width:20,height:20,position:'relative',left:5,marginBottom:20}} source={require('../../../../assets/images/images/edit.png')}/>
+          </View>
+        </TouchableOpacity>
 
-                </TouchableOpacity>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
-                <Image  source={require('../../../../assets/images/images/delete.png')}/>
-
-                </TouchableOpacity>
-            </View>
-
-            </View>
-          
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={styles.sectionContent}>
+            {children}
+          </View>
+          <View style={styles.listBtns}>
+            <TouchableOpacity
+              style={{ width: 30, height: 30, justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => handleEdit(id)}
+            >
+              <Image style={{ width: 20, height: 20, position: 'relative', left: 5, marginBottom: 20 }} source={require('../../../../assets/images/images/edit.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}
+              onPress={() => handleDelete(id)}
+            >
+              <Image source={require('../../../../assets/images/images/delete.png')} />
+            </TouchableOpacity>
+          </View>
         </View>
-      )};
-   
-
-    return (
-        <SafeAreaView style={{flex:1}}>
-      <View style={styles.container}>
-
-      
-      
-
-          
-      
-
-
-{/* List of students section */}
-<ScrollView style={{marginTop: 0, marginBottom: 0, backgroundColor:'#FFFFFF'}}>
-
-{feeData.map((data, index) => (
-        <Section key={index} id={data._id} title={data.name} title2={`₹ ${data.salary}`}>
-          <InfoRow label="Salary" value={data.salary} />
-          <InfoRow label="Allowance" value={data.allowance} />
-          <InfoRow label="Bonus" value={data.bonus} />
-        </Section>
-      ))
-    }
-</ScrollView>
-
-<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'relative', borderRadius:100, bottom:100, justifyContent:'center',left:responsiveWidth(65),alignItems:'center'}} >
-      <Entypo name="plus" size={40} color="white" />
-      </TouchableOpacity>
-
-</View>
-      </SafeAreaView>
+      </View>
     );
   };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {/* List of payrows */}
+        <ScrollView style={{ marginTop: 0, marginBottom: 0, backgroundColor: '#FFFFFF' }}>
+          {feeData.map((data, index) => (
+            <Section key={index} id={data._id} title={data.name} title2={`₹ ${data.salary}`}>
+              <InfoRow label="Salary" value={data.salary} />
+              <InfoRow label="Allowance" value={data.allowance} />
+              <InfoRow label="Bonus" value={data.bonus} />
+            </Section>
+          ))}
+        </ScrollView>
+
+        {(isOpen || edit) && (
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputHeader}>{edit ? 'Edit Payrow' : 'Add Payrow'}</Text>
+
+           {!edit &&<TextInput
+              style={styles.input}
+              placeholder={edit ? "Edit Name" : "Add Name"}
+              onChangeText={(text) => setName(text)}
+              value={name}
+            />}
+
+            <TextInput
+              style={styles.input}
+              placeholder={edit ? "Edit Salary" : "Add Salary"}
+              onChangeText={(text) => setSalary(text)}
+              value={salary}
+              keyboardType='numeric'
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={edit ? "Edit Allowance" : "Add Allowance"}
+              onChangeText={(text) => setAllow(text)}
+              value={allow}
+              keyboardType='numeric'
+
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={edit ? "Edit Bonus" : "Add Bonus"}
+              onChangeText={(text) => setBonus(text)}
+              value={bonus}
+              keyboardType='numeric'
+
+            />
+
+            <View style={styles.inputButtonsContainer}>
+              <TouchableOpacity style={styles.closeBtn} onPress={() => { setIsOpen(false); setEdit(false); }}>
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttons} onPress={edit ? saveEdit : handleAddPayrow}>
+                <Text style={styles.addText}>{edit ? 'Save' : 'Add'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        <TouchableOpacity
+          style={{
+            width: 80,
+            height: 80,
+            backgroundColor: '#58A8F9',
+            zIndex: 90000,
+            position: 'relative',
+            borderRadius: 100,
+            bottom: 100,
+            justifyContent: 'center',
+            left: responsiveWidth(65),
+            alignItems: 'center',
+          }}
+          onPress={handleAdd}
+        >
+          <Entypo name="plus" size={40} color="white" />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+};
+
 
   export default DropdownComponent;
 
@@ -217,6 +517,7 @@ const feeData = [
       marginBottom: 0,
       marginTop: 20
     },
+
     listBtns:{
         position:'absolute',
         right:30
@@ -310,7 +611,81 @@ const feeData = [
         
       },
      
-  
-    
+      input: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#DAEDFF',
+        marginBottom: 15,
+        borderRadius: 10,
+        alignSelf: 'center',
+        paddingHorizontal: 25,
+      },
+
+      inputContainer: {
+        position: 'absolute',
+        width: '80%',
+        height: 380,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        top: '30%',
+        flexDirection: 'column',
+        elevation:5
+      },
+      inputHeader: {
+        fontSize: 24,
+        position: 'relative',
+        alignSelf: 'flex-start',
+        paddingHorizontal: 25,
+        paddingVertical: 15,
+      },
+      inputButtonsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        marginBottom: 10,
+      },
+      buttons: {
+        width: 100,
+        height: 38,
+        backgroundColor: '#58A8F9',
+        position: 'absolute',
+        right: 25,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      closeBtn: {
+        width: 100,
+        height: 38,
+        // backgroundColor: '#DAEDFF',
+        position: 'absolute',
+        left: 25,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      addButton: {
+        position: 'absolute',
+        bottom: 50,
+        right: 20,
+        backgroundColor: '#58A8F9',
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 4,
+      },
+      cancelText: {
+        color: '#58A8F9',
+        fontWeight: '600',
+      },
+      addText: {
+        color: 'white',
+        fontWeight: '600',
+      },
 
   });

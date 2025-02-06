@@ -1,9 +1,17 @@
 import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image ,FlatList} from 'react-native'
 import React, { useState } from 'react'
 import Feather from '@expo/vector-icons/Feather';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import axios from 'axios';
 
 const contactInfo = () => {
+
+  const {personalData, academicData, contactData} = useLocalSearchParams()
+
+  // console.log(personalData,'smdsm')
+  // console.log(academicData,'smdsfsdfm')
+  // console.log(contactData,'smdaOKPsm')
+
 
     const [guardian, setGuardian] = useState([])
     const [name, setName] = useState('')
@@ -15,7 +23,7 @@ const contactInfo = () => {
 
 
 
-    const router =useRouter()
+    const router = useRouter()
 
     const InfoRow = ({ label, value }) => (
         <View style={styles.infoRow}>
@@ -61,11 +69,79 @@ const contactInfo = () => {
         setLastName('');
       };
       
-      const handleAdd = () => {
-        router.navigate('/students')
-      }
+     
 
-
+      const handleAddStudent = () => {
+        // Extracting data from params
+        const studentData = {
+          // Mapping the data to match the API structure
+          profileUrl: "", // Assuming you will handle profile URL separately
+      
+          // Personal Data from params
+          name: `${personalData.firstName} ${personalData.lastName}`,
+          setuserID: null, // Assuming autoID logic is handled somewhere else
+          middleName: "", // If you need to capture this from the form, add a state for it
+          surname: personalData.lastName,
+          gender: personalData.gender,
+          dateofBirth: personalData.dob, // Ensure format matches API expectations (DD-MM-YYYY)
+          email: personalData.email,
+          nationality: "", // If nationality is required, capture it in the form
+          religion: "", // If religion is required, capture it in the form
+          placeOfBirth: "", // If place of birth is required, capture it in the form
+          health: "", // If health status is required, capture it in the form
+          disease: "", // If disease information is required, capture it in the form
+          allege: "", // If allege information is required, capture it in the form
+      
+          // Academic Data from params
+          classID: academicData.class,
+          division: academicData.division,
+          dormitoryID: academicData.dormitories,
+          section: academicData.section,
+          status: academicData.status,
+          campusID: academicData.campus,
+          scholarship: academicData.scholarship,
+      
+          // Contact Data from params
+          fees: academicData.category, // Assuming fees category is required, capture it in the form
+          lastSchool: {
+            school: "", // If the last school is required, capture it in the form
+            reason: "", // If the reason for transfer is required, capture it in the form
+          },
+          mobilenumber: contactData.mobileNumber,
+          telephone: contactData.smsNumber, // If telephone number is required, capture it in the form
+          postalAddress: contactData.postalAddress,
+          physicalAddress: contactData.areaOfResidence,
+      
+          // Guardian Data (if any guardians have been added)
+          guadian: guardian,  // Send the guardian array here
+        };
+      
+        console.log('Data to send to API:', studentData);
+      
+        // Send data to the API
+        axios
+          .post("/students/create", studentData)
+          .then((response) => {
+            // setloading(false);
+            if (response.data.error) {
+              // errorAlert(response.data.error);
+              return;
+            }
+            // Handle success (e.g., redirect to students list or show success message)
+            console.log('Student added successfully:', response.data);
+          })
+          .catch((error) => {
+            // setloading(false);
+            console.error('Error adding this student:', error);
+          });
+      
+        // After sending data, navigate
+        router.back()
+        router.back()
+        router.back()
+        router.back()
+      };
+      
 
 
   return (
@@ -120,7 +196,7 @@ const contactInfo = () => {
           )}
         />    
 
-    <TouchableOpacity style={{width:'80%', height:60, backgroundColor:"#58A8F9", borderRadius:40, alignSelf:'center', justifyContent:'center',marginVertical:10}} onPress={handleAdd}>
+    <TouchableOpacity style={{width:'80%', height:60, backgroundColor:"#58A8F9", borderRadius:40, alignSelf:'center', justifyContent:'center',marginVertical:10}} onPress={handleAddStudent}>
         <Text style={{color:'white',textAlign:'center', fontSize:26}}>Add Student</Text>
     </TouchableOpacity>
         </ScrollView>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image ,FlatList} from 'react-native'
+import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image ,FlatList, Alert} from 'react-native'
 import React, { useState } from 'react'
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
@@ -62,7 +62,11 @@ const contactInfo = () => {
       };
       
       const handleAdd = () => {
-        router.navigate('/students')
+        Alert.alert('Success','Teacher Added Successfully')
+router.back()
+router.back()
+router.back()
+router.back()
       }
 
 
@@ -83,6 +87,7 @@ const contactInfo = () => {
                 <Feather name="camera" size={20} color="white" />
               </View>
             </View>
+            
         <Text style={{position:'relative', right:45, fontSize:22,fontWeight:'600', marginVertical:0,paddingTop:45}}>Next Of Kin Information</Text>
           
         </View>

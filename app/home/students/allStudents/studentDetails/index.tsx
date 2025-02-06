@@ -386,9 +386,10 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
+import axios from 'axios';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -412,6 +413,11 @@ const StudentDetails = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [campus, setCampus] = useState(null);
+  const [scholar, setScholar] = useState(null);
+  const [bus, setBus] = useState(null);
+  const [div, setDiv] = useState(null);
+  const [sec, setSec] = useState(null);
 
   const fetchStudentDetails = async () => {
     setLoading(true);
@@ -435,6 +441,73 @@ const StudentDetails = () => {
       fetchStudentDetails();
     }
   }, [studentId]);
+
+
+
+  useEffect(() => {
+    if (selectedStudent) {  // Only fetch after student details are set
+      fetchCampuses();
+      fetchScholarship();
+      fetchBus();
+      fetchDiv();
+      fetchSec();
+    }
+  }, [selectedStudent]);  // This will trigger only after selectedStudent is set
+  
+  const fetchBus = async () => {
+    if (!selectedStudent?.dormitoryID) return;  // Check that dormitoryID exists
+    try {
+      const response = await axios.get(`${baseUrl}/dormitories/${selectedStudent.dormitoryID}`);
+      setBus(response?.data?.doc?.name);
+    } catch (error) {
+      console.error("Error fetching BUS:", error);
+    }
+  };
+  
+  const fetchCampuses = async () => {
+    if (!selectedStudent?.campusID) return;  // Check that campusID exists
+    try {
+      const response = await axios.get(`${baseUrl}/campuses/${selectedStudent.campusID}`);
+      setCampus(response.data?.docs?.name);
+    } catch (error) {
+      console.error("Error fetching campuses:", error);
+    }
+  };
+  
+  const fetchDiv = async () => {
+    if (!selectedStudent?.division) return;  // Check that division exists
+    try {
+      const response = await axios.get(`${baseUrl}/divisions`);
+      const div = response.data.find((div) => div._id === selectedStudent.division);
+      setDiv(div?.name);
+    } catch (error) {
+      console.error("Error fetching DIVISIONS:", error);
+    }
+  };
+  
+  const fetchSec = async () => {
+    if (!selectedStudent?.section) return;  // Check that section exists
+    try {
+      const response = await axios.get(`${baseUrl}/sections/${selectedStudent.section}`);
+      setSec(response.data?.doc?.name);
+    } catch (error) {
+      console.error("Error fetching SECTION:", error);
+    }
+  };
+  
+  const fetchScholarship = async () => {
+    if (!selectedStudent?.scholarship) return;  // Check that scholarship exists
+    try {
+      const response = await axios.get(`${baseUrl}/scholarships/${selectedStudent.scholarship}`);
+      setScholar(response.data.doc.name);
+    } catch (error) {
+      console.error("Error fetching SCHOLARSHIP:", error);
+    }
+  };
+  
+
+
+
 
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
@@ -460,8 +533,8 @@ const StudentDetails = () => {
         activeOpacity={0.7}
       >
         <Text style={styles.sectionTitle}>{title}</Text>
-        <Ionicons
-          name={isExpanded ? 'chevron-up' : 'chevron-down'}
+        <AntDesign
+          name={isExpanded ? 'up' : 'down'}
           size={24}
           color="#58A8F9"
         />
@@ -547,11 +620,11 @@ const StudentDetails = () => {
           onPress={() => toggleSection('academicInfo')}
         >
           <InfoRow label="Class" value={studentData.classID} />
-          <InfoRow label="Division" value={studentData.division} />
-          <InfoRow label="Section" value={studentData.section} />
-          <InfoRow label="Dormitory ID" value={studentData.dormitoryID} />
-          <InfoRow label="Campus ID" value={studentData.campusID} />
-          <InfoRow label="Scholarship" value={studentData.scholarship} />
+          <InfoRow label="Division" value={div || 'N/A'} />
+          <InfoRow label="Section" value={sec || 'N/A'} />
+          <InfoRow label="Dormitory ID" value={bus || 'N/A'} />
+          <InfoRow label="Campus ID" value={campus || 'N/A'} />
+          <InfoRow label="Scholarship" value={scholar || 'N/A'} />
           <InfoRow label="Fees" value={studentData.fees} />
         </Section>
 

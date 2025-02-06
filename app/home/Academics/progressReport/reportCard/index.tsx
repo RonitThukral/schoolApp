@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
   import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,ImageBackground,Alert, Platform, SafeAreaView} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
+import { AntDesign, Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
 import * as Print from 'expo-print';
 import axios from 'axios';
 
@@ -40,108 +40,180 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
     },[])
 
 
-
     const generatePdfAndPrint = async () => {
-        const htmlContent = `
-        <style>
-          body {
-            font-family: 'Arial', sans-serif;
-            margin-top: 50px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            color: #333;
-          }
-          .container {
-            width: 100%;
-            margin: 0 auto;
-            text-align: center;
-          }
-          h1 {
-            font-size: 28px;
-            color: red;
-            margin-bottom: 20px;
-          }
-          h2 {
-            font-size: 26px;
-            color: #58a8f9;
-            margin-bottom: 20px;
-          }
-            span{
-            font-size: 20px;
-            color: black;
-            }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #fff;
-          }
-          th, td {
-            border: 1px solid #ddd;
-            text-align: left;
-            padding: 10px;
-          }
-          th {
-            background-color: #58a8f9;
-            color: white;
-          }
-          tr:nth-child(even) {
-            background-color: #f2f2f2;
-          }
-        </style>
-        <div class="container">
-          <h1>Roses N Lillies High School</h1>
-          <h2>Report Card</h2>
-          <p>Class: ${selectedClass.toUpperCase()} | Term: ${term} | Year: ${year} </p>
-          <span>${subjects[0].name}</span>
-          <table>
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Class Work</th>
-                <th>Exam</th>
-                <th>Exam Percentage</th>
-                <th>Class Work Percentage</th>
-                <th>Total</th>
-                <th>Grade</th>
-                <th>Interpretation</th>
-                <th>Position</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${subjects
-                .map(
-                  (data) => `
-                <tr>
-                  <td>${data.course}</td>
-                  <td>${data.classWork || '--'}</td>
-                  <td>${data.exam || '--'}</td>
-                  <td>${data.examPercentage || '--'}</td>
-                  <td>${data.classWorkPercentage || '--'}</td>
-                  <td>${getTotal(data.classWorkPercentage , data.examPercentage) || '--'}</td>
-                  <td>${getGrade(data.classWork, data.exam) || '--'}</td>
-                  <td>${getInterpretation(data.classWork, data.exam) || '--'}</td>
-                  <td>${data.position || '--'}</td>
-                </tr>`
-                )
-                .join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    
-        try {
-          const { uri } = await Print.printToFileAsync({ html: htmlContent });
-          setPdfPath(uri);
-          await Print.printAsync({ uri });
-          Alert.alert('PDF Generated', 'Report Card is ready to print!');
-        } catch (error) {
-          console.error('Error generating PDF:', error);
-          Alert.alert('Error', 'Failed to generate or print PDF');
+      const htmlContent = `
+      <style>
+        body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f9f9f9;
+          color: #333;
         }
-      };
+        .header {
+          background-color: #2196F3;
+          color: white;
+          text-align: center;
+          padding: 15px;
+          font-size: 24px;
+          font-weight: bold;
+        }
+        .sub-header {
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+        .student-info {
+          background-color: #E3F2FD;
+          padding: 15px;
+          border-radius: 5px;
+          margin-top: 15px;
+        }
+        .info-row {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+        .info-box {
+          background: white;
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-weight: bold;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+          background-color: #fff;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          text-align: left;
+          padding: 10px;
+        }
+        th {
+          background-color: #58a8f9;
+          color: white;
+        }
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+           .behavior-grading-container {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f0f8ff;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .behavior, .grading {
+      width: 45%;
+    }
+    .behavior h3, .grading h3 {
+      color: #58a8f9;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .behavior label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .grading-system {
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+      </style>
+  
+      <div class="header">
+        ROSES 'N' LILIES HIGH SCHOOL
+      </div>
+      <div class="sub-header">
+        REPORT CARD
+      </div>
+  
+      <div class="student-info">
+        <div class="info-row">
+          <span><strong>NAME OF STUDENT:</strong> <span class="info-box">${subjects[0].name}</span></span>
+          <span><strong>STUDENT ID:</strong> <span class="info-box">${subjects[0].userID}</span></span>
+        </div>
+        <div class="info-row">
+          <span><strong>SCHOOL YEAR:</strong> <span class="info-box">${year}</span></span>
+          <span><strong>TERM:</strong> <span class="info-box">${term}</span></span>
+          <span><strong>CLASS:</strong> <span class="info-box">${selectedClass.toUpperCase()}</span></span>
+        </div>
+      </div>
+  
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Class Work</th>
+            <th>Exam</th>
+            <th>Exam Percentage</th>
+            <th>Class Work Percentage</th>
+            <th>Total</th>
+            <th>Grade</th>
+            <th>Interpretation</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${subjects.map((data) => `
+            <tr>
+              <td>${data.course.toUpperCase()}</td>
+              <td>${data.classWork || '--'}</td>
+              <td>${data.exam || '--'}</td>
+              <td>${data.examPercentage || '--'}</td>
+              <td>${data.classWorkPercentage || '--'}</td>
+              <td>${getTotal(data.classWorkPercentage , data.examPercentage) || '--'}</td>
+              <td>${getGrade(data.classWork, data.exam) || '--'}</td>
+              <td>${getInterpretation(data.classWork, data.exam) || '--'}</td>
+              <td>${data.position || '--'}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
 
+    <!-- New Behavior & Grading System Section -->
+    <div class="behavior-grading-container">
+      <div class="behavior">
+        <h3>BEHAVIOR</h3>
+        <label><input type="checkbox"> DILIGENT</label>
+        <label><input type="checkbox"> RESPONSIBLE</label>
+        <label><input type="checkbox"> RESPECTFUL</label>
+        <label><input type="checkbox"> RESOURCEFUL</label>
+        <label><input type="checkbox"> ATTENTIVE</label>
+      </div>
 
+      <div class="grading">
+        <h3>GRADING SYSTEM</h3>
+        <div class="grading-system">
+          <p>A: EXCELLENT</p>
+          <p>B: VERY GOOD</p>
+          <p>C: GOOD</p>
+          <p>D: SATISFACTORY</p>
+          <p>E: PASS</p>
+          <p>F: FAIL</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+    
+  
+      try {
+        const { uri } = await Print.printToFileAsync({ html: htmlContent });
+        setPdfPath(uri);
+        await Print.printAsync({ uri });
+        Alert.alert('PDF Generated', 'Report Card is ready to print!');
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        Alert.alert('Error', 'Failed to generate or print PDF');
+      }
+  };
+  
 
 
     
@@ -244,8 +316,8 @@ const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
             <Text style={{color:'grey',fontSize:12,paddingLeft:30}}>{subTitle}</Text>
             <Text style={{color:'grey',fontSize:11,paddingLeft:30}}>{subTitle2}</Text>
             </View>
-            <Ionicons 
-              name={isExpanded ? "chevron-up" : "chevron-down"} 
+            <AntDesign 
+              name={isExpanded ? "up" : "down"} 
               size={24} 
               color="#58A8F9"
             />

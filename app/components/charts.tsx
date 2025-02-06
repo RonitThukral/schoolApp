@@ -1,9 +1,6 @@
-
-
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Modal , TouchableOpacity} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import { useState } from 'react';
 
 // Sample events data
 const sampleEvents = {
@@ -20,20 +17,27 @@ const sampleEvents = {
 };
 
 // Event Modal Component
-const EventModal = ({ visible, events, date, onClose }: any):any => {
+const EventModal = ({ visible, events, date, onClose }) => {
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="fade"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.modalHeader}>{`Events for ${date}`}</Text>
-          {events.map((event:any, index:number):any => (
+          {events.map((event, index) => (
             <View key={index} style={styles.eventItem}>
-              <View style={[styles.eventDot, { backgroundColor: event.type === 'work' ? '#4775EA' : event.type === 'personal' ? '#EA4747' : '#47EA47' }]} />
+              <View
+                style={[
+                  styles.eventDot,
+                  {
+                    backgroundColor:
+                      event.type === 'work'
+                        ? '#4775EA'
+                        : event.type === 'personal'
+                        ? '#EA4747'
+                        : '#47EA47',
+                  },
+                ]}
+              />
               <View>
                 <Text style={styles.eventTitle}>{event.title}</Text>
                 <Text style={styles.eventTime}>{event.time}</Text>
@@ -57,17 +61,17 @@ const Calendar = () => {
   const currentDate = new Date();
   const daysInMonth = new Date(2024, 11, 0).getDate();
   const firstDayOfMonth = new Date(2024, 11, 1).getDay();
-  
-  const formatDate = (day:any) => {
+
+  const formatDate = (day) => {
     return day ? `2024-12-${day.toString().padStart(2, '0')}` : null;
   };
 
-  const hasEvents = (day:any):any => {
+  const hasEvents = (day) => {
     const date = formatDate(day);
     return date && sampleEvents[date];
   };
 
-  const handleDayPress = (day: number | null) => {
+  const handleDayPress = (day) => {
     const date = formatDate(day);
     if (date && sampleEvents[date]) {
       setSelectedDate(date);
@@ -78,7 +82,7 @@ const Calendar = () => {
   const generateCalendarDays = () => {
     const days = [];
     let dayCounter = 1;
-    
+
     for (let i = 0; i < 6; i++) {
       const week = [];
       for (let j = 0; j < 7; j++) {
@@ -105,7 +109,7 @@ const Calendar = () => {
         <Text style={styles.calendarTitle}>Event Calendar</Text>
         <Text style={styles.monthYear}>Dec, 2024</Text>
       </View>
-      
+
       <View style={styles.weekDaysContainer}>
         {weekDays.map((day, index) => (
           <Text key={index} style={styles.weekDay}>
@@ -113,7 +117,7 @@ const Calendar = () => {
           </Text>
         ))}
       </View>
-      
+
       <View style={styles.daysContainer}>
         {calendarDays.map((week, weekIndex) => (
           <View key={weekIndex} style={styles.weekRow}>
@@ -167,13 +171,19 @@ const FinanceChart = () => {
   return (
     <View style={styles.financeContainer}>
       <Text style={styles.financeTitle}>Finance</Text>
-      <View style={{flex:1,flexDirection:'row',justifyContent:'flex-end',position:'relative',bottom:28}}>
-        <View style={{width:10,height:10,backgroundColor:'#4A90E2'}}>
-        </View>
-        <Text style={{fontSize:12,position:'relative',bottom:5,marginLeft:8}}>Income</Text>
-        <View style={{width:10,height:10,backgroundColor:'#F44336',marginLeft:15}}>
-        </View>
-        <Text style={{fontSize:12, position:'relative',bottom:5,marginLeft:8}}>Expenses</Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          position: 'relative',
+          bottom: 28,
+        }}
+      >
+        <View style={{ width: 10, height: 10, backgroundColor: '#4A90E2' }} />
+        <Text style={{ fontSize: 12, position: 'relative', bottom: 5, marginLeft: 8 }}>Income</Text>
+        <View style={{ width: 10, height: 10, backgroundColor: '#F44336', marginLeft: 15 }} />
+        <Text style={{ fontSize: 12, position: 'relative', bottom: 5, marginLeft: 8 }}>Expenses</Text>
       </View>
       <LineChart
         data={data}
@@ -210,6 +220,7 @@ const Dashboard = () => {
     </ScrollView>
   );
 };
+
 
 // Styles
 const styles = StyleSheet.create({

@@ -1,208 +1,401 @@
-import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity,TextInput, Platform } from 'react-native'
+// import { StyleSheet, Text, View, ScrollView, Image,Platform, TouchableOpacity, TextInput } from 'react-native';
+// import Entypo from '@expo/vector-icons/Entypo';
+// import React, { useState, useEffect } from 'react';
+// import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+// import axios from 'axios';
+
+// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api/store/items';
+
+// const Inventory = () => {
+//     const [description, setDescription] = useState('');
+//     const [name, setName] = useState('');
+//     const [units, setUnits] = useState('');
+//     const [price, setPrice] = useState('');
+//     const [quantity, setQuantity] = useState('');
+//     const [allItems, setAllItems] = useState([]);
+//     const [filteredItems, setFilteredItems] = useState([]);
+//     const [isOpen, setIsOpen] = useState(false);
+
+//     // Fetch inventory items from API
+//     useEffect(() => {
+//         const fetchItems = async () => {
+//             try {
+//                 const response = await axios.get(baseUrl);
+//                 setAllItems(response.data);
+//                 setFilteredItems(response.data); // Set the filteredItems to the fetched data
+//             } catch (error) {
+//                 console.error('Error fetching items:', error);
+//             }
+//         };
+//         fetchItems();
+//     }, []);
+
+//     const handlePlus = () => {
+//         setIsOpen(true);
+//     };
+
+//     const handleClose = () => {
+//         setIsOpen(false);
+//         setName('');
+//         setPrice('');
+//         setDescription('');
+//         setQuantity('');
+//     };
+
+//     const handleName = (text) => {
+//         setName(text);
+//     };
+
+//     const handleDescription = (text) => {
+//         setDescription(text);
+//     };
+
+//     const handleUnits = (text) => {
+//         setUnits(text);
+//     };
+
+//     const handlePrice = (text) => {
+//         setPrice(text);
+//     };
+
+//     const handleQuantity = (text) => {
+//         setQuantity(text);
+//     };
+
+//     const handleAdd = async () => {
+//         const newItem = {
+//             name,
+//             description,
+//             unit: units,
+//             price,
+//             quantity,
+//         };
+
+//         try {
+//             const response = await axios.post(baseUrl, newItem);
+//             setAllItems([...allItems, response.data]);
+//             setFilteredItems([...allItems, response.data]);
+
+//             // Clear input fields
+//             setName('');
+//             setPrice('');
+//             setDescription('');
+//             setQuantity('');
+//             setIsOpen(false);
+//         } catch (error) {
+//             console.error('Error adding item:', error);
+//         }
+//     };
+
+//     return (
+//         <>
+//             <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 30 }}>
+//                 {filteredItems.map((data, index) => {
+//                     return (
+//                         <View style={styles.list} key={index}>
+//                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 5, marginHorizontal: 15 }}>
+//                                 <Text style={{ fontSize: 20, color: '#58a8f9' }}>{data.name}</Text>
+//                                 <View style={{ flexDirection: 'row', paddingTop: 5 }}>
+//                                     <Image style={{ marginRight: 25 }} source={require('../../../assets/images/images/edit.png')} />
+//                                     <Image source={require('../../../assets/images/images/delete.png')} />
+//                                 </View>
+//                             </View>
+//                             <Text style={{ width: '90%', fontSize: 11, marginLeft: 20, color: 'grey', fontWeight: '500' }}>
+//                                 {data.description}
+//                             </Text>
+//                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5, marginHorizontal: 23 }}>
+//                                 <Text style={{ fontSize: 13 }}>Price: ₹{data.price}</Text>
+//                                 <Text style={{ fontSize: 13 }}>Quantity: {data.quantity}</Text>
+//                             </View>
+//                         </View>
+//                     );
+//                 })}
+//             </ScrollView>
+
+//             <TouchableOpacity
+//                 style={{
+//                     width: 80,
+//                     height: 80,
+//                     backgroundColor: '#58A8F9',
+//                     zIndex: 90000,
+//                     position: 'absolute',
+//                     borderRadius: 100,
+//                     bottom: 100,
+//                     justifyContent: 'center',
+//                     alignSelf: 'flex-end',
+//                     right: 40,
+//                     alignItems: 'center',
+//                 }}
+//                 onPress={handlePlus}
+//             >
+//                 <Entypo name="plus" size={40} color="white" />
+//             </TouchableOpacity>
+
+//             {isOpen && (
+//                 <View style={styles.inputContainer}>
+//                     <Text style={{ fontSize: 24, position: 'absolute', alignSelf: 'flex-start', paddingHorizontal: 25, paddingVertical: 5, top: 15 }}>
+//                         {'Add Item'}
+//                     </Text>
+
+//                     <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name} />
+
+//                     <TextInput
+//                         style={styles.inputDesc}
+//                         placeholderTextColor={'grey'}
+//                         placeholder={"Add Description"}
+//                         multiline={true}
+//                         textAlignVertical="top"
+//                         onChangeText={handleDescription}
+//                         value={description}
+//                     />
+
+//                     <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Units (e.g kg)"} onChangeText={handleUnits} value={units} />
+//                     <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Price"} onChangeText={handlePrice} value={price} />
+//                     <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Quantity"} onChangeText={handleQuantity} value={quantity} />
+
+//                     <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
+//                         <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
+//                     </TouchableOpacity>
+//                     <TouchableOpacity style={styles.buttons} onPress={handleAdd}>
+//                         <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>Add</Text>
+//                     </TouchableOpacity>
+//                 </View>
+//             )}
+//         </>
+//     );
+// };
+
+
+
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
-import React from 'react'
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios for API calls
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const storeData = [
-  
-    {
-      "id": 2,
-      "name": "School Uniform - Girls",
-      "units": "set",
-      "description": "Girls' formal school uniform (shirt and skirt)",
-      "price": 500,
-      "quantity": 50
-    },
-    {
-      "id": 3,
-      "name": "School Shoes",
-      "units": "pair",
-      "description": "Black formal shoes with lace for school uniform",
-      "price": 300,
-      "quantity": 100
-    },
-    {
-      "id": 4,
-      "name": "Sports Shoes",
-      "units": "pair",
-      "description": "White sports shoes for physical education classes",
-      "price": 400,
-      "quantity": 80
-    },
-    {
-      "id": 5,
-      "name": "School Bag",
-      "units": "piece",
-      "description": "Ergonomic school bag with multiple compartments",
-      "price": 800,
-      "quantity": 30
-    },
-    {
-      "id": 6,
-      "name": "Water Bottle",
-      "units": "piece",
-      "description": "750ml insulated stainless steel water bottle",
-      "price": 200,
-      "quantity": 150
-    },
-    {
-      "id": 7,
-      "name": "Geometry Box",
-      "units": "piece",
-      "description": "Complete geometry set with ruler, compass, and protractor",
-      "price": 150,
-      "quantity": 120
-    },
-    {
-      "id": 8,
-      "name": "Notebook Pack",
-      "units": "pack",
-      "description": "Pack of 5 ruled notebooks (200 pages each)",
-      "price": 250,
-      "quantity": 200
-    },
-    {
-      "id": 9,
-      "name": "Textbooks",
-      "units": "set",
-      "description": "Complete set of textbooks for the academic year",
-      "price": 1200,
-      "quantity": 40
-    },
-    {
-      "id": 10,
-      "name": "Drawing Kit",
-      "units": "set",
-      "description": "Drawing kit with sketch pens, crayons, and markers",
-      "price": 300,
-      "quantity": 60
-    }
-  ]
-  
-
-
+// API URL
+const apiUrl = 'https://dreamscloudtechbackend.onrender.com/api/store/items';
 
 const Inventory = () => {
-    const[description,setDescription] = useState('')
-    const[name,setName] = useState('')
-    const[units,setUnits] = useState('')
-    const[price,setPrice] = useState('')
-    const[quantity,setQuantity] = useState('')
-    const[allItems,setAllItems] = useState([...storeData])
-    const[filteredItems,setFilteredItems] = useState(storeData)
+  const [description, setDescription] = useState('');
+  const [name, setName] = useState('');
+  const [units, setUnits] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [allItems, setAllItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [editID, setEditID] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
 
-    const [isOpen, setIsOpen] = useState(false)
+  // Fetch data from the API when the component mounts
+  useEffect(() => {
+    axios.get(apiUrl)
+      .then(response => {
+        setAllItems(response.data);
+        setFilteredItems(response.data);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
+  const handlePlus = () => {
+    setIsOpen(true);
+  };
 
-    const handlePlus = () => {
-        setIsOpen(true)
-    }
-    const handleClose = () => {
-        setIsOpen(false),
-        setName('');
-        setPrice('');
-        setDescription('');
-        setQuantity('');
-    }
+  const handleClose = () => {
+    setIsOpen(false);
+    setName('');
+    setPrice('');
+    setDescription('');
+    setQuantity('');
+  };
 
-    const handleName = (text) => {
-        setName(text)
-    }    
-    const handleDescription = (text) => {
-        setDescription(text)
-    }    
-    const handleUnits = (text) => {
-        setUnits(text)
-    }    
-    const handlePrice = (text) => {
-        setPrice(text)
-    }    
-    const handleQuantity = (text) => {
-        setQuantity(text)
-    }    
+  const handleName = (text) => setName(text);
+  const handleDescription = (text) => setDescription(text);
+  const handleUnits = (text) => setUnits(text);
+  const handlePrice = (text) => setPrice(text);
+  const handleQuantity = (text) => setQuantity(text);
 
+  const handleAdd = () => {
+    const newItem = {
+      name,
+      unit: units,
+      price,
+      quantity,
+      description,
+    };
 
-    const handleAdd = () => {
-        const newItem = {
-            id: Math.random().toString(),
-            name,
-            description,
-            price,
-            quantity
-        };
-    
-        const updatedInventory = [...allItems, newItem];
-        setAllItems(updatedInventory);
-        setFilteredItems(updatedInventory); // Update the filtered notices as well
-        
-        // Clear input fields
+    setLoading(true);
+    axios.post(apiUrl, newItem)
+      .then(res => {
+        setLoading(false);
+        setAllItems([...allItems, res.data]);
+        setFilteredItems([...allItems, res.data]);
         setName('');
         setPrice('');
         setDescription('');
         setQuantity('');
         setIsOpen(false);
-    };
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
+  // Edit item function
+  const handleEdit = (id) => {
+    setOpenEdit(true);
+    const item = allItems.find(e => e._id === id);
+    setName(item?.name);
+    setUnits(item?.unit);
+    setQuantity(item?.quantity);
+    setDescription(item?.description);
+    setPrice(item?.price);
+    setEditID(id);
+  };
+
+  const onEdit = () => {
+    setLoading(true);
+    axios.put(`${apiUrl}/update/${editID}`, {
+      name,
+      unit: units,
+      quantity,
+      price,
+      description,
+    })
+      .then(res => {
+        setLoading(false);
+        setName('');
+        setUnits('');
+        setQuantity('');
+        setDescription('');
+        setPrice('');
+        setOpenEdit(false);
+
+        // Update the inventory state
+        let newData = allItems.map(item => (item._id === editID ? { ...res.data } : item));
+        setAllItems(newData);
+        setFilteredItems(newData); // Update filtered items as well
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  // Handle inventory update (Quantity Update)
+  const handleInventory = (id) => {
+    setEditID(id);
+    const item = allItems.find(e => e._id === id);
+    setName(item?.name);
+    setQuantity(item?.quantity);
+  };
+
+  const handleChangeInventory = () => {
+    setLoading(true);
+    axios.put(`${apiUrl}/update/inventory/${editID}`, {
+      quantity,
+    })
+      .then(res => {
+        setLoading(false);
+        setName('');
+        setQuantity('');
+        setOpenEdit(false);
+
+        // Update the inventory state
+        let newData = allItems.map(item => (item._id === editID ? { ...res.data } : item));
+        setAllItems(newData);
+        setFilteredItems(newData); // Update filtered items as well
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  // Handle Delete
+  const handleDelete = (id) => {
+    axios.delete(`${apiUrl}/delete/${id}`)
+      .then(res => {
+        if (res.data.error) {
+          return alert(res.data.error);
+        }
+        setAllItems(allItems.filter(i => i._id !== id));
+        setFilteredItems(filteredItems.filter(i => i._id !== id));
+      })
+      .catch(err => console.error('Delete failed:', err));
+  };
 
   return (
-  <>
-    <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:30}}>
-{filteredItems.map((data,index) => {
-  return(
-<View style={styles.list} key={index}>
+    <>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 30 }}>
+        {filteredItems.map((data, index) => (
+          <View style={styles.list} key={index}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 5, marginHorizontal: 15 }}>
+              <Text style={{ fontSize: 20, color: '#58a8f9' }}>{data.name}</Text>
+              <View style={{ flexDirection: 'row', paddingTop: 5 }}>
+                <TouchableOpacity onPress={() => handleEdit(data._id)}>
+                  <Image style={{ marginRight: 25 }} source={require('../../../assets/images/images/edit.png')} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDelete(data._id)}>
+                  <Image source={require('../../../assets/images/images/delete.png')} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={{ width: '90%', fontSize: 11, marginLeft: 20, color: 'grey', fontWeight: '500' }}>{data.description}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5, marginHorizontal: 23 }}>
+              <Text style={{ fontSize: 13 }}>Price: {data.price}</Text>
+              <Text style={{ fontSize: 13 }}>Quantity: {data.quantity}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
 
-<View style={{flexDirection:'row',justifyContent:'space-between',paddingTop:5,marginHorizontal:15}}>
-<Text style={{fontSize:20,color:'#58a8f9'}}>{data.name}</Text>
+      <TouchableOpacity
+        style={{
+          width: 80,
+          height: 80,
+          backgroundColor: '#58A8F9',
+          zIndex: 90000,
+          position: 'absolute',
+          borderRadius: 100,
+          bottom: 100,
+          justifyContent: 'center',
+          alignSelf: 'flex-end',
+          right: 40,
+          alignItems: 'center',
+        }}
+        onPress={handlePlus}
+      >
+        <Entypo name="plus" size={40} color="white" />
+      </TouchableOpacity>
 
-<View style={{flexDirection:'row',paddingTop:5}}>
+      {isOpen && (
+        <View style={styles.inputContainer}>
+          <Text style={{ fontSize: 24, position: 'absolute', alignSelf: 'flex-start', paddingHorizontal: 25, paddingVertical: 5, top: 15 }}>
+            {'Add Item'}
+          </Text>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name} />
+          <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={"Add Description"} multiline textAlignVertical='top' onChangeText={handleDescription} value={description} />
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Units (e.g kg)"} onChangeText={handleUnits} value={units} />
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Price"} onChangeText={handlePrice} value={price} />
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Quantity"} onChangeText={handleQuantity} value={quantity} />
 
-<Image style={{marginRight:25}} source={require('../../../assets/images/images/edit.png')}/>
-<Image source={require('../../../assets/images/images/delete.png')}/>
-</View>
-</View>
-
-<Text style={{width:'90%',fontSize:11,marginLeft:20,color:'grey',fontWeight:'500'}}>{data.description}</Text>
-
-
-<View style={{flexDirection:'row' , justifyContent:'space-between',marginVertical:5,marginHorizontal:23}}>
-  <Text style={{fontSize:13}}>Price: {data.price}</Text>
-  <Text style={{fontSize:13}}>Quantity: {data.quantity}</Text>
-</View>
-
-
-</View>
-  )
-})}
+          <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
+            <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons}>
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }} onPress={handleAdd}>Add</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
+  );
+};
 
 
-    </ScrollView>
-
-<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
-<Entypo name="plus" size={40} color="white" />
-</TouchableOpacity>
-
-{isOpen && <View style={styles.inputContainer}>
-        <Text style={{fontSize:24,position:'absolute',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:5,top:15}}>{'Add Item'}</Text>
-
-    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name}/>
-
-    <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={"Add Description"} multiline = {true} textAlignVertical='top'  onChangeText={handleDescription} value={description}/>
-
-    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Units (e.g kg)"} onChangeText={handleUnits} value={units} />
-    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Price"} onChangeText={handlePrice} value={price} />
-    <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Quantity"} onChangeText={handleQuantity} value={quantity} />
-
-    <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
-    <Text style={{color:'#58A8F9',fontSize:16}}>Cancel</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.buttons} >
-    <Text style={{color:'white',fontSize:16, textAlign:'center'}} onPress={handleAdd}>Add</Text>
-    </TouchableOpacity>
-
-</View>}
-</>
-  )
-}
 
 
 const styles = StyleSheet.create({
