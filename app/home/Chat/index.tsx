@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
+import { getUserData } from '@/app/utils/storage';
 
 export type ChatsResponseItem = {
   _id: string,
@@ -33,6 +34,11 @@ export type UserDataResponseItem = {
 export type UsersStore = Map<string, UserDataResponseItem>;
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+type UserInfo = {
+  userID: string,
+  role: string,
+  name: string,
+};
 
 const Conversation = () => {
 
@@ -40,35 +46,42 @@ const Conversation = () => {
   const [users, setUsers] = useState<UsersStore>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentUser, setcurrentUser] = useState<UserInfo | null>(null);
 
+  getUserData().then((d) => setcurrentUser(d));
 
+  const renderItem = ({ item, index }: { item: ChatsResponseItem, index: number }) => {
+    const isacceptor = item.acceptor_id === currentUser?.userID;
+    const isrequestor = item.requestor_id === currentUser?.userID;
+    const otherparty = isacceptor
+      ? item.requestor_id
+      : isrequestor
+        ? item.acceptor_id
+        : item.requestor_id;
+    const otherpartyname = otherparty ? `${users?.get(otherparty)?.name ?? ""} ${users?.get(otherparty)?.middleName ?? ""} ${users?.get(otherparty)?.surname ?? ""}` : `${item.chatName ?? ""}`;
+    return (
+      // Find if I am part of the conversation:
+      <View style={{ flexDirection: "row", gap: 20, alignItems: 'center' }}>
+        {/* <Image source={(item.profile)} /> */}
+        <Image style={styles.profilephoto} source={require('../../../assets/images/images/emptyAvatar.png')} />
+        <TouchableOpacity onPress={() => {
+          router.push({
+            pathname: '/home/Chat/ConversationThread',
+            params: { chatID: item._id, otherpartyname },  // Use 'params' here instead of 'query'
+          });
+        }}>
+          <View style={styles.messageContainer}>
+            {index != 0 && <View style={styles.hr} />}
+            {otherpartyname &&
+              <Text style={styles.sender}>{otherpartyname}</Text>}
+            <Text style={styles.message} ellipsizeMode='tail' numberOfLines={1}>{item.messages[item.messages.length - 1]?.message}</Text>
 
-
-
-  const renderItem = ({ item, index }: { item: ChatsResponseItem, index: number }) => (
-    <View style={{ flexDirection: "row", gap: 20, alignItems: 'center' }}>
-      {/* <Image source={(item.profile)} /> */}
-      <Image style={styles.profilephoto} source={require('../../../assets/images/images/emptyAvatar.png')} />
-      <TouchableOpacity onPress={() => {
-        const chatName: string = `${users?.get(item.acceptor_id ?? "")?.name ?? ""} ${users?.get(item.acceptor_id ?? "")?.middleName ?? ""} ${users?.get(item.acceptor_id ?? "")?.surname ?? ""} ${item.chatName ?? ""}`;
-        router.push({
-          pathname: '/home/Chat/ConversationThread',
-          params: { chatID: item._id, chatName },  // Use 'params' here instead of 'query'
-        });
-      }}>
-        <View style={styles.messageContainer}>
-          {index != 0 && <View style={styles.hr} />}
-          {item.acceptor_id &&
-            <Text style={styles.sender}>{users?.get(item.acceptor_id)?.name} {users?.get(item.acceptor_id)?.middleName} {users?.get(item.acceptor_id)?.surname}</Text>}
-          {item.chatName &&
-            <Text style={styles.sender}>{item.chatName}</Text>}
-          <Text style={styles.message} ellipsizeMode='tail' numberOfLines={1}>{item.messages[item.messages.length - 1]?.message}</Text>
-
-          {/* Only render horizontal line if it's not the last message */}
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
+            {/* Only render horizontal line if it's not the last message */}
+          </View>
+        </TouchableOpacity>
+      </View>
+    )
+  };
 
   const fetchChats = async () => {
     setLoading(true); // Start loading when the request begins
@@ -95,7 +108,6 @@ const Conversation = () => {
         surname: "",
       })
       setUsers(userMap);
-      console.log(chatsResponse.data);
     } catch (err: any) {
       setError(err.message || 'Something went wrong!'); // Handle errors
     } finally {
@@ -115,10 +127,6 @@ const Conversation = () => {
   if (error) {
     return <Text>Error: {error}</Text>; // Handle errors gracefully
   }
-
-
-
-
 
 
 
@@ -142,8 +150,8 @@ const Conversation = () => {
 
             </View>
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>Nilesh Shr</Text>
-              <Text style={styles.userRole}>Admin</Text>
+              <Text style={styles.userName}>{currentUser?.name}</Text>
+              <Text style={styles.userRole}>{currentUser?.role}</Text>
             </View>
             <Image source={require('../../../assets/images/images/image.png')} style={styles.avatar} />
           </View>
