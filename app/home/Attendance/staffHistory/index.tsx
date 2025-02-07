@@ -340,6 +340,9 @@ const StaffHistory = () => {
               textDayHeaderFontSize: 12,
               textMonthFontSize: 12,
               textDayStyle: { padding: 2 },
+              textSectionTitleColor: 'black',
+              textSectionTitleDisabledColor: '#d9e1e8',
+              textDayHeaderFontWeight: '700',
             }}
             enableSwipeMonths={true}
           />
@@ -376,7 +379,7 @@ const StaffHistory = () => {
   );
 };
 
-export default StaffHistory;
+// export default StaffHistory;
 
 
 
@@ -385,7 +388,9 @@ const styles = StyleSheet.create({
   calendar: {
      borderRadius: 15, 
      marginTop: 50 ,
-     height:'85%',
+    //  height:'85%',
+    minHeight: '85%',
+    maxHeight: '90%',
      width:'95%',
      alignSelf:'center',
     //  backgroundColor:'red',
@@ -448,8 +453,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:35,
-    width:35
+    height:25,
+    width:35,
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },

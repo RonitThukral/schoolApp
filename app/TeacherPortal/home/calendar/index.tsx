@@ -943,7 +943,9 @@ const styles = StyleSheet.create({
   calendar: {
     borderRadius: 15,
     marginTop: 20,
-    height: '89%',
+    // height: '89%',
+    minHeight: '85%',
+    maxHeight: '90%',
     width: '95%',
     alignSelf: 'center',
     elevation: 4,
@@ -1025,7 +1027,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:35,
+    height:25,
     width:35
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },

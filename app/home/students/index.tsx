@@ -29,7 +29,7 @@ const router = useRouter();
     },
     {
       name: "Scholarships",
-      icon: <MaterialCommunityIcons name="android-messages" size={24} color="#8EC7FF"/>,
+      icon: <Image source={require('../../../assets/images/images/cap.png')}/>,
       content: 50
     },
     {

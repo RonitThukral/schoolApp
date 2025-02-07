@@ -49,6 +49,15 @@ const StudentDetails = () => {
   const [div, setDiv] = useState(null);
   const [sec, setSec] = useState(null);
 
+
+
+  const formatDate = (isoDate) => {
+    if (!isoDate) return "";
+    const date = new Date(isoDate);
+    return `${date.getDate()} ${date.toLocaleString("en-US", { month: "long" })} ${date.getFullYear()}`;
+  };
+  
+
   useEffect(() => {
     if (studentId) {
       fetchStudentDetails();
@@ -233,7 +242,7 @@ const StudentDetails = () => {
           <InfoRow label="Date of Birth" value={formatDate(studentData.dateofBirth)} />
           <InfoRow label="Nationality" value={studentData.nationality} />
           <InfoRow label="Religion" value={studentData.religion} />
-          <InfoRow label="Place of Birth" value={studentData.placeOfBirth} />
+          <InfoRow label="Place of Birth" value={formatDate(studentData.placeOfBirth)} />
         </Section>
 
         <View

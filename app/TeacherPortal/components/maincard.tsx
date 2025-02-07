@@ -11,7 +11,7 @@ const data = [
     { title: "Syllabus", icon: require("../../../assets/images/images/acad.png"), linking: "./home/courses" },
     { title: "Time Table", icon: require("../../../assets/images/images/calendar.png"), linking: "./home/timetable" },
     { title: "Payrow", icon: require("../../../assets/images/images/finan.png"), linking: "./home/payrow" },
-    { title: "Report Card", icon: require("../../../assets/images/images/dashboards.png"), linking: "./home/classes" },
+    { title: "Report Card", icon: require("../../../assets/images/images/dashboards.png"), linking: "./home/courses" },
     { title: "Attendance", icon: require("../../../assets/images/images/atten.png"), linking: "./home/attendance" },
     { title: "Notices", icon: require("../../../assets/images/images/sent.png"), linking: "./home/notice" },
     { title: "Calender", icon: require("../../../assets/images/images/calender.png"), linking: "./home/calendar" },

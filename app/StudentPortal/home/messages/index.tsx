@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import MessageCard from '../../components/messagesCard';
 import AttendanceStats from '../../components/attendanceStat';
-import { Feather, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather, FontAwesome, FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
@@ -17,20 +17,20 @@ const router = useRouter();
  
 const date = new Date().toISOString().slice(0, 10)
 const Item = [
-  
+    
   {
-    name: "Total",
-    icon: <MaterialCommunityIcons name="human-male-female" size={24} color="#8EC7FF" />,
+    name: "Students",
+    icon: <Image source={require('../../../../assets/images/images/cap.png')}/>,
     content: 364
   },
   {
-    name: "Male",
-    icon: <FontAwesome name="male" size={24} color="#8EC7FF" />,
+    name: "Staff",
+    icon: <Image source={require('../../../../assets/images/images/teachersss.png')}/>,
     content: 70
   },
   {
-    name: "Female",
-    icon: <FontAwesome name="female" size={24} color="#8EC7FF" />,
+    name: "Guardian",
+    icon: <FontAwesome5 name="user-friends" size={22} color="#8EC7FF" />,
     content: 50
   },
   {
@@ -44,11 +44,12 @@ const Item = [
     content: 27
   },
   {
-    name: "Tomorrow",
-    icon: <Ionicons name="return-up-forward" size={24} color="#8EC7FF" />,
+    name: "Total SMS",
+    icon: <Image source={require('../../../../assets/images/images/message.png')}/>,
     content: 20
   }
 ]
+
   
   
 
@@ -72,7 +73,7 @@ const Item = [
           {Item.map((item, index) : any=> {
             return(
               <React.Fragment key={index}>
-              {index === 3 && ( <Text style={styles.birthdays}> Birthdays </Text>)}
+              {index === 3 && ( <Text style={styles.birthdays}> SMS Used </Text>)}
             <TouchableOpacity style = {[styles.Card]} >
             
             <Text style={styles.cardHeading}>{item.name}</Text>

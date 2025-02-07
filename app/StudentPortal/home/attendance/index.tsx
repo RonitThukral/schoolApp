@@ -11,7 +11,7 @@ const StudentAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [filteredAttendance, setFilteredAttendance] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const [markedDates, setMarkedDates] = useState({});
   const { student } = useLocalSearchParams();
   const parsedStudent = student ? JSON.parse(student) : null;
   const userID = parsedStudent?.userID; // Get the logged-in student's userID
@@ -58,6 +58,49 @@ const StudentAttendance = () => {
 
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
+
+// Function to generate marked dates (Events + Sundays)
+const getMarkedDates = (eventData) => {
+  const marked = {};
+
+  // Mark all event dates with red text and bold font
+  Object.keys(eventData).forEach((date) => {
+    marked[date] = {
+      selected: true,
+      selectedColor: 'blue',
+      marked: true,
+      dotColor: 'red', // Red dot for events
+      customStyles: {
+        text: { color: 'red', fontWeight: 'bold' }, // Red text and bold for event dates
+      },
+    };
+  });
+
+  // Mark all Sundays with red text and bold font (same style as event dates)
+  const startDate = new Date();
+  for (let i = 0; i < 365; i++) {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + i);
+    const dateString = date.toISOString().split('T')[0];
+
+    // Mark Sundays with red text and bold font
+    if (date.getDay() === 0) {
+      marked[dateString] = {
+        ...marked[dateString],
+        customStyles: {
+          text: { color: 'red', fontWeight: 'bold' }, // Red and bold text for Sundays
+        },
+      };
+    }
+  }
+
+  return marked;
+};
+
+
+
+
+
     return (
       <TouchableOpacity
         onPress={() => setSelectedDate(date.dateString)}
@@ -79,7 +122,7 @@ const StudentAttendance = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ height: '52%' }}>
+      {/* <View style={{ height: '52%' }}>
         <View style={{ height: 400 }}>
         <Calendar
             onDayPress={(day) => setSelectedDate(day.dateString)}
@@ -102,8 +145,30 @@ const StudentAttendance = () => {
           
           />
         </View>
-      </View>
-
+      </View> */}
+<View style={{ height: '52%' }}>
+            <View style={{ height: 400 }}>
+              <Calendar
+                onDayPress={(day) => {
+                  setSelectedDate(formatDate(day.dateString));
+                  setModalVisible(true);
+                }}
+                markedDates={markedDates}
+                dayComponent={({ date, state }) => renderDay({ date, state })}
+                style={styles.calendar}
+                theme={{
+                  textDayFontSize: 12,
+                  textDayHeaderFontSize: 12,
+                  textMonthFontSize: 12,
+                  textDayStyle: { padding: 2 },
+                  textSectionTitleColor: 'black',
+                  textSectionTitleDisabledColor: '#d9e1e8',
+                  textDayHeaderFontWeight: '700',
+                }}
+                enableSwipeMonths={true}
+              />
+            </View>
+          </View>
       {/* Show warning only if a date is selected and no attendance found */}
       {selectedDate && attendanceData.every((record) => record.date !== selectedDate) && (
         <Text style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>
@@ -144,7 +209,9 @@ const styles = StyleSheet.create({
   calendar: {
      borderRadius: 15, 
      marginTop: 50 ,
-     height:'85%',
+    //  height:'85%',
+    minHeight: '85%',
+    maxHeight: '90%',
      width:'95%',
      alignSelf:'center',
     //  backgroundColor:'red',
@@ -207,7 +274,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:35,
+    height:25,
     width:35
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },

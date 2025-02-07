@@ -125,7 +125,7 @@ const FeePayment = () => {
 
   const handlePress = (id) => {
     router.push({
-      pathname: '/home/Finance/feePayment/feeDetails',
+      pathname: '/home/Finance/feePayment/fees',
       params: { studentId: id },  // Use 'params' here instead of 'query'
     });
   };

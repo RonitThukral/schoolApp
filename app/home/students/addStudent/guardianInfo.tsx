@@ -4,9 +4,18 @@ import Feather from '@expo/vector-icons/Feather';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
 
+const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+
+
 const contactInfo = () => {
 
   const {personalData, academicData, contactData} = useLocalSearchParams()
+
+  const parsedPersonalData = personalData ? JSON.parse(personalData) : null
+  const parsedAcademicData = personalData ? JSON.parse(academicData) : null
+  const parsedContactData = personalData ? JSON.parse(contactData) : null
+
+  // const parsedStudent = student ? JSON.parse(student) : null;
 
   // console.log(personalData,'smdsm')
   // console.log(academicData,'smdsfsdfm')
@@ -78,13 +87,13 @@ const contactInfo = () => {
           profileUrl: "", // Assuming you will handle profile URL separately
       
           // Personal Data from params
-          name: `${personalData.firstName} ${personalData.lastName}`,
+          name: `${parsedPersonalData.firstName} ${parsedPersonalData.lastName}`,
           setuserID: null, // Assuming autoID logic is handled somewhere else
           middleName: "", // If you need to capture this from the form, add a state for it
-          surname: personalData.lastName,
-          gender: personalData.gender,
-          dateofBirth: personalData.dob, // Ensure format matches API expectations (DD-MM-YYYY)
-          email: personalData.email,
+          surname: parsedPersonalData.lastName,
+          gender: parsedPersonalData.gender,
+          dateofBirth: parsedPersonalData.dob, // Ensure format matches API expectations (DD-MM-YYYY)
+          email: parsedPersonalData.email,
           nationality: "", // If nationality is required, capture it in the form
           religion: "", // If religion is required, capture it in the form
           placeOfBirth: "", // If place of birth is required, capture it in the form
@@ -93,24 +102,25 @@ const contactInfo = () => {
           allege: "", // If allege information is required, capture it in the form
       
           // Academic Data from params
-          classID: academicData.class,
-          division: academicData.division,
-          dormitoryID: academicData.dormitories,
-          section: academicData.section,
-          status: academicData.status,
-          campusID: academicData.campus,
-          scholarship: academicData.scholarship,
+          userID : parsedAcademicData.userID,
+          classID: parsedAcademicData.class,
+          division: parsedAcademicData.division,
+          dormitoryID: parsedAcademicData.dormitories,
+          section: parsedAcademicData.section,
+          status: parsedAcademicData.status,
+          campusID: parsedAcademicData.campus,
+          scholarship: parsedAcademicData.scholarship,
       
           // Contact Data from params
-          fees: academicData.category, // Assuming fees category is required, capture it in the form
+          fees: parsedAcademicData.category, // Assuming fees category is required, capture it in the form
           lastSchool: {
             school: "", // If the last school is required, capture it in the form
             reason: "", // If the reason for transfer is required, capture it in the form
           },
-          mobilenumber: contactData.mobileNumber,
-          telephone: contactData.smsNumber, // If telephone number is required, capture it in the form
-          postalAddress: contactData.postalAddress,
-          physicalAddress: contactData.areaOfResidence,
+          mobilenumber: parsedContactData.mobileNumber,
+          telephone: parsedContactData.smsNumber, // If telephone number is required, capture it in the form
+          postalAddress: parsedContactData.postalAddress,
+          physicalAddress: parsedContactData.areaOfResidence,
       
           // Guardian Data (if any guardians have been added)
           guadian: guardian,  // Send the guardian array here
@@ -120,7 +130,7 @@ const contactInfo = () => {
       
         // Send data to the API
         axios
-          .post("/students/create", studentData)
+          .post(`${baseUrl}/students/create`, studentData)
           .then((response) => {
             // setloading(false);
             if (response.data.error) {
@@ -188,10 +198,9 @@ const contactInfo = () => {
             <View style={styles.cardContainer}>
           <InfoRow label="Name" value={item.name} />
           <InfoRow label="Relationship" value={item.relationship} />
-          <InfoRow label="Occupation" value={item.relationship} />
-          <InfoRow label="Email" value={item.relationship} />
-          <InfoRow label="Address" value={item.relationship} />
-          <InfoRow label="Fee Category" value={item.relationship} />
+          <InfoRow label="Email" value={item.email} />
+          <InfoRow label="Occupation" value={item.occupation} />
+          <InfoRow label="Address" value={item.address} />
           </View>
           )}
         />    

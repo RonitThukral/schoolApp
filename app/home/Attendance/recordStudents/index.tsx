@@ -169,6 +169,9 @@ const StudentRecord = () => {
               textDayHeaderFontSize: 12,
               textMOnthFontSize: 12,
               textDayStyle: { padding: 2 },
+              textSectionTitleColor: 'black',
+              textSectionTitleDisabledColor: '#d9e1e8',
+              textDayHeaderFontWeight: '700',
             }}
             enableSwipeMonths={true}
           />
@@ -257,7 +260,9 @@ const styles = StyleSheet.create({
   calendar: {
     borderRadius: 15,
     marginTop: 50,
-    height: '85%',
+    // height: '85%',
+    minHeight: '85%',
+    maxHeight: '90%',
     width: '95%',
     alignSelf: 'center',
     elevation: 4,
@@ -304,8 +309,8 @@ const styles = StyleSheet.create({
   studentTextid: { fontSize: 18, color: '#007bff' },
   studentText: { fontSize: 14 },
   dayContainer: {
-    height: 35,
-    width: 35,
+    height:25,
+    width:35,
     alignItems: 'center',
     justifyContent: 'center',
   },

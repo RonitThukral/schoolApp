@@ -109,7 +109,7 @@ const Conversation = () => {
   }, []); // Empty dependency array ensures it runs once when the component mounts
 
   if (loading) {
-    return <Text>Loading...</Text>; // You can customize loading state display
+    return <Text></Text>; // You can customize loading state display
   }
 
   if (error) {
@@ -128,17 +128,17 @@ const Conversation = () => {
         {/* <ScrollView style={styles.container1}> */}
         {/* Header Section */}
         <View style={styles.header}>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <MaterialIcons name="menu" size={28} color="#000" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
 
 
             <View style={styles.headerIcons}>
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
                 <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-              </TouchableOpacity>
-              <Fontisto name="bell" size={22} color="black" />
+              </TouchableOpacity> */}
+              {/* <Fontisto name="bell" size={22} color="black" /> */}
 
             </View>
             <View style={styles.userInfo}>
@@ -285,7 +285,7 @@ export const styles = StyleSheet.create({
     zIndex: 500,
     marginRight: 10,
     position: 'relative',
-    bottom: 1
+    bottom: 13
 
   },
   userName: {
@@ -375,15 +375,13 @@ export const styles = StyleSheet.create({
 
     }),
   },
-  avatar:
-  {
-    width:
-      35,
+  avatar: {
+    width: 35,
     height: 35,
     borderRadius: 100,
     backgroundColor: 'lightgreen',
     position: 'relative',
-    bottom: 2
+    bottom: 13
   },
   container1: {
     flex: 1,

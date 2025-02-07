@@ -37,7 +37,7 @@ const index = () => {
           throw new Error('Failed to fetch students');
         }
         const data = await response.json();
-  // console.log(data)
+  console.log(data)
         // Transform data to match the design format if needed
         const formattedData = data.users.map((student) => ({
           // id: student._id,
@@ -117,7 +117,7 @@ const index = () => {
       fetchStudents();
       fetchCampuses();
       fetchBuses();
-    },[])
+    },[selectedClass])
 
 
     
@@ -140,6 +140,7 @@ const index = () => {
         setNextCampus(null);
         setFromBus(null);
         setToBus(null);
+        setFilteredStudents([])
     };
     
 

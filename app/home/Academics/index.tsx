@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import AcademicsCard from '../../components/academicsCard';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { Entypo } from '@expo/vector-icons';
 
 
 
@@ -15,6 +16,7 @@ export default function Home(): any {
 const router = useRouter();
 
   const date = new Date().toISOString().slice(0, 10)
+
   const Item = [
     
     {
@@ -29,7 +31,7 @@ const router = useRouter();
     },
     {
       name: "Scholarships",
-      icon: <MaterialCommunityIcons name="android-messages" size={24} color="#8EC7FF"/>,
+      icon: <Image source={require('../../../assets/images/images/cap.png')}/>,
       content: 50
     },
     {

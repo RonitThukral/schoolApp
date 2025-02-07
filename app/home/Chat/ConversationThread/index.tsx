@@ -71,14 +71,15 @@ const ConversationThread = () => {
         borderWidth: 1,
         borderColor: '#7e7e7e28',
         paddingHorizontal: 10,
-        width: "80%",
+        width: 'auto',
         paddingVertical: 10,
         marginVertical: 5,
         flexDirection: flexdirection,
         backgroundColor: chatboxColor,
         borderRadius: 5,
+        
       }}>
-        <Text>{item.message}</Text>
+        <Text style={[flexdirection === 'row' ? {textAlign: 'left'} : null]}>{item.message}</Text>
       </View>
     </View>);
   }
@@ -90,10 +91,10 @@ const ConversationThread = () => {
         <View style={styles.header}>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
             <View style={styles.headerIcons}>
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
                 <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
               </TouchableOpacity>
-              <Fontisto name="bell" size={22} color="black" />
+              <Fontisto name="bell" size={22} color="black" /> */}
             </View>
             <View style={styles.userInfo}>
               <Text style={styles.userName}>Nilesh Shr</Text>
@@ -184,12 +185,9 @@ export const styles = StyleSheet.create({
     zIndex: 300,
     maxWidth: responsiveWidth(85),
     maxHeight: 220,
-    //  boxShadow: '20px',
-    //  shadowColor: 'black',
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    //  backgroundColor: 'red',
     position: 'relative',
     top: '3%',
     alignSelf: 'center',
@@ -227,7 +225,7 @@ export const styles = StyleSheet.create({
     zIndex: 500,
     marginRight: 10,
     position: 'relative',
-    bottom: 1
+    bottom: 13
   },
   userName: {
     fontSize: 16,
@@ -253,13 +251,12 @@ export const styles = StyleSheet.create({
   },
   avatar:
   {
-    width:
-      35,
+    width: 35,
     height: 35,
     borderRadius: 100,
     backgroundColor: 'lightgreen',
     position: 'relative',
-    bottom: 2
+    bottom: 13
   },
   container1: {
     flex: 1,

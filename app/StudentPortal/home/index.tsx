@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image,SafeAreaView,Platform } from 'react-native'
-import 'react-native-reanimated';
+// import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';

@@ -33,6 +33,14 @@ const StaffDetails = () => {
   const staff = teacher ? JSON.parse(teacher) : null;
 
 
+  const formatDate = (isoDate) => {
+    if (!isoDate) return "";
+    const date = new Date(isoDate);
+    return `${date.getDate()} ${date.toLocaleString("en-US", { month: "long" })} ${date.getFullYear()}`;
+  };
+  
+  
+  
 
 
   const toggleSection = (section) => {
@@ -120,7 +128,7 @@ const StaffDetails = () => {
               <InfoRow label="Email" value={staff?.email} />
               <InfoRow label="Caste" value={staff?.caste} />
               <InfoRow label="Category" value={staff?.category} />
-              <InfoRow label="DOB" value={staff?.dateOfBirth} />
+              <InfoRow label="DOB" value={formatDate(staff?.dateOfBirth)} />
             </Section>
 
             <View

@@ -103,7 +103,7 @@ const StudentHistory = () => {
             <Calendar
               onDayPress={handleDateSelect}
               markedDates={{
-                [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
+                [selectedDate]: { selected: true, marked: true, selectedColor: 'red' },
               }}
               style={styles.calendar}
               theme={{
@@ -179,11 +179,12 @@ const StudentHistory = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: 'white' },
-  container1: { flex: 1, padding: 20, backgroundColor: 'white' ,paddingTop:'70'},
+  container1: { flex: 1, padding: 20, backgroundColor: 'white' ,paddingTop:70},
   calendar: {
      borderRadius: 15, 
      marginTop: 50 ,
-     height:'85%',
+     minHeight: '85%',
+     maxHeight: '90%',
      width:'95%',
      alignSelf:'center',
     //  backgroundColor:'red',
@@ -244,8 +245,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:35,
-    width:35
+    height:25,
+    width:35,
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },

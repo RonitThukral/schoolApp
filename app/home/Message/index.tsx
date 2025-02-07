@@ -10,6 +10,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 
@@ -32,7 +33,7 @@ const router = useRouter();
     },
     {
       name: "Guardian",
-      icon: <MaterialCommunityIcons name="human-female-boy" size={24} color="#8EC7FF" />,
+      icon: <FontAwesome5 name="user-friends" size={22} color="#8EC7FF" />,
       content: 50
     },
     {

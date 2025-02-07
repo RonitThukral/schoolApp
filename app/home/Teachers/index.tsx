@@ -8,6 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 export default function Home(): any {
@@ -19,7 +20,7 @@ const router = useRouter();
     
     {
       name: "Total",
-      icon: <MaterialCommunityIcons name="human-male-female" size={24} color="#8EC7FF" />,
+      icon: <FontAwesome5 name="user-friends" size={22} color="#8EC7FF" />,
       content: 364
     },
     {

@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet, SafeAreaView,ScrollView,Image,TouchableOpacity, Alert } from 'react-native'
+import { View, Text,StyleSheet, SafeAreaView,ScrollView,Image,TouchableOpacity, Alert, TextInput } from 'react-native'
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -69,6 +69,7 @@ const {personalData} = useLocalSearchParams();
 // console.log(personalData, ' djfskjbgkjs')
 
     const [isFocus, setIsFocus] = useState<string | null>(null);
+    const [userID, setUserID] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [selectedClass, setSelectedClass] = useState(null);
     const [selectedSection, setSelectedSection] = useState(null);
@@ -128,7 +129,7 @@ const {personalData} = useLocalSearchParams();
       try {
         const response = await axios.get(`${baseUrl}/scholarships`);
         const formatedData = response.data.map((sec) => ({
-          label: sec.percentage,
+          label: sec.name,
           value: sec.name,
         }))
 
@@ -218,6 +219,9 @@ const {personalData} = useLocalSearchParams();
         router.back()
     }
     const handleNext = () => {
+      if(!selectedCampus || !selectedClass || !selectedDiv || !selectedStatus || !selectedDorm || !selectedScholarship || !selectedSection || !selectedStatus || !userID) {
+        Alert.alert('Warning', 'Kindly Fill All The Fields')
+      }
       const academicData = {
         class: selectedClass,
         section: selectedSection,
@@ -227,6 +231,7 @@ const {personalData} = useLocalSearchParams();
         scholarship: selectedScholarship,
         category: selectedCategory,
         campus: selectedCampus,
+        userID: userID
       };
       router.navigate({ pathname: './contactInfo', params: { academicData: JSON.stringify(academicData),personalData } });
     }
@@ -251,6 +256,9 @@ const {personalData} = useLocalSearchParams();
         <Text style={{position:'relative', top:50 , left:40, fontSize:22,fontWeight:'600', marginVertical:0}}>Academic Information</Text>
 
     <View style={styles.container}>
+
+    <TextInput style={styles.input} placeholder="Student ID (BK2024XX...)" placeholderTextColor="grey" value={userID} onChangeText={setUserID} />
+
     
     <Dropdown
           style={[styles.dropdown,]}
@@ -448,6 +456,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 2,
         borderColor: '#FFF',
+      },
+      input: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#DAEDFF',
+        // backgroundColor: 'red',
+        marginBottom: 15,
+        borderRadius: 10,
+        alignSelf: 'center',
+        paddingHorizontal: 25,
       },
       container:{
         position:'relative',

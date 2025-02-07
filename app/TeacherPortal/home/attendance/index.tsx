@@ -175,12 +175,14 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 8,
     paddingHorizontal: 20,
-    height: 50,
+    minHeight: '85%',
+    maxHeight: '90%',
     marginBottom: 10,
     alignSelf: 'center',
     backgroundColor: '#daedff',
 
   },
+  
   studentCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -209,8 +211,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:35,
-    width:35
+    height:25,
+    width:35,
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },

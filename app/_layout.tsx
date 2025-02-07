@@ -14,6 +14,17 @@ const _layout = () => {
     <Stack.Screen name='home/Inventory/index' options={{title: 'Store',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/Banking/index' options={{title: 'Banking',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/feePayment/feeDetails/index' options={{title: 'Fee Details',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
+    <Stack.Screen 
+  name="home/Finance/feePayment/fees/index" 
+  options={{ 
+    title: "             Fee Details",
+    headerStyle: { backgroundColor: "#58a8f9" },
+    headerTintColor: "#fff", //  Changes back arrow color to white
+    headerTitleStyle: { color: "#fff" }, // Changes title color to white
+    headerTransparent: true,
+  }} 
+/>
+
     <Stack.Screen name='home/Finance/Transactions/index' options={{title: 'Transactions',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/recordFeePayment/index' options={{title: 'Record Fee Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/Finance/recordFeePayment/payslip/index' options={{title: 'Payment',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
@@ -81,7 +92,7 @@ const _layout = () => {
     <Stack.Screen name='home/students/allStudents/studentDetails/index' options={{title: 'Student Details',headerStyle:{backgroundColor:'transparent'}, headerTransparent:true}}/>
     <Stack.Screen name='home/students/allStudents/index' options={{title: 'All Students'}}/>
 
-    <Stack.Screen name='home/Timetable/index' options={{title: 'Timetable',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
+    <Stack.Screen name='home/Timetable/index' options={{title: '              Timetable',headerStyle:{backgroundColor:'#1E1E2E'}, headerTransparent:true,headerTitleStyle:{color: 'white'}, headerTintColor:'white' }}/>
     <Stack.Screen name='home/Settings/index' options={{title: 'Settings',headerStyle:{backgroundColor:'white'},headerTransparent:true}}/>
     <Stack.Screen name='home/Certificates/index' options={{title: 'Certificates',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
     <Stack.Screen name='home/Liberary/index' options={{title: 'Library',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
@@ -97,7 +108,9 @@ const _layout = () => {
     <Stack.Screen name='StudentPortal/home/calender/index' options={{title: 'Calender',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
     <Stack.Screen name='StudentPortal/home/reportCard/index' options={{title: 'Report',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
     <Stack.Screen name='StudentPortal/home/reportCard/report/index' options={{title: 'Report Card',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
-    <Stack.Screen name='StudentPortal/home/finance/index' options={{title: 'Fees',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
+
+    <Stack.Screen name='StudentPortal/home/finance/index' options={{title: 'Fees',headerStyle:{backgroundColor:'#58a8f9'},headerTransparent:true,headerTintColor: "#fff", //  Changes back arrow color to white
+    headerTitleStyle: { color: "#fff" }}}/>
    
     <Stack.Screen name='StudentPortal/home/courses/index' options={{title: 'My Courses',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>
     <Stack.Screen name='StudentPortal/home/courses/notes/index' options={{title: 'Notes',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/>

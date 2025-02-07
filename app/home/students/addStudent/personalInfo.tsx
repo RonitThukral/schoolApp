@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 import { useRouter } from 'expo-router';
 
 const data = [
-  { label: 'Male', value: '1' },
-  { label: 'Female', value: '2' },
+  { label: 'Male', value: 'Male' },
+  { label: 'Female', value: 'Female' },
 ];
 
 const AddStudent = () => {

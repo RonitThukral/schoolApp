@@ -118,10 +118,10 @@ router.back()
             <View style={styles.cardContainer}>
           <InfoRow label="Name" value={item.name} />
           <InfoRow label="Relationship" value={item.relationship} />
-          <InfoRow label="Occupation" value={item.relationship} />
-          <InfoRow label="Email" value={item.relationship} />
-          <InfoRow label="Address" value={item.relationship} />
-          <InfoRow label="Fee Category" value={item.relationship} />
+          <InfoRow label="Occupation" value={item.occupation} />
+          <InfoRow label="Email" value={item.email} />
+          <InfoRow label="Address" value={item.address} />
+        
           </View>
           )}
         />    

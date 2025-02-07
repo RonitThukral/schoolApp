@@ -419,6 +419,16 @@ const StudentDetails = () => {
   const [div, setDiv] = useState(null);
   const [sec, setSec] = useState(null);
 
+
+  const formatDate = (isoDate) => {
+    if (!isoDate) return "";
+    const date = new Date(isoDate);
+    return `${date.getDate()} ${date.toLocaleString("en-US", { month: "long" })} ${date.getFullYear()}`;
+  };
+  
+
+
+
   const fetchStudentDetails = async () => {
     setLoading(true);
     try {
@@ -446,8 +456,8 @@ const StudentDetails = () => {
 
   useEffect(() => {
     if (selectedStudent) {  // Only fetch after student details are set
-      fetchCampuses();
       fetchScholarship();
+      fetchCampuses();
       fetchBus();
       fetchDiv();
       fetchSec();
@@ -496,17 +506,23 @@ const StudentDetails = () => {
   };
   
   const fetchScholarship = async () => {
-    if (!selectedStudent?.scholarship) return;  // Check that scholarship exists
+    if (!selectedStudent?.scholarship) return; // Check that scholarship exists
     try {
       const response = await axios.get(`${baseUrl}/scholarships/${selectedStudent.scholarship}`);
-      setScholar(response.data.doc.name);
+      
+      if (response.data?.doc) {
+        setScholar(response.data.doc.name);
+      } else {
+        console.warn("Scholarship data is missing or incorrect:", response.data);
+        // setScholar("N/A"); // Set a default value if the scholarship is not found
+      }
     } catch (error) {
       console.error("Error fetching SCHOLARSHIP:", error);
+      // setScholar("N/A"); // Handle the error gracefully
     }
   };
   
-
-
+  
 
 
   const toggleSection = (section) => {
@@ -515,6 +531,8 @@ const StudentDetails = () => {
       [section]: !prev[section],
     }));
   };
+
+
 
   const InfoRow = ({ label, value }) => (
     <View style={styles.infoRow}>
@@ -607,7 +625,7 @@ const StudentDetails = () => {
           <InfoRow label="Date of Birth" value={formatDate(studentData.dateofBirth)} />
           <InfoRow label="Nationality" value={studentData.nationality} />
           <InfoRow label="Religion" value={studentData.religion} />
-          <InfoRow label="Place of Birth" value={studentData.placeOfBirth} />
+          <InfoRow label="Place of Birth" value={formatDate(studentData.placeOfBirth)} />
         </Section>
 
         <View
