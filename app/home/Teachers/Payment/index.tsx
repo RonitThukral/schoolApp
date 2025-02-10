@@ -14,12 +14,12 @@
 //       <Text style={styles.subtitle}>
 //         Our team is working hard to give you an amazing experience. Stay tuned!
 //       </Text>
-      
+
 //       <TouchableOpacity style={styles.notifyButton}>
 //         <Text style={styles.notifyText}>Notify Me</Text>
 //       </TouchableOpacity>
 
-     
+
 //     </View>
 //   );
 // };
@@ -87,7 +87,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView, ScrollView } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Dropdown } from 'react-native-element-dropdown';
-import { useRouter,useLocalSearchParams, router } from 'expo-router';
+import { useRouter, useLocalSearchParams, router } from 'expo-router';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
@@ -130,7 +130,7 @@ const SalaryPayment = () => {
       const response = await axios.get(`${baseUrl}/teachers`);
       const formattedStaff = response.data.map((person) => ({
         userID: person.userID || 'N/A',
-        name: `${person.name} ${person.surname}` ||'N/A',
+        name: `${person.name} ${person.surname}` || 'N/A',
         position: person.position || 'N/A'
       }));
       setStaff(formattedStaff);
@@ -144,13 +144,13 @@ const SalaryPayment = () => {
   }, []);
 
 
-  const handleStaff = (id,name,position) => {
-    if (!selectedMonth || !selectedYear){
-     return Alert.alert('Warning','Choose Month and Year first')
+  const handleStaff = (id, name, position) => {
+    if (!selectedMonth || !selectedYear) {
+      return Alert.alert('Warning', 'Choose Month and Year first')
     }
     router.push({
       pathname: '/home/Teachers/Payment/Payrow',
-      params: { staffId: id,month:selectedMonth,year: selectedYear,name: name,position: position },  // Use 'params' here instead of 'query'
+      params: { staffId: id, month: selectedMonth, year: selectedYear, name: name, position: position },  // Use 'params' here instead of 'query'
     });
   }
 
@@ -187,8 +187,8 @@ const SalaryPayment = () => {
             value={selectedYear}
             onChange={(item) => setSelectedYear(item.value)}
           />
-          
-         
+
+
         </View>
 
         <View style={styles.footer}>
@@ -199,38 +199,38 @@ const SalaryPayment = () => {
             <Text style={{ textAlign: 'center', color: 'white', fontSize: 15 }}>Search</Text>
           </TouchableOpacity>
         </View>
-        </View>
+      </View>
 
-<View style={styles.container1}>
+      <View style={styles.container1}>
 
         <FlatList
-        data={staff}  // Use filtered students
-        keyExtractor={(item) => item.userID}
-        style={styles.list}
-        contentContainerStyle={{paddingTop:responsiveHeight(4),paddingBottom:20}}
-        renderItem={({ item }) => {
-          
-          return (
-            <TouchableOpacity style={styles.studentCard} onPress={() => handleStaff(item.userID,item.name,item.position)}>
-              <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
-              
-              <View style={{ flexDirection: 'column', position: 'absolute', left: '33%' }}>
-               <Text style={styles.studentTextid}>{item.userID}</Text>
-               <Text style={styles.studentText}>{item.name}</Text>
-             </View>
-              
+          data={staff}  // Use filtered students
+          keyExtractor={(item) => item.userID}
+          style={styles.list}
+          contentContainerStyle={{ paddingTop: responsiveHeight(4), paddingBottom: 20 }}
+          renderItem={({ item }) => {
 
-              <TouchableOpacity>
-        <Image source={require('../../../../assets/images/images/eye.png')} style={styles.eyeImg}/>        
-        </TouchableOpacity>
-            </TouchableOpacity>
-          );
-        }}
-      />
-</View>
+            return (
+              <TouchableOpacity style={styles.studentCard} onPress={() => handleStaff(item.userID, item.name, item.position)}>
+                <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
+
+                <View style={{ flexDirection: 'column', position: 'absolute', left: '33%' }}>
+                  <Text style={styles.studentTextid}>{item.userID}</Text>
+                  <Text style={styles.studentText}>{item.name}</Text>
+                </View>
 
 
-     
+                <TouchableOpacity>
+                  <Image source={require('../../../../assets/images/images/eye.png')} style={styles.eyeImg} />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+
+
+
     </SafeAreaView>
   );
 };
@@ -238,7 +238,7 @@ const SalaryPayment = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: 'white' },
-  container1: { flex: 1, backgroundColor: 'white' ,position:'relative',bottom:responsiveHeight(10)},
+  container1: { flex: 1, backgroundColor: 'white', position: 'relative', bottom: responsiveHeight(10) },
   searchBar: {
     width: '90%',
     borderRadius: 8,
@@ -269,15 +269,15 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
   },
-  eyeImg:{
-    width:30,
-    height:30,
-position:'relative',
-right:40
-},
+  eyeImg: {
+    width: 30,
+    height: 30,
+    position: 'relative',
+    right: 40
+  },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height: '80%'
   },
   dropdown: {
     height: 50,
@@ -305,9 +305,9 @@ right:40
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    position:'relative',
-    right:20,
-    top:10
+    position: 'relative',
+    right: 20,
+    top: 10
   },
   search: {
     width: 110,
@@ -323,51 +323,51 @@ right:40
     justifyContent: 'center',
     marginRight: 15,
   },
-  paid:{
-    width:70,
-    height:20, 
-    backgroundColor:'#daf6cb',
-    borderRadius:15, 
-    position:'relative',
-    left:responsiveWidth(10),
-    bottom:responsiveWidth(1),
+  paid: {
+    width: 70,
+    height: 20,
+    backgroundColor: '#daf6cb',
+    borderRadius: 15,
+    position: 'relative',
+    left: responsiveWidth(10),
+    bottom: responsiveWidth(1),
   },
-  paidText:{
-    textAlign:'center',
-    paddingTop:3,
-    fontSize:10,
-    color:'green'
+  paidText: {
+    textAlign: 'center',
+    paddingTop: 3,
+    fontSize: 10,
+    color: 'green'
   },
-  advance:{
-    width:70,
-    height:20, 
-    backgroundColor:'#f0ad4e',
-    borderRadius:15, 
-    position:'relative',
-    left:responsiveWidth(10),
-    bottom:responsiveWidth(1),
+  advance: {
+    width: 70,
+    height: 20,
+    backgroundColor: '#f0ad4e',
+    borderRadius: 15,
+    position: 'relative',
+    left: responsiveWidth(10),
+    bottom: responsiveWidth(1),
   },
-  advanceText:{
-    textAlign:'center',
-    paddingTop:3,
-    fontSize:10,
-    color:'#a94442'
+  advanceText: {
+    textAlign: 'center',
+    paddingTop: 3,
+    fontSize: 10,
+    color: '#a94442'
   },
-  pending:{
-    width:70,
-    height:20, 
-    backgroundColor:'#ff7c7c',
-    borderRadius:15, 
-    position:'relative',
-    left:responsiveWidth(10),
-    
-    bottom:responsiveWidth(1),
+  pending: {
+    width: 70,
+    height: 20,
+    backgroundColor: '#ff7c7c',
+    borderRadius: 15,
+    position: 'relative',
+    left: responsiveWidth(10),
+
+    bottom: responsiveWidth(1),
   },
-  pendingText:{
-    textAlign:'center',
-    paddingTop:2,
-    fontSize:10,
-    color:'#842323'
+  pendingText: {
+    textAlign: 'center',
+    paddingTop: 2,
+    fontSize: 10,
+    color: '#842323'
   }
 });
 
