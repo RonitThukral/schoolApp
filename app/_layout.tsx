@@ -123,6 +123,7 @@ const _layout = () => {
       <Stack.Screen name='StudentPortal/home/messages/inbox/index' options={{ title: 'Inbox', headerStyle: { backgroundColor: '#1E1E2E' }, headerTransparent: true, headerTitleStyle: { color: 'white' }, headerTintColor: 'white' }} />
       <Stack.Screen name='StudentPortal/home/messages/chat/index' options={{ title: 'Chats', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='StudentPortal/home/messages/chat/ConversationThread/index' options={{ title: 'Chats', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='StudentPortal/home/attendance/viewReport/index' options={{ title: 'Attendance Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='StudentPortal/home/attendance/index' options={{ title: 'Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='StudentPortal/home/profile/index' options={{ title: 'My Profile', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='StudentPortal/home/timetable/index' options={{ title: 'Time Table', headerStyle: { backgroundColor: 'white' } }} />
@@ -131,6 +132,7 @@ const _layout = () => {
 // Teachers Portal
       <Stack.Screen name='TeacherPortal/home/index' options={{ title: 'Home', headerShown: false }} />
       <Stack.Screen name='TeacherPortal/home/attendance/index' options={{ title: 'Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='TeacherPortal/home/attendance/viewReport/index' options={{ title: 'Attendance Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/classes/index' options={{ title: 'Classes', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/classes/students/index' options={{ title: 'Class Students', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/timetable/index' options={{ title: 'Time Table', headerStyle: { backgroundColor: 'white' } }} />

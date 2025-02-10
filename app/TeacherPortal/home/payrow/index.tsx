@@ -167,8 +167,12 @@ const SalaryPayment = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ height: responsiveWidth(75) }}>
-        <View style={{ marginTop: 50 }}>
+      <View style={{
+        paddingHorizontal: 20,
+        marginTop: 50,
+        marginBottom: 10,
+      }}>
+        <View>
           <Dropdown
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
@@ -248,7 +252,7 @@ const SalaryPayment = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: 'white' },
-  container1: { flex: 1, backgroundColor: 'white', position: 'relative', bottom: responsiveHeight(10) },
+  container1: { backgroundColor: 'white', position: 'relative', bottom: responsiveHeight(10) },
   searchBar: {
     width: '90%',
     borderRadius: 8,
@@ -291,7 +295,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    width: '90%',
+    width: '100%',
     borderRadius: 8,
     paddingHorizontal: 8,
     backgroundColor: '#daedff',
@@ -312,12 +316,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   footer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    position: 'relative',
-    right: 20,
-    top: 10
+    // position: 'relative',
+    // right: 20,
+    // top: 10
   },
   search: {
     width: 110,

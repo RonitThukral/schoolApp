@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image, Alert, SafeAreaView,StyleSheet,Platform } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Image, Alert, SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import * as Print from 'expo-print';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -47,13 +48,19 @@ const StaffHistory = () => {
   const handleDateSelection = (day) => {
     setSelectedDate(day.dateString);
     const filteredData = staffData.filter((record) => record.date === day.dateString);
-    
+
     // Update filtered list only if attendance exists, otherwise show all records
     setFilteredStaff(filteredData.length > 0 ? filteredData : staffData);
   };
+  const router = useRouter()
 
 
-  
+  const viewReport = () => {
+    router.navigate('./attendance/viewReport');
+  }
+
+
+
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
     return (
@@ -78,7 +85,7 @@ const StaffHistory = () => {
     <SafeAreaView style={styles.container}>
       <View style={{ height: '52%' }}>
         <View style={{ height: 400 }}>
-        <Calendar
+          <Calendar
             onDayPress={(day) => setSelectedDate(day.dateString)}
             markedDates={{
               [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
@@ -96,10 +103,13 @@ const StaffHistory = () => {
             }}
             enableSwipeMonths={true}
 
-          
+
           />
         </View>
       </View>
+      <TouchableOpacity onPress={viewReport} style={{ height: 30 }}>
+        <Text style={{ color: "#58A8F9", fontSize: 20, textAlign: 'center' }}>View Report</Text>
+      </TouchableOpacity>
 
       {/* Show warning only if a date is selected and no attendance found, but keep the full list */}
       {selectedDate && staffData.every((record) => record.date !== selectedDate) && (
@@ -144,32 +154,32 @@ const StaffHistory = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: 'white' },
   calendar: {
-     borderRadius: 15, 
-     marginTop: 50 ,
-     height:'85%',
-     width:'95%',
-     alignSelf:'center',
+    borderRadius: 15,
+    marginTop: 50,
+    height: '85%',
+    width: '95%',
+    alignSelf: 'center',
     //  backgroundColor:'red',
-    
-     elevation:4,
-     
-      ...Platform.select({
-        ios: {
-          marginTop:0
-        },
-        
-      }),
-    
-    },
 
-    main: {
-      ...Platform.select({
-        ios: {
-          marginTop:-50
-        },
-        
-      }),
-    },
+    elevation: 4,
+
+    ...Platform.select({
+      ios: {
+        marginTop: 0
+      },
+
+    }),
+
+  },
+
+  main: {
+    ...Platform.select({
+      ios: {
+        marginTop: -50
+      },
+
+    }),
+  },
 
   searchBar: {
     width: '90%',
@@ -182,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#daedff',
 
   },
-  
+
   studentCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -211,8 +221,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:25,
-    width:35,
+    height: 25,
+    width: 35,
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },
@@ -225,9 +235,9 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'90%',
-    position:'relative',
-    top:responsiveHeight(2)
+    height: '90%',
+    position: 'relative',
+    top: responsiveHeight(2)
   },
   dropdown: {
     height: 50,
@@ -255,9 +265,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     // zIndex: 100000,
-    position:'relative',
-    right:20,
-    top:10
+    position: 'relative',
+    right: 20,
+    top: 10
   },
   search: {
     width: 110,
