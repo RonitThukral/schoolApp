@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
+import { responsiveHeight } from "react-native-responsive-dimensions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const dummyData = {
   date: "07-Feb-2024",
@@ -10,14 +12,19 @@ const dummyData = {
     { id: 2, name: "Blooming", fatherName: "Sdfs", mobile: "", status: "Present" },
     { id: 3, name: "Dhumri", fatherName: "Sdfsd", mobile: "", status: "Present" },
     { id: 4, name: "Pushp raj", fatherName: "Dfsdf", mobile: "", status: "Present" },
-    { id: 5, name: "Suditi", fatherName: "Fdsf", mobile: "", status: "Present" }
+    { id: 5, name: "Suditi", fatherName: "Fdsf", mobile: "", status: "Present" },
   ],
   summary: { totalPresent: 5, totalAbsent: 0 }
 };
 
 const AttendanceReport = () => {
+  // const flatlistheight = dummyData.attendance.length * 30;
+  const maxHeight = responsiveHeight(100) - 230;
+  // const computedHeight = Math.min(flatlistheight, maxHeight);
+  const [computedHeight, setComputedHeight] = useState(100);
+  // console.log(flatlistheight, maxHeight, computedHeight);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Single Day Class Wise Attendance Report</Text>
 
       <View style={styles.headerRow}>
@@ -39,30 +46,43 @@ const AttendanceReport = () => {
       </View>
 
       {/* Table Rows */}
-      <FlatList
-        data={dummyData.attendance}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.tableRow}>
-            <Text style={styles.cell}>{item.id}</Text>
-            <View style={styles.verticalLine} />
-            <Text style={[styles.cell, styles.nameCell]}>{item.name}</Text>
-            <View style={styles.verticalLine} />
-            <Text style={styles.cell}>{item.fatherName}</Text>
-            <View style={styles.verticalLine} />
-            <Text style={[styles.cell, styles.mobileCell]}>{item.mobile || "N/A"}</Text>
-            <View style={styles.verticalLine} />
-            <Text style={[styles.cell, styles.statusCell]}>{item.status}</Text>
-          </View>
-        )}
-      />
+      <View>
+        <FlatList
+          style={{
+            height: computedHeight,
+            borderWidth: 1,
+            borderColor: "#00000035",
+
+          }}
+          onContentSizeChange={(contentWidth, contentHeight) => {
+            // Adjust height of FlatList based on content height
+            setComputedHeight(Math.min(contentHeight, maxHeight));
+          }}
+          data={dummyData.attendance}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.tableRow}>
+              <Text style={styles.cell}>{item.id}</Text>
+              <View style={styles.verticalLine} />
+              <Text style={[styles.cell, styles.nameCell]}>{item.name}</Text>
+              <View style={styles.verticalLine} />
+              <Text style={styles.cell}>{item.fatherName}</Text>
+              <View style={styles.verticalLine} />
+              <Text style={[styles.cell, styles.mobileCell]}>{item.mobile || "N/A"}</Text>
+              <View style={styles.verticalLine} />
+              <Text style={[styles.cell, styles.statusCell]}>{item.status}</Text>
+            </View>
+          )}
+        />
+      </View>
 
       {/* Summary */}
       <View style={styles.summaryContainer}>
         <Text style={styles.presentText}>Total Present : {dummyData.summary.totalPresent}</Text>
         <Text style={styles.absentText}>Total Absent : {dummyData.summary.totalAbsent}</Text>
       </View>
-    </View>
+      {/* <View style={{ flex: 1 }}></View> */}
+    </SafeAreaView>
   );
 };
 
@@ -96,7 +116,7 @@ const styles = StyleSheet.create({
   tableHeader: {
     flexDirection: "row",
     backgroundColor: "#58a8f9",
-    paddingVertical: 8,
+    // paddingVertical: 8,
     paddingHorizontal: 5,
     borderRadius: 5,
   },
@@ -106,18 +126,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
+    paddingVertical: 8,
   },
   tableRow: {
     flexDirection: "row",
     backgroundColor: "#ffffff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    paddingVertical: 6,
+    // paddingVertical: 6,
+    height: 30,
   },
   cell: {
     flex: 1,
     fontSize: 13,
     textAlign: "center",
+    paddingVertical: 6,
   },
   nameCell: {
     fontWeight: "bold",
@@ -137,7 +160,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
-    marginBottom: 480, // Space at the bottom if placed below the table
   },
 
 
@@ -153,6 +175,12 @@ const styles = StyleSheet.create({
     color: "red",
 
   },
+  flatlisttable: {
+    flex: 1,
+    flexDirection: "column",
+    borderColor: "red",
+    borderWidth: 1,
+  }
 });
 
 export default AttendanceReport;

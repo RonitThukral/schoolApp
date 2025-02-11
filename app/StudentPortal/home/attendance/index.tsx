@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, Image, Alert, SafeAreaView, Sty
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -54,16 +54,6 @@ const StudentAttendance = () => {
     // Update filtered list only if attendance exists, otherwise show all records
     setFilteredAttendance(filteredData.length > 0 ? filteredData : attendanceData);
   };
-
-
-  const router = useRouter()
-
-
-  const viewReport = () => {
-    router.navigate("./attendance/viewReport")
-  }
-
-
 
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
@@ -179,9 +169,6 @@ const StudentAttendance = () => {
           />
         </View>
       </View>
-      <TouchableOpacity onPress={viewReport} style={{ height: 30 }}>
-        <Text style={{ color: "#58A8F9", fontSize: 20, textAlign: 'center' }}>View Report</Text>
-      </TouchableOpacity>
 
       {/* Show warning only if a date is selected and no attendance found */}
       {selectedDate && attendanceData.every((record) => record.date !== selectedDate) && (
