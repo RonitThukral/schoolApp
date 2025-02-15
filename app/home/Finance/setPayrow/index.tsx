@@ -197,10 +197,11 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View , TouchableOpacity, Image, ScrollView, TextInput, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View , TouchableOpacity, Image, ScrollView, TextInput, SafeAreaView, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -368,6 +369,21 @@ const DropdownComponent = () => {
           ))}
         </ScrollView>
 
+
+
+ <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen || edit)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
+
+
+
+
         {(isOpen || edit) && (
           <View style={styles.inputContainer}>
             <Text style={styles.inputHeader}>{edit ? 'Edit Payrow' : 'Add Payrow'}</Text>
@@ -414,7 +430,12 @@ const DropdownComponent = () => {
           </View>
         )}
 
-        <TouchableOpacity
+        </BlurView>
+
+
+        </Modal>
+
+        {!isOpen && <TouchableOpacity
           style={{
             width: 80,
             height: 80,
@@ -431,6 +452,7 @@ const DropdownComponent = () => {
         >
           <Entypo name="plus" size={40} color="white" />
         </TouchableOpacity>
+        }
       </View>
     </SafeAreaView>
   );
@@ -686,6 +708,13 @@ const DropdownComponent = () => {
       addText: {
         color: 'white',
         fontWeight: '600',
+      },
+      
+      modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+        justifyContent: "center",
+        alignItems: "center",
       },
 
   });

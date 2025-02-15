@@ -1,5 +1,6 @@
+import { BlurView } from 'expo-blur';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView,ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView,ScrollView, Platform, Modal } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
@@ -174,6 +175,21 @@ const handleSend = () => {
         <Text style={styles.submitButtonText}>Proceed</Text>
       </TouchableOpacity>}
 
+
+
+ <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen || edit)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
+
+
+
+
       {(isOpen || edit) && <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{'Edit Message'}</Text>
 
@@ -195,6 +211,11 @@ const handleSend = () => {
     </TouchableOpacity>
     </View>
     </View>}
+
+</BlurView>
+
+
+</Modal>
 
 
     </SafeAreaView>
@@ -380,6 +401,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignSelf: 'flex-end'
    },
+
+   modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
 });
 

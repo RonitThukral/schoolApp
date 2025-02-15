@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView, SafeAreaView, Platform, TextInput} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView, SafeAreaView, Platform, TextInput, Modal} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';
   import AntDesign from '@expo/vector-icons/AntDesign';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -8,6 +8,7 @@ import axios from 'axios';
 import { parse } from '@babel/core';
 import Attendance from '@/app/home/Reports/attendance';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 
   const studentData =[
@@ -272,6 +273,18 @@ const {classs, course} = useLocalSearchParams();
           
       </View>
 
+ <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen || edit)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
+
+
+
       {(isOpen) && <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{'Add Notice'}</Text>
 
@@ -293,6 +306,10 @@ const {classs, course} = useLocalSearchParams();
     </TouchableOpacity>
     </View>
     </View>}
+
+    </BlurView>
+
+    </Modal>
 
 <View style={{height:1,width:'100%', borderBottomWidth:0.5,borderColor:'grey'}}></View>
 
@@ -615,8 +632,16 @@ elevation:5
         justifyContent:'center',
         alignSelf:'flex-end',
 
-          }
-    
+          },
+
+          modalOverlay: {
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+            justifyContent: "center",
+            alignItems: "center",
+          },
+
+            
     
 
   });

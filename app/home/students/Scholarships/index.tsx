@@ -1,8 +1,9 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 
 const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -203,6 +204,7 @@ const index = () => {
           )}
           </View>
 
+
           {!(isOpen || edit) && <TouchableOpacity
             style={{
               width: 80,
@@ -219,8 +221,21 @@ const index = () => {
             }}
             onPress={handlePlus}
           >
+
             <Entypo name="plus" size={40} color="white" />
+
           </TouchableOpacity>}
+
+
+
+<Modal
+animationType="slide"
+transparent={true}
+visible={(isOpen || edit)}
+onRequestClose={() => setIsOpen(false)}
+>
+
+<BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
 
 
 
@@ -300,6 +315,12 @@ const index = () => {
               </View>
             </View>
           )}
+
+          </BlurView>
+
+          </Modal>
+
+
         </ImageBackground>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -377,6 +398,16 @@ const styles = StyleSheet.create({
   closeBtn: {
     justifyContent: 'center',
   },
+
+    
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
 });
 
 export default index;
