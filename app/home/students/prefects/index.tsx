@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert,TextInput, Platform } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Image, Alert,TextInput, Platform, Modal } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { setOptions } from "expo-splash-screen";
 import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
+import { BlurView } from "expo-blur";
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual base URL
 
@@ -330,11 +331,22 @@ const Index = () => {
         </View>
       ))}
       </ScrollView>
-    <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:230, justifyContent:'center',alignSelf:'flex-end',right:45,alignItems:'center'}} onPress={handlePlus}>
+      
+    {!isOpen && <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:230, justifyContent:'center',alignSelf:'flex-end',right:45,alignItems:'center'}} onPress={handlePlus}>
     <Entypo name="plus" size={40} color="white" />
-    </TouchableOpacity>
+    </TouchableOpacity>}
 
-    {(isOpen || edit )&& <View style={styles.inputContainer}>
+
+<Modal
+animationType="slide"
+transparent={true}
+visible={(isOpen || edit)}
+onRequestClose={() => setIsOpen(false)}
+>
+
+<BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+
+    {(isOpen || edit ) && <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{edit ? 'Edit Prefect' : 'Add Prefect'}</Text>
 
 
@@ -416,6 +428,9 @@ const Index = () => {
     </TouchableOpacity>
     </View>
     </View>}
+
+    </BlurView>
+    </Modal>
 
   </SafeAreaView>
 );
@@ -649,7 +664,15 @@ closeBtn: {
         },
         
       }),
-    }
+    },
+
+    
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
 });
 

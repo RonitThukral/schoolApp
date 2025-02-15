@@ -1,8 +1,9 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -127,12 +128,22 @@ const index = () => {
           renderItem={renderCampuses}
           contentContainerStyle={styles.lists}
         />}
-        <TouchableOpacity
+        {!isOpen && <TouchableOpacity
           style={styles.addButton}
           onPress={() => setIsOpen(true)}
         >
           <Entypo name="plus" size={40} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity>}
+
+<Modal
+animationType="slide"
+transparent={true}
+visible={(isOpen || edit)}
+onRequestClose={() => setIsOpen(false)}
+>
+
+<BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+
 
         {(isOpen || edit) && (
           <View style={styles.inputContainer}>
@@ -162,6 +173,15 @@ const index = () => {
             </View>
           </View>
         )}
+
+
+</BlurView>
+
+</Modal>
+
+
+
+
       </ImageBackground>
     </SafeAreaView>
   );
@@ -280,6 +300,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
   },
+
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
 });
 
 export default index;

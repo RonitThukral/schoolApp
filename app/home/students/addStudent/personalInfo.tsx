@@ -65,6 +65,7 @@ const AddStudent = () => {
     };
     router.navigate({ pathname: './academicInfo', params: { personalData: JSON.stringify(personalData) } });
   };
+
   return (
     <SafeAreaView>
       <ScrollView style={{backgroundColor:'#FFFFFF'}}>

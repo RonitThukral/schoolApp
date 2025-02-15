@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, Image, Alert, SafeAreaView,Styl
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -53,6 +53,7 @@ const StaffHistory = () => {
   };
 
 
+
   
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
@@ -100,6 +101,7 @@ const StaffHistory = () => {
           />
         </View>
       </View>
+
 
       {/* Show warning only if a date is selected and no attendance found, but keep the full list */}
       {selectedDate && staffData.every((record) => record.date !== selectedDate) && (

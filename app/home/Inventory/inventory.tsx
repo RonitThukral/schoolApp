@@ -167,11 +167,12 @@
 
 
 
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios for API calls
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 // API URL
 const apiUrl = 'https://dreamscloudtechbackend.onrender.com/api/store/items';
@@ -372,6 +373,16 @@ const Inventory = () => {
         <Entypo name="plus" size={40} color="white" />
       </TouchableOpacity>
 
+
+<Modal
+animationType="slide"
+transparent={true}
+visible={isOpen}
+onRequestClose={() => setIsOpen(false)}
+>
+
+  <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+
       {isOpen && (
         <View style={styles.inputContainer}>
           <Text style={{ fontSize: 24, position: 'absolute', alignSelf: 'flex-start', paddingHorizontal: 25, paddingVertical: 5, top: 15 }}>
@@ -391,6 +402,13 @@ const Inventory = () => {
           </TouchableOpacity>
         </View>
       )}
+
+  </BlurView>
+
+</Modal>
+
+
+
     </>
   );
 };
@@ -461,10 +479,10 @@ input: {
     justifyContent:'center',
     alignSelf:'center',
     flexDirection:'column',
-    top:responsiveHeight(1),
+    top:responsiveHeight(13),
     zIndex:900000,
-    elevation:8
-// marginVertical:15
+    elevation:8,
+    
   },
   buttons:{
     width:80,
@@ -485,7 +503,14 @@ input: {
     borderRadius:20,
     justifyContent:'center',
     alignSelf:'flex-end',
-      }
+      },
+
+      modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+        justifyContent: "center",
+        alignItems: "center",
+      },
 
 })
 

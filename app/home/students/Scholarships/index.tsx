@@ -1,5 +1,3 @@
-
-
 import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
@@ -224,7 +222,9 @@ const index = () => {
             <Entypo name="plus" size={40} color="white" />
           </TouchableOpacity>}
 
-          {isOpen && (
+
+
+          {(isOpen || edit) && (
             <View style={styles.inputContainer}>
               <Text
                 style={{
