@@ -24,13 +24,13 @@ const Inventory = () => {
   // Fetch data from the API when the component mounts
 
 
-  const fetchItems = async() => {
+  const fetchItems = async () => {
     try {
 
       const response = await axios.get(apiUrl)
       setAllItems(response.data);
       setFilteredItems(response.data);
-      
+
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -230,7 +230,7 @@ const Inventory = () => {
                 <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttons}>
-                <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }} 
+                <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}
                   onPress={edit ? onEdit : handleAdd}>
                   {edit ? 'save' : 'Add'}
                 </Text>
@@ -247,37 +247,37 @@ const Inventory = () => {
 
 
 const styles = StyleSheet.create({
-    
-container : {
-    flex:1,
-    backgroundColor:'white'
-},
-list:{
-  width:'85%',
-  maxHeight:140,
-  height:'auto',
-  borderRadius:10,
-  elevation:4,
-  alignSelf:'center',
-  backgroundColor:'white',
-  marginVertical:10,
 
-  ...Platform.select({
-    ios: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height:1 },
-      shadowOpacity: 0.20,
-      shadowRadius: 3.84,
-      // borderWidth:0.5,
-      // borderColor:'grey',
-    
-      
-    },
-    
-  }),
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  list: {
+    width: '85%',
+    maxHeight: 140,
+    height: 'auto',
+    borderRadius: 10,
+    elevation: 4,
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    marginVertical: 10,
 
-},
-input: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.20,
+        shadowRadius: 3.84,
+        // borderWidth:0.5,
+        // borderColor:'grey',
+
+
+      },
+
+    }),
+
+  },
+  input: {
     width: '80%',
     height: 45,
     backgroundColor: '#DAEDFF',
@@ -286,9 +286,9 @@ input: {
     borderRadius: 10,
     alignSelf: 'center',
     paddingHorizontal: 25,
-    marginVertical:3
+    marginVertical: 3
   },
-  inputDesc:{
+  inputDesc: {
     width: '80%',
     height: 100,
     backgroundColor: '#DAEDFF',
@@ -299,48 +299,48 @@ input: {
     alignSelf: 'center',
     paddingHorizontal: 25,
   },
-  inputContainer:{
-    position:'absolute',
-    width:'85%',
-    height:450,
-    backgroundColor:'white',
+  inputContainer: {
+    position: 'absolute',
+    width: '85%',
+    height: 450,
+    backgroundColor: 'white',
     // backgroundColor:'red',
-    borderRadius:10,
-    justifyContent:'center',
-    alignSelf:'center',
-    flexDirection:'column',
-    top:responsiveHeight(13),
-    zIndex:900000,
-    elevation:8,
-    
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flexDirection: 'column',
+    top: responsiveHeight(13),
+    zIndex: 900000,
+    elevation: 8,
+
   },
-  buttons:{
-    width:80,
-    height:30,
+  buttons: {
+    width: 80,
+    height: 30,
     backgroundColor: '#58A8F9',
-    position:'absolute',
-    bottom:13,
-    right:25,
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
-      },
+    position: 'absolute',
+    bottom: 13,
+    right: 25,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
 
-    closeBtn:{
-    position:'absolute',
-    bottom:15,
-    right:responsiveWidth(35),
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
-      },
+  closeBtn: {
+    position: 'absolute',
+    bottom: 15,
+    right: responsiveWidth(35),
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
 
-      modalOverlay: {
-        flex: 1,
-        backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
-        justifyContent: "center",
-        alignItems: "center",
-      },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
 })
 

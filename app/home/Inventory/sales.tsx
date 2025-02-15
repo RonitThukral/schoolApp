@@ -38,7 +38,7 @@
 //       name,
 //       amount: parseFloat(amount), // Amount for the sale item
 //     };
-    
+
 //     setBuyItems([...buyitems, item]);
 //     setAmount(item.amount); // Set amount for the sale
 //     setTotalPrice(totalprice + item.amount); // Add to total price
@@ -188,14 +188,14 @@ const Sales = () => {
   // Handlers for input fields
   const handleName = (text) => setName(text);
   const handleAmount = (text) => setAmount(text);
-  const handlePrice = (text) => setTotalPrice(Number(text));  
+  const handlePrice = (text) => setTotalPrice(Number(text));
 
   // Add item logic
   const handleAdd = () => {
     if (name && amount) {
       const item = {
         name,
-        amount: parseFloat(amount), 
+        amount: parseFloat(amount),
       };
 
       // Add item to buyitems
@@ -283,39 +283,39 @@ const Sales = () => {
       {/* Form to add item */}
 
 
- <Modal
+      <Modal
         animationType="slide"
         transparent={true}
         visible={(isOpen)}
         onRequestClose={() => setIsOpen(false)}
-        >
-        
+      >
+
         <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
-        
 
-      {isOpen && (
-        <View style={styles.inputContainer}>
-          <Text style={{ fontSize: 24, position: 'absolute', alignSelf: 'flex-start', paddingHorizontal: 25, paddingVertical: 5, top: 15 }}>
-            {'Add Item'}
-          </Text>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name} />
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Amount Paid"} onChangeText={handleAmount} value={amount} keyboardType="numeric" />
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Total Cost"} onChangeText={handlePrice} value={totalprice} keyboardType="numeric" />
 
-          <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
-            <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttons}>
-            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }} onPress={handleAdd}>Add</Text>
-          </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.buttons} onPress={handleSubmitSale}>
+          {isOpen && (
+            <View style={styles.inputContainer}>
+              <Text style={{ fontSize: 24, position: 'absolute', alignSelf: 'flex-start', paddingHorizontal: 25, paddingVertical: 5, top: 15 }}>
+                {'Add Item'}
+              </Text>
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name} />
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Amount Paid"} onChangeText={handleAmount} value={amount} keyboardType="numeric" />
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Total Cost"} onChangeText={handlePrice} value={totalprice} keyboardType="numeric" />
+
+              <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
+                <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buttons}>
+                <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }} onPress={handleAdd}>Add</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.buttons} onPress={handleSubmitSale}>
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>Submit Sale</Text>
           </TouchableOpacity> */}
-        </View>
-      )}
+            </View>
+          )}
 
 
-      </BlurView>
+        </BlurView>
 
 
       </Modal>
@@ -344,104 +344,104 @@ const Sales = () => {
 };
 
 const styles = StyleSheet.create({
-    
-container : {
-    flex:1,
-    backgroundColor:'white'
-},
-list:{
-  width:'85%',
-  maxHeight:140,
-  height:'auto',
-  borderRadius:10,
-  elevation:4,
-  alignSelf:'center',
-  backgroundColor:'white',
-  marginVertical:10,
-  borderWidth:0.3,
-  borderColor:'grey'
 
-},
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  list: {
+    width: '85%',
+    maxHeight: 140,
+    height: 'auto',
+    borderRadius: 10,
+    elevation: 4,
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    marginVertical: 10,
+    borderWidth: 0.3,
+    borderColor: 'grey'
+
+  },
 
 
-input: {
-  width: '80%',
-  height: 45,
-  backgroundColor: '#DAEDFF',
-  // backgroundColor: 'red',
-  // marginBottom: 10,
-  borderRadius: 10,
-  alignSelf: 'center',
-  paddingHorizontal: 25,
-  marginVertical:3
-},
-inputDesc:{
-  width: '80%',
-  height: 100,
-  backgroundColor: '#DAEDFF',
-  // backgroundColor: 'red',
-  marginBottom: 5,
-  marginTop: 5,
-  borderRadius: 10,
-  alignSelf: 'center',
-  paddingHorizontal: 25,
-},
-inputContainer:{
-  position:'absolute',
-  width:'85%',
-  height:300,
-  backgroundColor:'white',
-  // backgroundColor:'red',
-  borderRadius:10,
-  justifyContent:'center',
-  alignSelf:'center',
-  flexDirection:'column',
-  top:responsiveHeight(25),
-  zIndex:900000,
-  elevation:8
-// marginVertical:15
-},
-buttons:{
-  width:80,
-  height:30,
-  backgroundColor: '#58A8F9',
-  position:'absolute',
-  bottom:13,
-  right:25,
-  borderRadius:20,
-  justifyContent:'center',
-  alignSelf:'flex-end',
-    },
+  input: {
+    width: '80%',
+    height: 45,
+    backgroundColor: '#DAEDFF',
+    // backgroundColor: 'red',
+    // marginBottom: 10,
+    borderRadius: 10,
+    alignSelf: 'center',
+    paddingHorizontal: 25,
+    marginVertical: 3
+  },
+  inputDesc: {
+    width: '80%',
+    height: 100,
+    backgroundColor: '#DAEDFF',
+    // backgroundColor: 'red',
+    marginBottom: 5,
+    marginTop: 5,
+    borderRadius: 10,
+    alignSelf: 'center',
+    paddingHorizontal: 25,
+  },
+  inputContainer: {
+    position: 'absolute',
+    width: '85%',
+    height: 300,
+    backgroundColor: 'white',
+    // backgroundColor:'red',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flexDirection: 'column',
+    top: responsiveHeight(25),
+    zIndex: 900000,
+    elevation: 8
+    // marginVertical:15
+  },
+  buttons: {
+    width: 80,
+    height: 30,
+    backgroundColor: '#58A8F9',
+    position: 'absolute',
+    bottom: 13,
+    right: 25,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
 
-  closeBtn:{
-  position:'absolute',
-  bottom:15,
-  right:responsiveWidth(35),
-  borderRadius:20,
-  justifyContent:'center',
-  alignSelf:'flex-end',
-    },
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
-      justifyContent: "center",
-      alignItems: "center",
-    },
+  closeBtn: {
+    position: 'absolute',
+    bottom: 15,
+    right: responsiveWidth(35),
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-    submitButton: {
-        backgroundColor: '#007bff',
-        paddingVertical: 10,
-        borderRadius: 8,
-        alignItems: 'center',
-        width:'90%',
-        alignSelf:'center',
-        ...Platform.select({
-          ios:{
-            width:'90%',
-            alignSelf:'center'
-          }
-        })
-      },
+  submitButton: {
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    width: '90%',
+    alignSelf: 'center',
+    ...Platform.select({
+      ios: {
+        width: '90%',
+        alignSelf: 'center'
+      }
+    })
+  },
 
 })
 
