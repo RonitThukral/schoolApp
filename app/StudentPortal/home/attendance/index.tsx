@@ -50,52 +50,52 @@ const StudentAttendance = () => {
   const handleDateSelection = (day) => {
     setSelectedDate(day.dateString);
     const filteredData = attendanceData.filter((record) => record.date === day.dateString);
-    
+
     // Update filtered list only if attendance exists, otherwise show all records
     setFilteredAttendance(filteredData.length > 0 ? filteredData : attendanceData);
   };
 
-
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
 
-// Function to generate marked dates (Events + Sundays)
-const getMarkedDates = (eventData) => {
-  const marked = {};
+    // Function to generate marked dates (Events + Sundays)
+    const getMarkedDates = (eventData) => {
+      const marked = {};
 
-  // Mark all event dates with red text and bold font
-  Object.keys(eventData).forEach((date) => {
-    marked[date] = {
-      selected: true,
-      selectedColor: 'blue',
-      marked: true,
-      dotColor: 'red', // Red dot for events
-      customStyles: {
-        text: { color: 'red', fontWeight: 'bold' }, // Red text and bold for event dates
-      },
+      // Mark all event dates with red text and bold font
+      Object.keys(eventData).forEach((date) => {
+        marked[date] = {
+          selected: true,
+          selectedColor: 'blue',
+          marked: true,
+          dotColor: 'red', // Red dot for events
+          customStyles: {
+            text: { color: 'red', fontWeight: 'bold' }, // Red text and bold for event dates
+          },
+        };
+      });
+
+      // Mark all Sundays with red text and bold font (same style as event dates)
+      const startDate = new Date();
+      for (let i = 0; i < 365; i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        const dateString = date.toISOString().split('T')[0];
+
+        // Mark Sundays with red text and bold font
+        if (date.getDay() === 0) {
+          marked[dateString] = {
+            ...marked[dateString],
+            customStyles: {
+              text: { color: 'red', fontWeight: 'bold' }, // Red and bold text for Sundays
+            },
+          };
+        }
+      }
+
+      return marked;
     };
-  });
 
-  // Mark all Sundays with red text and bold font (same style as event dates)
-  const startDate = new Date();
-  for (let i = 0; i < 365; i++) {
-    const date = new Date(startDate);
-    date.setDate(date.getDate() + i);
-    const dateString = date.toISOString().split('T')[0];
-
-    // Mark Sundays with red text and bold font
-    if (date.getDay() === 0) {
-      marked[dateString] = {
-        ...marked[dateString],
-        customStyles: {
-          text: { color: 'red', fontWeight: 'bold' }, // Red and bold text for Sundays
-        },
-      };
-    }
-  }
-
-  return marked;
-};
 
 
 
@@ -146,29 +146,30 @@ const getMarkedDates = (eventData) => {
           />
         </View>
       </View> */}
-<View style={{ height: '52%' }}>
-            <View style={{ height: 400 }}>
-              <Calendar
-                onDayPress={(day) => {
-                  setSelectedDate(formatDate(day.dateString));
-                  setModalVisible(true);
-                }}
-                markedDates={markedDates}
-                dayComponent={({ date, state }) => renderDay({ date, state })}
-                style={styles.calendar}
-                theme={{
-                  textDayFontSize: 12,
-                  textDayHeaderFontSize: 12,
-                  textMonthFontSize: 12,
-                  textDayStyle: { padding: 2 },
-                  textSectionTitleColor: 'black',
-                  textSectionTitleDisabledColor: '#d9e1e8',
-                  textDayHeaderFontWeight: '700',
-                }}
-                enableSwipeMonths={true}
-              />
-            </View>
-          </View>
+      <View style={{ height: '52%' }}>
+        <View style={{ height: 400 }}>
+          <Calendar
+            onDayPress={(day) => {
+              setSelectedDate(formatDate(day.dateString));
+              setModalVisible(true);
+            }}
+            markedDates={markedDates}
+            dayComponent={({ date, state }) => renderDay({ date, state })}
+            style={styles.calendar}
+            theme={{
+              textDayFontSize: 12,
+              textDayHeaderFontSize: 12,
+              textMonthFontSize: 12,
+              textDayStyle: { padding: 2 },
+              textSectionTitleColor: 'black',
+              textSectionTitleDisabledColor: '#d9e1e8',
+              textDayHeaderFontWeight: '700',
+            }}
+            enableSwipeMonths={true}
+          />
+        </View>
+      </View>
+
       {/* Show warning only if a date is selected and no attendance found */}
       {selectedDate && attendanceData.every((record) => record.date !== selectedDate) && (
         <Text style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>
@@ -207,34 +208,34 @@ const getMarkedDates = (eventData) => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: 'white' },
   calendar: {
-     borderRadius: 15, 
-     marginTop: 50 ,
+    borderRadius: 15,
+    marginTop: 50,
     //  height:'85%',
     minHeight: '85%',
     maxHeight: '90%',
-     width:'95%',
-     alignSelf:'center',
+    width: '95%',
+    alignSelf: 'center',
     //  backgroundColor:'red',
-    
-     elevation:10,
-     
-      ...Platform.select({
-        ios: {
-          marginTop:0
-        },
-        
-      }),
-    
-    },
 
-    main: {
-      ...Platform.select({
-        ios: {
-          marginTop:-50
-        },
-        
-      }),
-    },
+    elevation: 10,
+
+    ...Platform.select({
+      ios: {
+        marginTop: 0
+      },
+
+    }),
+
+  },
+
+  main: {
+    ...Platform.select({
+      ios: {
+        marginTop: -50
+      },
+
+    }),
+  },
 
   searchBar: {
     width: '90%',
@@ -274,8 +275,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:25,
-    width:35
+    height: 25,
+    width: 35
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },
@@ -288,9 +289,9 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'90%',
-    position:'relative',
-    top:responsiveHeight(2)
+    height: '90%',
+    position: 'relative',
+    top: responsiveHeight(2)
   },
   dropdown: {
     height: 50,
@@ -318,9 +319,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     // zIndex: 100000,
-    position:'relative',
-    right:20,
-    top:10
+    position: 'relative',
+    right: 20,
+    top: 10
   },
   search: {
     width: 110,

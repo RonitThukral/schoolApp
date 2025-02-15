@@ -4,6 +4,7 @@ import { Feather, Fontisto, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
+import { getUserData } from '@/app/utils/storage';
 
 type SingeChatMessage = {
   isViewed: boolean,
@@ -15,6 +16,12 @@ type SingeChatMessage = {
 }
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
 
+type UserInfo = {
+  userID: string,
+  role: string,
+  name: string,
+};
+
 const ConversationThread = () => {
 
   const { chatID, chatName } = useLocalSearchParams();
@@ -22,6 +29,9 @@ const ConversationThread = () => {
   const [newmessage, setNewMessage] = useState<string>('');
   const flatListRef = useRef<FlatList<SingeChatMessage> | null>(null);
   const [scrollToEnd, setScrollToEnd] = useState<boolean>(false);
+  const [currentUser, setcurrentUser] = useState<UserInfo | null>(null);
+
+  getUserData().then((d) => setcurrentUser(d));
 
   const myAlternateUserId = "TK20243";
   const myStudentUserId = "BK20242";
@@ -77,9 +87,9 @@ const ConversationThread = () => {
         flexDirection: flexdirection,
         backgroundColor: chatboxColor,
         borderRadius: 5,
-        
+
       }}>
-        <Text style={[flexdirection === 'row' ? {textAlign: 'left'} : null]}>{item.message}</Text>
+        <Text style={[flexdirection === 'row' ? { textAlign: 'left' } : null]}>{item.message}</Text>
       </View>
     </View>);
   }
@@ -97,8 +107,8 @@ const ConversationThread = () => {
               <Fontisto name="bell" size={22} color="black" /> */}
             </View>
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>Nilesh Shr</Text>
-              <Text style={styles.userRole}>Admin</Text>
+              <Text style={styles.userName}>{currentUser?.name}</Text>
+              <Text style={styles.userRole}>{currentUser?.role}</Text>
             </View>
             <Image source={require('../../../../assets/images/images/image.png')} style={styles.avatar} />
           </View>
@@ -169,8 +179,8 @@ const ConversationThread = () => {
               justifyContent: 'center',
               paddingLeft: 3,
             }}>
-<MaterialIcons name="send" size={24} color="#58A8F9" /> 
-           {/* <Ionicons name="send" size={20} color="#58A8F9" /> */}
+            <MaterialIcons name="send" size={24} color="#58A8F9" />
+            {/* <Ionicons name="send" size={20} color="#58A8F9" /> */}
           </TouchableOpacity>
         </View>
       </SafeAreaView>

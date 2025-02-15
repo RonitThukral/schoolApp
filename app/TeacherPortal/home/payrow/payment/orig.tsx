@@ -25,9 +25,9 @@ const months = [
 
 
 const StaffTransactions = () => {
-  const { staffId, month, year,name,position } = useLocalSearchParams(); // Get staffId, month, and year from the search params
+  const { staffId, month, year, name, position } = useLocalSearchParams(); // Get staffId, month, and year from the search params
   const [transactions, setTransactions] = useState([]);
-  const [selectMonth, setSelectMonth]= useState(null)
+  const [selectMonth, setSelectMonth] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const StaffTransactions = () => {
 
   const getMonthDetails = (monthValue) => {
     let monthName, monthNumber;
-  
+
     switch (monthValue) {
       case '1':
         monthName = "January";
@@ -91,15 +91,15 @@ const StaffTransactions = () => {
         monthNumber = null;
         break;
     }
-  
+
     return { monthName, monthNumber };
   };
-  
-// Calculate Total Paid
-let totalPaid = 0;
-if (transactions && transactions.length > 0) {
-  totalPaid = transactions.reduce((sum, trans) => sum + Number(trans.amount || 0), 0);
-}
+
+  // Calculate Total Paid
+  let totalPaid = 0;
+  if (transactions && transactions.length > 0) {
+    totalPaid = transactions.reduce((sum, trans) => sum + Number(trans.amount || 0), 0);
+  }
   // Fetch transactions for the staff
   const fetchTransactions = async () => {
     try {
@@ -112,7 +112,7 @@ if (transactions && transactions.length > 0) {
       );
       setTransactions(filteredTransactions);
 
-     
+
     } catch (error) {
       console.error('Error fetching transactions:', error);
       alert('Failed to fetch transactions. Please try again.');
@@ -125,10 +125,10 @@ if (transactions && transactions.length > 0) {
     try {
       const res = await axios.get(`${baseUrl}/payrow/${position}`)
       // console.log(res.data)
-      
 
-setDetails(res.data.docs)
-      
+
+      setDetails(res.data.docs)
+
 
     } catch (error) {
       console.error('Error fetching details:', error);
@@ -141,14 +141,14 @@ setDetails(res.data.docs)
     fetchTransactions();
   }, [staffId, month, year]);
 
-const handlePayslip = () => {
-  // router.push('/home/Teachers/Payment/Payslip')
-  setIsOpen(true)
-}
-const handleClose = () => {
-  // router.push('/home/Teachers/Payment/Payslip')
-  setIsOpen(false)
-}
+  const handlePayslip = () => {
+    // router.push('/home/Teachers/Payment/Payslip')
+    setIsOpen(true)
+  }
+  const handleClose = () => {
+    // router.push('/home/Teachers/Payment/Payslip')
+    setIsOpen(false)
+  }
 
   // Toggle Section Expand/Collapse
   const toggleSection = (id) => {
@@ -204,15 +204,15 @@ const handleClose = () => {
 
   // Loading State
   if (loading) {
-    return <View style={{ position: "relative",top:'45%'}}>
-    <ActivityIndicator size="large" color="#58A8F9" />
+    return <View style={{ position: "relative", top: '45%' }}>
+      <ActivityIndicator size="large" color="#58A8F9" />
     </View>;
   }
 
   return (
     <>
 
-<View style={styles.container}>
+      <View style={styles.container}>
         <ImageBackground
           source={require('../../../../../assets/images/images/union.png')}
           style={styles.headerBackground}
@@ -248,15 +248,15 @@ const handleClose = () => {
           <InfoRow label="Allowance" value={details?.allowance || '0'} />
           <InfoRow label="Bonus" value={details?.bonus || '100'} />
           <InfoRow label="Total Salary" value={
-      Number(details?.salary) +
-      Number(details?.allowance) +
-      Number(details?.bonus)} />
+            Number(details?.salary) +
+            Number(details?.allowance) +
+            Number(details?.bonus)} />
           <InfoRow label="Total Paid" value={totalPaid || '0'} />
           <InfoRow label="Balance" value={
             (Number(details?.salary) +
-        Number(details?.allowance) +
-        Number(details?.bonus)) -
-      Number(totalPaid)} />
+              Number(details?.allowance) +
+              Number(details?.bonus)) -
+            Number(totalPaid)} />
         </View>
       </View>
 
@@ -284,7 +284,7 @@ const handleClose = () => {
         )}
       </ScrollView>
 
-     
+
     </>
   );
 };
@@ -301,24 +301,24 @@ const styles = StyleSheet.create({
   headerBackground: {
     width: '100%',
     height: responsiveHeight(35), // Adjust height according to your design
-    backgroundColor:'#daedff',
-    borderBottomWidth:0.8,
-    borderBottomColor:'black'
-  
+    backgroundColor: '#daedff',
+    borderBottomWidth: 0.8,
+    borderBottomColor: 'black'
+
   },
   profileSection: {
-    position:'absolute',
+    position: 'absolute',
     // bottom: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     marginTop: 25,
     padding: 16,
   },
   avatarContainer: {
     position: 'relative',
-    right:15,
-    top:25
+    right: 15,
+    top: 25
   },
   avatar: {
     width: 100,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   studentId: {
     color: '#58A8F9',
     fontSize: 24,
-    marginTop:15,
+    marginTop: 15,
     marginRight: 20
 
   },
@@ -360,199 +360,199 @@ const styles = StyleSheet.create({
   studentpos: {
     fontSize: 14,
     fontWeight: '300',
-    position:'relative',
-    bottom:responsiveHeight(1),
-right:responsiveWidth(2.5)
+    position: 'relative',
+    bottom: responsiveHeight(1),
+    right: responsiveWidth(2.5)
   },
 
   content: {
-    width:'100%',
-    paddingVertical:20,
-    flexDirection:'column',
-    justifyContent:'space-between',
-    alignSelf:'center',
-    position:'relative',
-    borderBottomWidth:0.8,
-    paddingHorizontal:30,
+    width: '100%',
+    paddingVertical: 20,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    position: 'relative',
+    borderBottomWidth: 0.8,
+    paddingHorizontal: 30,
     // backgroundColor:'red'
   },
-  list:{
+  list: {
     width: "90%",
     height: 100,
     borderColor: 'grey',
     borderRadius: 10,
     // backgroundColor : 'red',
-    backgroundColor : '#FFFFFF',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
-    flexDirection:'row',
-    alignItems:'center',
-    alignSelf:'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
     marginBottom: 0,
     marginTop: 20
   },
-  listBtns:{
-      position:'absolute',
-      right:30
+  listBtns: {
+    position: 'absolute',
+    right: 30
   },
-  stImg:{
-    width:60,
-    height:60,
-    position:'absolute',
+  stImg: {
+    width: 60,
+    height: 60,
+    position: 'absolute',
     left: 40,
-    backgroundColor:'white',
-    borderRadius:100
+    backgroundColor: 'white',
+    borderRadius: 100
   },
-  listContent:{
-    flexDirection:'column',
+  listContent: {
+    flexDirection: 'column',
     position: 'relative',
-    left:130
+    left: 130
   },
   section: {
 
-      width:"80%",
-      alignSelf:'center',
-      height:'auto',
-      backgroundColor: '#FFF',
-      //  backgroundColor: 'red',
-       marginHorizontal: 16,
-      marginTop: 10,
-       borderRadius: 8,
-       overflow: 'hidden',
-       elevation: 5, // Adds shadow for Android
-       shadowColor: '#000', // Adds shadow for iOS
-       shadowOffset: { width: 0, height: 1 },
-       shadowOpacity: 0.1,
-       shadowRadius: 3,
-    },
-    sectionHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 16,
-      // backgroundColor: '#F8F8F8',
-      backgroundColor: 'transparent',
-    },
-    sectionTitle: {
-      fontSize: 20,
-      fontWeight: '600',
-      color:'#58A8F9'
-    },
-    sectionContent: {
-      padding: 16,
-      width:"100%",
-      alignSelf:'center',
-      height:'auto',
-      backgroundColor: '#FFF',
-      // backgroundColor: 'red',
-      marginHorizontal: 16,
-      paddingTop: 0 ,
-      borderRadius: 10,
-      overflow: 'hidden',
-      
-    },
-    
-    infoRow1: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 2,
-    },
-    infoRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 3,
-    },
-    label1: {
-      fontWeight:'bold',
-      color: '#666',
-      fontSize: 12,
-      // backgroundColor:'green',
-      width:'35%'
-    },
-    label: {
-      fontWeight:'bold',
-      color: '#666',
-      fontSize: 14,
-      // backgroundColor:'green',
-      width:'45%',
-      marginLeft:15
-    },
-    value1: {
-      color:'grey',
-      fontSize: 12,
-      
-      
-    },
-    value: {
-      color:'grey',
-      fontSize: 14,
-      position:'relative',
-      left:responsiveWidth(14)
-      // backgroundColor:'blue'
-    },
+    width: "80%",
+    alignSelf: 'center',
+    height: 'auto',
+    backgroundColor: '#FFF',
+    //  backgroundColor: 'red',
+    marginHorizontal: 16,
+    marginTop: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+    elevation: 5, // Adds shadow for Android
+    shadowColor: '#000', // Adds shadow for iOS
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    // backgroundColor: '#F8F8F8',
+    backgroundColor: 'transparent',
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#58A8F9'
+  },
+  sectionContent: {
+    padding: 16,
+    width: "100%",
+    alignSelf: 'center',
+    height: 'auto',
+    backgroundColor: '#FFF',
+    // backgroundColor: 'red',
+    marginHorizontal: 16,
+    paddingTop: 0,
+    borderRadius: 10,
+    overflow: 'hidden',
 
-    input: {
-      width: '80%',
-      height: 45,
-      backgroundColor: '#DAEDFF',
-      // backgroundColor: 'red',
-      // marginBottom: 10,
-      borderRadius: 10,
-      alignSelf: 'center',
-      paddingHorizontal: 25,
-    },
-    inputDesc:{
-      width: '80%',
-      height: 100,
-      backgroundColor: '#DAEDFF',
-      // backgroundColor: 'red',
-      marginBottom: 10,
-      marginTop: 10,
-      borderRadius: 10,
-      alignSelf: 'center',
-      paddingHorizontal: 25,
-    },
-    inputContainer:{
-      position:'absolute',
-      width:'85%',
-      height:400,
-      backgroundColor:'white',
-      // backgroundColor:'red',
-      borderRadius:10,
-      justifyContent:'center',
-      alignSelf:'center',
-      top:'30%',
-      flexDirection:'column',
-      zIndex:900000,
-      elevation:5
-// marginVertical:15
-    },
-    buttons: { 
-      width: 100, 
-      height: 38, 
-      backgroundColor: '#58A8F9', 
-      position: 'relative', 
-      right: 25,
-      borderRadius: 20, 
-      justifyContent: 'center', 
-      alignSelf: 'flex-end' 
-    },
-    closeBtn: { 
-      position: 'relative', 
-      bottom: 5, 
-      right: responsiveWidth(14), 
-      borderRadius: 20, 
-      justifyContent: 'center', 
-      alignSelf: 'flex-end'
-     },
-     dateInput: {
-      backgroundColor: '#DAEDFF',
-      // backgroundColor: 'green',
-      width: '80%',
-      height: 50,
-      alignSelf: 'center',
-      borderRadius: 10,
-      paddingHorizontal: 25,
-      marginBottom:10
-    },
+  },
+
+  infoRow1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 2,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 3,
+  },
+  label1: {
+    fontWeight: 'bold',
+    color: '#666',
+    fontSize: 12,
+    // backgroundColor:'green',
+    width: '35%'
+  },
+  label: {
+    fontWeight: 'bold',
+    color: '#666',
+    fontSize: 14,
+    // backgroundColor:'green',
+    width: '45%',
+    marginLeft: 15
+  },
+  value1: {
+    color: 'grey',
+    fontSize: 12,
+
+
+  },
+  value: {
+    color: 'grey',
+    fontSize: 14,
+    position: 'relative',
+    left: responsiveWidth(14)
+    // backgroundColor:'blue'
+  },
+
+  input: {
+    width: '80%',
+    height: 45,
+    backgroundColor: '#DAEDFF',
+    // backgroundColor: 'red',
+    // marginBottom: 10,
+    borderRadius: 10,
+    alignSelf: 'center',
+    paddingHorizontal: 25,
+  },
+  inputDesc: {
+    width: '80%',
+    height: 100,
+    backgroundColor: '#DAEDFF',
+    // backgroundColor: 'red',
+    marginBottom: 10,
+    marginTop: 10,
+    borderRadius: 10,
+    alignSelf: 'center',
+    paddingHorizontal: 25,
+  },
+  inputContainer: {
+    position: 'absolute',
+    width: '85%',
+    height: 400,
+    backgroundColor: 'white',
+    // backgroundColor:'red',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    top: '30%',
+    flexDirection: 'column',
+    zIndex: 900000,
+    elevation: 5
+    // marginVertical:15
+  },
+  buttons: {
+    width: 100,
+    height: 38,
+    backgroundColor: '#58A8F9',
+    position: 'relative',
+    right: 25,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end'
+  },
+  closeBtn: {
+    position: 'relative',
+    bottom: 5,
+    right: responsiveWidth(14),
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end'
+  },
+  dateInput: {
+    backgroundColor: '#DAEDFF',
+    // backgroundColor: 'green',
+    width: '80%',
+    height: 50,
+    alignSelf: 'center',
+    borderRadius: 10,
+    paddingHorizontal: 25,
+    marginBottom: 10
+  },
 
 });
