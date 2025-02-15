@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert, SafeAreaView, Platform} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert, SafeAreaView, Platform, Modal} from 'react-native';
   import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
   import { Dropdown } from 'react-native-element-dropdown';
@@ -7,46 +7,10 @@ import dayjs from 'dayjs';
   import { useRouter } from 'expo-router';
   import axios from 'axios'; // Assuming axios is installed
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 
 
-// let notices = [
-//       {
-//         "id": "1",
-//         "title": "Important Exam Notice",
-//         "description": "The final exams will begin from 20th December. Please check the timetable on the notice board.",
-//         "createdBy": "Deepak Kumar",
-//         "createdOn": "16 August 2024"
-//       },
-//       {
-//         "id": "2",
-//         "title": "Holiday Announcement",
-//         "description": "The school will remain closed on 25th December for Christmas. Happy Holidays!",
-//         "createdBy": "Deepak Kumar",
-//         "createdOn": "16 August 2024"
-//       },
-//       {
-//         "id": "3",
-//         "title": "Parent-Teacher Meeting",
-//         "description": "A meeting for parents is scheduled on 10th January. Details are available on the school portal.",
-//         "createdBy": "Deepak Kumar",
-//         "createdOn": "18 August 2024"
-//       },
-//       {
-//         "id": "4",
-//         "title": "Sports Day Event",
-//         "description": "Annual Sports Day will be held on 15th January. All students are encouraged to participate.",
-//         "createdBy": "Deepak Kumar",
-//         "createdOn": "15 August 2024"
-//       },
-//       {
-//         "id": "5",
-//         "title": "Library Updates",
-//         "description": "New books have been added to the library. Students can borrow them starting next week.",
-//         "createdBy": "Deepak Kumar",
-//         "createdOn": "17 August 2024"
-//       }
-//     ]
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -376,9 +340,19 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
 })}
 </ScrollView>
 
-<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
+{!isOpen && <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
       <Entypo name="plus" size={40} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity>}
+
+
+<Modal
+animationType="slide"
+transparent={true}
+visible={(isOpen || edit)}
+onRequestClose={() => setIsOpen(false)}
+>
+
+<BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
 
 
 {(isOpen || edit) && <View style={styles.inputContainer}>
@@ -426,6 +400,13 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
     </TouchableOpacity>
     </View>
     </View>}
+
+</BlurView>
+
+
+</Modal>
+
+
 
       </SafeAreaView>
     );
@@ -627,6 +608,13 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
         justifyContent: 'center', 
         alignSelf: 'flex-end'
        },
+
+       modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+        justifyContent: "center",
+        alignItems: "center",
+      },
     
 
   });

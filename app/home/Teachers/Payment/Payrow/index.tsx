@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackground, ActivityIndicator, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackground, ActivityIndicator, TextInput, Modal } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -284,6 +285,19 @@ const handleClose = () => {
         )}
       </ScrollView>
 
+
+
+<Modal
+animationType="slide"
+transparent={true}
+visible={(isOpen)}
+onRequestClose={() => setIsOpen(false)}
+>
+
+<BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+
+
+
       
       {isOpen  && <View style={styles.inputContainer}>
         <Text style={{fontSize:20,position:'relative',alignSelf:'flex-start',paddingHorizontal:25,paddingVertical:15}}>{'Salary Due Rs82000'}</Text>
@@ -319,6 +333,12 @@ const handleClose = () => {
     </TouchableOpacity>
     </View>
     </View>}
+
+    </BlurView>
+
+
+</Modal>
+
     </>
   );
 };
@@ -587,6 +607,13 @@ right:responsiveWidth(2.5)
       borderRadius: 10,
       paddingHorizontal: 25,
       marginBottom:10
+    },
+
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+      justifyContent: "center",
+      alignItems: "center",
     },
 
 });

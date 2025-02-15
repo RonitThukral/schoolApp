@@ -12,10 +12,12 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Modal,
 } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import axios from "axios";
 import { responsiveWidth } from "react-native-responsive-dimensions";
+import { BlurView } from "expo-blur";
 
 const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
 
@@ -187,12 +189,22 @@ const App = () => {
           )}
         </View>
 
-        <TouchableOpacity
+       {!isOpen && <TouchableOpacity
           style={styles.addButton}
           onPress={() => setIsOpen(true)}
         >
           <Entypo name="plus" size={40} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity>}
+
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen || edit)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
 
         {(isOpen || edit) && (
           <View style={styles.inputContainer}>
@@ -223,6 +235,12 @@ const App = () => {
             </View>
           </View>
         )}
+
+          </BlurView>
+
+
+          </Modal>
+
       </ImageBackground>
     </SafeAreaView>
   );
@@ -340,6 +358,13 @@ const styles = StyleSheet.create({
   saveBtnText: {
     color: "white",
     fontSize: 16,
+  },
+    
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

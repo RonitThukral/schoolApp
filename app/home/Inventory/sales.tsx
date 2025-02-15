@@ -155,11 +155,12 @@
 
 
 
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Modal, Platform } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 const Sales = () => {
   const [salesData, setSalesData] = useState([]);
@@ -167,7 +168,7 @@ const Sales = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
-  const [totalprice, setTotalPrice] = useState(0);  // Ensure totalprice is a number
+  const [totalprice, setTotalPrice] = useState(null);  // Ensure totalprice is a number
   const [buyitems, setBuyItems] = useState([]);
 
   useEffect(() => {
@@ -187,14 +188,14 @@ const Sales = () => {
   // Handlers for input fields
   const handleName = (text) => setName(text);
   const handleAmount = (text) => setAmount(text);
-  const handlePrice = (text) => setTotalPrice(Number(text));  // Ensure totalprice is a number
+  const handlePrice = (text) => setTotalPrice(Number(text));  
 
   // Add item logic
   const handleAdd = () => {
     if (name && amount) {
       const item = {
         name,
-        amount: parseFloat(amount), // Amount for the sale item
+        amount: parseFloat(amount), 
       };
 
       // Add item to buyitems
@@ -204,6 +205,8 @@ const Sales = () => {
       setTotalPrice(prevTotal => prevTotal + item.amount);
 
       resetForm(); // Reset the form fields
+
+      handleSubmitSale()
     } else {
       alert("Please provide both name and amount.");
     }
@@ -213,6 +216,7 @@ const Sales = () => {
   const resetForm = () => {
     setName('');
     setAmount('');
+    setTotalPrice(null)
   };
 
   // Handle open and close of the form modal
@@ -245,7 +249,7 @@ const Sales = () => {
         resetForm();
         setSalesData([...salesData, res.data]);
         setBuyItems([]);  // Clear items after submission
-        setTotalPrice(0); // Reset total price after sale submission
+        setTotalPrice(null); // Reset total price after sale submission
       })
       .catch((error) => {
         setLoading(false);
@@ -277,6 +281,18 @@ const Sales = () => {
       </ScrollView>
 
       {/* Form to add item */}
+
+
+ <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
+
       {isOpen && (
         <View style={styles.inputContainer}>
           <Text style={{ fontSize: 24, position: 'absolute', alignSelf: 'flex-start', paddingHorizontal: 25, paddingVertical: 5, top: 15 }}>
@@ -284,7 +300,7 @@ const Sales = () => {
           </Text>
           <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Name"} onChangeText={handleName} value={name} />
           <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Amount Paid"} onChangeText={handleAmount} value={amount} keyboardType="numeric" />
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Total Cost"} onChangeText={handlePrice} value={totalprice.toString()} keyboardType="numeric" />
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={"Total Cost"} onChangeText={handlePrice} value={totalprice} keyboardType="numeric" />
 
           <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
             <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>
@@ -292,14 +308,20 @@ const Sales = () => {
           <TouchableOpacity style={styles.buttons}>
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }} onPress={handleAdd}>Add</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.submitBtn} onPress={handleSubmitSale}>
+          {/* <TouchableOpacity style={styles.buttons} onPress={handleSubmitSale}>
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>Submit Sale</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
 
+
+      </BlurView>
+
+
+      </Modal>
+
       {/* Floating button to open the form */}
-      <TouchableOpacity
+      {!isOpen && <TouchableOpacity
         style={{
           width: 80,
           height: 80,
@@ -316,7 +338,7 @@ const Sales = () => {
         onPress={handlePlus}
       >
         <Entypo name="plus" size={40} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity>}
     </>
   );
 };
@@ -374,7 +396,7 @@ inputContainer:{
   justifyContent:'center',
   alignSelf:'center',
   flexDirection:'column',
-  top:responsiveHeight(1),
+  top:responsiveHeight(25),
   zIndex:900000,
   elevation:8
 // marginVertical:15
@@ -398,8 +420,28 @@ buttons:{
   borderRadius:20,
   justifyContent:'center',
   alignSelf:'flex-end',
-    }
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+      justifyContent: "center",
+      alignItems: "center",
+    },
 
+    submitButton: {
+        backgroundColor: '#007bff',
+        paddingVertical: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        width:'90%',
+        alignSelf:'center',
+        ...Platform.select({
+          ios:{
+            width:'90%',
+            alignSelf:'center'
+          }
+        })
+      },
 
 })
 

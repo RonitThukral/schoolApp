@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView} from 'react-native';
+  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, SafeAreaView, Modal} from 'react-native';
   import { Dropdown } from 'react-native-element-dropdown';  
   import Entypo from '@expo/vector-icons/Entypo';
 import { Alert } from 'react-native';
 import axios from 'axios'; // Assuming axios is installed
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
@@ -12,43 +13,6 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
 
 
 
-// const divisions = [
-  
-//           {
-//             "id": "1",
-//             "name": "Group-4 (Roll no. 91-120)",
-//             "description": "This Group is for students from roll no. 91 to 120",
-//             "date": "16 August 2024"
-//           },
-//           {
-//             "id": "2",
-//             "name": "Group-3 (Roll no. 61-90)",
-//             "description": "This Group is for students from roll no. 61 to 90",
-//             "date": "16 August 2024"
-//           },
-//           {
-//             "id": "3",
-//             "name": "Group-2 (Roll no. 31-60)",
-//             "description": "This Group is for students from roll no. 31 to 60",
-//             "date": "16 August 2024"
-//           },
-//           {
-//             "id": "4",
-//             "name": "Group-1 (Roll no. 1-30)",
-//             "description": "This Group is for students from roll no. 1 to 30",
-//             "date": "16 August 2024"
-//           },
-//           {
-//             "id": "5",
-//             "name": "No Division",
-//             "description": "This is when there are no groups in a Class",
-//             "date": "16 August 2024"
-//           }
-        
-    
-      
-//   ];
-  
 
 
   
@@ -298,9 +262,21 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
 
 
 
-<TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
+{!isOpen && <TouchableOpacity style={{width:80, height:80, backgroundColor:'#58A8F9', zIndex:90000, position:'absolute', borderRadius:100, bottom:100, justifyContent:'center',alignSelf:'flex-end',right:40,alignItems:'center'}} onPress={handlePlus}>
       <Entypo name="plus" size={40} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity>}
+
+
+ <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen || edit)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
+
 
 
 {(isOpen || edit) && <View style={styles.inputContainer}>
@@ -324,6 +300,11 @@ const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API U
     </TouchableOpacity>
     </View>
     </View>}
+
+    </BlurView>
+
+
+    </Modal>
 
 
       </SafeAreaView>
@@ -495,7 +476,14 @@ elevation:5
         justifyContent:'center',
         alignSelf:'flex-end',
 
-          }
+          },
+
+          modalOverlay: {
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+            justifyContent: "center",
+            alignItems: "center",
+          },
     
     
 

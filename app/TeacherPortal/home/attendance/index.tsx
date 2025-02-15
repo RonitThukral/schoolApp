@@ -61,6 +61,8 @@ const StaffHistory = () => {
 
 
 
+
+  
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
     return (
@@ -107,6 +109,7 @@ const StaffHistory = () => {
           />
         </View>
       </View>
+
 
       {/* Show warning only if a date is selected and no attendance found, but keep the full list */}
       {selectedDate && staffData.every((record) => record.date !== selectedDate) && (

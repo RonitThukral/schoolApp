@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -114,6 +115,7 @@ const StudentRecord = () => {
           Alert.alert('Error', res.data.error);
         } else {
           Alert.alert('Success', 'Attendance registered successfully.');
+          router.back()
         }
       } catch (error) {
         console.error('Error registering attendance:', error.message);

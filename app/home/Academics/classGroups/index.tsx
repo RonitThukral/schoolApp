@@ -1,8 +1,9 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator } from 'react-native'
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Import axios
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { BlurView } from 'expo-blur';
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual API URL
 
@@ -95,9 +96,22 @@ const index = () => {
         />
         )
     }
-        <TouchableOpacity style={{ width: 80, height: 80, backgroundColor: '#58A8F9', zIndex: 90000, position: 'absolute', borderRadius: 100, bottom: 100, justifyContent: 'center', alignSelf: 'flex-end', right: 40, alignItems: 'center' }} onPress={() => setIsOpen(true)}>
+       {!isOpen && <TouchableOpacity style={{ width: 80, height: 80, backgroundColor: '#58A8F9', zIndex: 90000, position: 'absolute', borderRadius: 100, bottom: 100, justifyContent: 'center', alignSelf: 'flex-end', right: 40, alignItems: 'center' }} onPress={() => setIsOpen(true)}>
           <Entypo name="plus" size={40} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity>}
+
+
+ <Modal
+        animationType="slide"
+        transparent={true}
+        visible={(isOpen || edit)}
+        onRequestClose={() => setIsOpen(false)}
+        >
+        
+        <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
+        
+
+
 
         {isOpen && (
           <View style={styles.inputContainer}>
@@ -121,6 +135,13 @@ const index = () => {
             </View>
           </View>
         )}
+
+
+</BlurView>
+
+</Modal>
+
+
       </ImageBackground>
     </SafeAreaView>
   );
@@ -202,6 +223,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignSelf: 'flex-end'
    },
+
+   modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
 });
 
 export default index;

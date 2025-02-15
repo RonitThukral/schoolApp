@@ -66,7 +66,7 @@ const dummyData = {
 const academicInfo = () => {
 
 const {personalData} = useLocalSearchParams();
-// console.log(personalData, ' djfskjbgkjs')
+console.log(personalData, ' djfskjbgkjs')
 
     const [isFocus, setIsFocus] = useState<string | null>(null);
     const [userID, setUserID] = useState(null);
