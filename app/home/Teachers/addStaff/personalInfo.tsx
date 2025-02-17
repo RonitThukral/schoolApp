@@ -1,29 +1,35 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import React, { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import { useRouter } from 'expo-router';
+import { UserDetailsType } from './params.types';
 
-const data = [
-  { label: 'Male', value: '1' },
-  { label: 'Female', value: '2' },
-];
+const genderdata = ["Male", "Female", "Others"].map(gender => {
+  return {
+    label: gender,
+    value: gender,
+  }
+});
+
+const titledata = ["Mr", "Mrs", "Ms", "Dr", "Prof"].map((title) => {
+  return {
+    label: title,
+    value: title.toLowerCase(),
+  }
+});
 
 const AddStudent = () => {
 
   const router = useRouter();
 
   const [isFocus, setIsFocus] = useState<string | null>(null);
-  const [selectedID, setSelectedID] = useState(null);
   const [date, setDate] = useState(dayjs());
-  const [formattedDate, setFormattedDate] = useState('');
   const [openCalendar, setOpenCalendar] = useState(false);
 
-  const [dob, setDob] = useState('');
-  const [doa, setDoa] = useState('');
-  const [activeField, setActiveField] = useState(''); // To track which date field is active
+  const [userprofiledata, setuserprofiledata] = useState({});
 
   const handleFocus = (id: string) => {
     setIsFocus(id);
@@ -33,98 +39,132 @@ const AddStudent = () => {
     setIsFocus(null);
   };
 
-  const handleDate = (field:string) => {
-    setActiveField(field)
+  const handleDate = () => {
     setOpenCalendar(true);
   };
 
   const onDateChange = (params: any) => {
-    const selectedDate = dayjs(params.date).format('DD-MM-YYYY'); // Format the date
-    if (activeField === 'dob') {
-      setDob(selectedDate);
-    } else if (activeField === 'doa') {
-      setDoa(selectedDate);
-    }
+    const selectedDate = dayjs(params.date).format('YYYY-MM-DD'); // Format the date
+    handleTextInputChange(selectedDate, "dateofBirth");
     setOpenCalendar(false); // Close the calendar
   };
 
   const handleNext = () => {
-    router.navigate('./employmentInfo')
+    router.navigate({
+      pathname: './employmentInfo',
+      params: {
+        userdetails: JSON.stringify(
+          userprofiledata,
+        ),
+        profilepicturebase64: "",
+      }
+    });
   }
 
+  const handleTextInputChange = (text: string, label: string) => setuserprofiledata((olddata) => {
+    return {
+      ...olddata,
+      [label]: text,
+    }
+  });
+
   return (
-    <SafeAreaView>
-      <ScrollView style={{backgroundColor:'#FFFFFF'}} contentContainerStyle={{paddingBottom:20}}>
-        {/* header view */}
-        <View>
-          <View style={styles.profileSection}>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={require('../../../../assets/images/images/emptyAvatar.png')} // Add your placeholder image
-                style={styles.avatar}
-              />
-              <View style={styles.verifiedBadge}>
-                <Feather name="camera" size={20} color="white" />
+    <KeyboardAvoidingView >
+      <SafeAreaView>
+        <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle={{ paddingBottom: 20 }}>
+          {/* header view */}
+          <View>
+            <View style={styles.profileSection}>
+              <View style={styles.avatarContainer}>
+                <Image
+                  source={require('../../../../assets/images/images/emptyAvatar.png')} // Add your placeholder image
+                  style={styles.avatar}
+                />
+                <View style={styles.verifiedBadge}>
+                  <Feather name="camera" size={20} color="white" />
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        <Text style={{position:'absolute', top:210 , left:40, fontSize:22,fontWeight:'600', marginVertical:5}}>Personal Information</Text>
+          {/* <Text style={{ position: 'absolute', top: 210, left: 40, fontSize: 22, fontWeight: '600', marginVertical: 5 }}>Personal Information</Text> */}
 
-        <View style={styles.container}>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="First Name" editable={activeField==='doa'? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name" editable={activeField==='doa' ? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Category" editable={activeField==='doa'  ? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Caste" editable={activeField==='doa' ? false : true}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Email" editable={activeField==='doa' ? false : true}/>
+          <View style={styles.container}>
 
-          {/* Date of Admission */}
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-            <TextInput
-              style={styles.dateInput}
-              placeholder="Date of Birth"
-              placeholderTextColor={'grey'}
-              value={dob} // Display the formatted date
-              editable={false} // Read-only input
+
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              data={titledata}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Title*"
+              onFocus={() => handleFocus('student')}
+              onBlur={handleBlur}
+              onChange={(item) => handleTextInputChange(item.value, "title")}
             />
-            <TouchableOpacity style={{ position: 'absolute', left: '80%', top: '25%' }} onPress={()=>{handleDate('dob')}}>
-              <Image source={require('../../../../assets/images/images/Frame.png')} />
-            </TouchableOpacity>
+
+            <TextInput onChangeText={(text) => handleTextInputChange(text, "name")} style={styles.input} placeholderTextColor={'grey'} placeholder="First Name*" />
+            <TextInput onChangeText={(text) => handleTextInputChange(text, "middleName")} style={styles.input} placeholderTextColor={'grey'} placeholder="Middle Name" />
+            <TextInput onChangeText={(text) => handleTextInputChange(text, "surname")} style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name*" />
+            <TextInput onChangeText={(text) => handleTextInputChange(text, "nationality")} style={styles.input} placeholderTextColor={'grey'} placeholder="Category" />
+            <TextInput onChangeText={(text) => handleTextInputChange(text, "religion")} style={styles.input} placeholderTextColor={'grey'} placeholder="Caste" />
+            <TextInput onChangeText={(text) => handleTextInputChange(text, "email")} style={styles.input} placeholderTextColor={'grey'} placeholder="Email*" />
+
+            {/* Date of Admission */}
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+              <TextInput
+                style={styles.dateInput}
+                placeholder="Date of Birth*"
+                placeholderTextColor={'grey'}
+                value={(userprofiledata as UserDetailsType).dateofBirth ?? ""} // Display the formatted date
+                editable={false} // Read-only input
+              />
+              <TouchableOpacity style={{ position: 'absolute', left: '80%', top: '25%' }} onPress={() => { handleDate() }}>
+                <Image source={require('../../../../assets/images/images/Frame.png')} />
+              </TouchableOpacity>
+            </View>
+
+            {openCalendar && (
+              <View style={[styles.calendarContainer]}>
+                <DateTimePicker
+                  mode="single"
+                  date={date.toDate()} // Pass date as a JavaScript Date object
+                  onChange={onDateChange} // Handle date selection
+                />
+              </View>
+            )}
+
+
+            {/* Dropdown */}
+            <Dropdown
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              data={genderdata}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Gender"
+              onFocus={() => handleFocus('student')}
+              onBlur={handleBlur}
+              onChange={(item) => handleTextInputChange(item.value, "gender")}
+            />
           </View>
 
-
-          {/* Dropdown */}
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            data={data}
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Gender"
-            onFocus={() => handleFocus('student')}
-            onBlur={handleBlur}
-            value={selectedID}
-            onChange={(item) => setSelectedID(item.value)}
-          />
-
-
-
-
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
-          <Text style={{alignSelf:'center', position:'relative', color:'white'}}>Next</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <TouchableOpacity style={styles.button} onPress={handleNext}>
+            <Text style={{ alignSelf: 'center', position: 'relative', color: 'white' }}>Next</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  container:{
-   marginVertical:120,
+  container: {
+    marginVertical: 60,
   },
   calendarContainer: {
     flex: 1,
@@ -135,9 +175,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 15,
     zIndex: 1000,
-    position:'absolute',
-    bottom:"37%",
-    paddingVertical:15
+    position: 'absolute',
+    bottom: "37%",
+    paddingVertical: 15
   },
   calendarContainer1: {
     flex: 1,
@@ -148,9 +188,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 15,
     zIndex: 1000,
-    position:'absolute',
-    top:"20%",
-    paddingVertical:15
+    position: 'absolute',
+    top: "20%",
+    paddingVertical: 15
   },
   input: {
     width: '80%',
@@ -224,16 +264,16 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    width:110,
-    height:35,
+    width: 110,
+    height: 35,
     backgroundColor: '#58A8F9',
-    position:'absolute',
-    bottom:40,
-    right:50,
-    borderRadius:20,
-    justifyContent:'center',
-    alignSelf:'flex-end',
-    
+    position: 'absolute',
+    bottom: 40,
+    right: 50,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+
   }
 });
 
