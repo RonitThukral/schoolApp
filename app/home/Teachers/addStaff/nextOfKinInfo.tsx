@@ -11,7 +11,12 @@ const nextOfKin = () => {
   const usercontactdetails = JSON.parse(params.userdetails as string);
   const [userdetails, setuserdetails] = useState<UserDetailsType>(usercontactdetails);
 
-  console.log("nextOfKin", params.userdetails);
+  const [errors, setErrors] = useState({
+    name: '',
+    lastname: '',
+    mobile: '',
+    relationship: '',
+  });
 
   const router = useRouter()
 
@@ -20,48 +25,60 @@ const nextOfKin = () => {
   }
 
   const handleAdd = async () => {
+    const newErrors = {
+      name: userdetails.nextofKin.name ? '' : 'First name is required.',
+      lastname: userdetails.nextofKin.lastname ? '' : 'Last name is required.',
+      mobile: userdetails.nextofKin.mobile ? '' : 'Mobile Number is required.',
+      relationship: userdetails.nextofKin.relationship ? '' : 'Relationship is required.',
+    };
+    setErrors(newErrors);
 
-    if (params.profilepicturebase64.length !== 0) {
-      // https://dreamscloudtechbackend.onrender.com/api/upload
-      // image, resize locally, to 300x300px
-      // base64 encoding
-      // upload post
-      const imageData = {
-        "dataUrl": params.profilepicturebase64,
-      };
-    }
 
-    const userdata = getUserPostBody(userdetails);
-    console.log("Sending to create", userdata);
-    try {
-      const response = await axios.post(`${baseUrl}/teachers/create`, userdata);
-      if (response.status != 200) {
+    if (!newErrors.name && !newErrors.lastname && !newErrors.mobile && !newErrors.relationship) {
+
+
+
+      if (params.profilepicturebase64.length !== 0) {
+        // https://dreamscloudtechbackend.onrender.com/api/upload
+        // image, resize locally, to 300x300px
+        // base64 encoding
+        // upload post
+        const imageData = {
+          "dataUrl": params.profilepicturebase64,
+        };
+      }
+
+      const userdata = getUserPostBody(userdetails);
+      console.log("Sending to create", userdata);
+      try {
+        const response = await axios.post(`${baseUrl}/teachers/create`, userdata);
+        if (response.status != 200) {
+          Alert.alert('Failed', "Could not add Teacher");
+          return;
+        }
+        if (response.data.error) {
+          console.error("Failed to add teacher", response.data.error);
+          return;
+        }
+        console.log("Success", response.data);
+      }
+      catch (error) {
         Alert.alert('Failed', "Could not add Teacher");
         return;
       }
-      if (response.data.error) {
-        console.error("Failed to add teacher", response.data.error);
-        return;
-      }
-      console.log("Success", response.data);
+
+      // https://dreamscloudtechbackend.onrender.com/api/activitylog/create
+      // const activitylogpost = {
+      //   "activity": "staff member Adhiraj Pandey was created",
+      //   "user": "admin"
+      // };
+
+      Alert.alert('Success', 'Teacher Added Successfully')
+      router.back()
+      router.back()
+      router.back()
+      router.back()
     }
-    catch (error) {
-      Alert.alert('Failed', "Could not add Teacher");
-      return;
-    }
-
-    // https://dreamscloudtechbackend.onrender.com/api/activitylog/create
-    // const activitylogpost = {
-    //   "activity": "staff member Adhiraj Pandey was created",
-    //   "user": "admin"
-    // };
-
-    Alert.alert('Success', 'Teacher Added Successfully')
-    // router.back()
-    // router.back()
-    // router.back()
-    // router.back()
-
   }
 
 
@@ -84,10 +101,16 @@ const nextOfKin = () => {
 
         <View style={styles.container}>
           <TextInput onChangeText={(text) => handleTextInputChange(text, "name")} style={styles.input} placeholderTextColor={'grey'} placeholder="First Name*" />
+          {errors.name && <Text style={styles.errorText2}>{errors.name}</Text>}
+
           <TextInput onChangeText={(text) => handleTextInputChange(text, "lastname")} style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name*" />
+          {errors.lastname && <Text style={styles.errorText2}>{errors.lastname}</Text>}
+
           <TextInput onChangeText={(text) => handleTextInputChange(text, "mobile")} style={styles.input} placeholderTextColor={'grey'} placeholder="Mobile Number*" />
+          {errors.mobile && <Text style={styles.errorText2}>{errors.mobile}</Text>}
           <TextInput onChangeText={(text) => handleTextInputChange(text, "email")} style={styles.input} placeholderTextColor={'grey'} placeholder="Email" />
           <TextInput onChangeText={(text) => handleTextInputChange(text, "relationship")} style={styles.input} placeholderTextColor={'grey'} placeholder="Relationship*" />
+          {errors.relationship && <Text style={styles.errorText2}>{errors.relationship}</Text>}
           <TextInput onChangeText={(text) => handleTextInputChange(text, "occupation")} style={styles.input} placeholderTextColor={'grey'} placeholder="Occupation" />
           <TextInput onChangeText={(text) => handleTextInputChange(text, "address")} style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top' />
         </View>
@@ -102,13 +125,13 @@ const nextOfKin = () => {
         </View>
 
         {/* <TouchableOpacity style={{ width: '80%', height: 60, backgroundColor: "#58A8F9", borderRadius: 40, alignSelf: 'center', justifyContent: 'center', marginVertical: 10 }} onPress={handleAdd}>
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 26 }}>Add Staff</Text>
-        </TouchableOpacity> */}
+            <Text style={{ color: 'white', textAlign: 'center', fontSize: 26 }}>Add Staff</Text>
+          </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
-
   )
-}
+};
+
 
 const styles = StyleSheet.create({
   profileSection: {
@@ -217,8 +240,14 @@ const styles = StyleSheet.create({
     borderColor: "#58A8F9",
     paddingHorizontal: 15,
     paddingVertical: 10
+  },
 
-  }
-})
+  errorText2: {
+    color: 'red',
+    fontSize: 12,
+    marginStart: 50,
+    marginBottom: 10,
+  },
+});
 
 export default nextOfKin

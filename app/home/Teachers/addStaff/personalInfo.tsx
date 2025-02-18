@@ -21,6 +21,14 @@ const titledata = ["Mr", "Mrs", "Ms", "Dr", "Prof"].map((title) => {
   }
 });
 
+type ContactDeatialsErrorType = {
+  name?: string,
+  surname?: string,
+  email?: string,
+  title?: string,
+  dateofBirth?: string,
+};
+
 const AddStudent = () => {
 
   const router = useRouter();
@@ -30,6 +38,7 @@ const AddStudent = () => {
   const [openCalendar, setOpenCalendar] = useState(false);
 
   const [userprofiledata, setuserprofiledata] = useState({});
+  const [errors, setErrors] = useState<ContactDeatialsErrorType>({});
 
   const handleFocus = (id: string) => {
     setIsFocus(id);
@@ -50,16 +59,29 @@ const AddStudent = () => {
   };
 
   const handleNext = () => {
-    router.navigate({
-      pathname: './employmentInfo',
-      params: {
-        userdetails: JSON.stringify(
-          userprofiledata,
-        ),
-        profilepicturebase64: "",
-      }
-    });
-  }
+
+    const userdetails = userprofiledata as UserDetailsType;
+    const newErrors = {
+      name: userdetails.name ? undefined : 'First name is required.',
+      surname: userdetails.surname ? undefined : 'Last name is required.',
+      email: userdetails.email ? undefined : 'Email is required.',
+      title: userdetails.title ? undefined : 'Title is required.',
+      dateofBirth: userdetails.dateofBirth ? undefined : 'Date of Birth is required.',
+    };
+
+    setErrors(newErrors);
+
+
+    if (userdetails.name && userdetails.surname && userdetails.email && userdetails.title) {
+      router.navigate({
+        pathname: './employmentInfo',
+        params: {
+          userdetails: JSON.stringify(userprofiledata),
+          profilepicturebase64: "",
+        },
+      });
+    }
+  };
 
   const handleTextInputChange = (text: string, label: string) => setuserprofiledata((olddata) => {
     return {
@@ -69,89 +91,95 @@ const AddStudent = () => {
   });
 
   return (
-    <KeyboardAvoidingView >
+    <KeyboardAvoidingView style={styles.container}>
       <SafeAreaView>
-        <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle={{ paddingBottom: 20 }}>
+        <ScrollView style={{ paddingHorizontal: 25 }} contentContainerStyle={{ rowGap: 15, paddingBottom: 40, }}>
           {/* header view */}
-          <View>
-            <View style={styles.profileSection}>
-              <View style={styles.avatarContainer}>
-                <Image
-                  source={require('../../../../assets/images/images/emptyAvatar.png')} // Add your placeholder image
-                  style={styles.avatar}
-                />
-                <View style={styles.verifiedBadge}>
-                  <Feather name="camera" size={20} color="white" />
-                </View>
+
+          <View style={styles.profileSection}>
+            <View>
+              <Image
+                source={require('../../../../assets/images/images/emptyAvatar.png')} // Add your placeholder image
+                style={styles.avatar}
+              />
+              <View style={styles.verifiedBadge}>
+                <Feather name="camera" size={20} color="white" />
               </View>
             </View>
           </View>
           {/* <Text style={{ position: 'absolute', top: 210, left: 40, fontSize: 22, fontWeight: '600', marginVertical: 5 }}>Personal Information</Text> */}
 
-          <View style={styles.container}>
 
 
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              data={titledata}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Title*"
-              onFocus={() => handleFocus('student')}
-              onBlur={handleBlur}
-              onChange={(item) => handleTextInputChange(item.value, "title")}
+          <Dropdown
+            style={[styles.input, styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            data={titledata}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Title*"
+            onFocus={() => handleFocus('student')}
+            onBlur={handleBlur}
+            onChange={(item) => handleTextInputChange(item.value, "title")}
+          />
+          {errors.title && <Text style={styles.errorText}>{errors.title}</Text>}
+
+
+          <TextInput onChangeText={(text) => handleTextInputChange(text, "name")} style={styles.input} placeholderTextColor={'grey'} placeholder="First Name*" />
+          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+          <TextInput onChangeText={(text) => handleTextInputChange(text, "middleName")} style={styles.input} placeholderTextColor={'grey'} placeholder="Middle Name" />
+          <TextInput onChangeText={(text) => handleTextInputChange(text, "surname")} style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name*" />
+          {errors.surname && <Text style={styles.errorText}>{errors.surname}</Text>}
+          <TextInput onChangeText={(text) => handleTextInputChange(text, "nationality")} style={styles.input} placeholderTextColor={'grey'} placeholder="Category" />
+
+          <TextInput onChangeText={(text) => handleTextInputChange(text, "religion")} style={styles.input} placeholderTextColor={'grey'} placeholder="Caste" />
+          <TextInput onChangeText={(text) => handleTextInputChange(text, "email")} style={styles.input} placeholderTextColor={'grey'} placeholder="Email*" />
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+          {/* Date of Admission */}
+          <View style={[styles.input, styles.dateInputContainer]}>
+            <TextInput
+              style={[styles.dateInput]}
+              placeholder="Date of Birth*"
+              placeholderTextColor={'grey'}
+              value={(userprofiledata as UserDetailsType).dateofBirth ?? ""} // Display the formatted date
+              editable={false} // Read-only input
             />
+            <TouchableOpacity style={styles.dateInputIcon} onPress={() => { handleDate() }}>
+              <Image source={require('../../../../assets/images/images/Frame.png')} />
+            </TouchableOpacity>
+          </View>
+          {errors.dateofBirth && <Text style={styles.errorText}>{errors.dateofBirth}</Text>}
 
-            <TextInput onChangeText={(text) => handleTextInputChange(text, "name")} style={styles.input} placeholderTextColor={'grey'} placeholder="First Name*" />
-            <TextInput onChangeText={(text) => handleTextInputChange(text, "middleName")} style={styles.input} placeholderTextColor={'grey'} placeholder="Middle Name" />
-            <TextInput onChangeText={(text) => handleTextInputChange(text, "surname")} style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name*" />
-            <TextInput onChangeText={(text) => handleTextInputChange(text, "nationality")} style={styles.input} placeholderTextColor={'grey'} placeholder="Category" />
-            <TextInput onChangeText={(text) => handleTextInputChange(text, "religion")} style={styles.input} placeholderTextColor={'grey'} placeholder="Caste" />
-            <TextInput onChangeText={(text) => handleTextInputChange(text, "email")} style={styles.input} placeholderTextColor={'grey'} placeholder="Email*" />
-
-            {/* Date of Admission */}
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
-              <TextInput
-                style={styles.dateInput}
-                placeholder="Date of Birth*"
-                placeholderTextColor={'grey'}
-                value={(userprofiledata as UserDetailsType).dateofBirth ?? ""} // Display the formatted date
-                editable={false} // Read-only input
-              />
-              <TouchableOpacity style={{ position: 'absolute', left: '80%', top: '25%' }} onPress={() => { handleDate() }}>
-                <Image source={require('../../../../assets/images/images/Frame.png')} />
-              </TouchableOpacity>
-            </View>
-
-            {openCalendar && (
-              <View style={[styles.calendarContainer]}>
+          {openCalendar && (
+            <SafeAreaView style={[styles.calendarContainer]}>
+              <View style={styles.calenderInnerContainer}>
                 <DateTimePicker
                   mode="single"
                   date={date.toDate()} // Pass date as a JavaScript Date object
                   onChange={onDateChange} // Handle date selection
                 />
               </View>
-            )}
+            </SafeAreaView>
+          )}
 
 
-            {/* Dropdown */}
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              data={genderdata}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Gender"
-              onFocus={() => handleFocus('student')}
-              onBlur={handleBlur}
-              onChange={(item) => handleTextInputChange(item.value, "gender")}
-            />
-          </View>
+          {/* Dropdown */}
+          <Dropdown
+            style={[styles.input, styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            data={genderdata}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Gender"
+            onFocus={() => handleFocus('student')}
+            onBlur={handleBlur}
+            onChange={(item) => handleTextInputChange(item.value, "gender")}
+          />
 
           <TouchableOpacity style={styles.button} onPress={handleNext}>
             <Text style={{ alignSelf: 'center', position: 'relative', color: 'white' }}>Next</Text>
@@ -164,65 +192,56 @@ const AddStudent = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 60,
+    flex: 1,
+    backgroundColor: "white",
   },
   calendarContainer: {
     flex: 1,
+    flexDirection: "column",
     backgroundColor: '#F5FCFF',
-    // backgroundColor: 'blue',
     width: '80%',
-    height: 350,
-    alignSelf: 'center',
+    // height: 350,
     borderRadius: 15,
     zIndex: 1000,
     position: 'absolute',
     bottom: "37%",
-    paddingVertical: 15
-  },
-  calendarContainer1: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-    // backgroundColor: 'blue',
-    width: '80%',
-    height: 350,
     alignSelf: 'center',
-    borderRadius: 15,
-    zIndex: 1000,
-    position: 'absolute',
-    top: "20%",
-    paddingVertical: 15
+  },
+  calenderInnerContainer: {
+
   },
   input: {
-    width: '80%',
+    width: '100%',
     height: 50,
     backgroundColor: '#DAEDFF',
-    // backgroundColor: 'red',
-    marginBottom: 15,
     borderRadius: 10,
     alignSelf: 'center',
     paddingHorizontal: 25,
+  },
+  dropdown: {
+
+  },
+  dateInputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 0,
   },
   dateInput: {
-    backgroundColor: '#DAEDFF',
-    // backgroundColor: 'green',
-    width: '80%',
-    height: 50,
-    alignSelf: 'center',
-    borderRadius: 10,
+    flexGrow: 1,
+    flexDirection: "row",
     paddingHorizontal: 25,
   },
-  profileSection: {
-    position: 'relative',
-    top: 25,
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: 25,
-    padding: 16,
+  dateInputIcon: {
+    paddingHorizontal: 22,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  avatarContainer: {
-    position: 'relative',
-    right: 15,
-    top: 25,
+  profileSection: {
+
+    flexDirection: "row",
+    marginTop: 70,
+    justifyContent: "center",
+    paddingVertical: 20,
   },
   avatar: {
     width: 100,
@@ -243,38 +262,27 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FFF',
   },
-  dropdown: {
-    height: 50,
-    width: '80%',
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    backgroundColor: '#DAEDFF',
-    marginBottom: 15,
-    marginTop: 15,
-    alignSelf: 'center',
-  },
   placeholderStyle: {
     fontSize: 15,
     color: 'grey',
-    paddingHorizontal: 15,
   },
   selectedTextStyle: {
     fontSize: 16,
-    paddingHorizontal: 15,
-
   },
   button: {
-    width: 110,
     height: 35,
     backgroundColor: '#58A8F9',
-    position: 'absolute',
-    bottom: 40,
-    right: 50,
+    paddingHorizontal: 25,
     borderRadius: 20,
     justifyContent: 'center',
     alignSelf: 'flex-end',
-
-  }
+    marginTop: 20,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    paddingStart: 15,
+  },
 });
 
 export default AddStudent;

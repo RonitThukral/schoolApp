@@ -9,6 +9,12 @@ const contactInfo = () => {
   const useremploymentdetails = JSON.parse(params.userdetails as string);
   const [userdetails, setuserdetails] = useState<UserDetailsType>(useremploymentdetails);
 
+  const [errors, setErrors] = useState({
+    telephone: "",
+    mobilenumber: "",
+    physicalAddress: "",
+  });
+
   const router = useRouter()
 
   const handlePrevious = () => {
@@ -16,14 +22,25 @@ const contactInfo = () => {
   }
 
   const handleNext = () => {
-    router.navigate({
-      pathname: './nextOfKinInfo',
-      params: {
-        userdetails: JSON.stringify(userdetails),
-        profilepicturebase64: params.profilepicturebase64,
-      }
-    })
-  }
+    const newErrors = {
+      telephone: !userdetails.telephone ? "Telephone is required." : '',
+      mobilenumber: !userdetails.mobilenumber ? "Mobile Number is required." : '',
+      physicalAddress: !userdetails.physicalAddress ? "Residence Address is required." : '',
+    };
+
+    setErrors(newErrors);
+
+    // Proceed to next page if no errors
+    if (!newErrors.telephone && !newErrors.mobilenumber && !newErrors.physicalAddress) {
+      router.navigate({
+        pathname: './nextOfKinInfo',
+        params: {
+          userdetails: JSON.stringify(userdetails),
+          profilepicturebase64: params.profilepicturebase64,
+        }
+      });
+    }
+  };
 
   const handleTextInputChange = (text: string, label: string) => setuserdetails((olddata) => {
     return {
@@ -37,8 +54,11 @@ const contactInfo = () => {
       <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
         <View style={styles.container}>
           <TextInput onChangeText={(text) => handleTextInputChange(text, "telephone")} style={styles.input} placeholderTextColor={'grey'} placeholder="Sms Number*" />
+          {errors.telephone && <Text style={styles.errorText1}>{errors.telephone}</Text>}
           <TextInput onChangeText={(text) => handleTextInputChange(text, "mobilenumber")} style={styles.input} placeholderTextColor={'grey'} placeholder="Mobile Number*" />
+          {errors.mobilenumber && <Text style={styles.errorText1}>{errors.mobilenumber}</Text>}
           <TextInput onChangeText={(text) => handleTextInputChange(text, "physicalAddress")} style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence*" numberOfLines={4} multiline textAlignVertical='top' />
+          {errors.physicalAddress && <Text style={styles.errorText1}>{errors.physicalAddress}</Text>}
           <TextInput onChangeText={(text) => handleTextInputChange(text, "postalAddress")} style={styles.areaInputPost} placeholderTextColor={'grey'} placeholder="Postal Address" numberOfLines={3} multiline textAlignVertical='top' />
         </View>
 
@@ -151,6 +171,16 @@ const styles = StyleSheet.create({
     borderColor: "#58A8F9",
     borderWidth: 1
   },
+  errorText1: {
+
+    color: 'red',
+    fontSize: 12,
+    marginStart: 50,
+    marginBottom: 10,
+  },
+
+
+
 })
 
 export default contactInfo
