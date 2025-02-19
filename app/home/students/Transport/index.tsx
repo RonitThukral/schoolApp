@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, ActivityIndicator, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Make sure Axios is installed
@@ -63,17 +63,31 @@ const index = () => {
     }
 
     const handleDelete = (id) => {
-
-        axios.delete(`${API_BASE_URL}/dormitories/delete/${id}`)  // API call to delete transport
-            .then(response => {
-                setTransports(transports.filter(item => item._id !== id));
-
-            })
-            .catch(error => {
-
-                console.error("Error deleting transport: ", error);
-            });
-    }
+        Alert.alert(
+          "Confirm Deletion",
+          "Are you sure you want to delete this transport?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel"
+            },
+            {
+              text: "Delete",
+              onPress: () => {
+                axios.delete(`${API_BASE_URL}/dormitories/delete/${id}`)
+                  .then(response => {
+                    setTransports(transports.filter(item => item._id !== id));
+                  })
+                  .catch(error => {
+                    console.error("Error deleting transport: ", error);
+                    Alert.alert("Error", "Failed to delete transport.");
+                  });
+              },
+              style: "destructive"
+            }
+          ]
+        );
+      };
 
     const handleEdit = (id) => {
         const updatedTransport = transports.find((item) => item._id === id); // Match _id instead of id

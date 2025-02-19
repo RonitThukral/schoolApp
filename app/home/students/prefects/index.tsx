@@ -196,18 +196,33 @@ const Index = () => {
   };
 
   const handleDeletePrefect = async (id) => {
-    try {
-      await axios.delete(`${baseUrl}/prefects/delete/${id}`);
-      const filteredList = prefects.filter((item) => item._id !== id);
-      setPrefects(filteredList);
-      setFilteredPrefects(filteredList);
-      Alert.alert("Success", "Prefect deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting prefect:", error);
-      Alert.alert("Error", "Failed to delete prefect.");
-    }
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this prefect?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              await axios.delete(`${baseUrl}/prefects/delete/${id}`);
+              const filteredList = prefects.filter((item) => item._id !== id);
+              setPrefects(filteredList);
+              setFilteredPrefects(filteredList);
+              Alert.alert("Success", "Prefect deleted successfully!");
+            } catch (error) {
+              console.error("Error deleting prefect:", error);
+              Alert.alert("Error", "Failed to delete prefect.");
+            }
+          },
+          style: "destructive"
+        }
+      ]
+    );
   };
-
   // Focus Handlers
   const handleFocus = () => setIsFocus(true);
   const handleBlur = () => setIsFocus(false);

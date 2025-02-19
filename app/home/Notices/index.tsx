@@ -138,47 +138,64 @@ const DropdownComponent = () => {
     }
   };
 
+
   const handleDelete = async (id) => {
-    try {
-      // Send DELETE request to the backend
-      const response = await axios.delete(`${baseUrl}/notification/delete/${id}`);
-      
-      // Debugging: Log the entire response object to ensure proper data structure
-      // console.log('Delete response:', response);
-  
-      // Check if the response contains success status or any related flag
-      if (response && response.status === 200 && response.data) {
-        if (response.data._id === id) {
-          // Successfully deleted, update the state
-          Alert.alert('Success', 'Notice deleted successfully');
-          fetchNotices(); // Refresh the list of notices
-        } else {
-          // Handle unexpected response format
-          console.error('Unexpected response data:', response.data);
-          Alert.alert('Error', 'Failed to delete notice');
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this notice?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              // Send DELETE request to the backend
+              const response = await axios.delete(`${baseUrl}/notification/delete/${id}`);
+    
+              // Debugging: Log the entire response object to ensure proper data structure
+              // console.log('Delete response:', response);
+    
+              // Check if the response contains success status or any related flag
+              if (response && response.status === 200 && response.data) {
+                if (response.data._id === id) {
+                  // Successfully deleted, update the state
+                  Alert.alert('Success', 'Notice deleted successfully');
+                  fetchNotices(); // Refresh the list of notices
+                } else {
+                  // Handle unexpected response format
+                  console.error('Unexpected response data:', response.data);
+                  Alert.alert('Error', 'Failed to delete notice');
+                }
+              } else {
+                console.error('Error in response:', response.data || 'Unknown error');
+                Alert.alert('Error', 'Failed to delete notice');
+              }
+            } catch (error) {
+              // Handle errors gracefully
+              console.error('Error deleting notice:', error.response?.data || error.message);
+    
+              // If the error is from the backend (status code not 200)
+              if (error.response) {
+                const backendErrorMessage = error.response?.data?.message || 'Unknown error from server';
+                console.error('Backend Error:', backendErrorMessage);
+                Alert.alert('Error', `Failed to delete notice. Reason: ${backendErrorMessage}`);
+              } else {
+                // If there is no response (likely a network issue)
+                console.error('Network error:', error.message);
+                Alert.alert('Error', 'Network error or server is down');
+              }
+            }
+          },
+          style: "destructive"
         }
-      } else {
-        console.error('Error in response:', response.data || 'Unknown error');
-        Alert.alert('Error', 'Failed to delete notice');
-      }
-    } catch (error) {
-      // Handle errors gracefully
-      console.error('Error deleting notice:', error.response?.data || error.message);
-  
-      // If the error is from the backend (status code not 200)
-      if (error.response) {
-        const backendErrorMessage = error.response?.data?.message || 'Unknown error from server';
-        console.error('Backend Error:', backendErrorMessage);
-        Alert.alert('Error', `Failed to delete notice. Reason: ${backendErrorMessage}`);
-      } else {
-        // If there is no response (likely a network issue)
-        console.error('Network error:', error.message);
-        Alert.alert('Error', 'Network error or server is down');
-      }
-    }
+      ]
+    );
   };
-  
-  
+
+
 
   const handleEdit = (notice) => {
     setEdit(true)

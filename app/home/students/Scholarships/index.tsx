@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
@@ -69,13 +69,29 @@ const index = () => {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`${API_BASE_URL}/scholarships/delete/${id}`)
-      .then(() => {
-        setScholarships(scholarships.filter((item) => item._id !== id));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this scholarship?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            axios.delete(`${API_BASE_URL}/scholarships/delete/${id}`)
+              .then(() => {
+                setScholarships(scholarships.filter((item) => item._id !== id));
+              })
+              .catch((err) => {
+                console.error("Error deleting scholarship:", err);
+              });
+          },
+          style: "destructive"
+        }
+      ]
+    );
   };
 
   const handleCheckboxChange = (key) => {

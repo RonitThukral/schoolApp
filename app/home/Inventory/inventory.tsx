@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform, Modal } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios for API calls
@@ -59,7 +59,7 @@ const Inventory = () => {
   const handlePrice = (text) => setPrice(text);
   const handleQuantity = (text) => setQuantity(text);
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     const newItem = {
       name,
       unit: units,
@@ -69,11 +69,11 @@ const Inventory = () => {
     };
 
     setLoading(true);
-    axios.post(`${apiUrl}/create`, newItem)
-      .then(res => {
+    try{
+    const response = await axios.post(`${apiUrl}/create`, newItem)
         setLoading(false);
         fetchItems()
-        const updatedItems = [...allItems, res.data];
+        const updatedItems = [...allItems, response.data];
         setAllItems(updatedItems);
         setFilteredItems(updatedItems);
         setName('');
@@ -81,11 +81,11 @@ const Inventory = () => {
         setDescription('');
         setQuantity('');
         setIsOpen(false);
-      })
-      .catch(err => {
+      }
+      catch(err){
         console.error(err);
-        setLoading(false);
-      });
+        // setLoading(false);
+      };
   };
 
   // Edit item function
@@ -101,16 +101,17 @@ const Inventory = () => {
   };
 
   // Full edit update
-  const onEdit = () => {
+  const onEdit = async () => {
     setLoading(true);
-    axios.put(`${apiUrl}/update/${editID}`, {
+    try{
+    const res = await axios.put(`${apiUrl}/update/${editID}`, {
       name,
       unit: units,
       quantity,
       price,
       description,
     })
-      .then(res => {
+      
         setLoading(false);
         setName('');
         setUnits('');
@@ -124,45 +125,64 @@ const Inventory = () => {
         setFilteredItems(newData);
         // Optionally close the modal after editing:
         setIsOpen(false);
-      })
-      .catch(err => {
+  }
+      catch(err){
         console.log(err);
-        setLoading(false);
-      });
+        // setLoading(false);
+      };
   };
 
   // Handle inventory update (Quantity Update) – not used in modal now
-  const handleChangeInventory = () => {
-    setLoading(true);
-    axios.put(`${apiUrl}/update/inventory/${editID}`, { quantity })
-      .then(res => {
-        setLoading(false);
-        setName('');
-        setQuantity('');
-        setEdit(false);
+  // const handleChangeInventory = () => {
+  //   setLoading(true);
+  //   axios.put(`${apiUrl}/update/inventory/${editID}`, { quantity })
+  //     .then(res => {
+  //       setLoading(false);
+  //       setName('');
+  //       setQuantity('');
+  //       setEdit(false);
 
-        let newData = allItems.map(item => (item._id === editID ? { ...res.data } : item));
-        setAllItems(newData);
-        setFilteredItems(newData);
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
+  //       let newData = allItems.map(item => (item._id === editID ? { ...res.data } : item));
+  //       setAllItems(newData);
+  //       setFilteredItems(newData);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       setLoading(false);
+  //     });
+  // };
 
   // Handle Delete
-  const handleDelete = (id) => {
-    axios.delete(`${apiUrl}/delete/${id}`)
-      .then(res => {
-        if (res.data.error) {
-          return alert(res.data.error);
-        }
-        setAllItems(allItems.filter(i => i._id !== id));
-        setFilteredItems(filteredItems.filter(i => i._id !== id));
-      })
-      .catch(err => console.error('Delete failed:', err));
-  };
+
+const handleDelete = (id) => {
+  Alert.alert(
+    "Confirm Deletion",
+    "Are you sure you want to delete this item?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel"
+      },
+      {
+        text: "Delete",
+        onPress: () => {
+          axios.delete(`${apiUrl}/delete/${id}`)
+            .then(res => {
+              if (res.data.error) {
+                return Alert.alert("Error", res.data.error);
+              }
+              setAllItems(allItems.filter(i => i._id !== id));
+              setFilteredItems(filteredItems.filter(i => i._id !== id));
+            })
+            .catch(err => console.error('Delete failed:', err));
+        },
+        style: "destructive"
+      }
+    ]
+  );
+};
+
+
 
   return (
     <>

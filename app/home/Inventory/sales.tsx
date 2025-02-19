@@ -171,18 +171,24 @@ const Sales = () => {
   const [totalprice, setTotalPrice] = useState(null);  // Ensure totalprice is a number
   const [buyitems, setBuyItems] = useState([]);
 
-  useEffect(() => {
+  const fetchSales = async () => {
+    try{
+      setLoading(true);
+      const res = await axios.get('https://dreamscloudtechbackend.onrender.com/api/store/sales')
+        
+          setSalesData(res.data); // Save the data in state
+          setLoading(false);
+        }
+      
+        catch(error){
+          console.error('Error fetching sales data:', error);
+          setLoading(false);
+        };
+  }
+
+  useEffect( () => {
     // Fetch data from the API
-    setLoading(true);
-    axios.get('https://dreamscloudtechbackend.onrender.com/api/store/sales')
-      .then((response) => {
-        setSalesData(response.data); // Save the data in state
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching sales data:', error);
-        setLoading(false);
-      });
+    fetchSales()
   }, []);
 
   // Handlers for input fields
@@ -224,21 +230,21 @@ const Sales = () => {
   const handleClose = () => setIsOpen(false);
 
   // Submit the sale to the API
-  const handleSubmitSale = () => {
+  const handleSubmitSale = async() => {
     if (buyitems.length === 0) {
       alert('Please add at least one item.');
       return;
     }
 
     setLoading(true);
-    axios.post('https://dreamscloudtechbackend.onrender.com/api/store/sales/create', {
+    try{
+    const res = await axios.post('https://dreamscloudtechbackend.onrender.com/api/store/sales/create', {
       amountPaid: totalprice,  // Use the total price here
       totalCost: totalprice,   // Same for totalCost
       name: 'Sale',            // Default name or set as per your use case
       items: buyitems,
       seller: 'admin',
     })
-      .then((res) => {
         setLoading(false);
         if (res.data.error) {
           alert(res.data.error);
@@ -250,11 +256,11 @@ const Sales = () => {
         setSalesData([...salesData, res.data]);
         setBuyItems([]);  // Clear items after submission
         setTotalPrice(null); // Reset total price after sale submission
-      })
-      .catch((error) => {
+    }
+      catch(error){
         setLoading(false);
         alert('Error adding sale');
-      });
+      };
   };
 
   return (
@@ -321,7 +327,7 @@ const Sales = () => {
       </Modal>
 
       {/* Floating button to open the form */}
-      {!isOpen && <TouchableOpacity
+      {/* {!isOpen && <TouchableOpacity
         style={{
           width: 80,
           height: 80,
@@ -338,7 +344,7 @@ const Sales = () => {
         onPress={handlePlus}
       >
         <Entypo name="plus" size={40} color="white" />
-      </TouchableOpacity>}
+      </TouchableOpacity>} */}
     </>
   );
 };

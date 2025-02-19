@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal } from 'react-native'
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal, Alert } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Import axios
@@ -61,15 +61,30 @@ const years = Array.from({ length: 10 }, (_, i) => ({
   }
 
   const handleDelete = (id) => {
-    axios.delete(`${baseUrl}/yeargroup/delete/${id}`)  // API call to delete a year group
-      .then(response => {
-        setYearGroups(yearGroups.filter(item => item._id !== id));
-      })
-      .catch(error => {
-        console.log("Error deleting year group:", error);
-      });
-  }
-
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this year group?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            axios.delete(`${baseUrl}/yeargroup/delete/${id}`)
+              .then(response => {
+                setYearGroups(yearGroups.filter(item => item._id !== id));
+              })
+              .catch(error => {
+                console.log("Error deleting year group:", error);
+              });
+          },
+          style: "destructive"
+        }
+      ]
+    );
+  };
 
     // Focus Handlers
     const handleFocus = () => setIsFocus(true);

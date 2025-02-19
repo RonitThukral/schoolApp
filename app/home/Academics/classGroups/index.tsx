@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal } from 'react-native'
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal, Alert } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';  // Import axios
@@ -49,15 +49,33 @@ const index = () => {
       });
   }
 
-  const handleDelete = (id) => {
-    axios.delete(`${baseUrl}/fees/delete/${id}`)  // API call to delete a year group
-      .then(response => {
-        setClassGroups(classGroups.filter(item => item._id !== id));
-      })
-      .catch(error => {
-        console.log("Error deleting year group:", error);
-      });
-  }
+
+
+const handleDelete = (id) => {
+  Alert.alert(
+    "Confirm Deletion",
+    "Are you sure you want to delete this item?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel"
+      },
+      {
+        text: "Delete",
+        onPress: () => {
+          axios.delete(`${baseUrl}/fees/delete/${id}`)
+            .then(response => {
+              setClassGroups(classGroups.filter(item => item._id !== id));
+            })
+            .catch(error => {
+              console.log("Error deleting year group:", error);
+            });
+        },
+        style: "destructive"
+      }
+    ]
+  );
+};
 
 
 
