@@ -42,6 +42,7 @@ const _layout = () => {
 
       <Stack.Screen name='home/Attendance/index' options={{ title: 'Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Attendance/staffHistory/index' options={{ title: 'Staff History', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Attendance/staffHistory/edit/index' options={{ title: 'Staff History Edit', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Attendance/recordStudents/index' options={{ title: 'Students Record', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Attendance/recordStaff/index' options={{ title: 'Staff Record', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true, }} />
 

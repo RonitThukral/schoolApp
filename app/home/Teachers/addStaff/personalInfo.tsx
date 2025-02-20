@@ -59,7 +59,6 @@ const AddStudent = () => {
   };
 
   const handleNext = () => {
-
     const userdetails = userprofiledata as UserDetailsType;
     const newErrors = {
       name: userdetails.name ? undefined : 'First name is required.',

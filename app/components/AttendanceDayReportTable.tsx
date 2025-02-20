@@ -7,10 +7,11 @@ import { AttendanceRecordType, AttendanceUserRecordType } from '@/app/components
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
 
-const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit }: {
+const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
   headerHeight: number,
   attendanceId: string,
   edit?: boolean | undefined,
+  mode: "Student" | "Staff"
 }) => {
 
   // const { attendanceId } = useLocalSearchParams();
@@ -96,7 +97,7 @@ const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit }: {
 
 
       <View style={styles.tableHeader}>
-        <Text style={styles.headerCell}>StudentID</Text>
+        <Text style={styles.headerCell}>{mode}ID</Text>
         <View style={styles.verticalLine} />
         <Text style={styles.headerCell}>Name</Text>
         <View style={styles.verticalLine} />

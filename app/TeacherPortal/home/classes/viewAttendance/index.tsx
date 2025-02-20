@@ -13,7 +13,8 @@ const AttendanceReportStudentView = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Attendance Report</Text>
-      <AttendanceReportTable headerheight={230} classFilterPreSelected={classId as string} viewRoutePath={'./viewAttendance/viewDayAttendance'} />
+      <AttendanceReportTable headerheight={230} classFilterPreSelected={classId as string} viewRoutePath={'./viewAttendance/viewDayAttendance'} 
+      mode="Students" />
     </SafeAreaView >
   );
 };

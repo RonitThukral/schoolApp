@@ -3,16 +3,16 @@ import React from 'react'
 import { useLocalSearchParams } from 'expo-router';
 import AttendanceDayReportTable from '@/app/components/AttendanceDayReportTable';
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
-
-const AttendanceDayView = () => {
-  const { attendanceId, className } = useLocalSearchParams();
+const EditAttandanceView = () => {
+  const { attendanceId, classId, edit: editParam } = useLocalSearchParams();
+  const edit = editParam === 'true';
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Single Day {className} Attendance Report</Text>
-      <AttendanceDayReportTable headerHeight={230} attendanceId={attendanceId as string}
-        mode="Student" />
+      <Text style={styles.title}>Edit {classId} Attendance Report</Text>
+      <AttendanceDayReportTable headerHeight={230}
+        attendanceId={attendanceId as string} edit={edit}
+        mode="Staff" />
     </SafeAreaView>
   )
 }
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AttendanceDayView;
+export default EditAttandanceView;

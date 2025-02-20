@@ -10,7 +10,8 @@ const EditAttandanceView = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Edit {classId} Attendance Report</Text>
-      <AttendanceDayReportTable headerHeight={230} attendanceId={attendanceId as string} edit={edit} />
+      <AttendanceDayReportTable headerHeight={230} attendanceId={attendanceId as string} edit={edit}
+        mode="Student" />
     </SafeAreaView>
   )
 }

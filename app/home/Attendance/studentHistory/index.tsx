@@ -8,7 +8,11 @@ const StudentHistory = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Attendance Report</Text>
-      <AttendanceReportTable headerheight={230} classFilterPreSelected={null} viewRoutePath={'./studentHistory/edit'} edit={true} />
+      <AttendanceReportTable headerheight={230}
+        classFilterPreSelected={null}
+        viewRoutePath={'./studentHistory/edit'}
+        edit={true}
+        mode="Students" />
     </SafeAreaView >
   )
 };

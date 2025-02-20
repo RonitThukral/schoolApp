@@ -30,11 +30,12 @@ export type AttendanceRecordType = {
   year?: number,
 }
 
-const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoutePath, edit }: {
+const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoutePath, edit, mode }: {
   headerheight: number,
   classFilterPreSelected: string | null,
   viewRoutePath: RelativePathString,
   edit?: boolean | undefined,
+  mode: "Students" | "Staff",
 }) => {
 
   // const flatlistheight = dummyData.attendance.length * 30;
@@ -50,12 +51,22 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
   const [yearentries, setYearEntries] = useState<{ label: string, value: number | null }[]>([]);
 
   const fetchInfo = async () => {
-
     try {
-      const [students, classes] = await Promise.all([
-        axios.get(`${baseUrl}/attendance/students`),
-        axios.get(`${baseUrl}/classes`),
-      ]);
+      const getRecords = async () => {
+        if (mode === "Students") {
+          return await Promise.all([
+            axios.get(`${baseUrl}/attendance/students`),
+            axios.get(`${baseUrl}/classes`),
+          ]);
+        }
+        else {
+          return [await axios.get(`${baseUrl}/attendance/staff`), {
+            data: ["staff"]
+          }]
+        }
+      };
+
+      const [students, classes] = await getRecords();
 
       const attendanceRecords = students.data.map((r: {
         createdAt: string,
@@ -113,7 +124,7 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
   return (
     <>
       <View style={styles.filtercontainer}>
-        <Dropdown
+        {!classFilterPreSelected && <Dropdown
           style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
@@ -126,7 +137,7 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
           placeholder={'Select Class'}
           value={filterClass}
           onChange={(item) => setFIlterClass(item.value)}
-        />
+        />}
 
         <Dropdown
           style={styles.dropdownsmall}
@@ -165,9 +176,9 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
         <View style={styles.verticalLine} />
         <Text style={styles.headerCell}>Class</Text>
         <View style={styles.verticalLine} />
-        <Text style={styles.headerCell}>Total Students</Text>
+        <Text style={styles.headerCell}>Total {mode}</Text>
         <View style={styles.verticalLine} />
-        <Text style={styles.headerCell}>Absent Studetns</Text>
+        <Text style={styles.headerCell}>Absent {mode}</Text>
         <View style={styles.verticalLine} />
         <Text style={styles.headerCell}>Action</Text>
       </View>
@@ -192,8 +203,10 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
             .reverse()
           }
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <View style={styles.tableRow}>
+          renderItem={({ item, index }) => (
+            <View style={[styles.tableRow,
+            index % 2 === 0 ? styles.evenTableRow : styles.oddTableRow
+            ]}>
               <Text style={styles.cell}>{getdatereprasation(item.createdAt)}</Text>
               <View style={styles.verticalLine} />
               <Text style={styles.cell}>{item.classID}</Text>
@@ -275,6 +288,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     // paddingVertical: 6,
     height: 30,
+  },
+  oddTableRow: {
+    backgroundColor: "#edf5fd68",
+  },
+  evenTableRow: {
   },
   cell: {
     flex: 1,
