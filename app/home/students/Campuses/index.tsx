@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
@@ -45,17 +45,37 @@ const index = () => {
     }
   };
 
+  
+
   const handleDelete = async (id) => {
-    try {
-      setLoading(true);
-      await axios.delete(`${API_BASE_URL}/campuses/delete/${id}`);
-      setCampuses(campuses.filter((item) => item._id !== id));
-    } catch (error) {
-      console.error("Error deleting campus:", error);
-    } finally {
-      setLoading(false);
-    }
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this campus?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              setLoading(true);
+              await axios.delete(`${API_BASE_URL}/campuses/delete/${id}`);
+              setCampuses(campuses.filter((item) => item._id !== id));
+            } catch (error) {
+              console.error("Error deleting campus:", error);
+            } finally {
+              setLoading(false);
+            }
+          },
+          style: "destructive"
+        }
+      ]
+    );
   };
+
+
 
   const handleEdit = (id) => {
     const campusToEdit = campuses.find((item) => item._id === id);

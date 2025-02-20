@@ -197,7 +197,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View , TouchableOpacity, Image, ScrollView, TextInput, SafeAreaView, Modal } from 'react-native';
+import { StyleSheet, Text, View , TouchableOpacity, Image, ScrollView, TextInput, SafeAreaView, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
@@ -297,20 +297,36 @@ const DropdownComponent = () => {
   };
 
   const handleDelete = (id) => {
-    axios
-      .delete(`${baseUrl}/payrow/delete/${id}`)
-      .then((res) => {
-        if (res.data.error) {
-          alert(res.data.error);
-          return;
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this payrow?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            axios
+              .delete(`${baseUrl}/payrow/delete/${id}`)
+              .then((res) => {
+                if (res.data.error) {
+                  Alert.alert("Error", res.data.error);
+                  return;
+                }
+                setFeeData(feeData.filter((item) => item._id !== id));
+                Alert.alert("Success", "Payrow deleted successfully");
+              })
+              .catch((err) => {
+                console.error("Error deleting payrow:", err);
+                Alert.alert("Error", "Failed to delete payrow");
+              });
+          },
+          style: "destructive"
         }
-        setFeeData(feeData.filter((item) => item._id !== id));
-        alert("Payrow deleted successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("Failed to delete payrow");
-      });
+      ]
+    );
   };
 
   const InfoRow = ({ label, value }) => (

@@ -74,16 +74,32 @@ const App = () => {
   };
 
   const handleDeleteSection = async (id) => {
-    setLoading(true);
-    try {
-      await axios.delete(`${API_BASE_URL}/sections/delete/${id}`);
-      setSections(sections.filter((section) => section._id !== id));
-    } catch (error) {
-      console.error("Error deleting section", error);
-      Alert.alert("Error", "Failed to delete section.");
-    } finally {
-      setLoading(false);
-    }
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this section?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            setLoading(true);
+            try {
+              await axios.delete(`${API_BASE_URL}/sections/delete/${id}`);
+              setSections(sections.filter((section) => section._id !== id));
+            } catch (error) {
+              console.error("Error deleting section", error);
+              Alert.alert("Error", "Failed to delete section.");
+            } finally {
+              setLoading(false);
+            }
+          },
+          style: "destructive"
+        }
+      ]
+    );
   };
 
   const handleEditSection = (id) => {

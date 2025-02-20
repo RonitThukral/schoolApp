@@ -3,7 +3,9 @@ import { Stack } from 'expo-router'
 
 const _layout = () => {
   return (
+    
     <Stack>
+
 
       <Stack.Screen name='pdf/index' options={{ title: 'test', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
 
