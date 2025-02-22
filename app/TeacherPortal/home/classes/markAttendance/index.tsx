@@ -213,7 +213,7 @@ const StudentRecord = () => {
       {/* Save Button to Register Attendance */}
       {!isCalendarVisible && (
         <TouchableOpacity style={styles.submitButton} onPress={registerAttendance}>
-          <Text style={styles.submitButtonText}>Save</Text>
+          <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       )}
     </SafeAreaView>
@@ -275,8 +275,8 @@ const styles = StyleSheet.create({
   studentTextid: { fontSize: 18, color: '#007bff' },
   studentText: { fontSize: 14 },
   dayContainer: {
-    height:25,
-    width:35,
+    height: 25,
+    width: 35,
     alignItems: 'center',
     justifyContent: 'center',
   },

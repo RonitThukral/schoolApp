@@ -28,6 +28,7 @@ export type AttendanceRecordType = {
   createdAt: string,
   month?: number,
   year?: number,
+  role?: string,
 }
 
 const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoutePath, edit, mode }: {

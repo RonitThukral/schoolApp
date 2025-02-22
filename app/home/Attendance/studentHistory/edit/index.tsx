@@ -1,7 +1,7 @@
 import { Text, SafeAreaView, StyleSheet } from 'react-native'
 import React from 'react'
 import { useLocalSearchParams } from 'expo-router';
-import AttendanceDayReportTable from '@/app/components/AttendanceDayReportTable';
+import AttendanceDayReportTable from '@/app/components/AttendanceDayStudentReportTable';
 
 const EditAttandanceView = () => {
   const { attendanceId, classId, edit: editParam } = useLocalSearchParams();

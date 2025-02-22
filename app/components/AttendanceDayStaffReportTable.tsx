@@ -4,10 +4,12 @@ import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams } from 'expo-router';
 import { AttendanceRecordType, AttendanceUserRecordType } from '@/app/components/AttendanceReportTable';
+import { getStudentInfo } from '../utils/storage';
+import { StudentInfoType } from '../utils/app.types';
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
 
-const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
+const AttendanceDayStaffReportTable = ({ headerHeight, attendanceId, edit, mode }: {
   headerHeight: number,
   attendanceId: string,
   edit?: boolean | undefined,
@@ -124,6 +126,7 @@ const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
               ? <Image source={require('../../assets/images/images/check.png')} resizeMode='cover' style={{ height: 20, width: 30 }} />
               : <Image source={require('../../assets/images/images/box.png')} style={{ height: 20, width: 20 }} />;
             const presence_status = edit ? <TouchableOpacity onPress={() => { handleSelectChange(item._id, !item.status) }}>{presence_icon}</TouchableOpacity> : presence_icon;
+            const student_info: StudentInfoType | null = mode === "Student" ? getStudentInfo(item.userID) : null;
             return (
               <View style={styles.tableRow}>
                 <Text style={styles.cell}>{item.userID}</Text>
@@ -135,7 +138,6 @@ const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
                 <Text style={styles.cell}>{presence_status}</Text>
                 <View style={styles.verticalLine} />
               </View>
-
             )
           }}
         />
@@ -187,10 +189,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingVertical: 8,
   },
+  headerCellSmall: {
+    flex: 0,
+    width: 30,
+  },
   tableHeader: {
     flexDirection: "row",
     backgroundColor: "#58a8f9",
-    paddingHorizontal: 5,
     borderRadius: 5,
   },
 
@@ -212,6 +217,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: "center",
     paddingVertical: 6,
+    fontWeight: "bold",
+  },
+  cellSmall: {
+    flex: 0,
+    width: 30,
   },
   headerRow: {
     flexDirection: "row",
@@ -259,4 +269,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AttendanceDayReportTable;
+export default AttendanceDayStaffReportTable;

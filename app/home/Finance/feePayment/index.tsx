@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeAreaView, ScrollView } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Dropdown } from 'react-native-element-dropdown';
-import { useRouter,useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
@@ -52,7 +52,7 @@ const FeePayment = () => {
   };
 
   const fetchStudents = async () => {
-   
+
     try {
       const res = await axios.get(`${baseUrl}/students/class/${selectedClass}`);
       const studentsData = res.data.users || [];
@@ -85,11 +85,11 @@ const FeePayment = () => {
     );
 
     const totalPaid = filteredTransactions.reduce((sum, txn) => sum + Number(txn.amount || 0), 0);
-    const balance = totalFee - totalPaid ;
+    const balance = totalFee - totalPaid;
 
     // New status for advance payment when balance < 0
     const status = balance === 0 ? 'Fully Paid' : balance < 0 ? 'Advance Payment' : 'Pending';
-    
+
     return { status, balance };
   };
 
@@ -125,7 +125,7 @@ const FeePayment = () => {
 
   const handlePress = (id) => {
     router.push({
-      pathname: '/home/Finance/feePayment/fees',
+      pathname: '/home/Finance/feePayment/feeDetails',
       params: { studentId: id },  // Use 'params' here instead of 'query'
     });
   };
@@ -194,24 +194,24 @@ const FeePayment = () => {
         data={filteredStudents.length > 0 ? filteredStudents : students}  // Use filtered students
         keyExtractor={(item) => item._id}
         style={styles.list}
-        contentContainerStyle={{paddingTop:responsiveHeight(4),paddingBottom:20}}
+        contentContainerStyle={{ paddingTop: responsiveHeight(4), paddingBottom: 20 }}
         renderItem={({ item }) => {
           const { status, balance } = calculatePaymentStatus(item);
           return (
-            <TouchableOpacity style={styles.studentCard} onPress={()=>{handlePress(item.userID)}}>
+            <TouchableOpacity style={styles.studentCard} onPress={() => { handlePress(item.userID) }}>
               <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
-              
+
               <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
-               <Text style={styles.studentTextid}>{item.userID}</Text>
-               <Text style={styles.studentText}>{item.name}</Text>
-             </View>
+                <Text style={styles.studentTextid}>{item.userID}</Text>
+                <Text style={styles.studentText}>{item.name}</Text>
+              </View>
               <View style={status === 'Fully Paid' ? styles.paid : status === 'Advance Payment' ? styles.advance : styles.pending}>
                 <Text style={status === 'Fully Paid' ? styles.paidText : status === 'Advance Payment' ? styles.advanceText : styles.pendingText}>{status}</Text>
-                {status === 'Pending' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{balance}</Text>}
-                {status === 'Advance Payment' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{Math.abs(balance)}</Text>} {/* Displaying advance payment balance */}
+                {status === 'Pending' && <Text style={{ fontSize: 12, marginTop: 5, marginLeft: 10, color: '#ff7c7c' }} >₹{balance}</Text>}
+                {status === 'Advance Payment' && <Text style={{ fontSize: 12, marginTop: 5, marginLeft: 10, color: '#ff7c7c' }} >₹{Math.abs(balance)}</Text>} {/* Displaying advance payment balance */}
               </View>
 
-              <AntDesign name="right" size={24} color="#58A8F9" style={{position:'relative', right:5}} />
+              <AntDesign name="right" size={24} color="#58A8F9" style={{ position: 'relative', right: 5 }} />
             </TouchableOpacity>
           );
         }}
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height: '80%'
   },
   dropdown: {
     height: 50,
@@ -283,9 +283,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    position:'relative',
-    right:20,
-    top:10
+    position: 'relative',
+    right: 20,
+    top: 10
   },
   search: {
     width: 110,
@@ -301,51 +301,51 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15,
   },
-  paid:{
-    width:70,
-    height:20, 
-    backgroundColor:'#daf6cb',
-    borderRadius:15, 
-    position:'relative',
-    left:responsiveWidth(10),
-    bottom:responsiveWidth(1),
+  paid: {
+    width: 70,
+    height: 20,
+    backgroundColor: '#daf6cb',
+    borderRadius: 15,
+    position: 'relative',
+    left: responsiveWidth(10),
+    bottom: responsiveWidth(1),
   },
-  paidText:{
-    textAlign:'center',
-    paddingTop:3,
-    fontSize:10,
-    color:'green'
+  paidText: {
+    textAlign: 'center',
+    paddingTop: 3,
+    fontSize: 10,
+    color: 'green'
   },
-  advance:{
-    width:70,
-    height:20, 
-    backgroundColor:'#f0ad4e',
-    borderRadius:15, 
-    position:'relative',
-    left:responsiveWidth(10),
-    bottom:responsiveWidth(1),
+  advance: {
+    width: 70,
+    height: 20,
+    backgroundColor: '#f0ad4e',
+    borderRadius: 15,
+    position: 'relative',
+    left: responsiveWidth(10),
+    bottom: responsiveWidth(1),
   },
-  advanceText:{
-    textAlign:'center',
-    paddingTop:3,
-    fontSize:10,
-    color:'#a94442'
+  advanceText: {
+    textAlign: 'center',
+    paddingTop: 3,
+    fontSize: 10,
+    color: '#a94442'
   },
-  pending:{
-    width:70,
-    height:20, 
-    backgroundColor:'#ff7c7c',
-    borderRadius:15, 
-    position:'relative',
-    left:responsiveWidth(10),
-    
-    bottom:responsiveWidth(1),
+  pending: {
+    width: 70,
+    height: 20,
+    backgroundColor: '#ff7c7c',
+    borderRadius: 15,
+    position: 'relative',
+    left: responsiveWidth(10),
+
+    bottom: responsiveWidth(1),
   },
-  pendingText:{
-    textAlign:'center',
-    paddingTop:2,
-    fontSize:10,
-    color:'#842323'
+  pendingText: {
+    textAlign: 'center',
+    paddingTop: 2,
+    fontSize: 10,
+    color: '#842323'
   }
 });
 
