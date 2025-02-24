@@ -101,11 +101,10 @@ const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
       <View style={styles.tableHeader}>
         <Text style={styles.headerCell}>{mode}ID</Text>
         <View style={styles.verticalLine} />
-        <Text style={styles.headerCell}>Name</Text>
+        <Text style={styles.headerCell}> Full Name</Text>
         <View style={styles.verticalLine} />
-        {mode === "Student" && <Text style={styles.headerCell}>Guardian</Text>}
+        {mode === "Student" && <Text style={styles.headerCell}>Guardian Name</Text>}
         {mode === "Student" && <View style={styles.verticalLine} />}
-        {mode === "Student" && <Text style={styles.headerCell}>Telephone</Text>}
         {mode === "Student" && <View style={styles.verticalLine} />}
         <Text style={[styles.headerCell, styles.headerCellSmall]}>P/A</Text>
       </View>
@@ -137,7 +136,6 @@ const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
                 <View style={styles.verticalLine} />
                 {mode === "Student" && <Text style={styles.cell}>{student_info?.guadian[0]?.name}</Text>}
                 {mode === "Student" && <View style={styles.verticalLine} />}
-                {mode === "Student" && <Text style={styles.cell}>{student_info?.mobilenumber.toString().replaceAll('-', '')}</Text>}
                 {mode === "Student" && <View style={styles.verticalLine} />}
                 <Text style={[styles.cell, styles.cellSmall]}>{presence_status}</Text>
                 <View style={styles.verticalLine} />
@@ -218,10 +216,9 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 14,
     textAlign: "center",
     paddingVertical: 6,
-    fontWeight: "bold",
   },
   cellSmall: {
     flex: 0,

@@ -13,6 +13,7 @@ import Dashboard from '../components/calender';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { parse } from '@babel/core';
+import HeaderLarge from '@/app/components/Header';
 
 
 
@@ -78,26 +79,7 @@ export default function Home(): any {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.container1}>
           {/* Header Section */}
-          <View style={styles.header}>
-            <TouchableOpacity>
-              <MaterialIcons name="menu" size={28} color="#000" />
-            </TouchableOpacity>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
-
-              <View style={styles.headerIcons}>
-                <TouchableOpacity onPress={handlePress}>
-                  <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-
-                </TouchableOpacity>
-                <Fontisto name="bell" size={22} color="black" />
-              </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.userName}>{parsedTeacher.name}</Text>
-                <Text style={styles.userRole}>{parsedTeacher.role}</Text>
-              </View>
-              <Image source={require('../../../assets/images/images/image.png')} style={styles.avatar} />
-            </View>
-          </View>
+          <HeaderLarge handlePressChat={handlePress} />
 
           <View style={styles.bgimg}>
             <Image source={require('../../../assets/images/images/Vector.png')} />

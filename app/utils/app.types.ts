@@ -52,3 +52,9 @@ export type StudentInfoType = {
   createdAt: string;
   updatedAt: string;
 }
+
+export type UserInfo = {
+  userID: string,
+  role: string,
+  name: string,
+};

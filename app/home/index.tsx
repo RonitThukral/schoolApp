@@ -3,16 +3,14 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaVi
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Foundation from '@expo/vector-icons/Foundation';
-import Fontisto from '@expo/vector-icons/Fontisto';
-import Feather from '@expo/vector-icons/Feather';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { useRouter } from 'expo-router';
 import { fetchAndSaveStudentsInfoCache } from '../utils/storage';
+import HeaderLarge from '../components/Header';
 
 
 
@@ -53,12 +51,8 @@ export default function Home(): any {
     }
   ]
 
-  const router = useRouter()
 
 
-  const handlePress = () => {
-    router.navigate('./home/Chat')
-  }
 
   useEffect(() => {
     // Make calls that are needed by the whole app, and store it in asyncStorage.
@@ -72,26 +66,7 @@ export default function Home(): any {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.container1}>
           {/* Header Section */}
-          <View style={styles.header}>
-            <TouchableOpacity>
-              <MaterialIcons name="menu" size={28} color="#000" />
-            </TouchableOpacity>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
-
-              <View style={styles.headerIcons}>
-                <TouchableOpacity onPress={handlePress}>
-                  <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-
-                </TouchableOpacity>
-                <Fontisto name="bell" size={22} color="black" />
-              </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.userName}>Nilesh Shr</Text>
-                <Text style={styles.userRole}>Admin</Text>
-              </View>
-              <Image source={require('../../assets/images/images/image.png')} style={styles.avatar} />
-            </View>
-          </View>
+          <HeaderLarge />
 
           <View style={styles.bgimg}>
             <Image source={require('../../assets/images/images/Vector.png')} />

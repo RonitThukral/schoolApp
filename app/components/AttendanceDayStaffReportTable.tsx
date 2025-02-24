@@ -214,10 +214,9 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 14,
     textAlign: "center",
     paddingVertical: 6,
-    fontWeight: "bold",
   },
   cellSmall: {
     flex: 0,
