@@ -68,6 +68,9 @@ export default function Home(): any {
     })
   }
 
+  const handlePressNotification = () => {
+    router.push('./home/notices');
+  }
 
 
 
@@ -77,7 +80,7 @@ export default function Home(): any {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.container1}>
           {/* Header Section */}
-          <HeaderLarge handlePressChat={handlePress} />
+          <HeaderLarge handlePressChat={handlePress} handlePressNotification={handlePressNotification} />
 
           <View style={styles.bgimg}>
             <Image source={require('../../../assets/images/images/Vector.png')} />

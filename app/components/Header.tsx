@@ -8,11 +8,12 @@ import { useRouter } from 'expo-router';
 import { UserInfo } from '../utils/app.types';
 import { getUserData } from '../utils/storage';
 
-const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat }: {
+const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat, handlePressNotification }: {
   menuIcon?: boolean;
   chatIcon?: boolean;
   notificationIcon?: boolean;
   handlePressChat?: () => void;
+  handlePressNotification?: () => void;
 }) => {
   const router = useRouter();
   const [currentUser, setcurrentUser] = useState<UserInfo | null>(null);
@@ -23,14 +24,17 @@ const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat }: 
   const handlePress = () => {
     if (handlePressChat !== undefined) {
       handlePressChat();
-    }
-    else {
+    } else {
       router.navigate('./home/Chat');
     }
   }
 
   const handleNotificationPress = () => {
-    router.navigate('./home/Notices');
+    if (handlePressNotification) {
+      handlePressNotification();
+    } else {
+      router.navigate('./home/Notices');
+    }
   }
 
   return (
