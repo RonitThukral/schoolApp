@@ -62,7 +62,7 @@ const DropdownComponent = () => {
 
     try {
       const res = await axios.get(`${baseUrl}/dormitories/${id}`);
-      const busName = res.data.docs.name;
+      const busName: string = res.data.docs?.name ?? 'N/A';
 
       setBusRoutes((prev) => ({ ...prev, [id]: busName })); // Cache result
       return busName;
