@@ -1,15 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native'
 import 'react-native-reanimated';
-import Entypo from '@expo/vector-icons/Entypo';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Foundation from '@expo/vector-icons/Foundation';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
-import { useRouter } from 'expo-router';
-import { fetchAndSaveStudentsInfoCache } from '../utils/storage';
 import HeaderLarge from '../components/Header';
 
 
@@ -50,15 +44,6 @@ export default function Home(): any {
       content: 20
     }
   ]
-
-
-
-
-  useEffect(() => {
-    // Make calls that are needed by the whole app, and store it in asyncStorage.
-    // example students info
-    fetchAndSaveStudentsInfoCache();
-  }, []);
 
   return (
     <>
