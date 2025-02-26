@@ -31,6 +31,13 @@ const DropdownComponent = () => {
   const [editId, setEditId] = useState('');
 
 
+
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "long", year: "numeric" };
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", options).replace(",", ""); // Remove any commas
+  };
+
   // Fetch Notices
   const fetchNotices = async () => {
     try {
@@ -43,8 +50,7 @@ const DropdownComponent = () => {
         title: notice.title || 'N/A',
         description: notice.description || 'N/A',
         createdBy: notice.createdBy || 'N/A',
-        date: dayjs(notice.date).format('DD-MM-YYYY') || 'N/A',
-        
+        date: formatDate(notice.createdAt)|| 'N/A',        
       }));
       setAllNotices(formattedData);
       setFilteredNotices(formattedData);
@@ -320,12 +326,7 @@ const DropdownComponent = () => {
 {/* List of students section */}
 <ScrollView style={{paddingTop: 0, marginBottom: 0,backgroundColor:'white'}} contentContainerStyle={{paddingBottom:40}}>
 {filteredNotices.map((notice, index) => {
-const noticeDate = new Date(notice.date);
-const formattedDate = noticeDate.toLocaleDateString('en-GB', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-});
+
   return (
     <View style={styles.list} key={index} >
       <Text style={{position:'relative', fontSize:18, left:20, color:'#58A8F9',marginTop:10,maxWidth:'80%'}}>{notice.title}</Text>
@@ -336,7 +337,7 @@ const formattedDate = noticeDate.toLocaleDateString('en-GB', {
             {notice.description}
           </Text>
           <Text style={{fontSize:11,color:'grey',marginTop: 3}}>CreatedBy: {notice.createdBy}</Text>
-          <Text style={{fontSize:11,color:'grey'}}>CreatedAt: {formattedDate}</Text>
+          <Text style={{fontSize:11,color:'grey'}}>CreatedAt: {notice.date}</Text>
           
       </View>
       <View style={styles.listBtns}>
@@ -442,7 +443,7 @@ onRequestClose={() => setIsOpen(false)}
         flex: 1,
         backgroundColor: '#F5FCFF',
         // backgroundColor: 'blue',
-        width: '80%',
+        width: '90%',
         height: 350,
         alignSelf: 'center',
         borderRadius: 15,

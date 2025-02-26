@@ -316,15 +316,16 @@ const [teachers, setTeachers] = useState([])
             <View style={styles.sectionContent}>
               {children}
             </View>
+
             <View style={styles.listBtns}>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+                {/* <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
                 <Image source={require('../../../assets/images/images/edit.png')}/>
 
                 </TouchableOpacity>
                 <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
                 <Image source={require('../../../assets/images/images/delete.png')}/>
 
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
             </View>

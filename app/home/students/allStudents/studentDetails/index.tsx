@@ -464,11 +464,12 @@ const StudentDetails = () => {
     }
   }, [selectedStudent]);  // This will trigger only after selectedStudent is set
   
+
   const fetchBus = async () => {
-    if (!selectedStudent?.dormitoryID) return;  // Check that dormitoryID exists
+    if (!selectedStudent?.dormitoryID) return ;  // Check that dormitoryID exists
     try {
       const response = await axios.get(`${baseUrl}/dormitories/${selectedStudent.dormitoryID}`);
-      setBus(response?.data?.doc?.name);
+      setBus(response?.data?.docs?.name);
     } catch (error) {
       console.error("Error fetching BUS:", error);
     }
@@ -534,11 +535,11 @@ const StudentDetails = () => {
 
 
 
-  const InfoRow = ({ label, value }) => (
+  const InfoRow = ({ label, value,isMultiLine = true }) => (
     <View style={styles.infoRow}>
       <Text style={styles.label}>{label}</Text>
-      <View style={{ position: 'absolute', left: 130, top: 3 }}>
-        <Text style={styles.value}>{value || 'N/A'}</Text>
+      <View style={{ position: 'relative', right: responsiveWidth(3), top: 3 }}>
+        <Text style={[isMultiLine ? styles.multiLine : styles.value]}>{value || 'N/A'}</Text>
       </View>
     </View>
   );
@@ -601,7 +602,7 @@ const StudentDetails = () => {
             <View style={styles.profileInfo}>
               <Text style={styles.studentId}>{studentData.userID}</Text>
               <Text style={styles.studentName}>
-                {`${studentData.name} ${studentData.middleName || ''} ${studentData.surname}`}
+                {`${studentData.name} ${studentData.surname}`}
               </Text>
             </View>
           </View>
@@ -619,13 +620,13 @@ const StudentDetails = () => {
           onPress={() => toggleSection('studentInfo')}
         >
           <InfoRow label="Name" value={studentData.name} />
-          <InfoRow label="Middle Name" value={studentData.middleName} />
+          {/* <InfoRow label="Middle Name" value={studentData.middleName} /> */}
           <InfoRow label="Surname" value={studentData.surname} />
           <InfoRow label="Gender" value={studentData.gender} />
           <InfoRow label="Date of Birth" value={formatDate(studentData.dateofBirth)} />
-          <InfoRow label="Nationality" value={studentData.nationality} />
-          <InfoRow label="Religion" value={studentData.religion} />
-          <InfoRow label="Place of Birth" value={formatDate(studentData.placeOfBirth)} />
+          <InfoRow label="Category" value={studentData.nationality} />
+          <InfoRow label="Caste" value={studentData.religion} />
+          <InfoRow label="Date of Admission" value={formatDate(studentData.disease)} />
         </Section>
 
         <View
@@ -637,13 +638,13 @@ const StudentDetails = () => {
           isExpanded={expandedSections.academicInfo}
           onPress={() => toggleSection('academicInfo')}
         >
-          <InfoRow label="Class" value={studentData.classID} />
+          <InfoRow label="Class" value={studentData.classID.toUpperCase()} />
           <InfoRow label="Division" value={div || 'N/A'} />
           <InfoRow label="Section" value={sec || 'N/A'} />
-          <InfoRow label="Dormitory ID" value={bus || 'N/A'} />
-          <InfoRow label="Campus ID" value={campus || 'N/A'} />
+          <InfoRow label="Bus Route" value={bus || 'N/A'} />
+          <InfoRow label="Campus" value={campus || 'N/A'} />
           <InfoRow label="Scholarship" value={scholar || 'N/A'} />
-          <InfoRow label="Fees" value={studentData.fees} />
+          <InfoRow label="Fees Category" value={studentData.fees} />
         </Section>
 
         <View
@@ -774,7 +775,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   sectionContent: {
-    padding: 16,
+    paddingVertical: 16,
     width:"90%",
     alignSelf:'center',
     height:'auto',
@@ -803,13 +804,26 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color: '#666',
     fontSize: 11.5,
-    paddingLeft:responsiveWidth(2)
+    paddingLeft: responsiveWidth(5)
 
   },
   value: {
     color:'grey',
     fontSize: 11.5,
-    paddingLeft:responsiveWidth(3)
+    paddingLeft:responsiveWidth(3),
+    width: responsiveWidth(30)
+  },
+  multiLine : {
+    flexWrap:'wrap',
+    // width:'70%',
+    // marginTop:10,
+    fontSize:12,
+    color:'grey',
+    paddingRight:responsiveWidth(0),
+    marginRight:responsiveWidth(1),
+    width:responsiveWidth(38),
+    // backgroundColor:'red'
+
   },
   rule1:{
     height:0.5, 

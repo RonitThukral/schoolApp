@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 import * as Print from 'expo-print';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -183,11 +183,11 @@ const DropdownComponent = () => {
           >
             <Image style={styles.stImg} source={require('../../../../assets/images/images/avatar.png')} />
             <View style={styles.listContent}>
-              <Text style={{ color: '#58A8F9', fontSize: 20 }}>{teacher.name}</Text>
+              <Text style={{ color: '#58A8F9', fontSize: 20,width: responsiveWidth(50) }}>{teacher.name}</Text>
               <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.userID}</Text>
               <Text style={{ color: 'grey', fontSize: 12 }}>{teacher.designation}</Text>
             </View>
-            <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: 35 }} />
+            <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: responsiveWidth(8) }} />
             </TouchableOpacity>
         ))}
       </ScrollView>
@@ -272,7 +272,8 @@ export default DropdownComponent;
     },
     list:{
       width: "85%",
-      height: 100,
+      height: 'auto',
+      minHeight:100,
       borderColor: 'grey',
       borderRadius: 10,
       // backgroundColor : 'red',
@@ -298,14 +299,15 @@ export default DropdownComponent;
       width:60,
       height:60,
       position:'absolute',
-      left: 40,
+      left: responsiveWidth(6),
       backgroundColor:'white',
       borderRadius:100
     },
     listContent:{
       flexDirection:'column',
       position: 'relative',
-      left:130
+      left:responsiveWidth(27)
+      
     },
     
 

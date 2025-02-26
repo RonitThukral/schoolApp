@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -21,6 +22,7 @@ const StaffAttendance = () => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(true); // Calendar visibility
   const [isSearched, setIsSearched] = useState(false); // Track if search is clicked
   const [loading, setLoading] = useState(false);
+  const [filteredStaff, setFilteredStaff] = useState([]);
 
   // Fetch Staff Data
   const fetchStaff = async () => {
@@ -31,6 +33,7 @@ const StaffAttendance = () => {
         status: false, // Default status for attendance
       }));
       setStaff(formattedData);
+      setFilteredStaff(formattedData)
     } catch (error) {
       console.error('Error fetching staff:', error.message);
     }
@@ -72,10 +75,17 @@ const StaffAttendance = () => {
   };
 
   const toggleAttendance = (id) => {
-    const updatedStaff = staff.map((staffMember) =>
-      staffMember._id === id ? { ...staffMember, status: !staffMember.status } : staffMember
+    setStaff((prevStaff) =>
+      prevStaff.map((staffMember) =>
+        staffMember._id === id ? { ...staffMember, status: !staffMember.status } : staffMember
+      )
     );
-    setStaff(updatedStaff);
+    
+    setFilteredStaff((prevFiltered) =>
+      prevFiltered.map((staffMember) =>
+        staffMember._id === id ? { ...staffMember, status: !staffMember.status } : staffMember
+      )
+    );
   };
 
 
@@ -87,6 +97,17 @@ const StaffAttendance = () => {
     setSelectedClass(null)
 
   }
+
+  const filterStaff = (query) => {
+    const filtered = staff.filter(
+      (staffMember) =>
+        staffMember.name.toLowerCase().includes(query.toLowerCase()) ||
+        staffMember.userID.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredStaff(filtered);
+  };
+  
+  
 
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
@@ -141,10 +162,10 @@ const StaffAttendance = () => {
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
-          data={[{ label: 'Staff', value: 'staff' }]}
+          data={[{ label: 'Teachers', value: 'staff' }]}
           labelField="label"
           valueField="value"
-          placeholder={'Select Class'}
+          placeholder={'Select Staff'}
           value={selectedClass}
           onChange={(item) => setSelectedClass(item.value)}
         />
@@ -155,8 +176,10 @@ const StaffAttendance = () => {
           placeholder="Search by Id or Name"
           placeholderTextColor={'grey'}
           value={searchQuery}
-          onChangeText={(text) => setSearchQuery(text)}
-        />
+          onChangeText={(text) => {
+            setSearchQuery(text);
+            filterStaff(text);
+          }}        />
 
         {/* Buttons */}
         <View style={styles.footer}>
@@ -164,6 +187,9 @@ const StaffAttendance = () => {
             <Text style={{ color: '#58A8F9' }}>Reset</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.search} onPress={() => {
+            if(!selectedClass || !selectedDate) {
+              return Alert.alert('Error', 'Please select both Date and Staff before searching.')
+            }
             setIsSearched(true)
             setIsCalendarVisible(false)
             }}>
@@ -175,16 +201,16 @@ const StaffAttendance = () => {
       {/* Staff List */}
       {isSearched && (
         <FlatList
-          data={staff}
+          data={filteredStaff}
           keyExtractor={(item) => item._id}
           style={styles.list}
-          contentContainerStyle={{ paddingTop:20 ,position:'relative',top:70}}
+          contentContainerStyle={{ paddingTop:20,paddingBottom:responsiveHeight(25)}}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.studentCard} onPress={() => toggleAttendance(item._id)}>
               <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
               <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
                 <Text style={styles.studentTextid}>{item.userID}</Text>
-                <Text style={styles.studentText}>{item.name}</Text>
+                <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
                 <Text style={styles.studentText}>Status: {item.status ? 'Present' : 'Absent'}</Text>
               </View>
               {item.status ? (
@@ -293,7 +319,9 @@ const StaffAttendance = () => {
     },
     list: {
       flexGrow: 1,
-      height:'80%'
+      height:'80%',
+      position:'relative',
+      top:responsiveHeight(8.5)
     },
     dropdown: {
       height: 50,

@@ -189,7 +189,7 @@ const handleDelete = (id) => {
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 30 }}>
         {filteredItems.map((data, index) => (
           <View style={styles.list} key={index}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 5, marginHorizontal: 15 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 5, marginHorizontal: 19 }}>
               <Text style={{ fontSize: 20, color: '#58a8f9' }}>{data.name}</Text>
               <View style={{ flexDirection: 'row', paddingTop: 5 }}>
                 <TouchableOpacity onPress={() => handleEdit(data._id)}>
@@ -200,7 +200,7 @@ const handleDelete = (id) => {
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={{ width: '90%', fontSize: 11, marginLeft: 20, color: 'grey', fontWeight: '500' }}>{data.description}</Text>
+            <Text style={{ width: '90%', fontSize: 11, marginLeft: 22, color: 'grey', fontWeight: '500' }}>{data.description}</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5, marginHorizontal: 23 }}>
               <Text style={{ fontSize: 13 }}>Price: {data.price}</Text>
               <Text style={{ fontSize: 13 }}>Quantity: {data.quantity}</Text>

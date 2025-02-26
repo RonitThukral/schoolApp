@@ -7,9 +7,10 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
-  KeyboardAvoidingView,
   Platform,
   Alert,
+  SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
@@ -21,7 +22,8 @@ const Login = () => {
   const [password, setPassword] = useState('abcyuuiy');
   const [loading, setLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState('student');
-  
+  const [checkingUser, setCheckingUser] = useState(true);  // New state for initial check
+
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +32,8 @@ const Login = () => {
       const userData = await getUserData();
       if (userData) {
         navigateToPortal(userData.role);
+      } else {
+        setCheckingUser(false); // Allow login screen to show
       }
     };
 
@@ -90,17 +94,24 @@ const Login = () => {
     setSelectedValue(value);
   };
 
+
+  if (checkingUser) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#58A8F9" />
+      </View>
+    );
+  }
+
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={{ flex: 1 }}
-    >
+    <SafeAreaView style={{flex : 1}}>
       <View style={{width:responsiveWidth(80), height:responsiveHeight(10),backgroundColor:'white',position:'absolute',zIndex:99,left:43,top:55,borderRadius:10}}>
 
       </View>
-      <Image source={require('../../assets/images/images/Logooo.png')} style={{position:'absolute',width:300,height:100,zIndex:99999,top:50,left:35}}/>
+      <Image source={require('../../assets/images/images/logooooo.png')} style={{position:'absolute',width:responsiveHeight(37),height:responsiveHeight(9),zIndex:99999,top:57,left:50}}/>
       <ImageBackground
-        source={require('../../assets/images/images/login.png')}
+        source={require('../../assets/images/images/loginn.png')}
         style={styles.bgcontainer}
       >
         {/* Username and Password Input Fields */}
@@ -122,7 +133,7 @@ const Login = () => {
 
         {/* Custom Radio Buttons */}
         <View style={styles.radioContainer}>
-          {['student', 'teacher', 'admin'].map((role) => (
+          {[ 'admin','student', 'teacher'].map((role) => (
             <TouchableOpacity
               key={role}
               style={styles.radioButton}
@@ -146,12 +157,13 @@ const Login = () => {
           <Text style={styles.btntext}>Login</Text>
         </TouchableOpacity>
       </ImageBackground>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  bgcontainer: { flex: 1, flexDirection: 'column' },
+  bgcontainer: { flex: 1, flexDirection: 'column' ,resizeMode:'cover',position:'absolute',height: responsiveHeight(100), width:responsiveHeight(50)},
+
   input1: {
     width: '80%',
     height: 55,
@@ -161,6 +173,12 @@ const styles = StyleSheet.create({
     marginTop: 180,
     paddingLeft: 25,
     elevation: 3,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   input2: {
     width: '80%',

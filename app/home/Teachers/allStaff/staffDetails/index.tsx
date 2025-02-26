@@ -26,6 +26,7 @@ const StaffDetails = () => {
   });
 
   const [teacher, setTeacher] = useState(null);
+  const [campus, setCampus] = useState(null);
   const { staffId } = useLocalSearchParams();
 
   const fetchTeacherDetails = async () => {
@@ -42,8 +43,22 @@ const StaffDetails = () => {
   };
 
   useEffect(() => {
+    if(teacher) {
+    fetchCampuses()
+    }
     fetchTeacherDetails();
-  }, []);
+  }, [teacher]);
+
+
+  const fetchCampuses = async () => {
+    if (!teacher?.campusID) return;  // Check that campusID exists
+    try {
+      const response = await axios.get(`${baseUrl}/campuses/${teacher.campusID}`);
+      setCampus(response.data?.docs?.name);
+    } catch (error) {
+      console.error("Error fetching campuses:", error);
+    }
+  };
 
   const toggleSection = (section) => {
     setExpandedSections((prev) => ({
@@ -51,7 +66,7 @@ const StaffDetails = () => {
       [section]: !prev[section],
     }));
   };
-
+  
   const InfoRow = ({ label, value, isMultiLine = false }) => (
     <View style={styles.infoRow}>
       <Text style={styles.label}>{label}</Text>
@@ -80,6 +95,29 @@ const StaffDetails = () => {
       {isExpanded && <View style={styles.sectionContent}>{children}</View>}
     </View>
   );
+
+
+  const capitalizeFirstLetter = (text) => {
+    return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
+  };
+  
+  
+  
+
+
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+  
+    const date = new Date(dateString);
+    const day = date.getDate(); // Get the day (1-31)
+    const month = date.toLocaleString('en-US', { month: 'long' }); // Get full month name
+    const year = date.getFullYear(); // Get the full year
+  
+    return `${day} ${month} ${year}`;
+  };
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -123,14 +161,14 @@ const StaffDetails = () => {
               isExpanded={expandedSections.studentInfo}
               onPress={() => toggleSection('studentInfo')}
             >
-              <InfoRow label="Title" value={teacher?.title} />
+              <InfoRow label="Title" value={capitalizeFirstLetter(teacher?.title)} />
               <InfoRow label="Name" value={teacher?.name} />
               <InfoRow label="Surname" value={teacher?.surname} />
-              <InfoRow label="Gender" value={teacher?.gender} />
+              <InfoRow label="Gender" value={capitalizeFirstLetter(teacher?.gender)} />
               <InfoRow label="Email" value={teacher?.email} />
-              <InfoRow label="Caste" value={teacher?.caste} />
-              <InfoRow label="Category" value={teacher?.category} />
-              <InfoRow label="DOB" value={teacher?.dateOfBirth} />
+              <InfoRow label="Caste" value={teacher?.religion} />
+              <InfoRow label="Category" value={teacher?.nationality} />
+              <InfoRow label="DOB" value={formatDate(teacher?.dateOfBirth)} />
             </Section>
 
             <View
@@ -144,13 +182,13 @@ const StaffDetails = () => {
               isExpanded={expandedSections.academicInfo}
               onPress={() => toggleSection('academicInfo')}
             >
-              <InfoRow label="Position" value={teacher.role} />
+              <InfoRow label="Position" value={capitalizeFirstLetter(teacher.role)} />
               <InfoRow
                 label="Qualification"
                 value={teacher.qualifications || 'N/A'}
               />
               <InfoRow label="Department" value={teacher.department || 'N/A'} />
-              <InfoRow label="Campus" value={teacher.campusID || 'N/A'} />
+              <InfoRow label="Campus" value={campus || 'N/A'} />
               <InfoRow label="Bank" value={teacher.bank || 'N/A'} />
               <InfoRow
                 label="Account No."
@@ -158,7 +196,7 @@ const StaffDetails = () => {
               />
               <InfoRow
                 label="Joining Date"
-                value={teacher.employmentDate || 'N/A'}
+                value={formatDate(teacher.employmentDate) || 'N/A'}
               />
             </Section>
 
@@ -179,7 +217,7 @@ const StaffDetails = () => {
               <InfoRow
                 label="Postal Address"
                 value={teacher.postalAddress}
-                isMultiLine
+                // isMultiLine
               />
             </Section>
 
@@ -190,7 +228,7 @@ const StaffDetails = () => {
             ></View>
 
             <Section
-              title="Guardian Information"
+              title="Next Of Kin Information"
               isExpanded={expandedSections.guardianInfo}
               onPress={() => toggleSection('guardianInfo')}
             >
@@ -205,7 +243,7 @@ const StaffDetails = () => {
                 value={teacher?.nextofKin?.relationship}
               />
               <InfoRow label="Occupation" value={teacher?.nextofKin?.occupation} />
-              <InfoRow label="Contact" value={teacher?.nextofKin?.contact} />
+              <InfoRow label="Contact" value={teacher?.nextofKin?.mobile} />
               <InfoRow label="Email" value={teacher?.nextofKin?.email} />
               <InfoRow
                 label="Address"

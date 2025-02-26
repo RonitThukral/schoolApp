@@ -3,7 +3,7 @@ import { Stack } from 'expo-router'
 
 const _layout = () => {
   return (
-    
+
     <Stack>
 
 
@@ -19,10 +19,10 @@ const _layout = () => {
       <Stack.Screen
         name="home/Finance/feePayment/fees/index"
         options={{
-          title: "             Fee Details",
+          title: "          Fee Details",
           headerStyle: { backgroundColor: "#58a8f9" },
           headerTintColor: "#fff", //  Changes back arrow color to white
-          headerTitleStyle: { color: "#fff" }, // Changes title color to white
+          headerTitleStyle: { color: "#fff",}, // Changes title color to white
           headerTransparent: true,
         }}
       />

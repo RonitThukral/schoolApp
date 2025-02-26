@@ -80,8 +80,8 @@ const handleSend = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{height:responsiveHeight(38)}}>
-<View style={{marginTop:50}}>
+      <View style={{height:responsiveHeight(35)}}>
+<View style={{marginTop:responsiveHeight(6)}}>
 
         <Dropdown
           style={styles.dropdown}
@@ -154,7 +154,7 @@ const handleSend = () => {
         data={filteredStudents}
         keyExtractor={(item) => item.id}
         style={styles.list}
-        contentContainerStyle={{ paddingBottom: 20,paddingTop:20}} // Adds spacing at the bottom for better scrolling
+        contentContainerStyle={{ paddingBottom: responsiveHeight(5)}} // Adds spacing at the bottom for better scrolling
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.studentCard} onPress={() => selectStudent(item.id)} >
             <Image source={require('../../../assets/images/images/boy.png')} style={styles.img} />
@@ -299,7 +299,9 @@ const styles = StyleSheet.create({
   list: {
     flexGrow: 1,
     height:responsiveHeight(80),
-    // backgroundColor:'red'
+    // backgroundColor:'red',
+    position:'relative',
+    top:responsiveHeight(5)
   },
   dropdown: {
     height: 50,

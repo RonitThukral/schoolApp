@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -11,7 +12,9 @@ const StudentRecord = () => {
     const [isFocus, setIsFocus] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState(() => {
       const today = new Date();
-      return today.toISOString().split('T')[0];
+    today.setHours(today.getHours() + 5); // Add 5 hours
+    today.setMinutes(today.getMinutes() + 30); // Add 30 minutes
+    return today.toISOString().split('T')[0];
     });
     const [selectedClass, setSelectedClass] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -60,6 +63,8 @@ const StudentRecord = () => {
     useEffect(() => {
       fetchClasses();
     }, []);
+
+
   
     const handleClassSelection = (item) => {
       setSelectedClass(item.value);
@@ -127,7 +132,8 @@ const StudentRecord = () => {
       const filtered = classStudents.filter(
         (student) =>
           student.name.toLowerCase().includes(query.toLowerCase()) ||
-          student.userID.toLowerCase().includes(query.toLowerCase())
+          student.userID.toLowerCase().includes(query.toLowerCase()) ||
+          student.surname.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredStudents(filtered);
     };
@@ -223,16 +229,17 @@ const StudentRecord = () => {
       {/* Students List */}
       {isSearched && (
         <FlatList
-          data={classStudents}
+        keyboardShouldPersistTaps="handled"
+          data={filteredStudents}
           keyExtractor={(item) => item._id}
           style={styles.list}
-          contentContainerStyle={{ paddingTop: 70 }}
+          contentContainerStyle={{ paddingBottom: responsiveHeight(25) }}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.studentCard} onPress={() => toggleAttendance(item._id)}>
               <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
               <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
                 <Text style={styles.studentTextid}>{item.userID}</Text>
-                <Text style={styles.studentText}>{item.name}</Text>
+                <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
                 <Text style={styles.studentText}>Status: {item.status}</Text>
               </View>
               {item.status === 'Absent' && (
@@ -328,6 +335,8 @@ const styles = StyleSheet.create({
   list: {
     flexGrow: 1,
     height: '80%',
+    position:'relative',
+        top:responsiveHeight(10),
   },
   dropdown: {
     height: 50,

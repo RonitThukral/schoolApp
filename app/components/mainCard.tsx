@@ -26,7 +26,7 @@ const data = [
       { title: "Liberary", icon: require("../../assets/images/images/libe.png") , linking:'./home/Liberary' },
       { title: "Attendance", icon: require("../../assets/images/images/atten.png"), linking:'./home/Attendance' },
       { title: "Notices", icon: require("../../assets/images/images/sent.png") , linking:'./home/Notices' },
-      { title: "Courses", icon: require("../../assets/images/images/coursess.png"), linking:'./home/allCourses' },
+      { title: "Courses", icon: require("../../assets/images/images/learning.png"), linking:'./home/allCourses' },
       { title: "Certificates", icon: require("../../assets/images/images/guarantee.png") , linking:'./home/Certificates' },
       { title: "Buses", icon: require("../../assets/images/images/vanes.png"),linking:'./home/students/Transport' },
     { title: "Settings", icon: require("../../assets/images/images/setting.png") , linking:'./home/Settings' },

@@ -350,7 +350,7 @@ const StaffHistory = () => {
       </View>
 
       {/* Staff List */}
-      <FlatList
+      {(selectedDate && filteredStaff.length > 0 )?<FlatList
         data={filteredStaff}
         keyExtractor={(item) => item.id}
         style={styles.list}
@@ -375,6 +375,11 @@ const StaffHistory = () => {
           </TouchableOpacity>
         )}
       />
+    :
+   selectedDate && <Text style={{ textAlign: 'center', color: 'red', marginTop: 100 }}>
+                    No attendance found for {selectedDate}
+                  </Text> 
+    }
     </SafeAreaView>
   );
 };
@@ -389,8 +394,8 @@ const styles = StyleSheet.create({
      borderRadius: 15, 
      marginTop: 50 ,
     //  height:'85%',
-    minHeight: '85%',
-    maxHeight: '90%',
+    minHeight: responsiveHeight(45),
+    maxHeight: responsiveHeight(45),
      width:'95%',
      alignSelf:'center',
     //  backgroundColor:'red',
@@ -453,7 +458,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:25,
+    height:responsiveHeight(3.5),
     width:35,
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
@@ -469,7 +474,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     height:'80%',
     position:'relative',
-    top:responsiveHeight(5)
+    top:responsiveHeight(6.5)
   },
   dropdown: {
     height: 50,

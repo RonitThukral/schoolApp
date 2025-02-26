@@ -302,6 +302,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -309,10 +310,33 @@ const StudentHistory = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
+  const [classes, setClasses] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [attendance, setAttendance] = useState([]);
   const [isCalendarVisible, setIsCalendarVisible] = useState(true); // Calendar visibility
   const [isSearched, setIsSearched] = useState(false); // Track if search is clicked
+
+
+  const fetchClasses = async() => {
+
+    try {
+      const classes = await axios.get(`${baseUrl}/classes`)
+//  console.log(classes, 'classed')
+      const formatedData = classes.data.map((cls) => ({
+        label: cls.name,
+        value: cls.classCode,
+      }))
+
+      setClasses(formatedData)
+
+
+    } catch (error) {
+      console.error('Error fetching classes:', error.message);
+    }
+
+  }
+
+
 
   // Fetch attendance data
   const fetchAttendance = async () => {
@@ -332,6 +356,7 @@ const StudentHistory = () => {
   };
 
   useEffect(() => {
+    fetchClasses()
     fetchAttendance();
   }, []);
 
@@ -364,7 +389,8 @@ const StudentHistory = () => {
   // Filter students based on search query
   const filteredStudents = getStudentsForSelectedDateAndClass().filter((student) =>
     student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.userID.toLowerCase().includes(searchQuery.toLowerCase())
+    student.userID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.surname.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Handle Class Selection
@@ -446,7 +472,7 @@ const StudentHistory = () => {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
-            data={attendance.map((attendance) => ({ label: attendance.class, value: attendance.class }))}
+            data={classes}
             search
             maxHeight={300}
             labelField="label"
@@ -483,18 +509,20 @@ const StudentHistory = () => {
       </View>
 
       {/* Students List - Only visible after Search */}
-      {isSearched && (
+
+      { isSearched &&filteredStudents.length > 0 ?  (
         <FlatList
+        keyboardShouldPersistTaps="handled"
           data={filteredStudents}
           keyExtractor={(item) => item._id}
           style={styles.list}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: responsiveHeight(20) }}
           renderItem={({ item }) => (
             <View style={styles.studentCard}>
               <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
               <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
                 <Text style={styles.studentTextid}>{item.userID}</Text>
-                <Text style={styles.studentText}>{item.name}</Text>
+                <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
                 <Text style={styles.studentText}>Status: {item.status}</Text>
               </View>
               {item.status === 'Absent' && (
@@ -509,7 +537,12 @@ const StudentHistory = () => {
             </View>
           )}
         />
-      )}
+      )
+      :
+     isSearched && <Text style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>
+                No attendance found for {selectedDate}
+              </Text> 
+      }
     </SafeAreaView>
   );
 };
@@ -600,8 +633,12 @@ const styles = StyleSheet.create({
     height: 42,
   },
   list: {
-    flexGrow: 1,
-    height:'80%'
+    flexGrow: 1, 
+    position:'absolute',
+    top:responsiveHeight(35),
+    alignSelf:'center',
+    height:responsiveHeight(80),
+    width:responsiveWidth(90)
   },
   dropdown: {
     height: 50,

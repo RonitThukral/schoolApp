@@ -202,6 +202,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
+import ComingSoonScreen from '@/app/StudentPortal/home/rewards';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -209,10 +210,11 @@ const DropdownComponent = () => {
   const [feeData, setFeeData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [salary, setSalary] = useState(null);
-  const [allow, setAllow] = useState(null);
-  const [bonus, setBonus] = useState(null);
-  const [name, setName] = useState(null);
+  const [salary, setSalary] = useState('');
+  const [allow, setAllow] = useState('');
+  const [bonus, setBonus] = useState('');
+  const [name, setName] = useState('');
+  const [editID, setEditID] = useState(null);
 
   const fetchPayrow = async () => {
     try {
@@ -231,16 +233,21 @@ const DropdownComponent = () => {
     setIsOpen(true);
   };
 
-  const handleEdit = (data) => {
-    setEdit(true);
-    setName(data.name);
-    setSalary(data.salary);
-    setAllow(data.allowance);
-    setBonus(data.bonus);
+  const handleEdit = (id) => {
+    // console.log(data, 'mnfbifes')
+    const selectedData = feeData.find((data) => data._id === id);
+if (selectedData) {
+  setEdit(true);
+  setName(selectedData.name);
+  setSalary(selectedData.salary.toString());
+  setAllow(selectedData.allowance.toString());
+  setBonus(selectedData.bonus.toString());
+  setEditID(id);
+}
   };
 
-  const handleAddPayrow = () => {
-    axios
+  const handleAddPayrow = async() => {
+    await axios
       .post(`${baseUrl}/payrow/add`, {
         name,
         salary,
@@ -253,10 +260,10 @@ const DropdownComponent = () => {
           return;
         }
         setFeeData([res.data.doc, ...feeData]);
-        setName(null);
-        setSalary(null);
-        setAllow(null);
-        setBonus(null);
+        setName('');
+        setSalary('');
+        setAllow('');
+        setBonus('');
         setIsOpen(false);
         alert("Payrow added successfully");
       })
@@ -267,35 +274,42 @@ const DropdownComponent = () => {
   };
 
   const saveEdit = () => {
+    // setloading(true);
     axios
-      .put(`${baseUrl}/payrow/update`, {
-        
+      .put(`${baseUrl}/payrow/update/${editID}`, {
         salary,
         allowance: allow,
         bonus,
       })
-      .then((res) => {
+      .then(async (res) => {
+        // setloading(false);
         if (res.data.error) {
           alert(res.data.error);
           return;
         }
-        const updatedFeeData = feeData.map((item) =>
-          item._id === res.data.doc._id ? res.data.doc : item
-        );
-        setFeeData(updatedFeeData);
-        setName(null);
-        setSalary(null);
-        setAllow(null);
-        setBonus(null);
-        setEdit(false);
+  
+        setEdit(false); // Close the edit modal
+        setName("");
+        setSalary("");
+        setAllow("");
+        setBonus("");
         alert("Payrow updated successfully");
+  
+        // Update state with new data
+        setFeeData((prevData) =>
+          prevData.map((item) => (item._id === editID ? res.data.doc : item))
+        );
+  
+        
       })
       .catch((err) => {
+        // setloading(false);
         console.log(err);
         alert("Failed to update payrow");
       });
   };
-
+  
+  
   const handleDelete = (id) => {
     Alert.alert(
       "Confirm Deletion",
@@ -375,9 +389,9 @@ const DropdownComponent = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         {/* List of payrows */}
-        <ScrollView style={{ marginTop: 0, marginBottom: 0, backgroundColor: '#FFFFFF' }}>
+        <ScrollView style={{ marginTop: 0, marginBottom: 0, backgroundColor: '#daedff' }}>
           {feeData.map((data, index) => (
-            <Section key={index} id={data._id} title={data.name} title2={`₹ ${data.salary}`}>
+            <Section key={index} id={data._id} title={data.name} title2={`₹ ${Number(data.salary) + Number(data.allowance) + Number(data.bonus)}`}>
               <InfoRow label="Salary" value={data.salary} />
               <InfoRow label="Allowance" value={data.allowance} />
               <InfoRow label="Bonus" value={data.bonus} />
@@ -397,9 +411,6 @@ const DropdownComponent = () => {
         <BlurView intensity={50} tint="dark" style={styles.modalOverlay}>
         
 
-
-
-
         {(isOpen || edit) && (
           <View style={styles.inputContainer}>
             <Text style={styles.inputHeader}>{edit ? 'Edit Payrow' : 'Add Payrow'}</Text>
@@ -407,8 +418,8 @@ const DropdownComponent = () => {
            {!edit &&<TextInput
               style={styles.input}
               placeholder={edit ? "Edit Name" : "Add Name"}
-              onChangeText={(text) => setName(text)}
               value={name}
+              onChangeText={(text) => setName(text)}
             />}
 
             <TextInput
@@ -453,15 +464,15 @@ const DropdownComponent = () => {
 
         {!isOpen && <TouchableOpacity
           style={{
-            width: 80,
-            height: 80,
+            width: 60,
+            height: 60,
             backgroundColor: '#58A8F9',
             zIndex: 90000,
             position: 'relative',
             borderRadius: 100,
             bottom: 100,
             justifyContent: 'center',
-            left: responsiveWidth(65),
+            left: responsiveWidth(75),
             alignItems: 'center',
           }}
           onPress={handleAdd}
@@ -479,7 +490,7 @@ const DropdownComponent = () => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: 'white',
+      backgroundColor: '#daedff',
       // backgroundColor: 'red',
       padding: 16,
       paddingTop:70,

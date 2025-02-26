@@ -94,7 +94,7 @@ console.log(personalData, ' djfskjbgkjs')
         const response = await axios.get(`${baseUrl}/sections`);
         const formatedData = response.data.map((sec) => ({
           label: sec.name,
-          value: sec.name,
+          value: sec._id,
         }))
 
         setSections(formatedData)
@@ -130,7 +130,7 @@ console.log(personalData, ' djfskjbgkjs')
         const response = await axios.get(`${baseUrl}/scholarships`);
         const formatedData = response.data.map((sec) => ({
           label: sec.name,
-          value: sec.name,
+          value: sec._id,
         }))
 
         setScholarships(formatedData)
@@ -165,7 +165,7 @@ console.log(personalData, ' djfskjbgkjs')
         const response = await axios.get(`${baseUrl}/divisions`);
         const formatedData = response.data.map((div) => ({
           label: div.name,
-          value: div.name,
+          value: div._id,
         }))
 
         setDivs(formatedData)

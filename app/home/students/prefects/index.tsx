@@ -144,6 +144,7 @@ const Index = () => {
         setStartYear(null);
         setEndYear(null);
         handleClose();
+        setSelectedClass(null)
       } else {
         throw new Error("Invalid response structure");
       }
@@ -157,29 +158,79 @@ const Index = () => {
 
  
 
+  // const handleEditPrefect = async () => {
+  //   if (!prefectName || !role || !endYear || !selectedStudent) return;
+
+  //   const updatedPrefect = { name: prefectName, position: role, endYear,userID: selectedStudent };
+  //   // console.log(updatedPrefect, 'jfieujerjerijewo')
+
+  //   try {
+  //     const response = await axios.put(`${baseUrl}/prefects/update/${currentId}`, updatedPrefect);
+  //     console.log(response.data, 'resssssss')
+  //     const updatedList = prefects.map((item) =>
+  //       item._id === currentId ? { ...item, ...response.data } : item
+  //     );
+  //     // console.log(updatedList,'fmswngkengkdhs')
+  //     setPrefects(updatedList);
+  //     setFilteredPrefects(updatedList);
+  //     Alert.alert("Success", "Prefect updated successfully!");
+  //     setPrefectName(""); // Clear the name input
+  //     setRole(null);
+  //     setStartYear(null);
+  //     setEndYear(null);
+  //     handleClose();
+  //     // fetchPrefects()
+  //   } catch (error) {
+  //     console.error("Error updating prefect:", error);
+  //     Alert.alert("Error", "Failed to update prefect.");
+  //   }
+  // };
+
+
   const handleEditPrefect = async () => {
-    if (!prefectName || !role || !endYear || !selectedStudent) return;
+    if (!prefectName || !role || !endYear) {
+      Alert.alert("Error", "Please fill all fields before updating.");
+      return;
+    }
+  
+    const updatedPrefect = { 
+      name: prefectName, 
+      position: role, 
+      endYear, 
+      userID: currentId 
+    };
 
-    const updatedPrefect = { name: prefectName, position: role, endYear,userID: selectedStudent };
-
+    // console.log(updatedPrefect,'adijoje')
+  
     try {
       const response = await axios.put(`${baseUrl}/prefects/update/${currentId}`, updatedPrefect);
-      const updatedList = prefects.map((item) =>
-        item._id === currentId ? { ...item, ...response.data } : item
-      );
-      setPrefects(updatedList);
-      setFilteredPrefects(updatedList);
-      Alert.alert("Success", "Prefect updated successfully!");
-      setPrefectName(""); // Clear the name input
-      setRole(null);
-      setStartYear(null);
-      setEndYear(null);
-      handleClose();
+
+      // console.log(response.data, 'sdofoafoao')
+      
+      if (response.status === 200) {
+        // Fetch updated prefect list for consistency
+        await fetchPrefects();
+        Alert.alert("Success", "Prefect updated successfully!");
+        
+        // Clear inputs after update
+        setPrefectName("");
+        setRole(null);
+        setStartYear(null);
+        setEndYear(null);
+        setSelectedStudent(null);
+        handleClose();
+      } else {
+        throw new Error("Update failed.");
+      }
     } catch (error) {
       console.error("Error updating prefect:", error);
       Alert.alert("Error", "Failed to update prefect.");
     }
   };
+  
+
+
+
 
   const handleEdit = (prefect) => {
     if (prefect && prefect.name) {
@@ -188,7 +239,7 @@ const Index = () => {
       setRole(prefect.position);
       setStartYear(prefect.startYear);
       setEndYear(prefect.endYear);
-      setCurrentId(prefect._id); // Store the prefect ID for updating
+      setCurrentId(prefect.userID); // Store the prefect ID for updating
       setIsOpen(true);
     } else {
       console.error("Prefect data is undefined or incomplete");
@@ -323,7 +374,7 @@ const Index = () => {
 
     <View style={styles.rule}></View>
 
-    <ScrollView style={[isOpen || edit ? styles.scrollContainer1 : styles.scrollContainer]} contentContainerStyle={{paddingBottom:90,}}>
+    <ScrollView style={[isOpen || edit ? styles.scrollContainer1 : styles.scrollContainer]} contentContainerStyle={{paddingBottom:responsiveHeight(20),}}>
       {filteredPrefects.map((prefect, index):any => (
         <View style={styles.list} key={index}>
           <Image style={styles.stImg} source={require("../../../../assets/images/images/avatar.png")} /> 

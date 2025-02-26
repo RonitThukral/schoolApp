@@ -4,6 +4,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import Summary from '../Reports/summary';
 import Inventory from './inventory';
 import Sales from './sales';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const TabCarousel = () => {
   const layout = useWindowDimensions();
@@ -32,7 +33,7 @@ const TabCarousel = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={require('../../../assets/images/images/ellipse1.png')} style={styles.bgImg} imageStyle={{width:'60%',position:'relative',alignSelf:'flex-end',}}>
+      <ImageBackground source={require('../../../assets/images/images/ellipse1.png')} style={styles.bgImg} imageStyle={{width:responsiveHeight(70),position:'relative',alignSelf:'flex-end',}}>
 <View style={styles.schoolInfo}>
         
       </View>

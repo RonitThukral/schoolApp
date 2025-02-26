@@ -5,13 +5,13 @@ import dayjs from 'dayjs'; // Make sure to import dayjs
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
 
 const FeeDetails = () => {
-  const { studentId } = useLocalSearchParams();  // Get studentId from URL
-
+  const { studentId, year, month } = useLocalSearchParams();  // Get studentId from URL
+// console.log(month)
   const [studentDetails, setStudentDetails] = useState(null);
   const [fees, setFees] = useState({});
   const [transactions, setTransactions] = useState([]);
@@ -47,32 +47,40 @@ const FeeDetails = () => {
   };
 
 
-  const fetchScholarship = async () => {
-    // if (!selectedStudent?.scholarship) return;  // Check that scholarship exists
+  const fetchScholarship = async (scholarshipId) => {
+    if (!scholarshipId) return;  // Ensure scholarship ID exists
     try {
-      const response = await axios.get(`${baseUrl}/scholarships/${studentDetails.scholarship}`);
-
-      // console.log(response?.data?.doc, 'adokanlf')
-      setScholar(response.data?.doc?.name);
+        const response = await axios.get(`${baseUrl}/scholarships/${scholarshipId}`);
+        setScholar(response.data?.doc?.name);
     } catch (error) {
-      console.error("Error fetching SCHOLARSHIP:", error);
+        console.error("Error fetching SCHOLARSHIP:", error);
     }
-  };
+};
 
   // Fetch data from API
   useEffect(() => {
     
     fetchDetails();
-fetchScholarship()
-
+    
 
   }, [studentId]);
+
+
+  useEffect(() => {
+    if (studentDetails?.scholarship) {
+        fetchScholarship(studentDetails?.scholarship); // Fetch scholarship only after student details are available
+    }
+}, [studentDetails]);
 
   // console.log("transcation : ", transactions)
 
   // Calculate Total Bill, Paid, and Balance
   const totalBill = Object.values(fees).reduce((sum, fee) => sum + Number(fee || 0), 0);
-  const totalPaid = transactions.reduce((sum, txn) => sum + Number(txn.amount || 0), 0);
+
+  const filteredTransactions = transactions.filter(
+    (txn) => txn.fees?.term === month && txn.fees?.academicYear === year
+  );
+  const totalPaid = filteredTransactions.reduce((sum, txn) => sum + Number(txn.amount || 0), 0);
   const balance = totalBill - totalPaid;
 
   // Toggle Section Expand/Collapse
@@ -176,9 +184,11 @@ fetchScholarship()
           <InfoRow label="Scholarship" value={scholar || 'N/A'} />
           <InfoRow label="Total Paid" value={`₹${totalPaid}` || '0'} />
           <InfoRow label="Balance" value={`₹${balance}` || '700'} />
+          <InfoRow label="Month" value={month || 'N/A'} />
+          <InfoRow label="Year" value={year || 'N/A'} />
         </View>
       </View> 
-
+{/* 
       <Text style={{ fontSize: 20, backgroundColor: 'white', color: 'grey', paddingHorizontal: 35, paddingVertical: 10 }}>Transactions</Text>
 
       <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle = {{paddingBottom:40}}>
@@ -190,7 +200,7 @@ fetchScholarship()
             <InfoRow1 label="Payment Method" value={txn.paymentMethod} />
           </Section>
         ))}
-      </ScrollView>
+      </ScrollView> */}
     </>
   );
 };
@@ -206,10 +216,10 @@ const styles = StyleSheet.create({
 
   },
   headerBackground: {
-    width: '100%',
+    width: responsiveWidth(100),
     height: 250, // Adjust height according to your design
     backgroundColor:'#daedff',
-    borderBottomWidth:0.8,
+    borderBottomWidth:0.5,
     borderBottomColor:'black'
   
   },
@@ -359,7 +369,7 @@ const styles = StyleSheet.create({
     infoRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingVertical: 3,
+      paddingVertical: 4,
     },
     label1: {
       fontWeight:'bold',
@@ -386,7 +396,7 @@ const styles = StyleSheet.create({
       color:'grey',
       fontSize: 14,
       position:'relative',
-      left:responsiveWidth(14)
+      left:responsiveWidth(8)
       // backgroundColor:'blue'
     },
    

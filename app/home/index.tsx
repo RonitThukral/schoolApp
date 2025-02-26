@@ -11,19 +11,23 @@ import Feather from '@expo/vector-icons/Feather';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
-import { useRouter } from 'expo-router';
+import {useRouter } from 'expo-router';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 
 
 export default function Home(): any {
 
-  const date = new Date().toISOString().slice(0, 10)
+  const formattedDate = new Date().toISOString().slice(0, 10)
+
+  const date = formattedDate.split('-').reverse().join('-');
+
   const Item = [
     
     {
       name: "Students",
-      icon: <Image source={require('../../assets/images/images/cap.png')}/>,
-      content: 364
+      icon: <Image source={require('../../assets/images/images/Vector3.png')} style={{width:28,height:22}}/>,
+      content: 300
     },
     {
       name: "Teachers",
@@ -58,9 +62,13 @@ export default function Home(): any {
   const handlePress = () => {
     router.navigate('./home/Chat')
   }
+  const handlePressBell = () => {
+    router.navigate('./home/Notices')
+  }
   
 
- 
+  const navigation = useNavigation() as any;
+
 
   return (
     <>
@@ -69,7 +77,7 @@ export default function Home(): any {
     <ScrollView style={styles.container1}>
       {/* Header Section */}
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity >
           <MaterialIcons name="menu" size={28} color="#000" />
         </TouchableOpacity>
         <View style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end',top:'15%'}}>
@@ -79,7 +87,10 @@ export default function Home(): any {
         <Feather name="message-square" size={22} color="black"style={{position:'relative',top:3}}/>
 
           </TouchableOpacity>
+          <TouchableOpacity onPress={handlePressBell}>
+
         <Fontisto name="bell" size={22} color="black" />          
+          </TouchableOpacity>
         </View>
         <View style={styles.userInfo}>
           <Text style={styles.userName}>Nilesh Shr</Text>

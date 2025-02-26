@@ -56,6 +56,7 @@ const index = () => {
     const handleClose = () => {
         setIsOpen(false);
         setEdit(false);
+        setTransport('')
     }
 
     const handleChange = (text) => {

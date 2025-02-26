@@ -954,6 +954,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    paddingVertical:5
   },
   list: {
     width: '90%',

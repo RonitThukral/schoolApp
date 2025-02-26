@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
  
 // Sample events data
 // const sampleEvents = {
@@ -350,7 +351,7 @@ const FinanceChart = () => {
       </View>
       <LineChart
         data={data}
-        width={Dimensions.get('window').width - 40}
+        width={Dimensions.get('window').width -5}
         height={220}
         chartConfig={{
           backgroundColor: '#ffffff',
@@ -392,7 +393,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     margin: 16,
     borderRadius: 12,
-    padding: 16,
+    padding: 14,
   },
   financeTitle: {
     fontSize: 18,
@@ -404,7 +405,8 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 16,
     // backgroundColor:'red'
-    paddingRight:40
+   marginRight:responsiveHeight(2),
+   marginLeft:responsiveHeight(-2)
   },
   modalOverlay: {
         flex: 1,

@@ -9,16 +9,28 @@ import { useRouter,useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const Term = [
-  { label: '1', value: '1' },
-  { label: '2', value: '2' },
-  { label: '3', value: '3' }
+const Months = [
+  { label: 'January', value: 'January' },
+  { label: 'February', value: 'February' },
+  { label: 'March', value: 'March' },
+  { label: 'April', value: 'April' },
+  { label: 'May', value: 'May' },
+  { label: 'June', value: 'June' },
+  { label: 'July', value: 'July' },
+  { label: 'August', value: 'August' },
+  { label: 'September', value: 'September' },
+  { label: 'October', value: 'October' },
+  { label: 'November', value: 'November' },
+  { label: 'December', value: 'December' }
 ];
+
 
 const AcademicYear = [
   { label: '2024', value: '2024' },
+  { label: '2025', value: '2025' },
   { label: '2026', value: '2026' },
   { label: '2027', value: '2027' },
+  { label: '2028', value: '2028' },
   { label: '2029', value: '2029' }
 ];
 
@@ -85,10 +97,9 @@ const FeePayment = () => {
     );
 
     const totalPaid = filteredTransactions.reduce((sum, txn) => sum + Number(txn.amount || 0), 0);
-    const balance = totalFee - totalPaid ;
-
-    // New status for advance payment when balance < 0
-    const status = balance === 0 ? 'Fully Paid' : balance < 0 ? 'Advance Payment' : 'Pending';
+   const balance = totalFee - totalPaid ;
+    // New status for Advance when balance < 0
+    const status = balance === 0 ? 'Paid' : balance < 0 ? 'Advance' : 'Pending';
     
     return { status, balance };
   };
@@ -100,7 +111,7 @@ const FeePayment = () => {
 
   const handleSearch = () => {
     if (!selectedYear || !selectedTerm || !selectedClass) {
-      Alert.alert('Error', 'Please select Academic Year, Term, and Class.');
+      Alert.alert('Error', 'Please select Academic Year, Month, and Class.');
       return;
     }
     const filtered = students?.filter((student) => {
@@ -126,7 +137,7 @@ const FeePayment = () => {
   const handlePress = (id) => {
     router.push({
       pathname: '/home/Finance/feePayment/fees',
-      params: { studentId: id },  // Use 'params' here instead of 'query'
+      params: { studentId: id , year: selectedYear, month: selectedTerm},  // Use 'params' here instead of 'query'
     });
   };
 
@@ -155,12 +166,12 @@ const FeePayment = () => {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
-            data={Term}
+            data={Months}
             search={false}  // Disabled auto-search
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={'Select Term'}
+            placeholder={'Select Month'}
             value={selectedTerm}
             onChange={(item) => setSelectedTerm(item.value)}
           />
@@ -194,21 +205,21 @@ const FeePayment = () => {
         data={filteredStudents.length > 0 ? filteredStudents : students}  // Use filtered students
         keyExtractor={(item) => item._id}
         style={styles.list}
-        contentContainerStyle={{paddingTop:responsiveHeight(4),paddingBottom:20}}
+        contentContainerStyle={{paddingBottom:responsiveHeight(5)}}
         renderItem={({ item }) => {
           const { status, balance } = calculatePaymentStatus(item);
           return (
             <TouchableOpacity style={styles.studentCard} onPress={()=>{handlePress(item.userID)}}>
               <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
               
-              <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
+              <View style={{ flexDirection: 'column', position: 'absolute', left: responsiveWidth(18) }}>
                <Text style={styles.studentTextid}>{item.userID}</Text>
-               <Text style={styles.studentText}>{item.name}</Text>
+               <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
              </View>
-              <View style={status === 'Fully Paid' ? styles.paid : status === 'Advance Payment' ? styles.advance : styles.pending}>
-                <Text style={status === 'Fully Paid' ? styles.paidText : status === 'Advance Payment' ? styles.advanceText : styles.pendingText}>{status}</Text>
+              <View style={status === 'Paid' ? styles.paid : status === 'Advance' ? styles.advance : styles.pending}>
+                <Text style={status === 'Paid' ? styles.paidText : status === 'Advance' ? styles.advanceText : styles.pendingText}>{status}</Text>
                 {status === 'Pending' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{balance}</Text>}
-                {status === 'Advance Payment' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{Math.abs(balance)}</Text>} {/* Displaying advance payment balance */}
+                {status === 'Advance' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{Math.abs(balance)}</Text>} 
               </View>
 
               <AntDesign name="right" size={24} color="#58A8F9" style={{position:'relative', right:5}} />
@@ -247,15 +258,18 @@ const styles = StyleSheet.create({
     height: 75,
   },
   studentTextid: { fontSize: 18, color: '#007bff' },
-  studentText: { fontSize: 14 },
+  studentText: { fontSize: 14 ,width:responsiveWidth(27)},
   img: {
-    marginHorizontal: 20,
-    width: 42,
-    height: 42,
+    marginHorizontal: responsiveWidth(5),
+    width: responsiveWidth(10.5),
+    height: responsiveHeight(5.2),
+    marginLeft:responsiveWidth(2)
   },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height:'80%',
+    position:'relative',
+    top:responsiveHeight(4)
   },
   dropdown: {
     height: 50,
@@ -307,7 +321,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#daf6cb',
     borderRadius:15, 
     position:'relative',
-    left:responsiveWidth(10),
+    left:responsiveWidth(13),
     bottom:responsiveWidth(1),
   },
   paidText:{
@@ -322,7 +336,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#f0ad4e',
     borderRadius:15, 
     position:'relative',
-    left:responsiveWidth(10),
+    left:responsiveWidth(13),
     bottom:responsiveWidth(1),
   },
   advanceText:{
@@ -337,7 +351,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#ff7c7c',
     borderRadius:15, 
     position:'relative',
-    left:responsiveWidth(10),
+    left:responsiveWidth(13),
     
     bottom:responsiveWidth(1),
   },

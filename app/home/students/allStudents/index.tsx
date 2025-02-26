@@ -375,9 +375,9 @@ import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-nat
         <Image
           style={styles.stImg}
           source={require('../../../../assets/images/images/boy.png')}
-        />
+        /> 
         <View style={styles.listContent}>
-          <Text style={{ color: '#58A8F9', fontSize: 20 }}>{student.name}</Text>
+          <Text style={{ color: '#58A8F9', fontSize: 20, width: responsiveWidth(50) }}>{student.name}</Text>
           <Text style={{ color: 'grey', fontSize: 12, fontWeight: 'condensedBold' }}>
             {student.userID}
           </Text>
@@ -386,7 +386,7 @@ import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-nat
           </Text>
         </View>
         
-        <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: 35 }} />
+        <Feather name="arrow-right" size={26} color="#58A8F9" style={{ position: 'relative', right: responsiveWidth(5) }} />
       </TouchableOpacity>
     ))
   )}
@@ -559,14 +559,14 @@ import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-nat
       width:60,
       height:60,
       position:'absolute',
-      left: 40,
+      left: responsiveWidth(8),
       backgroundColor:'white',
       borderRadius:100
     },
     listContent:{
       flexDirection:'column',
       position: 'relative',
-      left:130
+      left:responsiveWidth(29)
     },
     
 
