@@ -7,18 +7,21 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import { useRouter } from 'expo-router';
 import { UserInfo } from '../utils/app.types';
 import { getUserData } from '../utils/storage';
+import { useNavigation } from '@react-navigation/native';
 
-const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat, handlePressNotification }: {
+const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat, handlePressNotification, openDrawer }: {
   menuIcon?: boolean;
   chatIcon?: boolean;
   notificationIcon?: boolean;
   handlePressChat?: () => void;
   handlePressNotification?: () => void;
+  openDrawer?: () => void;
 }) => {
   const router = useRouter();
   const [currentUser, setcurrentUser] = useState<UserInfo | null>(null);
 
   getUserData().then((d) => setcurrentUser(d));
+  const navigation = useNavigation();
 
 
   const handlePress = () => {
@@ -39,7 +42,7 @@ const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat, ha
 
   return (
     <View style={styles.header}>
-      {menuIcon !== false && <TouchableOpacity>
+      {menuIcon !== false && <TouchableOpacity onPress={() => { openDrawer && openDrawer(); }}>
         <MaterialIcons name="menu" size={28} color="#000" />
       </TouchableOpacity>}
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>

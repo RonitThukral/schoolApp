@@ -1,14 +1,17 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform, BackHandler } from 'react-native'
 import 'react-native-reanimated';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import HeaderLarge from '../components/Header';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import DrawerComponent from '../components/DrawerComponent';
 
 
 
 export default function Home(): any {
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const date = new Date().toISOString().slice(0, 10)
   const Item = [
@@ -49,56 +52,61 @@ export default function Home(): any {
     <>
 
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={styles.container1}>
-          {/* Header Section */}
-          <HeaderLarge />
+        <GestureHandlerRootView>
 
-          <View style={styles.bgimg}>
-            <Image source={require('../../assets/images/images/Vector.png')} />
-          </View>
+          <DrawerComponent drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} settingsRoute={'./home/Settings'} />
 
-          {/* Statistics section */}
-          <View style={styles.container}>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
-              <Text style={styles.heading}>Statistics</Text>
-              <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
+          <ScrollView style={styles.container1}>
+            {/* Header Section */}
+            <HeaderLarge openDrawer={() => setDrawerOpen(true)} />
+
+            <View style={styles.bgimg}>
+              <Image source={require('../../assets/images/images/Vector.png')} />
             </View>
-            <View style={styles.innercontainer}>
-              {Item.map((item, index): any => {
-                return (
-                  <TouchableOpacity style={styles.Card} key={index}>
 
-                    <Text style={styles.cardHeading}>{item.name}</Text>
-                    <View style={styles.cardContent}>
-                      {item.icon}
-                      <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
-                    </View>
+            {/* Statistics section */}
+            <View style={styles.container}>
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
+                <Text style={styles.heading}>Statistics</Text>
+                <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
+              </View>
+              <View style={styles.innercontainer}>
+                {Item.map((item, index): any => {
+                  return (
+                    <TouchableOpacity style={styles.Card} key={index}>
 
-                  </TouchableOpacity>
-                )
-              })}
+                      <Text style={styles.cardHeading}>{item.name}</Text>
+                      <View style={styles.cardContent}>
+                        {item.icon}
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
+                      </View>
+
+                    </TouchableOpacity>
+                  )
+                })}
+
+              </View>
+            </View>
+
+            {/* notice section */}
+            <View style={styles.noticesSection}>
+              <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
+            </View>
+
+            {/* main card grid section */}
+            <View style={{ position: 'relative', top: '5%' }}>
+
+              <MainCard />
 
             </View>
-          </View>
 
-          {/* notice section */}
-          <View style={styles.noticesSection}>
-            <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
-          </View>
+            <View style={styles.dashboardSection}>
+              <Dashboard />
+            </View>
+          </ScrollView>
 
-          {/* main card grid section */}
-          <View style={{ position: 'relative', top: '5%' }}>
-
-            <MainCard />
-
-          </View>
-
-          <View style={styles.dashboardSection}>
-            <Dashboard />
-          </View>
-        </ScrollView>
-
-      </SafeAreaView>
+        </GestureHandlerRootView>
+      </SafeAreaView >
     </>
 
   );
