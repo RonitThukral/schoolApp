@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
- 
+
 // Sample events data
 // const sampleEvents = {
 //   '2024-12-05': [
@@ -173,8 +173,8 @@ const EventModal = ({ visible, events, date, onClose }: any): any => {
                       event.resource === 'Holiday'
                         ? '#EA4747'
                         : event.resource === 'Trip'
-                        ? '#47EA47'
-                        : '#4775EA',
+                          ? '#47EA47'
+                          : '#4775EA',
                   },
                 ]}
               />
@@ -351,7 +351,7 @@ const FinanceChart = () => {
       </View>
       <LineChart
         data={data}
-        width={Dimensions.get('window').width -5}
+        width={Dimensions.get('window').width - 5}
         height={220}
         chartConfig={{
           backgroundColor: '#ffffff',
@@ -388,7 +388,7 @@ const Dashboard = () => {
 
 // Styles
 const styles = StyleSheet.create({
-  
+
   financeContainer: {
     backgroundColor: 'white',
     margin: 16,
@@ -405,118 +405,118 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 16,
     // backgroundColor:'red'
-   marginRight:responsiveHeight(2),
-   marginLeft:responsiveHeight(-2)
+    marginRight: responsiveHeight(2),
+    marginLeft: responsiveHeight(-2)
   },
   modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      modalContent: {
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 20,
-        width: '80%',
-        maxHeight: '80%',
-      },
-      modalHeader: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 15,
-        textAlign: 'center',
-      },
-      eventItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-      },
-      eventTitle: {
-        fontSize: 16,
-        fontWeight: '500',
-        marginLeft: 10,
-      },
-      eventTime: {
-        fontSize: 14,
-        color: '#666',
-        marginLeft: 10,
-      },
-      closeButton: {
-        marginTop: 15,
-        padding: 10,
-        backgroundColor: '#4775EA',
-        borderRadius: 10,
-        alignItems: 'center',
-      },
-      closeButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '500',
-      },
-      container: {
-            flex: 1,
-            backgroundColor: 'white',
-          },
-          calendarContainer: {
-            padding: 25,
-          },
-          calendarHeader: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 25,
-          },
-          calendarTitle: {
-            fontSize: 20,
-            fontWeight: 'bold',
-          },
-          monthYear: {
-            fontSize: 16,
-            color: '#666',
-          },
-          weekDaysContainer: {
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginBottom: 10,
-          },
-          weekDay: {
-            fontSize: 12,
-            color: '#666',
-          },
-          daysContainer: {
-            borderWidth: 1,
-            borderColor: '#eee',
-            borderRadius: 10,
-          },
-          weekRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingVertical: 10,
-          },
-          dayCell: {
-            width: 30,
-            height: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-            
-          },
-          hasDayEvents: {
-            backgroundColor: '#f0f7ff',
-            borderRadius: 15,
-          },
-          dayText: {
-            fontSize: 14,
-          },
-          eventDot: {
-            width: 4,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: '#4775EA',
-            marginTop: 2,
-          },
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    width: '80%',
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  eventItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  eventTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginLeft: 10,
+  },
+  eventTime: {
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 10,
+  },
+  closeButton: {
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: '#4775EA',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  calendarContainer: {
+    padding: 25,
+  },
+  calendarHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  calendarTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  monthYear: {
+    fontSize: 16,
+    color: '#666',
+  },
+  weekDaysContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  weekDay: {
+    fontSize: 12,
+    color: '#666',
+  },
+  daysContainer: {
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 10,
+  },
+  weekRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
+  dayCell: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  hasDayEvents: {
+    backgroundColor: '#f0f7ff',
+    borderRadius: 15,
+  },
+  dayText: {
+    fontSize: 14,
+  },
+  eventDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#4775EA',
+    marginTop: 2,
+  },
 });
 
 export default Dashboard;
