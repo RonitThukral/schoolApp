@@ -301,7 +301,7 @@ const Calendar = () => {
             {week.map((day, dayIndex) => (
               <TouchableOpacity
                 key={dayIndex}
-                style={[styles.dayCell, hasEvents(day) && styles.hasDayEvents]}
+                style={[styles.dayCell, day && styles.dayActiveCell, hasEvents(day) && styles.hasDayEvents, hasHolidayEvents(day) && styles.hasHolidayEvents]}
                 onPress={() => handleDayPress(day)}
                 disabled={!day}
               >
@@ -309,8 +309,8 @@ const Calendar = () => {
                   <View style={{
                     alignItems: "center",
                   }}>
-                    <Text style={styles.dayText}>{day}</Text>
-                    {hasEvents(day) && <View style={hasHolidayEvents(day) ? styles.eventDotHoliday : styles.eventDot} />}
+                    <Text style={[styles.dayText, hasEvents(day) && styles.eventDayText]}>{day}</Text>
+                    {/* {hasEvents(day) && <View style={hasHolidayEvents(day) ? styles.eventDotHoliday : styles.eventDot} />} */}
                   </View>
                 )}
               </TouchableOpacity>
@@ -517,14 +517,29 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dayActiveCell: {
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#58a8f9"
 
   },
   hasDayEvents: {
-    backgroundColor: '#f0f7ff',
+    backgroundColor: '#58a8f9',
     borderRadius: 15,
+  },
+  hasHolidayEvents: {
+    backgroundColor: '#FF3131aa',
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#FF3131',
   },
   dayText: {
     fontSize: 14,
+  },
+  eventDayText: {
+    color: "#ffffff",
+    fontWeight: "bold",
   },
   eventDot: {
     width: 4,
