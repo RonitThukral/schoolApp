@@ -151,6 +151,10 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 //   );
 // };
 
+const HOLIDAY_EVENT = ['Holiday',
+  // 'Break',     // Need to ask about the school vacation on Break?
+  // 'Easter Break'
+];
 
 const EventModal = ({ visible, events, date, onClose }: any): any => {
   return (
@@ -228,7 +232,17 @@ const Calendar = () => {
 
   const hasEvents = (day: any): any => {
     const date = formatDate(day);
-    return date && events.some((event: any) => new Date(event.day).toISOString().split('T')[0] === date);
+    return date && (
+      events.some((event: any) => new Date(event.day).toISOString().split('T')[0] === date)
+      || new Date(currentYear, currentMonth, day).getDay() === 0);
+  };
+
+  const hasHolidayEvents = (day: any): any => {
+    const date = formatDate(day);
+    return date &&
+      (events.some((event: any) => new Date(event.day).toISOString().split('T')[0] === date &&
+        HOLIDAY_EVENT.includes(event.resource))
+        || new Date(currentYear, currentMonth, day).getDay() === 0);
   };
 
   const handleDayPress = (day: number | null) => {
@@ -292,9 +306,11 @@ const Calendar = () => {
                 disabled={!day}
               >
                 {day && (
-                  <View>
+                  <View style={{
+                    alignItems: "center",
+                  }}>
                     <Text style={styles.dayText}>{day}</Text>
-                    {hasEvents(day) && <View style={styles.eventDot} />}
+                    {hasEvents(day) && <View style={hasHolidayEvents(day) ? styles.eventDotHoliday : styles.eventDot} />}
                   </View>
                 )}
               </TouchableOpacity>
@@ -517,6 +533,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#4775EA',
     marginTop: 2,
   },
+  eventDotHoliday: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'red',
+    marginTop: 2,
+  },
+
 });
 
 export default Dashboard;
