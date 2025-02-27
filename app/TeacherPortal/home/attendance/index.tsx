@@ -109,11 +109,6 @@ const StaffHistory = () => {
           />
         </View>
       </View>
-      <View style={styles.buttoncontainer}>
-        <TouchableOpacity onPress={viewReport} style={styles.ViewReport}>
-          <Text style={{ textAlign: 'center', color: 'white', fontSize: 15 }}>View Report</Text>
-        </TouchableOpacity>
-      </View>
 
 
       {/* Show warning only if a date is selected and no attendance found, but keep the full list */}
@@ -288,18 +283,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15,
   },
-  ViewReport: {
-    width: 110,
-    height: 35,
-    borderRadius: 15,
-    backgroundColor: '#58A8F9',
-    justifyContent: 'center',
-  },
-  buttoncontainer: {
-    flexDirection: 'row',
-    justifyContent: "center",
-  },
-
 });
 
 export default StaffHistory;

@@ -110,7 +110,7 @@
 //           />
 //         </View>
 
-        
+
 
 //          <View style={{ marginTop: 0 }}>
 //           <Dropdown
@@ -169,12 +169,12 @@
 //             <TouchableOpacity style={{position:'absolute',right:20}}>
 //             <Image  source={require('../../../../assets/images/images/edit.png')}/>
 //             </TouchableOpacity>
-            
+
 //             {item.status === 'Absent' && (
 //               <Image source={require('../../../../assets/images/images/box.png')} style={{ position: 'relative', right: 50 }} />
 //             )}
 //             {item.status === 'Present' && <Image source={require('../../../../assets/images/images/check.png')} style={{ position: 'relative', right: 45 }}/>}
-            
+
 //           </View>
 //         )}
 //       />
@@ -190,7 +190,7 @@
 //      width:'95%',
 //      alignSelf:'center',
 //     //  backgroundColor:'red',
-    
+
 //      elevation:4
 //     },
 //   searchBar: {
@@ -297,6 +297,8 @@
 
 
 
+import AttendanceReportTable from '@/app/components/AttendanceReportTable';
+import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
@@ -315,13 +317,14 @@ const StudentHistory = () => {
   const [attendance, setAttendance] = useState([]);
   const [isCalendarVisible, setIsCalendarVisible] = useState(true); // Calendar visibility
   const [isSearched, setIsSearched] = useState(false); // Track if search is clicked
+  const [showAsTable, setShowAsTable] = useState<boolean>(false);
 
 
-  const fetchClasses = async() => {
+  const fetchClasses = async () => {
 
     try {
       const classes = await axios.get(`${baseUrl}/classes`)
-//  console.log(classes, 'classed')
+      //  console.log(classes, 'classed')
       const formatedData = classes.data.map((cls) => ({
         label: cls.name,
         value: cls.classCode,
@@ -373,7 +376,7 @@ const StudentHistory = () => {
     const dateFormatted = formatDate(new Date(selectedDate));
 
     const selectedAttendance = attendance.filter(
-      (attendanceRecord) => 
+      (attendanceRecord) =>
         attendanceRecord.date === dateFormatted &&
         attendanceRecord.class === selectedClass
     );
@@ -439,109 +442,135 @@ const StudentHistory = () => {
   };
 
   return (
-    <SafeAreaView style={[isCalendarVisible ? styles.container : styles.container1]}>
-      <View style={{ height: '30%' }}>
-        {/* Calendar Section */}
-        {isCalendarVisible && (
-          <View style={{ height: 400 }}>
-            <Calendar
-              onDayPress={(day) => setSelectedDate(day.dateString)}
-              markedDates={{
-                [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
-              }}
-              dayComponent={({ date, state }) => renderDay({ date, state })}
-              style={styles.calendar}
-              theme={{
-                textDayFontSize: 12,
-                textDayHeaderFontSize: 12,
-                textMOnthFontSize: 12,
-                textDayStyle: { padding: 2 },
-                textSectionTitleColor: 'black',
-                textSectionTitleDisabledColor: '#d9e1e8',
-                textDayHeaderFontWeight: '700',
-              }}
-              enableSwipeMonths={true}
-            />
-          </View>
-        )}
-
-        {/* Dropdown Section */}
-        <View style={styles.main}>
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            data={classes}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={'Select Class'}
-            searchPlaceholder="Search..."
-            onFocus={() => setIsFocus('route')}
-            onBlur={() => setIsFocus(null)}
-            value={selectedClass}
-            onChange={handleClassSelection}
-          />
-
-          {/* Search Bar */}
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Search by Id or Name"
-            placeholderTextColor={'grey'}
-            value={searchQuery}
-            onChangeText={(text) => setSearchQuery(text)}
-          />
-
-          {/* Buttons */}
-          <View style={styles.footer}>
-            <TouchableOpacity style={styles.reset} onPress={handleReset}>
-              <Text style={{ color: '#58A8F9' }}>Reset</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.search} onPress={handleSearch}>
-              <Text style={{ textAlign: 'center', color: 'white', fontSize: 15, paddingHorizontal: 10 }}>
-                Search
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View style={{
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        gap: 10,
+      }}>
+        <Text>Show as Table:</Text>
+        <TouchableOpacity onPress={() => setShowAsTable(!showAsTable)}>
+          {showAsTable
+            ? <FontAwesome name="toggle-on" size={24} color="#58A8F9" />
+            : <FontAwesome name="toggle-off" size={24} color="#58A8F9" />
+          }
+        </TouchableOpacity>
       </View>
 
-      {/* Students List - Only visible after Search */}
-
-      { isSearched &&filteredStudents.length > 0 ?  (
-        <FlatList
-        keyboardShouldPersistTaps="handled"
-          data={filteredStudents}
-          keyExtractor={(item) => item._id}
-          style={styles.list}
-          contentContainerStyle={{ paddingBottom: responsiveHeight(20) }}
-          renderItem={({ item }) => (
-            <View style={styles.studentCard}>
-              <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
-              <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
-                <Text style={styles.studentTextid}>{item.userID}</Text>
-                <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
-                <Text style={styles.studentText}>Status: {item.status}</Text>
+      {showAsTable ? <>
+        <AttendanceReportTable headerheight={270}
+          classFilterPreSelected={null}
+          viewRoutePath={'./studentHistory/edit'}
+          edit={true}
+          mode="Students" />
+      </>
+        : <>
+          <View style={{
+            // gap: 20,
+          }}>
+            {/* Calendar Section */}
+            {isCalendarVisible && (
+              <View>
+                <Calendar
+                  onDayPress={(day) => setSelectedDate(day.dateString)}
+                  markedDates={{
+                    [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
+                  }}
+                  dayComponent={({ date, state }) => renderDay({ date, state })}
+                  style={styles.calendar}
+                  theme={{
+                    textDayFontSize: 12,
+                    textDayHeaderFontSize: 12,
+                    textMOnthFontSize: 12,
+                    textDayStyle: { padding: 2 },
+                    textSectionTitleColor: 'black',
+                    textSectionTitleDisabledColor: '#d9e1e8',
+                    textDayHeaderFontWeight: '700',
+                  }}
+                  enableSwipeMonths={true}
+                />
               </View>
-              {item.status === 'Absent' && (
-              <Image
-                source={require('../../../../assets/images/images/box.png')}
-                style={{ position: 'relative', right: 8 }}
+            )}
+
+            {/* Dropdown Section */}
+            <View style={styles.main}>
+              <Dropdown
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                data={classes}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={'Select Class'}
+                searchPlaceholder="Search..."
+                onFocus={() => setIsFocus('route')}
+                onBlur={() => setIsFocus(null)}
+                value={selectedClass}
+                onChange={handleClassSelection}
               />
-            )}
-            {item.status === 'Present' && (
-              <Image source={require('../../../../assets/images/images/check.png')} />
-            )}
+
+              {/* Search Bar */}
+              <TextInput
+                style={styles.searchBar}
+                placeholder="Search by Id or Name"
+                placeholderTextColor={'grey'}
+                value={searchQuery}
+                onChangeText={(text) => setSearchQuery(text)}
+              />
+
+              {/* Buttons */}
+              <View style={styles.footer}>
+                <TouchableOpacity style={styles.reset} onPress={handleReset}>
+                  <Text style={{ color: '#58A8F9' }}>Reset</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.search} onPress={handleSearch}>
+                  <Text style={{ textAlign: 'center', color: 'white', fontSize: 15, paddingHorizontal: 10 }}>
+                    Search
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          )}
-        />
-      )
-      :
-     isSearched && <Text style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>
-                No attendance found for {selectedDate}
-              </Text> 
+          </View>
+
+          {/* Students List - Only visible after Search */}
+
+          {isSearched && filteredStudents.length > 0 ? (
+            <FlatList
+              keyboardShouldPersistTaps="handled"
+              data={filteredStudents}
+              keyExtractor={(item) => item._id}
+              style={styles.list}
+              renderItem={({ item }) => (
+                <View style={styles.studentCard}>
+                  <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
+                  <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
+                    <Text style={styles.studentTextid}>{item.userID}</Text>
+                    <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
+                    <Text style={styles.studentText}>Status: {item.status}</Text>
+                  </View>
+                  {item.status === 'Absent' && (
+                    <Image
+                      source={require('../../../../assets/images/images/box.png')}
+                      style={{ position: 'relative', right: 8 }}
+                    />
+                  )}
+                  {item.status === 'Present' && (
+                    <Image source={require('../../../../assets/images/images/check.png')} />
+                  )}
+                </View>
+              )}
+            />
+          )
+            :
+            isSearched && <Text style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>
+              No attendance found for {selectedDate}
+            </Text>
+          }
+        </>
       }
     </SafeAreaView>
   );
@@ -552,42 +581,50 @@ const StudentHistory = () => {
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: 'white' },
-  container1: { flex: 1, padding: 20, backgroundColor: 'white' ,paddingTop:'70'},
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+    paddingTop: 70,
+    gap: 35,
+  },
+  // container1: { flex: 1, padding: 20, backgroundColor: 'white', paddingTop: '70' },
   calendar: {
-     borderRadius: 15, 
-     marginTop: 50 ,
+    borderRadius: 15,
+    // marginTop: 50,
     //  height:'85%',
-    minHeight: '85%',
-    maxHeight: '90%',
-     width:'95%',
-     alignSelf:'center',
+    // minHeight: '85%',
+    // maxHeight: '90%',
+    width: '95%',
+    alignSelf: 'center',
     //  backgroundColor:'red',
-    
-     elevation:4,
-  
-      ...Platform.select({
-        ios: {
-          marginTop:0
-        },
-        
-      }),
-    
-    },
-    main: {
-      ...Platform.select({
-        ios: {
-          marginTop:-50
-        },
-        
-      }),
-    },
+    paddingBottom: 10,
+    elevation: 4,
+
+    ...Platform.select({
+      ios: {
+        marginTop: 0
+      },
+
+    }),
+
+  },
+  main: {
+    ...Platform.select({
+      ios: {
+        marginTop: -50
+      },
+
+    }),
+    padding: 20,
+    gap: 15,
+  },
   searchBar: {
-    width: '90%',
+    width: '100%',
     borderRadius: 8,
     paddingHorizontal: 20,
     height: 50,
-    marginBottom: 10,
+    // marginBottom: 10,
     alignSelf: 'center',
     backgroundColor: '#daedff',
 
@@ -620,8 +657,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // backgroundColor:'green',
-    height:25,
-    width:35,
+    height: 25,
+    width: 35,
   },
   dayText: { fontSize: 12, textAlign: 'center', color: '#000' },
   sundayText: { color: 'red' },
@@ -633,20 +670,20 @@ const styles = StyleSheet.create({
     height: 42,
   },
   list: {
-    flexGrow: 1, 
-    position:'absolute',
-    top:responsiveHeight(35),
-    alignSelf:'center',
-    height:responsiveHeight(80),
-    width:responsiveWidth(90)
+    flexGrow: 1,
+    // position: 'absolute',
+    // top: responsiveHeight(35),
+    // alignSelf: 'center',
+    // height: responsiveHeight(80),
+    // width: responsiveWidth(90)
   },
   dropdown: {
     height: 50,
-    width: '90%',
+    width: '100%',
     borderRadius: 8,
     paddingHorizontal: 8,
     backgroundColor: '#daedff',
-    marginBottom: 15,
+    // marginBottom: 15,
     alignSelf: 'center',
   },
   inputSearchStyle: {
@@ -666,9 +703,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     // zIndex: 100000,
-    position:'relative',
-    right:20,
-    top:10
+    // position: 'relative',
+    // right: 20,
+    // top: 10
   },
   search: {
     width: 110,

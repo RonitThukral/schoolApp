@@ -1,91 +1,6 @@
-// import React from 'react';
-// import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-// import { RotateOutDownRight } from 'react-native-reanimated';
-
-// const ComingSoonScreen = () => {
-//   return (
-//     <View style={styles.container}>
-//       <Image 
-//         source={require('../../../../assets/images/images/handboy.png')}
-//         style={styles.image}
-//       />
-//       <Text style={styles.title}>We're Launching Soon!</Text>
-//       <Text style={styles.subtitle}>
-//         Our team is working hard to give you an amazing experience. Stay tuned!
-//       </Text>
-      
-//       <TouchableOpacity style={styles.notifyButton}>
-//         <Text style={styles.notifyText}>Notify Me</Text>
-//       </TouchableOpacity>
-
-     
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#1E1E2E',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     padding: 20,
-//   },
-//   image: {
-//     width: Dimensions.get('window').width * 0.8,
-//     height: 200,
-//     resizeMode: 'contain',
-//     marginBottom: 30,
-//   },
-//   title: {
-//     fontSize: 28,
-//     fontWeight: 'bold',
-//     color: '#FFFFFF',
-//     textAlign: 'center',
-//     marginBottom: 10,
-//   },
-//   subtitle: {
-//     fontSize: 16,
-//     color: '#CCCCCC',
-//     textAlign: 'center',
-//     marginBottom: 30,
-//     lineHeight: 24,
-//   },
-//   notifyButton: {
-//     backgroundColor: '#FF6F61',
-//     borderRadius: 25,
-//     paddingVertical: 12,
-//     paddingHorizontal: 35,
-//     marginBottom: 30,
-//   },
-//   notifyText: {
-//     color: '#FFFFFF',
-//     fontSize: 16,
-//     fontWeight: 'bold',
-//   },
-//   footerText: {
-//     fontSize: 14,
-//     color: '#FFFFFF',
-//     marginBottom: 10,
-//   },
-//   socialIcons: {
-//     flexDirection: 'row',
-//     gap: 20,
-//   },
-//   icon: {
-//     width: 30,
-//     height: 30,
-//     tintColor: '#FFFFFF',
-//   },
-// });
-
-// export default ComingSoonScreen;
-
-
-
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackground,ActivityIndicator, SafeAreaView } from 'react-native';
-import {useLocalSearchParams } from 'expo-router';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackground, ActivityIndicator, SafeAreaView } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs'; // Make sure to import dayjs
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
@@ -105,7 +20,7 @@ const FeeDetails = () => {
 
   const fetchDetails = async () => {
     try {
-     
+
 
       // Fetch transaction data based on student ID
       const transactionsRes = await axios.get(`${baseUrl}/transactions`);
@@ -129,14 +44,9 @@ const FeeDetails = () => {
     }
   };
 
-
   // Fetch data from API
   useEffect(() => {
-    
     fetchDetails();
-
-
-
   }, [studentId]);
 
   // console.log("transcation : ", transactions)
@@ -207,77 +117,78 @@ const FeeDetails = () => {
   // };
 
 
-  
-          const Section = ({ id,title,subTitle,subTitle2, children }:any):any => {
-            const isExpanded = true && !expandedSections.includes(id);
-          return(
-          <View style={styles.section}>
-            <TouchableOpacity 
-              style={styles.sectionHeader} 
-              onPress={() => {toggleSection(id)}}
-              activeOpacity={0.7}
-            >
-              <Image style={{width:50,height:50,marginHorizontal:15}} source={require('../../../../assets/images/images/boy.png')}/>
-              <View style={{flex:1, flexDirection:'column'}}>
-  
-              <Text style={styles.sectionTitle}>{title}</Text>
-              <Text style={{color:'grey',fontSize:12}}>{subTitle}</Text>
-              <Text style={{color:'grey',fontSize:11}}>{subTitle2}</Text>
-              </View>
-              <AntDesign 
-                name={isExpanded ? "up" : "down"} 
-                size={24} 
-                color="#58A8F9"
-              />
-            </TouchableOpacity>
-            {isExpanded && (
-              <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
-              <View style={styles.sectionContent}>
-                {children}
-              </View>
-              <View style={styles.listBtns}>
-                  {/* <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+
+  const Section = ({ id, title, subTitle, subTitle2, children }: any): any => {
+    const isExpanded = true && !expandedSections.includes(id);
+    return (
+      <View style={styles.section}>
+        <TouchableOpacity
+          style={styles.sectionHeader}
+          onPress={() => { toggleSection(id) }}
+          activeOpacity={0.7}
+        >
+          <Image style={{ width: 50, height: 50, marginHorizontal: 15 }} source={require('../../../../assets/images/images/boy.png')} />
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+
+            <Text style={styles.sectionTitle}>{title}</Text>
+            <Text style={{ color: 'grey', fontSize: 12 }}>{subTitle}</Text>
+            <Text style={{ color: 'grey', fontSize: 11 }}>{subTitle2}</Text>
+          </View>
+          <AntDesign
+            name={isExpanded ? "up" : "down"}
+            size={24}
+            color="#58A8F9"
+          />
+        </TouchableOpacity>
+        {isExpanded && (
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={styles.sectionContent}>
+              {children}
+            </View>
+            <View style={styles.listBtns}>
+              {/* <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
                   <Image style={{width:27,height:27}} source={require('../../../../assets/images/images/eye.png')}/>
   
                   </TouchableOpacity> */}
-                  <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',position:'relative',bottom: 15,left:20}} >
-                  <Image  source={require('../../../../assets/images/images/delete.png')}/>
-  
-                  </TouchableOpacity>
-              </View>
-  
-              </View>
-            )}
+              <TouchableOpacity style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center', position: 'relative', bottom: 15, left: 20 }} >
+                <Image source={require('../../../../assets/images/images/delete.png')} />
+
+              </TouchableOpacity>
+            </View>
+
           </View>
-        )};
-     
+        )}
+      </View>
+    )
+  };
+
 
 
 
   // Loading State
   if (loading) {
     return <View style={{ position: "relative", marginTop: responsiveHeight(50) }}>
-                     <ActivityIndicator size="large" color="#58A8F9" />
-                     </View>;
+      <ActivityIndicator size="large" color="#58A8F9" />
+    </View>;
   }
 
   return (
     <>
-<SafeAreaView style={{flex:1 , paddingTop:60,backgroundColor:'white'}}>
-      {/* <Text style={{ fontSize: 20, backgroundColor: 'white', color: 'grey', paddingHorizontal: 35, paddingVertical: 10 }}>Transactions</Text> */}
+      <SafeAreaView style={{ flex: 1, paddingTop: 60, backgroundColor: 'white' }}>
+        {/* <Text style={{ fontSize: 20, backgroundColor: 'white', color: 'grey', paddingHorizontal: 35, paddingVertical: 10 }}>Transactions</Text> */}
 
-      <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle = {{paddingBottom:40}}>
-        {transactions.map((txn, index) => (
-          <Section key={index} id={txn.id} title={`₹ ${txn.amount}`}  subTitle={dayjs(txn.date).format("DD MMMM YYYY")} subTitle2={`Type: ${txn.type}`}>
-            <InfoRow1 label="Category" value={txn?.category} />
-            <InfoRow1 label="Description" value={txn?.description} />
-            {/* <InfoRow1 label="Type" value={txn?.type} /> */}
-            <InfoRow1 label="Payment Mode" value={txn?.method} />
-          </Section>
-        ))}
-      </ScrollView>
-  
-</SafeAreaView>
+        <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle={{ paddingBottom: 40 }}>
+          {transactions.map((txn, index) => (
+            <Section key={index} id={txn.id} title={`₹ ${txn.amount}`} subTitle={dayjs(txn.date).format("DD MMMM YYYY")} subTitle2={`Type: ${txn.type}`}>
+              <InfoRow1 label="Category" value={txn?.category} />
+              <InfoRow1 label="Description" value={txn?.description} />
+              {/* <InfoRow1 label="Type" value={txn?.type} /> */}
+              <InfoRow1 label="Payment Mode" value={txn?.method} />
+            </Section>
+          ))}
+        </ScrollView>
+
+      </SafeAreaView>
     </>
   );
 };
@@ -295,24 +206,24 @@ const styles = StyleSheet.create({
   headerBackground: {
     width: '100%',
     height: 250, // Adjust height according to your design
-    backgroundColor:'#daedff',
-    borderBottomWidth:0.8,
-    borderBottomColor:'black'
-  
+    backgroundColor: '#daedff',
+    borderBottomWidth: 0.8,
+    borderBottomColor: 'black'
+
   },
   profileSection: {
-    position:'absolute',
+    position: 'absolute',
     // bottom: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     marginTop: 25,
     padding: 16,
   },
   avatarContainer: {
     position: 'relative',
-    right:15,
-    top:25
+    right: 15,
+    top: 25
   },
   avatar: {
     width: 100,
@@ -340,7 +251,7 @@ const styles = StyleSheet.create({
   studentId: {
     color: '#58A8F9',
     fontSize: 24,
-    marginTop:15,
+    marginTop: 15,
     marginRight: 20
 
   },
@@ -353,136 +264,136 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    width:'100%',
-    paddingVertical:20,
-    flexDirection:'column',
-    justifyContent:'space-between',
-    alignSelf:'center',
-    position:'relative',
-    borderBottomWidth:0.8,
-    paddingHorizontal:30,
+    width: '100%',
+    paddingVertical: 20,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    position: 'relative',
+    borderBottomWidth: 0.8,
+    paddingHorizontal: 30,
     // backgroundColor:'red'
   },
-  list:{
+  list: {
     width: "90%",
     height: 100,
     borderColor: 'grey',
     borderRadius: 10,
     // backgroundColor : 'red',
-    backgroundColor : '#FFFFFF',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'space-between',
-    flexDirection:'row',
-    alignItems:'center',
-    alignSelf:'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
     marginBottom: 0,
     marginTop: 20
   },
-  listBtns:{
-      position:'absolute',
-      right:30
+  listBtns: {
+    position: 'absolute',
+    right: 30
   },
-  stImg:{
-    width:60,
-    height:60,
-    position:'absolute',
+  stImg: {
+    width: 60,
+    height: 60,
+    position: 'absolute',
     left: 40,
-    backgroundColor:'white',
-    borderRadius:100
+    backgroundColor: 'white',
+    borderRadius: 100
   },
-  listContent:{
-    flexDirection:'column',
+  listContent: {
+    flexDirection: 'column',
     position: 'relative',
-    left:130
+    left: 130
   },
   section: {
 
-      width:"80%",
-      alignSelf:'center',
-      height:'auto',
-      backgroundColor: '#FFF',
-      //  backgroundColor: 'red',
-       marginHorizontal: 16,
-      marginTop: 10,
-       borderRadius: 8,
-       overflow: 'hidden',
-       elevation: 5, // Adds shadow for Android
-       shadowColor: '#000', // Adds shadow for iOS
-       shadowOffset: { width: 0, height: 1 },
-       shadowOpacity: 0.1,
-       shadowRadius: 3,
-    },
-    sectionHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 16,
-      // backgroundColor: '#F8F8F8',
-      backgroundColor: 'transparent',
-    },
-    sectionTitle: {
-      fontSize: 20,
-      fontWeight: '600',
-      color:'#58A8F9'
-    },
-    sectionContent: {
-      padding: 16,
-      width:"100%",
-      alignSelf:'center',
-      height:'auto',
-      backgroundColor: '#FFF',
-      // backgroundColor: 'red',
-      marginHorizontal: 16,
-      paddingTop: 0 ,
-      borderRadius: 10,
-      overflow: 'hidden',
-      
-    },
-    
-    infoRow1: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 2,
-    },
-    infoRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 3,
-    },
-    label1: {
-      fontWeight:'bold',
-      color: '#666',
-      fontSize: 12,
-      // backgroundColor:'green',
-      width:'35%'
-    },
-    label: {
-      fontWeight:'bold',
-      color: '#666',
-      fontSize: 14,
-      // backgroundColor:'green',
-      width:'45%',
-      marginLeft:15
-    },
-    value1: {
-      color:'grey',
-      fontSize: 12,
-      position:'relative',
-      // left:responsiveWidth(14),
-      width:responsiveWidth(35),
-      // backgroundColor:'red'
-      
-    },
-    value: {
-      color:'grey',
-      fontSize: 14,
-      position:'relative',
-      left:responsiveWidth(14),
-      width:responsiveWidth(10)
-      // backgroundColor:'blue'
-    },
-   
-    
-    
-    
+    width: "80%",
+    alignSelf: 'center',
+    height: 'auto',
+    backgroundColor: '#FFF',
+    //  backgroundColor: 'red',
+    marginHorizontal: 16,
+    marginTop: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+    elevation: 5, // Adds shadow for Android
+    shadowColor: '#000', // Adds shadow for iOS
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    // backgroundColor: '#F8F8F8',
+    backgroundColor: 'transparent',
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#58A8F9'
+  },
+  sectionContent: {
+    padding: 16,
+    width: "100%",
+    alignSelf: 'center',
+    height: 'auto',
+    backgroundColor: '#FFF',
+    // backgroundColor: 'red',
+    marginHorizontal: 16,
+    paddingTop: 0,
+    borderRadius: 10,
+    overflow: 'hidden',
+
+  },
+
+  infoRow1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 2,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 3,
+  },
+  label1: {
+    fontWeight: 'bold',
+    color: '#666',
+    fontSize: 12,
+    // backgroundColor:'green',
+    width: '35%'
+  },
+  label: {
+    fontWeight: 'bold',
+    color: '#666',
+    fontSize: 14,
+    // backgroundColor:'green',
+    width: '45%',
+    marginLeft: 15
+  },
+  value1: {
+    color: 'grey',
+    fontSize: 12,
+    position: 'relative',
+    // left:responsiveWidth(14),
+    width: responsiveWidth(35),
+    // backgroundColor:'red'
+
+  },
+  value: {
+    color: 'grey',
+    fontSize: 14,
+    position: 'relative',
+    left: responsiveWidth(14),
+    width: responsiveWidth(10)
+    // backgroundColor:'blue'
+  },
+
+
+
+
 
 });

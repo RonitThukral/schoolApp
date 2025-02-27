@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, ImageBackground,ActivityIndicator } from 'react-native';
-import {useLocalSearchParams } from 'expo-router';
+import {useLocalSearchParams, useRouter } from 'expo-router';
 import dayjs from 'dayjs'; // Make sure to import dayjs
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
@@ -18,6 +18,10 @@ const FeeDetails = () => {
   const [expandedSections, setExpandedSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [scholar, setScholar] = useState(null);
+
+
+  const router = useRouter()
+
 
   const fetchDetails = async () => {
     try {
@@ -144,6 +148,17 @@ const FeeDetails = () => {
     );
   };
 
+
+
+  const handlePress = () => {
+    router.push({
+      pathname: '/home/Finance/feePayment/paymentPage',
+      params: { studentId, year, term: month ,balance},  // Use 'params' here instead of 'query'
+    });
+  }
+
+
+
   // Loading State
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -188,19 +203,9 @@ const FeeDetails = () => {
           <InfoRow label="Year" value={year || 'N/A'} />
         </View>
       </View> 
-{/* 
-      <Text style={{ fontSize: 20, backgroundColor: 'white', color: 'grey', paddingHorizontal: 35, paddingVertical: 10 }}>Transactions</Text>
-
-      <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle = {{paddingBottom:40}}>
-        {transactions.map((txn, index) => (
-          <Section key={index} id={txn._id} title={`₹ ${txn.amount}`} subTitle={`${studentDetails?.name} ${studentDetails?.surname}` || 'N/A'} subTitle2={dayjs(txn.date).format("DD MMMM YYYY")}>
-            <InfoRow1 label="Roll Number" value={studentDetails?.userID} />
-            <InfoRow1 label="Class" value={studentDetails?.classID} />
-            <InfoRow1 label="Guardian" value={studentDetails?.guadian[0] || 'N/A'} />
-            <InfoRow1 label="Payment Method" value={txn.paymentMethod} />
-          </Section>
-        ))}
-      </ScrollView> */}
+        {balance > 0 && <TouchableOpacity style={styles.paybtn} onPress={handlePress}>
+            <Text style={{color:'white',fontSize:18}}>Pay Now</Text>
+          </TouchableOpacity>}
     </>
   );
 };
@@ -400,7 +405,17 @@ const styles = StyleSheet.create({
       // backgroundColor:'blue'
     },
    
-    
+    paybtn:{
+      width:100,
+      height:40,
+      backgroundColor:'#58a8f9',
+      borderRadius:10,
+      justifyContent:'center',
+      alignItems:'center',
+      alignSelf:'flex-end',
+      marginRight:70,
+      marginVertical:20
+    }
     
     
 

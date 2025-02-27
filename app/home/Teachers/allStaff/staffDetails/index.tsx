@@ -43,8 +43,8 @@ const StaffDetails = () => {
   };
 
   useEffect(() => {
-    if(teacher) {
-    fetchCampuses()
+    if (teacher) {
+      fetchCampuses()
     }
     fetchTeacherDetails();
   }, [teacher]);
@@ -66,7 +66,7 @@ const StaffDetails = () => {
       [section]: !prev[section],
     }));
   };
-  
+
   const InfoRow = ({ label, value, isMultiLine = false }) => (
     <View style={styles.infoRow}>
       <Text style={styles.label}>{label}</Text>
@@ -100,20 +100,20 @@ const StaffDetails = () => {
   const capitalizeFirstLetter = (text) => {
     return text ? text.charAt(0).toUpperCase() + text.slice(1) : '';
   };
-  
-  
-  
+
+
+
 
 
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
-  
+
     const date = new Date(dateString);
     const day = date.getDate(); // Get the day (1-31)
     const month = date.toLocaleString('en-US', { month: 'long' }); // Get full month name
     const year = date.getFullYear(); // Get the full year
-  
+
     return `${day} ${month} ${year}`;
   };
 
@@ -149,113 +149,112 @@ const StaffDetails = () => {
                 </View>
               </View>
             </ImageBackground>
-<ScrollView contentContainerStyle={{paddingBottom:40}}>
-            <View
-              style={[
-                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
-              ]}
-            ></View>
+            <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+              <View
+                style={[
+                  expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+                ]}
+              ></View>
 
-            <Section
-              title="Teacher Information"
-              isExpanded={expandedSections.studentInfo}
-              onPress={() => toggleSection('studentInfo')}
-            >
-              <InfoRow label="Title" value={capitalizeFirstLetter(teacher?.title)} />
-              <InfoRow label="Name" value={teacher?.name} />
-              <InfoRow label="Surname" value={teacher?.surname} />
-              <InfoRow label="Gender" value={capitalizeFirstLetter(teacher?.gender)} />
-              <InfoRow label="Email" value={teacher?.email} />
-              <InfoRow label="Caste" value={teacher?.religion} />
-              <InfoRow label="Category" value={teacher?.nationality} />
-              <InfoRow label="DOB" value={formatDate(teacher?.dateOfBirth)} />
-            </Section>
+              <Section
+                title="Teacher Information"
+                isExpanded={expandedSections.studentInfo}
+                onPress={() => toggleSection('studentInfo')}
+              >
+                <InfoRow label="Title" value={capitalizeFirstLetter(teacher?.title)} />
+                <InfoRow label="Name" value={teacher?.name} />
+                <InfoRow label="Surname" value={teacher?.surname} />
+                <InfoRow label="Gender" value={capitalizeFirstLetter(teacher?.gender)} />
+                <InfoRow label="Email" value={teacher?.email} />
+                <InfoRow label="Caste" value={teacher?.religion} />
+                <InfoRow label="Category" value={teacher?.nationality} />
+                <InfoRow label="DOB" value={formatDate(teacher?.dateOfBirth)} />
+              </Section>
 
-            <View
-              style={[
-                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
-              ]}
-            ></View>
+              <View
+                style={[
+                  expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+                ]}
+              ></View>
 
-            <Section
-              title="Employment Information"
-              isExpanded={expandedSections.academicInfo}
-              onPress={() => toggleSection('academicInfo')}
-            >
-              <InfoRow label="Position" value={capitalizeFirstLetter(teacher.role)} />
-              <InfoRow
-                label="Qualification"
-                value={teacher.qualifications || 'N/A'}
-              />
-              <InfoRow label="Department" value={teacher.department || 'N/A'} />
-              <InfoRow label="Campus" value={campus || 'N/A'} />
-              <InfoRow label="Bank" value={teacher.bank || 'N/A'} />
-              <InfoRow
-                label="Account No."
-                value={teacher.accountNumber || 'N/A'}
-              />
-              <InfoRow
-                label="Joining Date"
-                value={formatDate(teacher.employmentDate) || 'N/A'}
-              />
-            </Section>
+              <Section
+                title="Employment Information"
+                isExpanded={expandedSections.academicInfo}
+                onPress={() => toggleSection('academicInfo')}
+              >
+                <InfoRow label="Position" value={capitalizeFirstLetter(teacher.role)} />
+                <InfoRow
+                  label="Qualification"
+                  value={teacher.qualifications || 'N/A'}
+                />
+                <InfoRow label="Department" value={teacher.department || 'N/A'} />
+                <InfoRow label="Campus" value={campus || 'N/A'} />
+                <InfoRow label="Bank" value={teacher.bank || 'N/A'} />
+                <InfoRow
+                  label="Account No."
+                  value={teacher.accountNumber || 'N/A'}
+                />
+                <InfoRow
+                  label="Joining Date"
+                  value={formatDate(teacher.employmentDate) || 'N/A'}
+                />
+              </Section>
 
-            <View
-              style={[
-                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
-              ]}
-            ></View>
+              <View
+                style={[
+                  expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+                ]}
+              ></View>
 
-            <Section
-              title="Contact Information"
-              isExpanded={expandedSections.contactInfo}
-              onPress={() => toggleSection('contactInfo')}
-            >
-              <InfoRow label="Telephone No." value={teacher.telephone} />
-              <InfoRow label="Mobile No." value={teacher.mobilenumber} />
-              <InfoRow label="Residence" value={teacher.physicalAddress} />
-              <InfoRow
-                label="Postal Address"
-                value={teacher.postalAddress}
+              <Section
+                title="Contact Information"
+                isExpanded={expandedSections.contactInfo}
+                onPress={() => toggleSection('contactInfo')}
+              >
+                <InfoRow label="Telephone No." value={teacher.telephone} />
+                <InfoRow label="Mobile No." value={teacher.mobilenumber} />
+                <InfoRow label="Residence" value={teacher.physicalAddress} />
+                <InfoRow
+                  label="Postal Address"
+                  value={teacher.postalAddress}
                 // isMultiLine
-              />
-            </Section>
+                />
+              </Section>
 
-            <View
-              style={[
-                expandedSections.contactInfo ? styles.rule1 : styles.rule2,
-              ]}
-            ></View>
+              <View
+                style={[
+                  expandedSections.contactInfo ? styles.rule1 : styles.rule2,
+                ]}
+              ></View>
 
-            <Section
-              title="Next Of Kin Information"
-              isExpanded={expandedSections.guardianInfo}
-              onPress={() => toggleSection('guardianInfo')}
-            >
-              <InfoRow
-                label="Name"
-                value={`${teacher?.nextofKin?.name || ''} ${
-                  teacher?.nextofKin?.lastname || ''
-                }`}
-              />
-              <InfoRow
-                label="Relationship"
-                value={teacher?.nextofKin?.relationship}
-              />
-              <InfoRow label="Occupation" value={teacher?.nextofKin?.occupation} />
-              <InfoRow label="Contact" value={teacher?.nextofKin?.mobile} />
-              <InfoRow label="Email" value={teacher?.nextofKin?.email} />
-              <InfoRow
-                label="Address"
-                value={teacher?.nextofKin?.address}
-                isMultiLine
-              />
-            </Section>
+              <Section
+                title="Next Of Kin Information"
+                isExpanded={expandedSections.guardianInfo}
+                onPress={() => toggleSection('guardianInfo')}
+              >
+                <InfoRow
+                  label="Name"
+                  value={`${teacher?.nextofKin?.name || ''} ${teacher?.nextofKin?.lastname || ''
+                    }`}
+                />
+                <InfoRow
+                  label="Relationship"
+                  value={teacher?.nextofKin?.relationship}
+                />
+                <InfoRow label="Occupation" value={teacher?.nextofKin?.occupation} />
+                <InfoRow label="Contact" value={teacher?.nextofKin?.mobile} />
+                <InfoRow label="Email" value={teacher?.nextofKin?.email} />
+                <InfoRow
+                  label="Address"
+                  value={teacher?.nextofKin?.address}
+                  isMultiLine
+                />
+              </Section>
             </ScrollView>
           </>
         ) : (
-<View style={{ position: "relative",top:'45%'}}>
-          <ActivityIndicator size="large" color="#58A8F9" />
+          <View style={{ position: "relative", top: '45%' }}>
+            <ActivityIndicator size="large" color="#58A8F9" />
           </View>
         )}
       </View>
@@ -270,28 +269,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   scrollViewContent: {
-    flex:1,
+    flex: 1,
     // paddingBottom: 20, // Add space at the bottom to prevent the last item from being cut off
   },
   headerBackground: {
     width: '100%',
     height: 300, // Adjust height according to your design
-    backgroundColor:'#daedff',
-  
+    backgroundColor: '#daedff',
+
   },
   profileSection: {
-    position:'absolute',
+    position: 'absolute',
     bottom: 25,
     flexDirection: 'column',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     marginTop: 25,
     padding: 16,
   },
   avatarContainer: {
     position: 'relative',
-    right:15,
-    top:25
+    right: 15,
+    top: 25
   },
   avatar: {
     width: 100,
@@ -319,7 +318,7 @@ const styles = StyleSheet.create({
   studentId: {
     color: '#58A8F9',
     fontSize: 24,
-    marginTop:15,
+    marginTop: 15,
     marginRight: 20
 
   },
@@ -331,10 +330,10 @@ const styles = StyleSheet.create({
 
   },
   section: {
-    width:"90%",
-    alignSelf:'center',
+    width: "90%",
+    alignSelf: 'center',
     marginTop: 5,
-   
+
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -347,12 +346,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#58A8F9',
   },
   sectionContent: {
     padding: 16,
-    width:"90%",
-    alignSelf:'center',
-    height:'auto',
+    width: "90%",
+    alignSelf: 'center',
+    height: 'auto',
     backgroundColor: '#FFF',
     // backgroundColor: 'red',
     marginHorizontal: 16,
@@ -363,52 +363,52 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    borderColor :'grey',
-    borderWidth:0.2,
-    
-    
+    borderColor: 'grey',
+    borderWidth: 0.2,
+
+
   },
-  
+
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 1,
   },
   label: {
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: '#666',
     fontSize: 11.5,
   },
   value: {
-    color:'grey',
+    color: 'grey',
     fontSize: 11.5,
-    paddingLeft:responsiveWidth(4)
+    paddingLeft: responsiveWidth(4)
   },
-  rule1:{
-    height:0.5, 
-    width:'70%',
-    borderWidth:0.5,
-    borderColor:'grey', 
-    alignSelf:'center',
-    position:'fixed', 
-    top:62
+  rule1: {
+    height: 0.5,
+    width: '70%',
+    borderWidth: 0.5,
+    borderColor: 'grey',
+    alignSelf: 'center',
+    position: 'fixed',
+    top: 62
   },
-  rule2:{
-    height:0.5, 
-    width:'80%',
-    borderWidth:0.5,
-    borderColor:'grey', 
-    alignSelf:'center',
-    position:'fixed', 
-    top:70
+  rule2: {
+    height: 0.5,
+    width: '80%',
+    borderWidth: 0.5,
+    borderColor: 'grey',
+    alignSelf: 'center',
+    position: 'fixed',
+    top: 70
   },
-  multiLine : {
-    flexWrap:'wrap',
+  multiLine: {
+    flexWrap: 'wrap',
     // width:'70%',
     // marginTop:10,
-    fontSize:12,
-    color:'grey',
-    paddingLeft:responsiveWidth(4)
+    fontSize: 12,
+    color: 'grey',
+    paddingLeft: responsiveWidth(4)
 
   }
 });

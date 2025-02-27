@@ -5,6 +5,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
 import { getUserData } from '@/app/utils/storage';
+import HeaderLarge from '@/app/components/Header';
 
 type SingeChatMessage = {
   isViewed: boolean,
@@ -98,21 +99,8 @@ const ConversationThread = () => {
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         {/* Header Section */}
-        <View style={styles.header}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
-            <View style={styles.headerIcons}>
-              {/* <TouchableOpacity>
-                <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-              </TouchableOpacity>
-              <Fontisto name="bell" size={22} color="black" /> */}
-            </View>
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>{currentUser?.name}</Text>
-              <Text style={styles.userRole}>{currentUser?.role}</Text>
-            </View>
-            <Image source={require('../../../../assets/images/images/image.png')} style={styles.avatar} />
-          </View>
-        </View>
+
+        <HeaderLarge menuIcon={false} chatIcon={false} notificationIcon={false} />
 
         {/* Conversation section */}
         <View style={{

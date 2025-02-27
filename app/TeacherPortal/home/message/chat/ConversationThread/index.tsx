@@ -4,6 +4,7 @@ import { Feather, Fontisto, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
+import HeaderLarge from '@/app/components/Header';
 
 type SingeChatMessage = {
   isViewed: boolean,
@@ -77,9 +78,9 @@ const ConversationThread = () => {
         flexDirection: flexdirection,
         backgroundColor: chatboxColor,
         borderRadius: 5,
-        
+
       }}>
-        <Text style={[flexdirection === 'row' ? {textAlign: 'left'} : null]}>{item.message}</Text>
+        <Text style={[flexdirection === 'row' ? { textAlign: 'left' } : null]}>{item.message}</Text>
       </View>
     </View>);
   }
@@ -88,21 +89,7 @@ const ConversationThread = () => {
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         {/* Header Section */}
-        <View style={styles.header}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
-            <View style={styles.headerIcons}>
-              {/* <TouchableOpacity>
-                <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-              </TouchableOpacity>
-              <Fontisto name="bell" size={22} color="black" /> */}
-            </View>
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>Nilesh Shr</Text>
-              <Text style={styles.userRole}>Admin</Text>
-            </View>
-            <Image source={require('../../../../../../assets/images/images/image.png')} style={styles.avatar} />
-          </View>
-        </View>
+        <HeaderLarge />
 
         {/* Conversation section */}
         <View style={{
@@ -169,8 +156,8 @@ const ConversationThread = () => {
               justifyContent: 'center',
               paddingLeft: 3,
             }}>
-<MaterialIcons name="send" size={24} color="#58A8F9" /> 
-           {/* <Ionicons name="send" size={20} color="#58A8F9" /> */}
+            <MaterialIcons name="send" size={24} color="#58A8F9" />
+            {/* <Ionicons name="send" size={20} color="#58A8F9" /> */}
           </TouchableOpacity>
         </View>
       </SafeAreaView>

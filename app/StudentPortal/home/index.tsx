@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native'
 // import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -12,6 +12,9 @@ import MainCard from '../components/MainCard';
 import Dashboard from '../components/eventcalender';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import HeaderLarge from '@/app/components/Header';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import DrawerComponent from '@/app/components/DrawerComponent';
 
 
 
@@ -19,8 +22,7 @@ export default function Home(): any {
   const { student } = useLocalSearchParams()
 
   const parsedStudent = student ? JSON.parse(student) : null;
-
-
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // console.log(parsedStudent, " studejntfddl")
   const date = new Date().toISOString().slice(0, 10)
@@ -69,6 +71,9 @@ export default function Home(): any {
     })
   }
 
+  const handlePressNotification = () => {
+    router.push('./home/notices');
+  }
 
 
 
@@ -76,74 +81,61 @@ export default function Home(): any {
     <>
 
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={styles.container1}>
-          {/* Header Section */}
-          <View style={styles.header}>
-            <TouchableOpacity>
-              <MaterialIcons name="menu" size={28} color="#000" />
-            </TouchableOpacity>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
+        <GestureHandlerRootView>
+          <DrawerComponent drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} settingsRoute={'./home/settings'} />
+          <ScrollView style={styles.container1}>
+            {/* Header Section */}
+            <HeaderLarge
+              handlePressChat={handlePress}
+              handlePressNotification={handlePressNotification}
+              openDrawer={() => setDrawerOpen(true)}
+            />
 
-              <View style={styles.headerIcons}>
-                <TouchableOpacity onPress={handlePress}>
+            <View style={styles.bgimg}>
+              <Image source={require('../../../assets/images/images/Vector.png')} />
+            </View>
 
-                  <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-                </TouchableOpacity>
-                <Fontisto name="bell" size={22} color="black" />
+            {/* Statistics section */}
+            <View style={styles.container}>
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
+                <Text style={styles.heading}>Statistics</Text>
+                <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
               </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.userName}>{parsedStudent.name}</Text>
-                <Text style={styles.userRole}>{parsedStudent.role}</Text>
+              <View style={styles.innercontainer}>
+                {Item.map((item, index): any => {
+                  return (
+                    <TouchableOpacity style={styles.Card} key={index}>
+
+                      <Text style={styles.cardHeading}>{item.name}</Text>
+                      <View style={styles.cardContent}>
+                        {item.icon}
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
+                      </View>
+
+                    </TouchableOpacity>
+                  )
+                })}
+
               </View>
-              <Image source={require('../../../assets/images/images/image.png')} style={styles.avatar} />
             </View>
-          </View>
 
-          <View style={styles.bgimg}>
-            <Image source={require('../../../assets/images/images/Vector.png')} />
-          </View>
-
-          {/* Statistics section */}
-          <View style={styles.container}>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
-              <Text style={styles.heading}>Statistics</Text>
-              <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
+            {/* notice section */}
+            <View style={styles.noticesSection}>
+              <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
             </View>
-            <View style={styles.innercontainer}>
-              {Item.map((item, index): any => {
-                return (
-                  <TouchableOpacity style={styles.Card} key={index}>
 
-                    <Text style={styles.cardHeading}>{item.name}</Text>
-                    <View style={styles.cardContent}>
-                      {item.icon}
-                      <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
-                    </View>
+            {/* main card grid section */}
+            <View style={{ position: 'relative', top: '5%' }}>
 
-                  </TouchableOpacity>
-                )
-              })}
+              <MainCard student={parsedStudent} />
 
             </View>
-          </View>
 
-          {/* notice section */}
-          <View style={styles.noticesSection}>
-            <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
-          </View>
-
-          {/* main card grid section */}
-          <View style={{ position: 'relative', top: '5%' }}>
-
-            <MainCard student={parsedStudent} />
-
-          </View>
-
-          <View style={styles.dashboardSection}>
-            <Dashboard />
-          </View>
-        </ScrollView>
-
+            <View style={styles.dashboardSection}>
+              <Dashboard />
+            </View>
+          </ScrollView>
+        </GestureHandlerRootView>
       </SafeAreaView>
     </>
 
