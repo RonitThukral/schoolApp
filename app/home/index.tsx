@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native'
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -13,10 +13,15 @@ import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { useRouter } from 'expo-router';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import DrawerComponent from '../components/DrawerComponent';
+import HeaderLarge from '../components/Header';
 
 
 
 export default function Home(): any {
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const formattedDate = new Date().toISOString().slice(0, 10)
 
@@ -74,77 +79,60 @@ export default function Home(): any {
     <>
 
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={styles.container1}>
-          {/* Header Section */}
-          <View style={styles.header}>
-            <TouchableOpacity >
-              <MaterialIcons name="menu" size={28} color="#000" />
-            </TouchableOpacity>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
+        <GestureHandlerRootView>
 
-              <View style={styles.headerIcons}>
-                <TouchableOpacity onPress={handlePress}>
-                  <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
+          <DrawerComponent drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} settingsRoute={'./home/Settings'} />
 
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handlePressBell}>
+          <ScrollView style={styles.container1}>
+            <HeaderLarge openDrawer={() => setDrawerOpen(true)} />
 
-                  <Fontisto name="bell" size={22} color="black" />
-                </TouchableOpacity>
+            {/* Header Section */}
+
+            <View style={styles.bgimg}>
+              <Image source={require('../../assets/images/images/Vector.png')} />
+            </View>
+
+            {/* Statistics section */}
+            <View style={styles.container}>
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
+                <Text style={styles.heading}>Statistics</Text>
+                <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
               </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.userName}>Nilesh Shr</Text>
-                <Text style={styles.userRole}>Admin</Text>
+              <View style={styles.innercontainer}>
+                {Item.map((item, index): any => {
+                  return (
+                    <TouchableOpacity style={styles.Card} key={index}>
+
+                      <Text style={styles.cardHeading}>{item.name}</Text>
+                      <View style={styles.cardContent}>
+                        {item.icon}
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
+                      </View>
+
+                    </TouchableOpacity>
+                  )
+                })}
+
               </View>
-              <Image source={require('../../assets/images/images/image.png')} style={styles.avatar} />
             </View>
-          </View>
 
-          <View style={styles.bgimg}>
-            <Image source={require('../../assets/images/images/Vector.png')} />
-          </View>
-
-          {/* Statistics section */}
-          <View style={styles.container}>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
-              <Text style={styles.heading}>Statistics</Text>
-              <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
+            {/* notice section */}
+            <View style={styles.noticesSection}>
+              <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
             </View>
-            <View style={styles.innercontainer}>
-              {Item.map((item, index): any => {
-                return (
-                  <TouchableOpacity style={styles.Card} key={index}>
 
-                    <Text style={styles.cardHeading}>{item.name}</Text>
-                    <View style={styles.cardContent}>
-                      {item.icon}
-                      <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
-                    </View>
+            {/* main card grid section */}
+            <View style={{ position: 'relative', top: '5%' }}>
 
-                  </TouchableOpacity>
-                )
-              })}
+              <MainCard />
 
             </View>
-          </View>
 
-          {/* notice section */}
-          <View style={styles.noticesSection}>
-            <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
-          </View>
-
-          {/* main card grid section */}
-          <View style={{ position: 'relative', top: '5%' }}>
-
-            <MainCard />
-
-          </View>
-
-          <View style={styles.dashboardSection}>
-            <Dashboard />
-          </View>
-        </ScrollView>
-
+            <View style={styles.dashboardSection}>
+              <Dashboard />
+            </View>
+          </ScrollView>
+        </GestureHandlerRootView>
       </SafeAreaView>
     </>
 

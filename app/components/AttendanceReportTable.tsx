@@ -123,7 +123,7 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
 
   // console.log(flatlistheight, maxHeight, computedHeight);
   return (
-    <>
+    <View>
       <View style={styles.filtercontainer}>
         {!classFilterPreSelected && <Dropdown
           style={styles.dropdown}
@@ -224,7 +224,7 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
           )}
         />
       </View>
-    </>
+    </View>
   );
 };
 
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     borderRadius: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
     backgroundColor: '#daedff',
     marginBottom: 15,
   },

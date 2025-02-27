@@ -225,7 +225,7 @@ const StaffAttendance = () => {
 
       {!isCalendarVisible && (
         <TouchableOpacity style={styles.submitButton} onPress={handleRegisterAttendance} disabled={loading}>
-          <Text style={styles.submitButtonText}>{loading ? 'Saving...' : 'Save'}</Text>
+          <Text style={styles.submitButtonText}>{loading ? 'Saving...' : 'Submit'}</Text>
         </TouchableOpacity>
       )}
     </SafeAreaView>

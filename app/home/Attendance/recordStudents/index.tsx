@@ -256,7 +256,7 @@ const StudentRecord = () => {
       {/* Save Button to Register Attendance */}
       {!isCalendarVisible && (
         <TouchableOpacity style={styles.submitButton} onPress={registerAttendance}>
-          <Text style={styles.submitButtonText}>Save</Text>
+          <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       )}
     </SafeAreaView>

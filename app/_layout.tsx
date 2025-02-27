@@ -22,7 +22,7 @@ const _layout = () => {
           title: "          Fee Details",
           headerStyle: { backgroundColor: "#58a8f9" },
           headerTintColor: "#fff", //  Changes back arrow color to white
-          headerTitleStyle: { color: "#fff",}, // Changes title color to white
+          headerTitleStyle: { color: "#fff", }, // Changes title color to white
           headerTransparent: true,
         }}
       />

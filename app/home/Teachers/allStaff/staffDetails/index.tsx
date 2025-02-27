@@ -346,6 +346,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#58A8F9',
   },
   sectionContent: {
     padding: 16,

@@ -242,6 +242,8 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, Alert, SafeA
 import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
+import AttendanceReportTable from '@/app/components/AttendanceReportTable';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -249,6 +251,7 @@ const StaffHistory = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [staffData, setStaffData] = useState([]);
   const [filteredStaff, setFilteredStaff] = useState([]);
+  const [showAsTable, setShowAsTable] = useState<boolean>(false);
 
   // Fetch Staff Attendance Data
   const fetchStaffAttendance = async () => {
@@ -326,59 +329,85 @@ const StaffHistory = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ height: '52%' }}>
-        <View style={{ height: 400 }}>
-          <Calendar
-            onDayPress={(day) => setSelectedDate(day.dateString)}
-            markedDates={{
-              [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
-            }}
-            dayComponent={({ date, state }) => renderDay({ date, state })}
-            style={styles.calendar}
-            theme={{
-              textDayFontSize: 12,
-              textDayHeaderFontSize: 12,
-              textMonthFontSize: 12,
-              textDayStyle: { padding: 2 },
-              textSectionTitleColor: 'black',
-              textSectionTitleDisabledColor: '#d9e1e8',
-              textDayHeaderFontWeight: '700',
-            }}
-            enableSwipeMonths={true}
-          />
-        </View>
+
+      <View style={{
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        gap: 10,
+      }}>
+        <Text>Show as Table:</Text>
+        <TouchableOpacity onPress={() => setShowAsTable(!showAsTable)}>
+          {showAsTable
+            ? <FontAwesome name="toggle-on" size={24} color="#58A8F9" />
+            : <FontAwesome name="toggle-off" size={24} color="#58A8F9" />
+          }
+        </TouchableOpacity>
       </View>
 
-      {/* Staff List */}
-      {(selectedDate && filteredStaff.length > 0) ? <FlatList
-        data={filteredStaff}
-        keyExtractor={(item) => item.id}
-        style={styles.list}
-        contentContainerStyle={{ paddingBottom: responsiveHeight(4), }}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.studentCard}>
-            <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
-            <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
-              <Text style={styles.studentTextid}>{item.userID}</Text>
-              <Text style={styles.studentText}>{item.name} {item.surname}</Text>
-              <Text style={styles.studentText}>Status: {item.status}</Text>
-            </View>
-            {item.status === 'Absent' && (
-              <Image
-                source={require('../../../../assets/images/images/box.png')}
-                style={{ position: 'relative', right: 8 }}
+      {showAsTable ? <>
+        <AttendanceReportTable headerheight={270}
+          classFilterPreSelected={"staff"}
+          viewRoutePath={'./staffHistory/edit'}
+          edit={true}
+          mode="Staff" />
+      </>
+        : <>
+          <View>
+            <View>
+              <Calendar
+                onDayPress={(day) => setSelectedDate(day.dateString)}
+                markedDates={{
+                  [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
+                }}
+                dayComponent={({ date, state }) => renderDay({ date, state })}
+                style={styles.calendar}
+                theme={{
+                  textDayFontSize: 12,
+                  textDayHeaderFontSize: 12,
+                  textMonthFontSize: 12,
+                  textDayStyle: { padding: 2 },
+                  textSectionTitleColor: 'black',
+                  textSectionTitleDisabledColor: '#d9e1e8',
+                  textDayHeaderFontWeight: '700',
+                }}
+                enableSwipeMonths={true}
               />
-            )}
-            {item.status === 'Present' && (
-              <Image source={require('../../../../assets/images/images/check.png')} />
-            )}
-          </TouchableOpacity>
-        )}
-      />
-        :
-        selectedDate && <Text style={{ textAlign: 'center', color: 'red', marginTop: 100 }}>
-          No attendance found for {selectedDate}
-        </Text>
+            </View>
+          </View>
+
+          {/* Staff List */}
+          {(selectedDate && filteredStaff.length > 0)
+            ? <FlatList
+              data={filteredStaff}
+              keyExtractor={(item) => item.id}
+              style={styles.list}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.studentCard}>
+                  <Image source={require('../../../../assets/images/images/boy.png')} style={styles.img} />
+                  <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
+                    <Text style={styles.studentTextid}>{item.userID}</Text>
+                    <Text style={styles.studentText}>{item.name} {item.surname}</Text>
+                    <Text style={styles.studentText}>Status: {item.status}</Text>
+                  </View>
+                  {item.status === 'Absent' && (
+                    <Image
+                      source={require('../../../../assets/images/images/box.png')}
+                      style={{ position: 'relative', right: 8 }}
+                    />
+                  )}
+                  {item.status === 'Present' && (
+                    <Image source={require('../../../../assets/images/images/check.png')} />
+                  )}
+                </TouchableOpacity>
+              )}
+            />
+            :
+            selectedDate && <Text style={{ textAlign: 'center', color: 'red', marginTop: 100 }}>
+              No attendance found for {selectedDate}
+            </Text>
+          }
+        </>
       }
     </SafeAreaView>
   );
@@ -389,17 +418,23 @@ const StaffHistory = () => {
 
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: 'white' },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+    gap: 20,
+    paddingTop: 50,
+  },
   calendar: {
     borderRadius: 15,
-    marginTop: 50,
+    // marginTop: 50,
     //  height:'85%',
-    minHeight: responsiveHeight(45),
-    maxHeight: responsiveHeight(45),
+    // minHeight: responsiveHeight(45),
+    // maxHeight: responsiveHeight(45),
+    paddingBottom: 10,
     width: '95%',
     alignSelf: 'center',
     //  backgroundColor:'red',
-
     elevation: 4,
 
     ...Platform.select({
@@ -472,9 +507,10 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height: '80%',
-    position: 'relative',
-    top: responsiveHeight(6.5)
+    // borderWidth: 1, borderColor: "red",
+    // height: '80%',
+    // position: 'relative',
+    // top: responsiveHeight(6.5)
   },
   dropdown: {
     height: 50,
@@ -519,6 +555,14 @@ const styles = StyleSheet.create({
     height: 35,
     justifyContent: 'center',
     marginRight: 15,
+  },
+  title: {
+    // marginTop: 50,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#58a8f9",
+    textAlign: "center",
+    marginBottom: 20,
   },
 });
 
