@@ -106,16 +106,31 @@ const Login = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ width: responsiveWidth(80), height: responsiveHeight(10), backgroundColor: 'white', position: 'absolute', zIndex: 99, left: 43, top: 55, borderRadius: 10 }}>
-
-      </View>
-      <Image source={require('../../assets/images/images/logooooo.png')} style={{ position: 'absolute', width: responsiveHeight(37), height: responsiveHeight(9), zIndex: 99999, top: 57, left: 50 }} />
       <ImageBackground
         source={require('../../assets/images/images/loginn.png')}
         style={styles.bgcontainer}
       >
+        <View style={{
+          width: responsiveWidth(80),
+          height: responsiveHeight(10),
+          backgroundColor: 'white',
+          borderRadius: 10,
+          paddingBottom: 5,
+        }}>
+          <Image source={require('../../assets/images/images/logooooo.png')}
+            style={{
+              width: responsiveWidth(80),
+              height: responsiveHeight(9),
+              borderRadius: 10,
+            }} />
+        </View>
+
         {/* Username and Password Input Fields */}
-        <View>
+        <View style={{
+          width: "100%",
+          padding: responsiveWidth(10),
+          gap: 20,
+        }}>
           <TextInput
             style={styles.input1}
             placeholder="Username"
@@ -123,7 +138,7 @@ const Login = () => {
             onChangeText={setUserID}
           />
           <TextInput
-            style={styles.input2}
+            style={styles.input1}
             placeholder="Password"
             secureTextEntry
             placeholderTextColor="#888"
@@ -162,16 +177,21 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
-  bgcontainer: { flex: 1, flexDirection: 'column', resizeMode: 'cover', position: 'absolute', height: responsiveHeight(100), width: responsiveHeight(50) },
+  bgcontainer: {
+    flex: 1,
+    height: responsiveHeight(100),
+    width: responsiveWidth(100),
+    paddingTop: responsiveHeight(15),
+    alignItems: "center",
+  },
 
   input1: {
-    width: '80%',
+    width: '100%',
     height: 55,
     backgroundColor: 'white',
     borderRadius: 15,
     alignSelf: 'center',
-    marginTop: 180,
-    paddingLeft: 25,
+    paddingHorizontal: 25,
     elevation: 3,
   },
   loadingContainer: {
@@ -180,19 +200,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-  input2: {
-    width: '80%',
-    height: 55,
-    backgroundColor: 'white',
-    borderRadius: 15,
-    alignSelf: 'center',
-    marginTop: 20,
-    paddingLeft: 25,
-    elevation: 3,
-  },
   radioContainer: {
     alignSelf: 'center',
-    marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '70%',
