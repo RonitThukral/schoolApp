@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
+import HeaderLarge from '@/app/components/Header';
 
 export type ChatsResponseItem = {
   _id: string,
@@ -127,27 +128,7 @@ const Conversation = () => {
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         {/* <ScrollView style={styles.container1}> */}
         {/* Header Section */}
-        <View style={styles.header}>
-          {/* <TouchableOpacity>
-            <MaterialIcons name="menu" size={28} color="#000" />
-          </TouchableOpacity> */}
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
-
-
-            <View style={styles.headerIcons}>
-              {/* <TouchableOpacity>
-                <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-              </TouchableOpacity> */}
-              {/* <Fontisto name="bell" size={22} color="black" /> */}
-
-            </View>
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>Nilesh Shr</Text>
-              <Text style={styles.userRole}>Admin</Text>
-            </View>
-            <Image source={require('../../../../../assets/images/images/image.png')} style={styles.avatar} />
-          </View>
-        </View>
+        <HeaderLarge />
 
         {/* Conversation section */}
         <View style={{

@@ -22,7 +22,7 @@ const _layout = () => {
           title: "          Fee Details",
           headerStyle: { backgroundColor: "#58a8f9" },
           headerTintColor: "#fff", //  Changes back arrow color to white
-          headerTitleStyle: { color: "#fff",}, // Changes title color to white
+          headerTitleStyle: { color: "#fff", }, // Changes title color to white
           headerTransparent: true,
         }}
       />
@@ -44,10 +44,12 @@ const _layout = () => {
 
       <Stack.Screen name='home/Attendance/index' options={{ title: 'Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Attendance/staffHistory/index' options={{ title: 'Staff History', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Attendance/staffHistory/edit/index' options={{ title: 'Staff History Edit', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Attendance/recordStudents/index' options={{ title: 'Students Record', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Attendance/recordStaff/index' options={{ title: 'Staff Record', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true, }} />
 
       <Stack.Screen name='home/Attendance/studentHistory/index' options={{ title: 'Student History', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Attendance/studentHistory/edit/index' options={{ title: 'Edit Student History', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
 
       <Stack.Screen name='home/Academics/progressReport/reportCard/index' options={{ title: 'Report Card', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Academics/progressReport/index' options={{ title: 'Progress Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
@@ -134,7 +136,6 @@ const _layout = () => {
 // Teachers Portal
       <Stack.Screen name='TeacherPortal/home/index' options={{ title: 'Home', headerShown: false }} />
       <Stack.Screen name='TeacherPortal/home/attendance/index' options={{ title: 'Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
-      <Stack.Screen name='TeacherPortal/home/attendance/viewReport/index' options={{ title: 'Attendance Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/classes/index' options={{ title: 'Classes', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/classes/students/index' options={{ title: 'Class Students', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/timetable/index' options={{ title: 'Time Table', headerStyle: { backgroundColor: 'white' } }} />
@@ -158,6 +159,7 @@ const _layout = () => {
 
       <Stack.Screen name='TeacherPortal/home/classes/markAttendance/index' options={{ title: 'Mark Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='TeacherPortal/home/classes/viewAttendance/index' options={{ title: 'View Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='TeacherPortal/home/classes/viewAttendance/viewDayAttendance/index' options={{ title: 'View Day Attendance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
 
 
     </Stack>

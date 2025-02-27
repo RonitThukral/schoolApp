@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { getUserData } from '@/app/utils/storage';
+import { UserInfo } from '@/app/utils/app.types';
+import HeaderLarge from '@/app/components/Header';
 
 export type ChatsResponseItem = {
   _id: string,
@@ -34,11 +36,6 @@ export type UserDataResponseItem = {
 export type UsersStore = Map<string, UserDataResponseItem>;
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
-type UserInfo = {
-  userID: string,
-  role: string,
-  name: string,
-};
 
 const Conversation = () => {
 
@@ -133,29 +130,8 @@ const Conversation = () => {
   return (
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-        {/* <ScrollView style={styles.container1}> */}
         {/* Header Section */}
-        <View style={styles.header}>
-          {/* <TouchableOpacity>
-            <MaterialIcons name="menu" size={28} color="#000" />
-          </TouchableOpacity> */}
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
-
-
-            <View style={styles.headerIcons}>
-              {/* <TouchableOpacity>
-                <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
-              </TouchableOpacity> */}
-              {/* <Fontisto name="bell" size={22} color="black" /> */}
-
-            </View>
-            <View style={styles.userInfo}>
-              <Text style={styles.userName}>{currentUser?.name}</Text>
-              <Text style={styles.userRole}>{currentUser?.role}</Text>
-            </View>
-            <Image source={require('../../../assets/images/images/image.png')} style={styles.avatar} />
-          </View>
-        </View>
+        <HeaderLarge menuIcon={false} chatIcon={false} notificationIcon={false} />
 
         {/* Conversation section */}
         <View style={{

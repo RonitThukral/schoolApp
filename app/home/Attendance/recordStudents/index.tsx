@@ -9,139 +9,139 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
 const StudentRecord = () => {
-    const [isFocus, setIsFocus] = useState<string | null>(null);
-    const [selectedDate, setSelectedDate] = useState(() => {
-      const today = new Date();
+  const [isFocus, setIsFocus] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
     today.setHours(today.getHours() + 5); // Add 5 hours
     today.setMinutes(today.getMinutes() + 30); // Add 30 minutes
     return today.toISOString().split('T')[0];
-    });
-    const [selectedClass, setSelectedClass] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [classStudents, setClassStudents] = useState([]);
-    const [filteredStudents, setFilteredStudents] = useState([]);
-    const [classes, setClasses] = useState([]);
-    const [isCalendarVisible, setIsCalendarVisible] = useState(true);
-    const [isSearched, setIsSearched] = useState(false);
-  
-    const fetchClasses = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/classes`);
-        const formattedData = res.data.map((cls) => ({
-          label: cls.name,
-          value: cls.classCode,
-        }));
-        setClasses(formattedData);
-      } catch (error) {
-        console.error('Error fetching classes:', error.message);
-        Alert.alert('Error', 'Unable to fetch classes. Please try again.');
-      }
-    };
-  
-    const fetchStudents = async () => {
-      try {
-        if (selectedClass) {
-          const res = await axios.get(`${baseUrl}/students/class/${selectedClass}`);
-          if (!res.data.users || res.data.users.length === 0) {
-            setClassStudents([]);
-            Alert.alert('Error', 'There are no students in this class yet!');
-          } else {
-            const formattedData = res.data.users.map((student) => ({
-              ...student,
-              status: 'Absent', // Default status is absent
-            }));
-            setClassStudents(formattedData);
-            setFilteredStudents(formattedData);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching students:', error.message);
-        Alert.alert('Error', 'Unable to fetch students. Please try again.');
-      }
-    };
-  
-    useEffect(() => {
-      fetchClasses();
-    }, []);
+  });
+  const [selectedClass, setSelectedClass] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [classStudents, setClassStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [isCalendarVisible, setIsCalendarVisible] = useState(true);
+  const [isSearched, setIsSearched] = useState(false);
 
+  const fetchClasses = async () => {
+    try {
+      const res = await axios.get(`${baseUrl}/classes`);
+      const formattedData = res.data.map((cls) => ({
+        label: cls.name,
+        value: cls.classCode,
+      }));
+      setClasses(formattedData);
+    } catch (error) {
+      console.error('Error fetching classes:', error.message);
+      Alert.alert('Error', 'Unable to fetch classes. Please try again.');
+    }
+  };
 
-  
-    const handleClassSelection = (item) => {
-      setSelectedClass(item.value);
-      setIsCalendarVisible(false);
-      setIsSearched(false);
-    };
-  
-    const handleSearch = () => {
-      if (!selectedDate || !selectedClass) {
-        Alert.alert('Error', 'Please select both date and class before searching.');
-        return;
-      }
-      fetchStudents();
-      setIsSearched(true);
-    };
-  
-    const handleReset = () => {
-      setSelectedDate('');
-      setSelectedClass('');
-      setSearchQuery('');
-      setClassStudents([]);
-      setFilteredStudents([]);
-      setIsCalendarVisible(true);
-      setIsSearched(false);
-    };
-  
-    const toggleAttendance = (id) => {
-      const updatedStudents = classStudents.map((student) =>
-        student._id === id
-          ? { ...student, status: student.status === 'Present' ? 'Absent' : 'Present' }
-          : student
-      );
-      setClassStudents(updatedStudents);
-      setFilteredStudents(updatedStudents);
-    };
-  
-    const registerAttendance = async () => {
-      try {
-        const users = classStudents.map((student) => ({
-          userID: student.userID,
-          name: student.name,
-          surname: student.surname,
-          status: student.status === 'Present', // Convert status to boolean
-        }));
-  
-        const res = await axios.post(`${baseUrl}/attendance/register`, {
-          users,
-          classID: selectedClass,
-          role: 'students',
-        });
-  
-        if (res.data.error) {
-          Alert.alert('Error', res.data.error);
+  const fetchStudents = async () => {
+    try {
+      if (selectedClass) {
+        const res = await axios.get(`${baseUrl}/students/class/${selectedClass}`);
+        if (!res.data.users || res.data.users.length === 0) {
+          setClassStudents([]);
+          Alert.alert('Error', 'There are no students in this class yet!');
         } else {
-          Alert.alert('Success', 'Attendance registered successfully.');
-          router.back()
+          const formattedData = res.data.users.map((student) => ({
+            ...student,
+            status: 'Absent', // Default status is absent
+          }));
+          setClassStudents(formattedData);
+          setFilteredStudents(formattedData);
         }
-      } catch (error) {
-        console.error('Error registering attendance:', error.message);
-        Alert.alert('Error', 'Sorry, something went wrong.');
       }
-    };
-  
-    const filterStudents = (query) => {
-      const filtered = classStudents.filter(
-        (student) =>
-          student.name.toLowerCase().includes(query.toLowerCase()) ||
-          student.userID.toLowerCase().includes(query.toLowerCase()) ||
-          student.surname.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredStudents(filtered);
-    };
-  
-    useEffect(() => {
-      filterStudents(searchQuery);
-    }, [searchQuery]);
-  
+    } catch (error) {
+      console.error('Error fetching students:', error.message);
+      Alert.alert('Error', 'Unable to fetch students. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    fetchClasses();
+  }, []);
+
+
+
+  const handleClassSelection = (item) => {
+    setSelectedClass(item.value);
+    setIsCalendarVisible(false);
+    setIsSearched(false);
+  };
+
+  const handleSearch = () => {
+    if (!selectedDate || !selectedClass) {
+      Alert.alert('Error', 'Please select both date and class before searching.');
+      return;
+    }
+    fetchStudents();
+    setIsSearched(true);
+  };
+
+  const handleReset = () => {
+    setSelectedDate('');
+    setSelectedClass('');
+    setSearchQuery('');
+    setClassStudents([]);
+    setFilteredStudents([]);
+    setIsCalendarVisible(true);
+    setIsSearched(false);
+  };
+
+  const toggleAttendance = (id) => {
+    const updatedStudents = classStudents.map((student) =>
+      student._id === id
+        ? { ...student, status: student.status === 'Present' ? 'Absent' : 'Present' }
+        : student
+    );
+    setClassStudents(updatedStudents);
+    setFilteredStudents(updatedStudents);
+  };
+
+  const registerAttendance = async () => {
+    try {
+      const users = classStudents.map((student) => ({
+        userID: student.userID,
+        name: student.name,
+        surname: student.surname,
+        status: student.status === 'Present', // Convert status to boolean
+      }));
+
+      const res = await axios.post(`${baseUrl}/attendance/register`, {
+        users,
+        classID: selectedClass,
+        role: 'students',
+      });
+
+      if (res.data.error) {
+        Alert.alert('Error', res.data.error);
+      } else {
+        Alert.alert('Success', 'Attendance registered successfully.');
+        router.back()
+      }
+    } catch (error) {
+      console.error('Error registering attendance:', error.message);
+      Alert.alert('Error', 'Sorry, something went wrong.');
+    }
+  };
+
+  const filterStudents = (query) => {
+    const filtered = classStudents.filter(
+      (student) =>
+        student.name.toLowerCase().includes(query.toLowerCase()) ||
+        student.userID.toLowerCase().includes(query.toLowerCase()) ||
+        student.surname.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  };
+
+  useEffect(() => {
+    filterStudents(searchQuery);
+  }, [searchQuery]);
+
 
   // Render day component with styling for selected date
   const renderDay = ({ date, state }) => {
@@ -229,7 +229,7 @@ const StudentRecord = () => {
       {/* Students List */}
       {isSearched && (
         <FlatList
-        keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps="handled"
           data={filteredStudents}
           keyExtractor={(item) => item._id}
           style={styles.list}
@@ -256,7 +256,7 @@ const StudentRecord = () => {
       {/* Save Button to Register Attendance */}
       {!isCalendarVisible && (
         <TouchableOpacity style={styles.submitButton} onPress={registerAttendance}>
-          <Text style={styles.submitButtonText}>Save</Text>
+          <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       )}
     </SafeAreaView>
@@ -318,8 +318,8 @@ const styles = StyleSheet.create({
   studentTextid: { fontSize: 18, color: '#007bff' },
   studentText: { fontSize: 14 },
   dayContainer: {
-    height:25,
-    width:35,
+    height: 25,
+    width: 35,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -335,8 +335,8 @@ const styles = StyleSheet.create({
   list: {
     flexGrow: 1,
     height: '80%',
-    position:'relative',
-        top:responsiveHeight(10),
+    position: 'relative',
+    top: responsiveHeight(10),
   },
   dropdown: {
     height: 50,

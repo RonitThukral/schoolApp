@@ -1,14 +1,20 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, TouchableOpacity, ImageSourcePropType } from "react-native";
+import { RelativePathString, useRouter } from "expo-router";
 
 const screenWidth = Dimensions.get("window").width;
 
-const data = [
+type CardInfoType = {
+  title: string,
+  icon: ImageSourcePropType,
+  linking: RelativePathString,
+};
+
+const data: CardInfoType[][] = [
   [
     { title: "My Profile", icon: require("../../../assets/images/images/kid.png"), linking: "./home/profile" },
     { title: "Syllabus", icon: require("../../../assets/images/images/acad.png"), linking: "./home/courses" },
-    { title: "Rewards", icon: require("../../../assets/images/images/classdesk.png"), linking: "./home/rewards" },
+    { title: "Classes", icon: require("../../../assets/images/images/classdesk.png"), linking: "./home/myClass" },
     { title: "Time Table", icon: require("../../../assets/images/images/calendar.png"), linking: "./home/timetable" },
     { title: "Fees", icon: require("../../../assets/images/images/finan.png"), linking: "./home/finance" },
     { title: "Report Card", icon: require("../../../assets/images/images/dashboards.png"), linking: "./home/reportCard" },
@@ -21,17 +27,18 @@ const data = [
   ],
 ];
 
-const Slider = ({student}) => {
+const Slider = ({ student }: any) => {
   const router = useRouter();
-// console.log(student, 'stuetnjtkeakds')
-  const handlePress = (link) => {
+  const handlePress = (link: RelativePathString) => {
     router.push({
-        pathname: link,
-        params: { student: JSON.stringify(student) },  // Use 'params' here instead of 'query'
-      });
+      pathname: link,
+      params: { student: JSON.stringify(student) },  // Use 'params' here instead of 'query'
+    });
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: {
+    item: CardInfoType
+  }) => (
     <TouchableOpacity style={styles.card} onPress={() => handlePress(item.linking)}>
       <View style={{ width: "80%", height: "85%" }}>
         <Image
