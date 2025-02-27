@@ -45,23 +45,23 @@ const Login = () => {
       Alert.alert('Error', 'Please enter a valid User ID.');
       return;
     }
-  
+
     try {
       setLoading(true);
       const response = await axios.post('https://dreamscloudtechbackend.onrender.com/api/school/signin', {
         userID,
         password,
       });
-  
+
       const data = response.data;  // Store the response data
       setLoading(false);
-  
+
       if (data.success) {
         const role = data.user.role; // Normalize the role
-  
+
         // Save user data to AsyncStorage
         await saveUserData(data.user);
-  
+
         // Redirect based on role
         navigateToPortal(role, data);  // Pass data to the navigateToPortal function
       } else {
@@ -73,13 +73,13 @@ const Login = () => {
       Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
   };
-  
+
   const navigateToPortal = (role: string, data: any) => {  // Add the data parameter here
     if (role === 'student') {
       router.replace({
         pathname: '/StudentPortal/home',
         params: { student: JSON.stringify(data.user) },
-      });    
+      });
     } else if (role === 'teacher') {
       router.replace({
         pathname: '/TeacherPortal/home',
@@ -89,7 +89,7 @@ const Login = () => {
       router.replace('/home');
     }
   };
-  
+
   const handleRadioPress = (value: string) => {
     setSelectedValue(value);
   };
@@ -105,11 +105,11 @@ const Login = () => {
 
 
   return (
-    <SafeAreaView style={{flex : 1}}>
-      <View style={{width:responsiveWidth(80), height:responsiveHeight(10),backgroundColor:'white',position:'absolute',zIndex:99,left:43,top:55,borderRadius:10}}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ width: responsiveWidth(80), height: responsiveHeight(10), backgroundColor: 'white', position: 'absolute', zIndex: 99, left: 43, top: 55, borderRadius: 10 }}>
 
       </View>
-      <Image source={require('../../assets/images/images/logooooo.png')} style={{position:'absolute',width:responsiveHeight(37),height:responsiveHeight(9),zIndex:99999,top:57,left:50}}/>
+      <Image source={require('../../assets/images/images/logooooo.png')} style={{ position: 'absolute', width: responsiveHeight(37), height: responsiveHeight(9), zIndex: 99999, top: 57, left: 50 }} />
       <ImageBackground
         source={require('../../assets/images/images/loginn.png')}
         style={styles.bgcontainer}
@@ -133,7 +133,7 @@ const Login = () => {
 
         {/* Custom Radio Buttons */}
         <View style={styles.radioContainer}>
-          {[ 'admin','student', 'teacher'].map((role) => (
+          {['admin', 'student', 'teacher'].map((role) => (
             <TouchableOpacity
               key={role}
               style={styles.radioButton}
@@ -162,7 +162,7 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
-  bgcontainer: { flex: 1, flexDirection: 'column' ,resizeMode:'cover',position:'absolute',height: responsiveHeight(100), width:responsiveHeight(50)},
+  bgcontainer: { flex: 1, flexDirection: 'column', resizeMode: 'cover', position: 'absolute', height: responsiveHeight(100), width: responsiveHeight(50) },
 
   input1: {
     width: '80%',
