@@ -2,13 +2,18 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 const FinancialStatistics = () => {
+
+  const formattedDate = new Date().toISOString().slice(0, 10)
+
+  const date = formattedDate.split('-').reverse().join('-');
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Financial Statistics</Text>
-          <Text style={styles.date}>20 Dec 2024</Text>
+          <Text style={styles.date}>{date}</Text>
         </View>
 
         {/* Income Section */}

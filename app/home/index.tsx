@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image,SafeAreaView,Platform } from 'react-native'
+import { View, Text,ScrollView,StyleSheet, TouchableOpacity, Image,SafeAreaView,Platform, StatusBar } from 'react-native'
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -74,6 +74,9 @@ export default function Home(): any {
     <>
 
     <SafeAreaView style={{flex:1}}>
+    <StatusBar backgroundColor="white" barStyle="dark-content" />
+        
+     
     <ScrollView style={styles.container1}>
       {/* Header Section */}
       <View style={styles.header}>

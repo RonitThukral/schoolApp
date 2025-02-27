@@ -335,6 +335,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"
@@ -367,17 +368,17 @@ const DropdownComponent = () => {
           const student = studentsResponse.data.find((s) => s.userID === transaction.userID);
           return {
             id: transaction._id,
-            name: student?.name || "Unknown", // Fix: Ensure student name appears
+            name: student?.name + " " + student?.surname || "Unknown", // Fix: Ensure student name appears
             amount: `₹${transaction.amount}`,
             date: dayjs(transaction.date).format('DD MMMM YYYY'),
             rollNumber: student?.userID || "N/A",
-            class: student?.classID || "N/A", // Fix: Use `classID` from student API
-            guardian: student?.guardian?.[0]?.name || "N/A",
+            class: student?.classID?.toUpperCase() || "N/A", // Fix: Use `classID` from student API
+            guardian: student?.guadian?.[0]?.name +" "+student?.guadian?.[0]?.lastname || "N/A",
             paymentMethod: transaction.paymentMethod,
           };
         });
 
-        setFilteredClasses(formattedData);
+        setFilteredClasses(formattedData.reverse());
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -420,7 +421,7 @@ const DropdownComponent = () => {
   };
 
 
-  const toggleSection = (id: string) => {
+       const toggleSection = (id: string) => {
             setExpandedSectionId((prev) => (prev === id ? null : id));
           };
 
@@ -469,10 +470,10 @@ const DropdownComponent = () => {
                 <Image style={{width:27,height:27}} source={require('../../../../assets/images/images/eye.png')}/>
 
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+                {/* <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
                 <Image  source={require('../../../../assets/images/images/delete.png')}/>
 
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
             </View>
@@ -484,8 +485,9 @@ const DropdownComponent = () => {
 
   return (
     <SafeAreaView style={{ flex: 1,backgroundColor:'white' }}>
-      {loading ? (
-        <ActivityIndicator size="large" color="#58A8F9" />
+     {loading ? (<View style={{ position: "relative", marginTop: responsiveHeight(50) }}>
+                 <ActivityIndicator size="large" color="#58A8F9" />
+                 </View>
       ) : (
         <View style={styles.container}>
           <Dropdown
@@ -582,8 +584,8 @@ const DropdownComponent = () => {
                       >
                         <InfoRow label="Roll Number" value={item.rollNumber} />
                         <InfoRow label="Class" value={item.class} />
-                        <InfoRow label="Guardian" value={item.guardian} />
-                        <InfoRow label="Payment Method" value={item.paymentMethod} />
+                        <InfoRow label="Guardian" value={item.guardian || 'N/A'} />
+                        <InfoRow label="Payment Mode" value={item.paymentMethod} />
                         
                       </Section>
             ))}

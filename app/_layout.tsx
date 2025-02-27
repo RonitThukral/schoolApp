@@ -28,12 +28,12 @@ const _layout = () => {
       />
 
       <Stack.Screen name='home/Finance/Transactions/index' options={{ title: 'Transactions', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
-      <Stack.Screen name='home/Finance/recordFeePayment/index' options={{ title: 'Record Fee Payment', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Finance/recordFeePayment/index' options={{ title: 'Non Bill Payment', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Finance/recordFeePayment/payslip/index' options={{ title: 'Payment', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Finance/feePayment/index' options={{ title: 'Fee Payment', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Finance/setPayrow/index' options={{ title: 'Set Payrow', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Finance/setFees/index' options={{ title: 'Set Fees', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
-      <Stack.Screen name='home/Finance/studentFees/index' options={{ title: 'Student Fees', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Finance/studentFees/index' options={{ title: 'Student Fees Transactions', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Finance/index' options={{ title: 'Finance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
 
 
@@ -99,7 +99,9 @@ const _layout = () => {
       <Stack.Screen name='home/Certificates/index' options={{ title: 'Certificates', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Liberary/index' options={{ title: 'Library', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       {/* <Stack.Screen name='auth/login' options={{title: 'login',headerStyle:{backgroundColor:'transparent'},headerTransparent:true}}/> */}
+
       <Stack.Screen name='home/index' options={{ title: 'Home', headerShown: false }} />
+      
       <Stack.Screen name='home/students/index' options={{ title: 'Students', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='index' options={{ title: '', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
 

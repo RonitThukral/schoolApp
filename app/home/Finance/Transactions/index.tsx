@@ -90,7 +90,7 @@ import dayjs from 'dayjs'; // Make sure to import dayjs
 
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
 
@@ -173,42 +173,92 @@ const FeeDetails = () => {
   );
 
   // Section Component
-  const Section = ({ id, title, subTitle2, children }) => {
-    const isExpanded = expandedSections.includes(id);
-    return (
-      <View style={styles.section}>
-        <TouchableOpacity
-          style={styles.sectionHeader}
-          onPress={() => toggleSection(id)}
-          activeOpacity={0.7}
-        >
-          <Image style={{ width: 50, height: 50, marginHorizontal: 15 }} source={require('../../../../assets/images/images/boy.png')} />
-          <View style={{ flex: 1, flexDirection: 'column' }}>
-            <Text style={styles.sectionTitle}>{title}</Text>
-            <Text style={{ color: 'grey', fontSize: 11 }}>{subTitle2}</Text>
+  // const Section = ({ id, title, subTitle2, children }) => {
+  //   const isExpanded = expandedSections.includes(id);
+  //   return (
+  //     <View style={styles.section}>
+  //       <TouchableOpacity
+  //         style={styles.sectionHeader}
+  //         onPress={() => toggleSection(id)}
+  //         activeOpacity={0.7}
+  //       >
+  //         <Image style={{ width: 50, height: 50, marginHorizontal: 15 }} source={require('../../../../assets/images/images/boy.png')} />
+  //         <View style={{ flex: 1, flexDirection: 'column' }}>
+  //           <Text style={styles.sectionTitle}>{title}</Text>
+  //           <Text style={{ color: 'grey', fontSize: 11 }}>{subTitle2}</Text>
+  //         </View>
+  //         <AntDesign style={{marginRight:20}} name={isExpanded ? "up" : "down"} size={24} color="#58A8F9" />
+  //       </TouchableOpacity>
+  //       {isExpanded && (
+  //         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+  //           <View style={styles.sectionContent}>{children}</View>
+  //           <View style={styles.listBtns}>
+  //             <TouchableOpacity style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }} >
+  //               <Image style={{ width: 27, height: 27 }} source={require('../../../../assets/images/images/eye.png')} />
+  //             </TouchableOpacity>
+  //             <TouchableOpacity style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }} >
+  //               <Image source={require('../../../../assets/images/images/delete.png')} />
+  //             </TouchableOpacity>
+  //           </View>
+  //         </View>
+  //       )}
+  //     </View>
+  //   );
+  // };
+
+
+  
+          const Section = ({ id,title,subTitle,subTitle2, children }:any):any => {
+            const isExpanded = true && !expandedSections.includes(id);
+          return(
+          <View style={styles.section}>
+            <TouchableOpacity 
+              style={styles.sectionHeader} 
+              onPress={() => {toggleSection(id)}}
+              activeOpacity={0.7}
+            >
+              <Image style={{width:50,height:50,marginHorizontal:15}} source={require('../../../../assets/images/images/boy.png')}/>
+              <View style={{flex:1, flexDirection:'column'}}>
+  
+              <Text style={styles.sectionTitle}>{title}</Text>
+              <Text style={{color:'grey',fontSize:12}}>{subTitle}</Text>
+              <Text style={{color:'grey',fontSize:11}}>{subTitle2}</Text>
+              </View>
+              <AntDesign 
+                name={isExpanded ? "up" : "down"} 
+                size={24} 
+                color="#58A8F9"
+              />
+            </TouchableOpacity>
+            {isExpanded && (
+              <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+              <View style={styles.sectionContent}>
+                {children}
+              </View>
+              <View style={styles.listBtns}>
+                  {/* <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center'}} >
+                  <Image style={{width:27,height:27}} source={require('../../../../assets/images/images/eye.png')}/>
+  
+                  </TouchableOpacity> */}
+                  <TouchableOpacity style={{ width:40,height:40,justifyContent:'center',alignItems:'center',position:'relative',bottom: 15,left:20}} >
+                  <Image  source={require('../../../../assets/images/images/delete.png')}/>
+  
+                  </TouchableOpacity>
+              </View>
+  
+              </View>
+            )}
           </View>
-          <AntDesign style={{marginRight:20}} name={isExpanded ? "up" : "down"} size={24} color="#58A8F9" />
-        </TouchableOpacity>
-        {isExpanded && (
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View style={styles.sectionContent}>{children}</View>
-            <View style={styles.listBtns}>
-              <TouchableOpacity style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }} >
-                <Image style={{ width: 27, height: 27 }} source={require('../../../../assets/images/images/eye.png')} />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }} >
-                <Image source={require('../../../../assets/images/images/delete.png')} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </View>
-    );
-  };
+        )};
+     
+
+
 
   // Loading State
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <View style={{ position: "relative", marginTop: responsiveHeight(50) }}>
+                     <ActivityIndicator size="large" color="#58A8F9" />
+                     </View>;
   }
 
   return (
@@ -218,11 +268,11 @@ const FeeDetails = () => {
 
       <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle = {{paddingBottom:40}}>
         {transactions.map((txn, index) => (
-          <Section key={index} id={txn.id} title={`₹ ${txn.amount}`} subTitle2={dayjs(txn.date).format("DD MMMM YYYY")}>
+          <Section key={index} id={txn.id} title={`₹ ${txn.amount}`}  subTitle={dayjs(txn.date).format("DD MMMM YYYY")} subTitle2={`Type: ${txn.type}`}>
             <InfoRow1 label="Category" value={txn?.category} />
             <InfoRow1 label="Description" value={txn?.description} />
-            <InfoRow1 label="Type" value={txn?.type} />
-            <InfoRow1 label="Payment Method" value={txn?.method} />
+            {/* <InfoRow1 label="Type" value={txn?.type} /> */}
+            <InfoRow1 label="Payment Mode" value={txn?.method} />
           </Section>
         ))}
       </ScrollView>
@@ -416,14 +466,18 @@ const styles = StyleSheet.create({
     value1: {
       color:'grey',
       fontSize: 12,
-      
+      position:'relative',
+      // left:responsiveWidth(14),
+      width:responsiveWidth(35),
+      // backgroundColor:'red'
       
     },
     value: {
       color:'grey',
       fontSize: 14,
       position:'relative',
-      left:responsiveWidth(14)
+      left:responsiveWidth(14),
+      width:responsiveWidth(10)
       // backgroundColor:'blue'
     },
    
