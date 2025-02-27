@@ -53,21 +53,9 @@ const Library = () => {
 const books = [
   { 
     id: '1', 
-    title: 'To Kill a Mockingbird', 
-    author: 'Harper Lee', 
-    image: 'https://covers.openlibrary.org/b/id/8228691-L.jpg' 
-  },
-  { 
-    id: '2', 
-    title: '1984', 
-    author: 'George Orwell', 
-    image: 'https://covers.openlibrary.org/b/id/7222246-L.jpg' 
-  },
-  { 
-    id: '3', 
-    title: 'The Great Gatsby', 
-    author: 'F. Scott Fitzgerald', 
-    image: 'https://covers.openlibrary.org/b/id/6054896-L.jpg' 
+    title: 'The Hobbit', 
+    author: 'J.R.R. Tolkien', 
+    image: 'https://covers.openlibrary.org/b/id/7984916-L.jpg' 
   },
   { 
     id: '4', 
@@ -76,37 +64,49 @@ const books = [
     image: 'https://covers.openlibrary.org/b/id/8281991-L.jpg' 
   },
   { 
+    id: '7', 
+    title: 'War and Peace', 
+    author: 'Leo Tolstoy', 
+    image: 'https://covers.openlibrary.org/b/id/8349252-L.jpg' 
+  },
+  { 
     id: '5', 
     title: 'The Catcher in the Rye', 
     author: 'J.D. Salinger', 
     image: 'https://covers.openlibrary.org/b/id/8225264-L.jpg' 
   },
   { 
-    id: '6', 
-    title: 'The Hobbit', 
-    author: 'J.R.R. Tolkien', 
-    image: 'https://covers.openlibrary.org/b/id/7984916-L.jpg' 
+    id: '2', 
+    title: 'To Kill a Mockingbird', 
+    author: 'Harper Lee', 
+    image: 'https://covers.openlibrary.org/b/id/8228691-L.jpg' 
   },
   { 
-    id: '7', 
+    id: '3', 
+    title: '1984', 
+    author: 'George Orwell', 
+    image: 'https://covers.openlibrary.org/b/id/7222246-L.jpg' 
+  },
+  // { 
+  //   id: '3', 
+  //   title: 'The Great Gatsby', 
+  //   author: 'F. Scott Fitzgerald', 
+  //   image: 'https://covers.openlibrary.org/b/id/6054896-L.jpg' 
+  // },
+  { 
+    id: '6', 
     title: 'Moby-Dick', 
     author: 'Herman Melville', 
     image: 'https://covers.openlibrary.org/b/id/8091016-L.jpg' 
   },
+  // { 
+  //   id: '9', 
+  //   title: 'Crime and Punishment', 
+  //   author: 'Fyodor Dostoevsky', 
+  //   image: 'https://covers.openlibrary.org/b/id/8091011-L.jpg' 
+  // },
   { 
     id: '8', 
-    title: 'War and Peace', 
-    author: 'Leo Tolstoy', 
-    image: 'https://covers.openlibrary.org/b/id/8349252-L.jpg' 
-  },
-  { 
-    id: '9', 
-    title: 'Crime and Punishment', 
-    author: 'Fyodor Dostoevsky', 
-    image: 'https://covers.openlibrary.org/b/id/8091011-L.jpg' 
-  },
-  { 
-    id: '10', 
     title: 'The Alchemist', 
     author: 'Paulo Coelho', 
     image: 'https://covers.openlibrary.org/b/id/8369255-L.jpg' 

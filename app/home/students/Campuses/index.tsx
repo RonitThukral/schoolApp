@@ -100,6 +100,17 @@ const index = () => {
       setLoading(false);
     }
   };
+
+
+  const handleClose = () => {
+     setIsOpen(false); 
+     setEdit(false); 
+     setName('');
+      setCity('');
+    }
+
+
+
   const renderCampuses = useCallback( ({ item }) => {
     return (
       <View style={styles.list} key={item._id}>
@@ -184,7 +195,7 @@ onRequestClose={() => setIsOpen(false)}
             />
 
             <View style={styles.inputButtonsContainer}>
-              <TouchableOpacity style={styles.closeBtn} onPress={() => { setIsOpen(false); setEdit(false); }}>
+              <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
                 <Text style={styles.cancelText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttons} onPress={edit ? saveEdit : handleAdd}>

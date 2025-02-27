@@ -139,6 +139,14 @@ const App = () => {
     }
   };
 
+
+  const handleClose = () => {
+    setEdit(false)
+    setIsOpen(false)
+    setSectionName('')
+  }
+
+
   const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "long", year: "numeric" };
     const date = new Date(dateString);
@@ -175,10 +183,10 @@ const App = () => {
     [sections]
   );
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    fetchSections();
-  };
+  // const handleRefresh = () => {
+  //   setRefreshing(true);
+  //   fetchSections();
+  // };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -197,7 +205,7 @@ const App = () => {
               renderItem={renderSection}
               contentContainerStyle={styles.lists}
               refreshing={refreshing}
-              onRefresh={handleRefresh}
+              // onRefresh={handleRefresh}
               initialNumToRender={10}
               maxToRenderPerBatch={10}
               windowSize={10}
@@ -234,11 +242,7 @@ const App = () => {
             <View style={styles.inputActions}>
               <TouchableOpacity
                 style={styles.closeBtn}
-                onPress={() => {
-                  setIsOpen(false);
-                  setEdit(false);
-                  setSectionName("");
-                }}
+                onPress={handleClose}
               >
                 <Text style={styles.closeBtnText}>Cancel</Text>
               </TouchableOpacity>

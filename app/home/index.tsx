@@ -1,25 +1,33 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform, BackHandler } from 'react-native'
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native'
 import 'react-native-reanimated';
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Foundation from '@expo/vector-icons/Foundation';
+import Fontisto from '@expo/vector-icons/Fontisto';
+import Feather from '@expo/vector-icons/Feather';
 import MainCard from '../components/mainCard';
 import Dashboard from '../components/charts';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
-import HeaderLarge from '../components/Header';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import DrawerComponent from '../components/DrawerComponent';
+import { useRouter } from 'expo-router';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 
 
 export default function Home(): any {
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const date = new Date().toISOString().slice(0, 10)
+  const formattedDate = new Date().toISOString().slice(0, 10)
+
+  const date = formattedDate.split('-').reverse().join('-');
+
   const Item = [
 
     {
       name: "Students",
-      icon: <Image source={require('../../assets/images/images/cap.png')} />,
-      content: 364
+      icon: <Image source={require('../../assets/images/images/Vector3.png')} style={{ width: 28, height: 22 }} />,
+      content: 300
     },
     {
       name: "Teachers",
@@ -48,65 +56,96 @@ export default function Home(): any {
     }
   ]
 
+  const router = useRouter()
+
+
+  const handlePress = () => {
+    router.navigate('./home/Chat')
+  }
+  const handlePressBell = () => {
+    router.navigate('./home/Notices')
+  }
+
+
+  const navigation = useNavigation() as any;
+
+
   return (
     <>
 
       <SafeAreaView style={{ flex: 1 }}>
-        <GestureHandlerRootView>
+        <ScrollView style={styles.container1}>
+          {/* Header Section */}
+          <View style={styles.header}>
+            <TouchableOpacity >
+              <MaterialIcons name="menu" size={28} color="#000" />
+            </TouchableOpacity>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', top: '15%' }}>
 
-          <DrawerComponent drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} settingsRoute={'./home/Settings'} />
+              <View style={styles.headerIcons}>
+                <TouchableOpacity onPress={handlePress}>
+                  <Feather name="message-square" size={22} color="black" style={{ position: 'relative', top: 3 }} />
 
-          <ScrollView style={styles.container1}>
-            {/* Header Section */}
-            <HeaderLarge openDrawer={() => setDrawerOpen(true)} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handlePressBell}>
 
-            <View style={styles.bgimg}>
-              <Image source={require('../../assets/images/images/Vector.png')} />
-            </View>
-
-            {/* Statistics section */}
-            <View style={styles.container}>
-              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
-                <Text style={styles.heading}>Statistics</Text>
-                <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
+                  <Fontisto name="bell" size={22} color="black" />
+                </TouchableOpacity>
               </View>
-              <View style={styles.innercontainer}>
-                {Item.map((item, index): any => {
-                  return (
-                    <TouchableOpacity style={styles.Card} key={index}>
-
-                      <Text style={styles.cardHeading}>{item.name}</Text>
-                      <View style={styles.cardContent}>
-                        {item.icon}
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
-                      </View>
-
-                    </TouchableOpacity>
-                  )
-                })}
-
+              <View style={styles.userInfo}>
+                <Text style={styles.userName}>Nilesh Shr</Text>
+                <Text style={styles.userRole}>Admin</Text>
               </View>
+              <Image source={require('../../assets/images/images/image.png')} style={styles.avatar} />
             </View>
+          </View>
 
-            {/* notice section */}
-            <View style={styles.noticesSection}>
-              <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
+          <View style={styles.bgimg}>
+            <Image source={require('../../assets/images/images/Vector.png')} />
+          </View>
+
+          {/* Statistics section */}
+          <View style={styles.container}>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
+              <Text style={styles.heading}>Statistics</Text>
+              <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
             </View>
+            <View style={styles.innercontainer}>
+              {Item.map((item, index): any => {
+                return (
+                  <TouchableOpacity style={styles.Card} key={index}>
 
-            {/* main card grid section */}
-            <View style={{ position: 'relative', top: '5%' }}>
+                    <Text style={styles.cardHeading}>{item.name}</Text>
+                    <View style={styles.cardContent}>
+                      {item.icon}
+                      <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
+                    </View>
 
-              <MainCard />
+                  </TouchableOpacity>
+                )
+              })}
 
             </View>
+          </View>
 
-            <View style={styles.dashboardSection}>
-              <Dashboard />
-            </View>
-          </ScrollView>
+          {/* notice section */}
+          <View style={styles.noticesSection}>
+            <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
+          </View>
 
-        </GestureHandlerRootView>
-      </SafeAreaView >
+          {/* main card grid section */}
+          <View style={{ position: 'relative', top: '5%' }}>
+
+            <MainCard />
+
+          </View>
+
+          <View style={styles.dashboardSection}>
+            <Dashboard />
+          </View>
+        </ScrollView>
+
+      </SafeAreaView>
     </>
 
   );

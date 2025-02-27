@@ -7,6 +7,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-native-responsive-dimensions';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 
@@ -14,7 +15,9 @@ export default function Home(): any {
 
 const router = useRouter();
 
-  const date = new Date().toISOString().slice(0, 10)
+  const formattedDate = new Date().toISOString().slice(0, 10)
+
+const date = formattedDate.split('-').reverse().join('-');
   const Item = [
     
     {
@@ -29,7 +32,8 @@ const router = useRouter();
     },
     {
       name: "Scholarships",
-      icon: <Image source={require('../../../assets/images/images/cap.png')}/>,
+      // icon: <Image source={require('../../../assets/images/images/cap.png')}/>,
+      icon: <SimpleLineIcons name="graduation" size={24} color="#8EC7FF" />,
       content: 50
     },
     {

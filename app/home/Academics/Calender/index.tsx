@@ -230,8 +230,8 @@ const styles = StyleSheet.create({
   calendar: {
     borderRadius: 15,
     marginTop: 20,
-    height: '89%',
-    width: '95%',
+    minHeight: responsiveHeight(45),
+    maxHeight: responsiveHeight(45),    width: '95%',
     alignSelf: 'center',
     elevation: 4,
   },
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    paddingVertical:responsiveHeight(4)
   },
   list: {
     width: '90%',
@@ -250,7 +251,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     padding: 15,
     alignSelf:'center',
-    // paddingVertical
+    // position:'relative',
+    // top:responsiveHeight(0)
   },
   eventTitleList: {
     fontSize: 18,

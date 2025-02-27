@@ -162,27 +162,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
     // backgroundColor: 'blue',
-    width: '80%',
+    width: '90%',
     height: 350,
     alignSelf: 'center',
     borderRadius: 15,
     zIndex: 1000,
     position:'absolute',
     bottom:"37%",
-    paddingVertical:15
+    paddingVertical:15,
+    elevation:5
   },
   calendarContainer1: {
     flex: 1,
     backgroundColor: '#F5FCFF',
     // backgroundColor: 'blue',
-    width: '80%',
+    width: '90%',
     height: 350,
     alignSelf: 'center',
     borderRadius: 15,
     zIndex: 1000,
     position:'absolute',
     top:"20%",
-    paddingVertical:15
+    paddingVertical:15,
+    elevation:5
   },
   input: {
     width: '80%',

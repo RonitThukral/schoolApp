@@ -38,7 +38,7 @@ const StudentAttendance = () => {
 
   useEffect(() => {
     fetchStudentAttendance();
-  }, []);
+  }, [userID]);
 
   // Format date
   const formatDate = (dateString) => {
@@ -49,11 +49,18 @@ const StudentAttendance = () => {
   // Handle Date Selection
   const handleDateSelection = (day) => {
     setSelectedDate(day.dateString);
+    
+    // Filter attendance data for the selected date
     const filteredData = attendanceData.filter((record) => record.date === day.dateString);
-
-    // Update filtered list only if attendance exists, otherwise show all records
-    setFilteredAttendance(filteredData.length > 0 ? filteredData : attendanceData);
+    setFilteredAttendance(filteredData);
+  
+    // Update marked dates to highlight selected date
+    setMarkedDates({ [day.dateString]: { selected: true, selectedColor: 'blue' } });
   };
+  
+  
+  
+  
 
   const renderDay = ({ date, state }) => {
     const isSunday = new Date(date.dateString).getDay() === 0;
@@ -95,10 +102,6 @@ const StudentAttendance = () => {
 
       return marked;
     };
-
-
-
-
 
 
     return (
@@ -149,9 +152,9 @@ const StudentAttendance = () => {
       <View style={{ height: '52%' }}>
         <View style={{ height: 400 }}>
           <Calendar
-            onDayPress={(day) => {
-              setSelectedDate(formatDate(day.dateString));
-              setModalVisible(true);
+              onDayPress={(day) => {
+                handleDateSelection(day);
+            
             }}
             markedDates={markedDates}
             dayComponent={({ date, state }) => renderDay({ date, state })}
@@ -291,7 +294,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     height: '90%',
     position: 'relative',
-    top: responsiveHeight(2)
+    top: responsiveHeight(5)
   },
   dropdown: {
     height: 50,

@@ -97,7 +97,7 @@ const handleLogout = async () => {
     </View>
 
 
-<View style={{flexDirection:'row',marginTop:40,marginLeft:30}}>
+<View style={{flexDirection:'row',padding:'9%',justifyContent:'space-between'}}>
   <Text style={{fontSize:12}}>You are logged in as: Nilesh shr</Text>
   <TouchableOpacity style={styles.button2} onPress={handleLogout}>
 <Text style={{alignSelf:'center',textAlignVertical:'center',color:'white'}}>Log Out</Text>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         borderRadius:20,
         justifyContent:'center',
         alignSelf:'flex-end',
-        marginLeft: 40,
+        marginLeft: responsiveWidth(5),
         position:'relative',
         bottom: 10
         

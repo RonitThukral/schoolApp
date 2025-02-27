@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image ,FlatList} from 'react-native'
+import { View, Text, StyleSheet, TextInput,TouchableOpacity,ScrollView, SafeAreaView ,Image ,FlatList, Alert} from 'react-native'
 import React, { useState } from 'react'
 import Feather from '@expo/vector-icons/Feather';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
 
@@ -28,18 +29,19 @@ const contactInfo = () => {
     const [relationship, setRelationship] = useState('')
     const [occupation, setOccupation] = useState('')
     const [email, setEmail] = useState('')
+    const [mobile, setMobile] = useState('')
     const [address, setAddress] = useState('')
 
 
 
     const router = useRouter()
 
-    const InfoRow = ({ label, value }) => (
+    const InfoRow = ({ label, value ,isMultiLine = true}) => (
         <View style={styles.infoRow}>
           <Text style={styles.label}>{label}</Text>
-          <View style={{position:'absolute', left:130, top:3}}>
+          <View style={{ position: 'relative', right: responsiveWidth(3), top: 3 }}>
     
-          <Text style={styles.value}>{value}</Text>
+          <Text style={[isMultiLine ? styles.multiLine : styles.value]}>{value}</Text>
           </View>
         </View>
       );
@@ -62,6 +64,8 @@ const contactInfo = () => {
           { 
             id: Math.random().toString(), // Unique ID for FlatList
             name, 
+            lastName,
+            mobile,
             relationship, 
             occupation, 
             email, 
@@ -80,29 +84,29 @@ const contactInfo = () => {
       
      
 
-      const handleAddStudent = () => {
+      const handleAddStudent = async() => {
         // Extracting data from params
         const studentData = {
           // Mapping the data to match the API structure
           profileUrl: "", // Assuming you will handle profile URL separately
       
           // Personal Data from params
-          name: `${parsedPersonalData.firstName} ${parsedPersonalData.lastName}`,
-          setuserID: null, // Assuming autoID logic is handled somewhere else
+          name: `${parsedPersonalData.firstName}`,
+          // setuserID: null, // Assuming autoID logic is handled somewhere else
           middleName: "", // If you need to capture this from the form, add a state for it
           surname: parsedPersonalData.lastName,
           gender: parsedPersonalData.gender,
           dateofBirth: parsedPersonalData.dob, // Ensure format matches API expectations (DD-MM-YYYY)
           email: parsedPersonalData.email,
-          nationality: "", // If nationality is required, capture it in the form
-          religion: "", // If religion is required, capture it in the form
+          nationality: parsedPersonalData.category, // If nationality is required, capture it in the form
+          religion: parsedPersonalData.caste, // If religion is required, capture it in the form
           placeOfBirth: "", // If place of birth is required, capture it in the form
           health: "", // If health status is required, capture it in the form
-          disease: "", // If disease information is required, capture it in the form
+          disease: parsedPersonalData.doa, // If disease information is required, capture it in the form
           allege: "", // If allege information is required, capture it in the form
       
           // Academic Data from params
-          userID : parsedAcademicData.userID,
+          setuserID : parsedAcademicData.userID,
           classID: parsedAcademicData.class,
           division: parsedAcademicData.division,
           dormitoryID: parsedAcademicData.dormitories,
@@ -129,21 +133,25 @@ const contactInfo = () => {
         console.log('Data to send to API:', studentData);
       
         // Send data to the API
-        axios
-          .post(`${baseUrl}/students/create`, studentData)
-          .then((response) => {
-            // setloading(false);
-            if (response.data.error) {
-              // errorAlert(response.data.error);
-              return;
-            }
-            // Handle success (e.g., redirect to students list or show success message)
-            console.log('Student added successfully:', response.data);
-          })
-          .catch((error) => {
-            // setloading(false);
-            console.error('Error adding this student:', error);
-          });
+        try {
+          const response = await axios.post(`${baseUrl}/students/create`, studentData);
+        
+          console.log("Full API Response:", response?.data);
+        
+          if (response.data.error) {
+            Alert.alert('Error', "Error Adding Student")
+
+            console.error("API Error:", response.data.error);
+          } else {
+            Alert.alert('Success', "Student added successfully")
+            console.log("Student added successfully:", response.data);
+          }
+        
+        } catch (error) {
+          console.error("Error status:", error.response ? error.response.status : "No status");
+          console.error("Error details:", error.response ? error.response.data : error.message);
+        }
+        
       
         // After sending data, navigate
         router.back()
@@ -175,9 +183,10 @@ const contactInfo = () => {
         <View style={styles.container}>
           <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="First Name" onChangeText={setName} value={name}/>
           <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Last Name" onChangeText={setLastName} value={lastName}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Mobile" onChangeText={setMobile} value={mobile} keyboardType='numeric'/>
           <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Relationship" onChangeText={setRelationship} value={relationship}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Email" onChangeText={setOccupation} value={occupation}/>
-          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Occupation" onChangeText={setEmail} value={email}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Occupation" onChangeText={setOccupation} value={occupation}/>
+          <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder="Email" onChangeText={setEmail} value={email}/>
           <TextInput style={styles.areaInputResi} placeholderTextColor={'grey'} placeholder="Area of Residence" numberOfLines={4} multiline textAlignVertical='top' onChangeText={setAddress} value={address}/>
           </View>
 
@@ -310,10 +319,22 @@ const styles = StyleSheet.create({
         color:'grey',
         fontSize: 14,
       },
+      multiLine : {
+        flexWrap:'wrap',
+        // width:'70%',
+        // marginTop:10,
+        fontSize:12,
+        color:'grey',
+        paddingRight:responsiveWidth(0),
+        marginRight:responsiveWidth(1),
+        width:responsiveWidth(38),
+        // backgroundColor:'red'
+    
+      },
       cardContainer:{
         marginVertical:10,
         width:"80%",
-        height:190,
+        height:'auto',
         alignSelf:'center',
         borderRadius:10,
         borderWidth:1,

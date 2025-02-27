@@ -15,8 +15,10 @@ export default function Home(): any {
 
 const router = useRouter();
 
-  const date = new Date().toISOString().slice(0, 10)
+const formattedDate = new Date().toISOString().slice(0, 10)
 
+  const date = formattedDate.split('-').reverse().join('-');
+  
   const Item = [
     
     {
