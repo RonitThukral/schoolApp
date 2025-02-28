@@ -101,10 +101,10 @@ const DrawerComponent = ({ drawerOpen, setDrawerOpen, settingsRoute }: {
 
               <View style={styles.setting}>
                 <TouchableOpacity onPress={handlesettingPress} style={styles.item}>
-                  <FontAwesome6 name="gear" size={30} color="#58a8f9" /><Text style={styles.itemtext}>Settings</Text>
+                  <FontAwesome6 name="gear" size={24} color="#58a8f9" /><Text style={styles.itemtext}>Settings</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleLogout1} style={styles.item}>
-                  <MaterialCommunityIcons name="logout" size={30} color="#58a8f9" /><Text style={styles.itemtext}>Logout</Text>
+                  <MaterialCommunityIcons name="logout" size={24} color="red" /><Text style={styles.itemtext}>Logout</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemtext: {
-    fontSize: 20,
+    fontSize: 18,
   },
   drawer: {
     position: 'absolute',

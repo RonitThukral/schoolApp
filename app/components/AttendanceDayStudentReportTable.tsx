@@ -93,13 +93,13 @@ const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
     <>
 
       <View style={styles.headerRow}>
-        <Text style={styles.classText}>Class: {attendanceview?.classID} </Text>
-        <Text style={styles.dateText}>Date:{getdatereprasation(attendanceview?.createdAt)} </Text>
+        <Text style={styles.classText}>Class: {attendanceview?.classID.toUpperCase()} </Text>
+        <Text style={styles.dateText}>Date: {getdatereprasation(attendanceview?.createdAt)} </Text>
       </View>
 
 
       <View style={styles.tableHeader}>
-        <Text style={styles.headerCell}>{mode}ID</Text>
+        <Text style={styles.headerCell}>{mode} ID</Text>
         <View style={styles.verticalLine} />
         <Text style={styles.headerCell}> Full Name</Text>
         <View style={styles.verticalLine} />

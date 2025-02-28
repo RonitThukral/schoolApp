@@ -4,12 +4,12 @@ import { useLocalSearchParams } from 'expo-router';
 import AttendanceDayStaffReportTable from '@/app/components/AttendanceDayStaffReportTable';
 
 const EditAttandanceView = () => {
-  const { attendanceId, classId, edit: editParam } = useLocalSearchParams();
+  const { attendanceId, className, edit: editParam } = useLocalSearchParams();
   const edit = editParam === 'true';
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Edit {classId} Attendance Report</Text>
+      <Text style={styles.title}>Edit {className} Attendance Report</Text>
       <AttendanceDayStaffReportTable headerHeight={230}
         attendanceId={attendanceId as string} edit={edit}
         mode="Staff" />
