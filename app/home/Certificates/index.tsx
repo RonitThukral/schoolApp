@@ -87,7 +87,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import * as Print from 'expo-print';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 
 
@@ -109,10 +109,10 @@ const index = () => {
 
   const fetchInitialData = async () => {
     try {
-      const classesResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/classes');
+      const classesResponse = await axios.get('https://api.dreameducation.org.in/api/classes');
       setClasses(classesResponse.data || []);
       
-      const yearResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/yeargroup');
+      const yearResponse = await axios.get('https://api.dreameducation.org.in/api/yeargroup');
       setYears(yearResponse.data || []);
     } catch (err) {
       console.error('Error fetching initial data:', err);

@@ -5,7 +5,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, S
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 const StudentRecord = () => {
   const { classId } = useLocalSearchParams();
 

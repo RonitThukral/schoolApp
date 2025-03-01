@@ -4,7 +4,7 @@
 //   import axios from 'axios';
 // import { responsiveWidth } from 'react-native-responsive-dimensions';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+// const baseUrl = 'https://api.dreameducation.org.in/api'
 
   
 // const feeData = [
@@ -204,7 +204,7 @@ import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 import ComingSoonScreen from '@/app/StudentPortal/home/rewards';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const DropdownComponent = () => {
   const [feeData, setFeeData] = useState([]);

@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = 'https://api.dreameducation.org.in/api'
 
 
 const dummyData = {

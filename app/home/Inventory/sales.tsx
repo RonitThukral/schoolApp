@@ -16,7 +16,7 @@
 //   useEffect(() => {
 //     // Fetch data from the API
 //     setLoading(true);
-//     axios.get('https://dreamscloudtechbackend.onrender.com/api/store/sales')
+//     axios.get('https://api.dreameducation.org.in/api/store/sales')
 //       .then((response) => {
 //         setSalesData(response.data); // Save the data in state
 //         setLoading(false);
@@ -59,7 +59,7 @@
 //   // Submit the sale to the API
 //   const handleSubmitSale = () => {
 //     setLoading(true);
-//     axios.post('https://dreamscloudtechbackend.onrender.com/api/store/sales/create', {
+//     axios.post('https://api.dreameducation.org.in/api/store/sales/create', {
 //       amountPaid: amount,
 //       totalCost: totalprice,
 //       name,
@@ -176,8 +176,8 @@ const Sales = () => {
   const fetchSales = async () => {
     try{
       setLoading(true);
-      const res = await axios.get('https://dreamscloudtechbackend.onrender.com/api/store/sales')
-        
+      const res = await axios.get('https://api.dreameducation.org.in/api/store/sales')
+        console.log(res.data)
           setSalesData(res.data); // Save the data in state
           setLoading(false);
         }
@@ -240,7 +240,7 @@ const Sales = () => {
 
     setLoading(true);
     try{
-    const res = await axios.post('https://dreamscloudtechbackend.onrender.com/api/store/sales/create', {
+    const res = await axios.post('https://api.dreameducation.org.in/api/store/sales/create', {
       amountPaid: totalprice,  // Use the total price here
       totalCost: totalprice,   // Same for totalCost
       name: 'Sale',            // Default name or set as per your use case

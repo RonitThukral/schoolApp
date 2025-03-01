@@ -7,7 +7,7 @@ import { AttendanceRecordType, AttendanceUserRecordType } from '@/app/components
 import { getStudentInfo } from '../utils/storage';
 import { StudentInfoType } from '../utils/app.types';
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+const baseUrl = "https://api.dreameducation.org.in/api";
 
 const AttendanceDayStaffReportTable = ({ headerHeight, attendanceId, edit, mode }: {
   headerHeight: number,
@@ -46,7 +46,7 @@ const AttendanceDayStaffReportTable = ({ headerHeight, attendanceId, edit, mode 
       }
       enableSubmit(false);
     }
-    // https://dreamscloudtechbackend.onrender.com/api/attendance/update/67b0796821fa04004e048974
+    // https://api.dreameducation.org.in/api/attendance/update/67b0796821fa04004e048974
   };
 
   useEffect(() => {

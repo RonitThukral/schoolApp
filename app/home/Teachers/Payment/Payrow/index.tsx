@@ -7,7 +7,7 @@ import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+const baseUrl = "https://api.dreameducation.org.in/api";
 
 const months = [
   { label: 'January', value: '1' },

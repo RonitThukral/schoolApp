@@ -13,7 +13,7 @@
 // import { useRoute } from '@react-navigation/native';
 // import { useLocalSearchParams } from 'expo-router';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+// const baseUrl = 'https://api.dreameducation.org.in/api'
 
 
 
@@ -391,7 +391,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A'; // Handle null or undefined dates

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
   
-  const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+  const baseUrl = 'https://api.dreameducation.org.in/api'
 
 
 const index = () => {

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, SafeAreaView, Platform, TouchableOp
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const DropdownComponent = () => {
   const { teacher } = useLocalSearchParams();

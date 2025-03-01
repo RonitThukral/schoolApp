@@ -6,7 +6,7 @@
 // import axios from 'axios';
 
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+// const baseUrl = 'https://api.dreameducation.org.in/api'
 
 
 
@@ -372,7 +372,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

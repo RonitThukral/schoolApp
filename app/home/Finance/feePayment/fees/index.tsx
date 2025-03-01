@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import FeeDetails from "../feeDetails";
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 // let globaltotalFee;

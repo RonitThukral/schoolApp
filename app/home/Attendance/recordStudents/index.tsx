@@ -6,7 +6,7 @@ import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const StudentRecord = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

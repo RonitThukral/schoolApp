@@ -5,7 +5,7 @@ import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams } from 'expo-router';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const StudentAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);

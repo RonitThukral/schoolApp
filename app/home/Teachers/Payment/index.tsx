@@ -32,7 +32,7 @@ const AcademicYear = [
   { label: '2029', value: '2029' }
 ];
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 const SalaryPayment = () => {

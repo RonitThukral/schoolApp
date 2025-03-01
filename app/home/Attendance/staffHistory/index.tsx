@@ -6,7 +6,7 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import AttendanceReportTable from '@/app/components/AttendanceReportTable';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const StaffHistory = () => {
   const [selectedDate, setSelectedDate] = useState('');

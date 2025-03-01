@@ -8,7 +8,7 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 import { BlurView } from 'expo-blur';
 
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 

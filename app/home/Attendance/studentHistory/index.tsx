@@ -4,7 +4,7 @@
 // import { Calendar } from 'react-native-calendars';
 // import { Dropdown } from 'react-native-element-dropdown';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+// const baseUrl = 'https://api.dreameducation.org.in/api';
 
 // const StudentHistory = () => {
 //   const [isFocus, setIsFocus] = useState<string | null>(null);
@@ -306,7 +306,7 @@ import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const StudentHistory = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

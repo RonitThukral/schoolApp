@@ -6,7 +6,7 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Print from 'expo-print';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const StaffHistory = () => {
   const [staffData, setStaffData] = useState([]);

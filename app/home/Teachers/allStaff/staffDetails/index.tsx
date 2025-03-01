@@ -15,7 +15,7 @@ import { useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const StaffDetails = () => {
   const [expandedSections, setExpandedSections] = useState({

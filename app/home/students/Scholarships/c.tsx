@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios'; // Assuming axios is installed
 
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+const API_BASE_URL = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 

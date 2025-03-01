@@ -11,7 +11,7 @@ const SalesReceipt = () => {
     const fetchSalesData = async () => {
       try {
         const response = await fetch(
-          `https://dreamscloudtechbackend.onrender.com/api/store/sales/${saleId}`
+          `https://api.dreameducation.org.in/api/store/sales/${saleId}`
         );
         const data = await response.json();
         if (data.success) {

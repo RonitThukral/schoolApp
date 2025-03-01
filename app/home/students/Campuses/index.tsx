@@ -5,7 +5,7 @@ import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
+const API_BASE_URL = "https://api.dreameducation.org.in/api";
 
 const index = () => {
   const [isOpen, setIsOpen] = useState(false);

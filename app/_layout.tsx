@@ -39,6 +39,11 @@ const _layout = () => {
       <Stack.Screen name='home/Finance/index' options={{ title: 'Finance', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
 
 
+      <Stack.Screen name='home/Reports/incomeReport/index' options={{ title: 'Income Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Reports/expenditureReport/index' options={{ title: 'Expenditure Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Reports/debtorsReport/index' options={{ title: 'Debtors Report', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Reports/billPaymentReport/index' options={{ title: 'Bill Payment Reports', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
+      <Stack.Screen name='home/Reports/nonBillPaymentReport/index' options={{ title: 'Non Bill Payment Reports', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Reports/index' options={{ title: 'Reports', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Notices/index' options={{ title: 'Notices', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />
       <Stack.Screen name='home/Chat/index' options={{ title: 'Chats', headerStyle: { backgroundColor: 'transparent' }, headerTransparent: true }} />

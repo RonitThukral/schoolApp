@@ -12,7 +12,7 @@ import { BlurView } from 'expo-blur';
 
 
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+const baseUrl = "https://api.dreameducation.org.in/api";
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

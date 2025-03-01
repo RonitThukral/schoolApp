@@ -7,7 +7,7 @@
 // import axios from 'axios';
 // import { responsiveWidth } from 'react-native-responsive-dimensions';
 
-// const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+// const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 // const FeeDetails = () => {
 //   const { student } = useLocalSearchParams();  // Get studentId from URL
@@ -416,7 +416,7 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { responsiveWidth } from "react-native-responsive-dimensions";
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 const tuitionData = [
   { month: "April", amount: "6500", paid: "600", status: "Paid" },

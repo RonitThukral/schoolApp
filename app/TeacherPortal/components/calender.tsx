@@ -354,7 +354,7 @@ const Calendar = () => {
     // Fetch events from API
     const fetchEvents = async () => {
       try {
-        const response = await fetch('https://dreamscloudtechbackend.onrender.com/api/calendar');
+        const response = await fetch('https://api.dreameducation.org.in/api/calendar');
         const data = await response.json();
         setEvents(data);
       } catch (error) {

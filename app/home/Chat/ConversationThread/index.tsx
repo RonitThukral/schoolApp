@@ -15,7 +15,7 @@ type SingeChatMessage = {
   channelID: string,
   date: string,
 }
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = 'https://api.dreameducation.org.in/api'
 
 type UserInfo = {
   userID: string,

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaVi
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = 'https://api.dreameducation.org.in/api';
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

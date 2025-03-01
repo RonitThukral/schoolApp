@@ -13,7 +13,7 @@
 // import axios from 'axios';
 // import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api/calendar';
+// const baseUrl = 'https://api.dreameducation.org.in/api/calendar';
 
 // const CalendarComponent = () => {
 //   const [events, setEvents] = useState({});
@@ -278,7 +278,7 @@
 // import { Calendar } from 'react-native-calendars';
 // import axios from 'axios';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api/calendar';
+// const baseUrl = 'https://api.dreameducation.org.in/api/calendar';
 
 // const CalendarComponent = () => {
 //   const [events, setEvents] = useState({});
@@ -488,7 +488,7 @@
 // import { Calendar } from 'react-native-calendars';
 // import axios from 'axios';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api/calendar';
+// const baseUrl = 'https://api.dreameducation.org.in/api/calendar';
 
 // const CalendarComponent = () => {
 //   const [events, setEvents] = useState({});
@@ -728,7 +728,7 @@ import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api/calendar';
+const baseUrl = 'https://api.dreameducation.org.in/api/calendar';
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState({});

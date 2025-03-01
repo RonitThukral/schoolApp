@@ -7,7 +7,7 @@ import { setOptions } from "expo-splash-screen";
 import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import { BlurView } from "expo-blur";
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual base URL
+const baseUrl = "https://api.dreameducation.org.in/api"; // Replace with your actual base URL
 
 const classOptions = [
   { label: "Class 10A", value: "10A" },

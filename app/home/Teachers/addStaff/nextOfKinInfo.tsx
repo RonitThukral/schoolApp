@@ -5,7 +5,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { getUserPostBody, UserDetailsType } from './params.types';
 import axios from 'axios';
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+const baseUrl = "https://api.dreameducation.org.in/api";
 const nextOfKin = () => {
   const params = useLocalSearchParams();
   const usercontactdetails = JSON.parse(params.userdetails as string);
@@ -39,7 +39,7 @@ const nextOfKin = () => {
 
 
       if (params.profilepicturebase64.length !== 0) {
-        // https://dreamscloudtechbackend.onrender.com/api/upload
+        // https://api.dreameducation.org.in/api/upload
         // image, resize locally, to 300x300px
         // base64 encoding
         // upload post
@@ -67,7 +67,7 @@ const nextOfKin = () => {
         return;
       }
 
-      // https://dreamscloudtechbackend.onrender.com/api/activitylog/create
+      // https://api.dreameducation.org.in/api/activitylog/create
       // const activitylogpost = {
       //   "activity": "staff member Adhiraj Pandey was created",
       //   "user": "admin"
