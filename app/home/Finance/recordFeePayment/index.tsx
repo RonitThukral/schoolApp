@@ -102,8 +102,10 @@ const Term = [
 
 const AcademicYear = [
   { label: '2024', value: '2024' },
+  { label: '2025', value: '2025' },
   { label: '2026', value: '2026' },
   { label: '2027', value: '2027' },
+  { label: '2028', value: '2028' },
   { label: '2029', value: '2029' }
 ];
 
@@ -245,7 +247,7 @@ const FeePayment = () => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={'Select Term'}
+            placeholder={'Select Month'}
             value={selectedTerm}
             onChange={(item) => setSelectedTerm(item.value)}
           />
@@ -279,7 +281,7 @@ const FeePayment = () => {
         data={filteredStudents.length > 0 ? filteredStudents : students}  // Use filtered students
         keyExtractor={(item) => item._id}
         style={styles.list}
-        contentContainerStyle={{paddingTop:responsiveHeight(4),paddingBottom:20}}
+        contentContainerStyle={{paddingBottom:20}}
         renderItem={({ item }) => {
           const { status, balance } = calculatePaymentStatus(item);
           return (
@@ -288,15 +290,11 @@ const FeePayment = () => {
               
               <View style={{ flexDirection: 'column', position: 'absolute', left: '30%' }}>
                <Text style={styles.studentTextid}>{item.userID}</Text>
-               <Text style={styles.studentText}>{item.name}</Text>
+               <Text style={styles.studentText}>{item.name + " " + item.surname}</Text>
              </View>
-              <View style={status === 'Fully Paid' ? styles.paid : status === 'Advance Payment' ? styles.advance : styles.pending}>
-                <Text style={status === 'Fully Paid' ? styles.paidText : status === 'Advance Payment' ? styles.advanceText : styles.pendingText}>{status}</Text>
-                {status === 'Pending' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{balance}</Text>}
-                {status === 'Advance Payment' && <Text style={{fontSize:12,marginTop:5,marginLeft:10,color:'#ff7c7c'} } >₹{Math.abs(balance)}</Text>} {/* Displaying advance payment balance */}
-              </View>
+              
 
-              <AntDesign name="right" size={24} color="#58A8F9" style={{position:'relative', right:5}} />
+              <AntDesign name="right" size={24} color="#58A8F9" style={{position:'relative', right:30}} />
             </TouchableOpacity>
           );
         }}
@@ -340,7 +338,9 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    height:'80%'
+    height:'80%',
+    position:'relative',
+    top:responsiveHeight(5)
   },
   dropdown: {
     height: 50,

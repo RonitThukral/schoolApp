@@ -7,7 +7,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import AcademicsCard from '../../components/academicsCard';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import { Entypo } from '@expo/vector-icons';
 
 
 
@@ -18,7 +17,7 @@ const router = useRouter();
 const formattedDate = new Date().toISOString().slice(0, 10)
 
   const date = formattedDate.split('-').reverse().join('-');
-  
+
   const Item = [
     
     {

@@ -161,6 +161,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
+import { useRouter } from 'expo-router';
 
 const Sales = () => {
   const [salesData, setSalesData] = useState([]);
@@ -170,6 +171,7 @@ const Sales = () => {
   const [amount, setAmount] = useState('');
   const [totalprice, setTotalPrice] = useState(null);  // Ensure totalprice is a number
   const [buyitems, setBuyItems] = useState([]);
+  const router = useRouter();
 
   const fetchSales = async () => {
     try{
@@ -263,6 +265,16 @@ const Sales = () => {
       };
   };
 
+
+  const handleReceipt = (id) => {
+    router.push({
+      pathname: '/home/Inventory/saleReceipt',
+      params: { saleId: id},  // Use 'params' here instead of 'query'
+    });
+  }
+
+
+
   return (
     <>
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 30 }}>
@@ -279,7 +291,10 @@ const Sales = () => {
                   <Text style={{ fontSize: 11, color: 'grey', fontWeight: '400' }}>Total Cost: {data.totalCost}</Text>
                   <Text style={{ fontSize: 11, color: 'grey', fontWeight: '400' }}>Date: {formattedDate}</Text>
                 </View>
-                <Image style={{ width: 30, height: 30, position: 'absolute', right: 53, top: 30 }} source={require('../../../assets/images/images/eye.png')} />
+                <TouchableOpacity style={{position: 'absolute', right: 53, top: 30}} onPress={() => handleReceipt(data._id)}>
+                <Image style={{ width: 30, height: 30,  }} source={require('../../../assets/images/images/eye.png')} />
+
+                </TouchableOpacity>
               </View>
             );
           })

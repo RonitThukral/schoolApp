@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform, StatusBar } from 'react-native'
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -79,7 +79,9 @@ export default function Home(): any {
     <>
 
       <SafeAreaView style={{ flex: 1 }}>
+
         <GestureHandlerRootView>
+          <StatusBar backgroundColor="white" barStyle="dark-content" />
 
           <DrawerComponent drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} settingsRoute={'./home/Settings'} />
 

@@ -11,11 +11,11 @@ const data = [
     [
       { title: "Set Fees", icon: require("../../assets/images/images/feeesss.png"),linking:'./Finance/setFees' },
       { title: "Set Payrow", icon: require("../../assets/images/images/calendars.png"), linking:'./Finance/setPayrow' },
-      { title: "Student Fees", icon: require("../../assets/images/images/charge.png"), linking:'./Finance/studentFees' },
+      { title: "Fees Transactions", icon: require("../../assets/images/images/charge.png"), linking:'./Finance/studentFees' },
       { title: "Fee Payment", icon: require("../../assets/images/images/transaction-history1.png"), linking:'./Finance/feePayment' },
-      { title: "Record Fee Payment", icon: require("../../assets/images/images/data-processing.png"), linking:'./Finance/recordFeePayment' },
+      { title: "Non Bill Payment", icon: require("../../assets/images/images/data-processing.png"), linking:'./Finance/recordFeePayment' },
       { title: "Bill Reminder", icon: require("../../assets/images/images/time.png"), linking:'./smsReminder' },
-      { title: "Transactions", icon: require("../../assets/images/images/transaction-history.png"),linking:'./Finance/Transactions' },
+      { title: "Financial Records", icon: require("../../assets/images/images/transaction-history.png"),linking:'./Finance/Transactions' },
       { title: "Banking", icon: require("../../assets/images/images/banking-system.png"),linking:'./Finance/Banking' },
     ],
  
