@@ -9,7 +9,7 @@ const EditAttandanceView = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Edit {className} Attendance Report</Text>
+      <Text style={styles.title}>Edit {(className as string).toUpperCase()} Attendance Report</Text>
       <AttendanceDayStaffReportTable headerHeight={230}
         attendanceId={attendanceId as string} edit={edit}
         mode="Staff" />

@@ -49,7 +49,6 @@ const DrawerComponent = ({ drawerOpen, setDrawerOpen, settingsRoute }: {
 
   const handlesettingPress = () => {
     setDrawerOpen(false);
-    // router.navigate(settingsRoute);
 
     const params = currentUser?.role === "admin"
       ? { admin: JSON.stringify(currentUser) }
@@ -102,6 +101,9 @@ const DrawerComponent = ({ drawerOpen, setDrawerOpen, settingsRoute }: {
               <View style={styles.setting}>
                 <TouchableOpacity onPress={handlesettingPress} style={styles.item}>
                   <FontAwesome6 name="gear" size={24} color="#58a8f9" /><Text style={styles.itemtext}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handlesettingPress} style={styles.item}>
+                  <FontAwesome6 name="key" size={24} color="#58a8f9" /><Text style={styles.itemtext}>Change password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleLogout1} style={styles.item}>
                   <MaterialCommunityIcons name="logout" size={24} color="red" /><Text style={styles.itemtext}>Logout</Text>
@@ -174,8 +176,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   profilepic: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
   },
   profileinfo: {
     justifyContent: "center",

@@ -49,9 +49,7 @@ export const fetchAndSaveStudentsInfoCache = async () => {
       cacheStudentMap(resp.data)
       AsyncStorage.setItem('students_info', JSON.stringify(resp.data));
     }
-    console.log(resp.status, resp.data.error);
     return resp.data;
-
   } catch (error) {
     console.error('Error Fetching Students Info', error);
   }
