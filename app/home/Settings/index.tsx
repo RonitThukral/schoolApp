@@ -1,15 +1,20 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, SafeAreaView, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Feather from '@expo/vector-icons/Feather';
 import * as Updates from 'expo-updates';  // Correct import after installation
 
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { clearUserData } from '@/app/utils/storage';
 
 const contactInfo = () => {
 
-  const router = useRouter()
+  const router = useRouter();
+  const scrollViewRef = useRef<ScrollView | null>(null);
+
+  const { scrollToPassword: scrollToPasswordParam } = useLocalSearchParams();
+  const scrollToPassword: boolean = JSON.parse(scrollToPasswordParam as string | undefined ?? "false");
+
 
   const handlePrevious = () => {
     router.back()
@@ -18,6 +23,11 @@ const contactInfo = () => {
     // router.navigate('./guardianInfo')
   }
 
+  useEffect(() => {
+    if (scrollToPassword) {
+      scrollViewRef.current?.scrollToEnd();
+    }
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -34,7 +44,10 @@ const contactInfo = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={{ backgroundColor: '#FFFFFF' }} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView
+        style={{ backgroundColor: '#FFFFFF' }}
+        contentContainerStyle={{ paddingBottom: 40 }}
+        ref={scrollViewRef}>
 
 
         <View style={styles.profileSection}>
