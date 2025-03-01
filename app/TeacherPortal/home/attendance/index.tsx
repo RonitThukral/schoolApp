@@ -5,8 +5,11 @@ import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Print from 'expo-print';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const StaffHistory = () => {
   const [staffData, setStaffData] = useState([]);

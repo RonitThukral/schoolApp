@@ -8,6 +8,7 @@ import axios from 'axios';
 import { parse } from '@babel/core';
 import Attendance from '@/app/home/Reports/attendance';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
 
 
@@ -15,7 +16,9 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
   //   [key: string]: string | null;
   // }
 
-  const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
   const DropdownComponent = () => {

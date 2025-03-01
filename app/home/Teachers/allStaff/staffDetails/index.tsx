@@ -14,8 +14,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const StaffDetails = () => {
   const [expandedSections, setExpandedSections] = useState({

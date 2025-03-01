@@ -8,6 +8,11 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
+
+
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
 
 const Months = [
   { label: 'January', value: 'January' },
@@ -34,7 +39,6 @@ const AcademicYear = [
   { label: '2029', value: '2029' }
 ];
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
 
 const FeePayment = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

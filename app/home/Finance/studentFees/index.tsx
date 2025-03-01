@@ -336,9 +336,10 @@ import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"
+const baseUrl = Constants.expoConfig.extra.API_URL;
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

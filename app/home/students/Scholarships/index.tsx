@@ -5,7 +5,12 @@ import axios from 'axios';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const index = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +31,7 @@ const index = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API_BASE_URL}/scholarships`)
+      .get(`${baseUrl}/scholarships`)
       .then((res) => {
         setScholarships(res.data);
         setLoading(false);
@@ -47,7 +52,7 @@ const index = () => {
     };
     setLoading(true);
     axios
-      .post(`${API_BASE_URL}/scholarships/create`, newScholarship)
+      .post(`${baseUrl}/scholarships/create`, newScholarship)
       .then((res) => {
         setScholarships([res.data.doc, ...scholarships]);
         setIsOpen(false);
@@ -80,7 +85,7 @@ const index = () => {
         {
           text: "Delete",
           onPress: () => {
-            axios.delete(`${API_BASE_URL}/scholarships/delete/${id}`)
+            axios.delete(`${baseUrl}/scholarships/delete/${id}`)
               .then(() => {
                 setScholarships(scholarships.filter((item) => item._id !== id));
               })
@@ -125,7 +130,7 @@ const index = () => {
     };
     setLoading(true);
     axios
-      .put(`${API_BASE_URL}/scholarships/update/${currentId}`, updatedScholarship)
+      .put(`${baseUrl}/scholarships/update/${currentId}`, updatedScholarship)
       .then((res) => {
         setScholarships(
           scholarships.map((item) => (item._id === currentId ? res.data.doc : item))

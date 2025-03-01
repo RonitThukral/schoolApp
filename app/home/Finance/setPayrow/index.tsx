@@ -4,7 +4,9 @@
 //   import axios from 'axios';
 // import { responsiveWidth } from 'react-native-responsive-dimensions';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+// const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
   
 // const feeData = [
@@ -203,8 +205,11 @@ import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 import ComingSoonScreen from '@/app/StudentPortal/home/rewards';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const DropdownComponent = () => {
   const [feeData, setFeeData] = useState([]);

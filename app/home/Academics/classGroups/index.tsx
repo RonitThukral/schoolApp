@@ -1,11 +1,14 @@
 import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput,ActivityIndicator, Modal, Alert } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';  // Import axios
+import axios from 'axios'; 
+import Constants from 'expo-constants';
+
+ // Import axios
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api"; // Replace with your actual API URL
+const baseUrl = Constants.expoConfig.extra.API_URL; // Replace with your actual API URL
 
 const index = () => {
 

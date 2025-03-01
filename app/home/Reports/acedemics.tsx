@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ImageBackground } from "react-nativ
 import AntDesign from '@expo/vector-icons/AntDesign';//@ts-ignore
 import { PieChart } from "react-native-svg-charts";
 import { Dimensions } from "react-native";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -35,6 +36,21 @@ export default function Academics() {
   const totalStaff = dataStaff.reduce((sum, item) => sum + item.value, 0);
   const totalStudents = dataStudents.reduce((sum, item) => sum + item.value, 0);
 
+const router = useRouter()
+
+  const handlePress = (link) => {
+    if (link === 'i') {
+      router.navigate('/home/Academics/Divisions');
+    } else if (link === 'e') {
+      router.navigate('/home/allClasses');
+    } else if (link === 'd') {
+      router.navigate('/home/allCourses');
+    } else if (link === 'n') {
+      router.navigate('/home/Academics/progressReport');
+    } else {
+      router.navigate('/home/Reports/billPaymentReport');
+    }
+  };
 
   return (
     <ScrollView style={styles.container1}>
@@ -75,11 +91,11 @@ export default function Academics() {
 </View>
 <View style={styles.ruler}></View>
     
-<View style={styles.list}> 
+{/* <View style={styles.list}> 
   <Text style={styles.text}>Academic Transcripts</Text>
   <AntDesign name="right" size={22} color="#58a8f9" style={styles.icon}/>
 </View>
-<View style={styles.ruler}></View>
+<View style={styles.ruler}></View> */}
     
     </ScrollView>
   );

@@ -6,9 +6,12 @@ import React, { useEffect, useState,useCallback, useLayoutEffect } from 'react';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams } from 'expo-router';
+import Constants from 'expo-constants';
 
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const term = [
   {label: "1", value: '1'},
@@ -186,10 +189,10 @@ const [isVisible, setIsVisible] = useState(false)
 
     const fetchInitialData = async () => {
       try {
-        const classesResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/classes');
+        const classesResponse = await axios.get('https://api.dreameducation.org.in/api/classes');
         setClasses(classesResponse.data || []);
         
-        const yearResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/yeargroup');
+        const yearResponse = await axios.get('https://api.dreameducation.org.in/api/yeargroup');
         setYears(yearResponse.data || []);
         
       } catch (err) {
@@ -253,7 +256,7 @@ const [isVisible, setIsVisible] = useState(false)
       try {
         const updatedStudents = updateStudentPercentages(filteredStudents, newExamMark, newClassWorkMark, examPercentage, classWorkPercentage);
         
-        await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
+        await axios.put(`https://api.dreameducation.org.in/api/sba/update/${data?._id}`, {
           exam: newExamMark,
           classWork: newClassWorkMark,
           examPercentage,
@@ -322,7 +325,7 @@ const [isVisible, setIsVisible] = useState(false)
     try {
       const updatedStudents = updateStudentPercentages(filteredStudents, examMarks, classMarks, newExamPercentage, newClassWorkPercentage);
       
-      await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
+      await axios.put(`https://api.dreameducation.org.in/api/sba/update/${data?._id}`, {
         examPercentage: examPercentage1,
         classWorkPercentage: classWorkPercentage1,
         // students: updatedStudents,
@@ -362,7 +365,7 @@ const [isVisible, setIsVisible] = useState(false)
       // console.log(selectedstu)
       const updatedStudents = updateStudentPercentages(newStudents, examMarks, classMarks, examPercentage1, classWorkPercentage1);
       
-      await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
+      await axios.put(`https://api.dreameducation.org.in/api/sba/update/${data?._id}`, {
         students: updatedStudents,
         examPercentage1,
         classWorkPercentage1,

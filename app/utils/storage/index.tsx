@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { StudentInfoType } from '../app.types';
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+const baseUrl = "https://api.dreameducation.org.in/api";
 // Save user data
 export const saveUserData = async (userData: any) => {
   try {

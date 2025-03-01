@@ -1,13 +1,18 @@
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import axios for API calls
+import axios from 'axios'; 
+import Constants from 'expo-constants';
+
+// Import axios for API calls
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-// API URL
-const apiUrl = 'https://dreamscloudtechbackend.onrender.com/api/store/items';
 
+// API URL
+
+const baseUrl = Constants.expoConfig.extra.API_URL;
+// console.log(API_URL);
 const Inventory = () => {
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
@@ -27,7 +32,7 @@ const Inventory = () => {
   const fetchItems = async () => {
     try {
 
-      const response = await axios.get(apiUrl)
+      const response = await axios.get(`${baseUrl}/store/items`)
       setAllItems(response.data);
       setFilteredItems(response.data);
 
@@ -38,7 +43,7 @@ const Inventory = () => {
 
   useEffect(() => {
     fetchItems()
-  }, []);
+  }, [name,units,price,quantity,description]);
 
   const handlePlus = () => {
     setIsOpen(true);
@@ -70,7 +75,8 @@ const Inventory = () => {
 
     setLoading(true);
     try{
-    const response = await axios.post(`${apiUrl}/create`, newItem)
+
+    const response = await axios.post(`${baseUrl}/store/items/create`, newItem)
         setLoading(false);
         fetchItems()
         const updatedItems = [...allItems, response.data];
@@ -88,48 +94,61 @@ const Inventory = () => {
       };
   };
 
-  // Edit item function
   const handleEdit = (id) => {
-    setEdit(true);
+    
     const item = allItems.find(e => e._id === id);
-    setName(item?.name);
-    setUnits(item?.unit);
-    setQuantity(item?.quantity);
-    setDescription(item?.description);
-    setPrice(item?.price);
-    setEditID(id);
+    if (item) {
+      setName(item.name || '');
+      setUnits(item.unit || '');
+      setQuantity(item.quantity?.toString() || '');
+      setDescription(item.description || '');
+      setPrice(item.price?.toString() || '');
+      setEditID(id);
+      setEdit(true);
+      setIsOpen(true);  // Open modal with populated data
+    } else {
+      console.error(`Item with id ${id} not found`);
+      Alert.alert("Error", "Item not found");
+    }
   };
 
   // Full edit update
   const onEdit = async () => {
-    setLoading(true);
-    try{
-    const res = await axios.put(`${apiUrl}/update/${editID}`, {
+    if (!editID) {
+      Alert.alert("Error", "No item selected for editing");
+      return;
+    }
+
+    const updatedItem = {
       name,
       unit: units,
       quantity,
       price,
       description,
-    })
-      
-        setLoading(false);
-        setName('');
-        setUnits('');
-        setQuantity('');
-        setDescription('');
-        setPrice('');
-        setEdit(false);
+    };
 
-        let newData = allItems.map(item => (item._id === editID ? { ...res.data } : item));
-        setAllItems(newData);
-        setFilteredItems(newData);
-        // Optionally close the modal after editing:
-        setIsOpen(false);
-  }
-      catch(err){
-        console.log(err);
-        // setLoading(false);
-      };
+    setLoading(true);
+    try {
+      
+      const response = await axios.put(`${baseUrl}/store/items/update/${editID}`, updatedItem);
+      const editedItem = response.data;
+      
+      // Immediately update the state with the edited item
+      const updatedAllItems = allItems.map(item => 
+        item._id === editID ? { ...item, ...editedItem } : item
+      );
+      
+      setAllItems(updatedAllItems);
+      setFilteredItems(updatedAllItems);
+      
+      // Reset form and close modal
+      handleClose();
+      setLoading(false);
+    } catch (err) {
+      console.error('Error updating item:', err);
+      setLoading(false);
+      Alert.alert("Error", "Failed to update item. Please try again.");
+    }
   };
 
   // Handle inventory update (Quantity Update) – not used in modal now
@@ -166,7 +185,7 @@ const handleDelete = (id) => {
       {
         text: "Delete",
         onPress: () => {
-          axios.delete(`${apiUrl}/delete/${id}`)
+          axios.delete(`${baseUrl}/store/items/delete/${id}`)
             .then(res => {
               if (res.data.error) {
                 return Alert.alert("Error", res.data.error);
@@ -242,9 +261,9 @@ const handleDelete = (id) => {
               </Text>
               <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Name" : "Name"} onChangeText={handleName} value={name} />
               <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={edit ? "Edit Description" : "Add Description"} multiline textAlignVertical='top' onChangeText={handleDescription} value={description} />
-              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Units (e.g kg)" : "Units (e.g kg)"} onChangeText={handleUnits} value={units} />
-              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Price" : "Price"} onChangeText={handlePrice} value={price} />
-              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Quantity" : "Quantity"} onChangeText={handleQuantity} value={quantity} />
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Units (e.g kg)" : "Units (e.g kg)"} onChangeText={handleUnits} value={units} keyboardType='numeric'/>
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Price" : "Price"} onChangeText={handlePrice} value={price} keyboardType='numeric' />
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Quantity" : "Quantity"} onChangeText={handleQuantity} value={quantity} keyboardType='numeric' />
 
               <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
                 <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>

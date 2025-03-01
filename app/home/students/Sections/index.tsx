@@ -19,7 +19,12 @@ import axios from "axios";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import { BlurView } from "expo-blur";
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +42,7 @@ const App = () => {
   const fetchSections = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/sections`);
+      const response = await axios.get(`${baseUrl}/sections`);
       if (response.data && Array.isArray(response.data)) {
         setSections(response.data);
       } else {
@@ -59,7 +64,7 @@ const App = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.post(`${API_BASE_URL}/sections/create`, {
+      const response = await axios.post(`${baseUrl}/sections/create`, {
         name: sectionName,
       });
       setSections([response.data.doc, ...sections]);
@@ -87,7 +92,7 @@ const App = () => {
           onPress: async () => {
             setLoading(true);
             try {
-              await axios.delete(`${API_BASE_URL}/sections/delete/${id}`);
+              await axios.delete(`${baseUrl}/sections/delete/${id}`);
               setSections(sections.filter((section) => section._id !== id));
             } catch (error) {
               console.error("Error deleting section", error);
@@ -120,7 +125,7 @@ const App = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.put(`${API_BASE_URL}/sections/update/${currentId}`, {
+      const response = await axios.put(`${baseUrl}/sections/update/${currentId}`, {
         name: sectionName,
       });
       setSections(

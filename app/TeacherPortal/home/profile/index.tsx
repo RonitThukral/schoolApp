@@ -17,7 +17,6 @@ import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-
 import { parse } from '@babel/core';
 
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
 
 
 const StaffDetails = () => {

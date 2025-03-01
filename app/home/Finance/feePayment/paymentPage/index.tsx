@@ -4,8 +4,11 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Dropdown } from 'react-native-element-dropdown';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const dummyData = {
   paymentType: [
@@ -34,7 +37,7 @@ const Index = () => {
 //   const [date, setDate] = useState('');
   const [balances, setBalances] = useState(''); // Added balance state
   const [types, setTypes] = useState(initialTypes);
-  const [applyToEnabled, setApplyToEnabled] = useState(false); // Controls checkbox toggling
+  const [applyToEnabled, setApplyToEnabled] = useState(true); // Controls checkbox toggling
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // YYYY-MM-DD format
 
 
@@ -185,7 +188,7 @@ const Index = () => {
           </TouchableOpacity>
 
           {applyToEnabled && <><Text style={styles.subtitle}>Select Fees Type:</Text>
-          <View style={{ paddingHorizontal: 25 }}>
+          <View style={{ paddingHorizontal: 80 }}>
             {Object.keys(types).map((key) => (
               <TouchableOpacity
                 key={key}

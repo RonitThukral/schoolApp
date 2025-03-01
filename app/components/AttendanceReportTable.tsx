@@ -10,7 +10,12 @@ import { Text } from "react-native-paper";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 const monthentries = [{ label: "Clear", value: null },
 ...[...Array(12).keys()].map(i => ({ label: (i + 1).toString(), value: i + 1 }))];
 

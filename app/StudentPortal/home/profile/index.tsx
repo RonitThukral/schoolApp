@@ -14,8 +14,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
 import { parse } from '@babel/core';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A'; // Handle null or undefined dates

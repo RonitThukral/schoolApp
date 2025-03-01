@@ -4,9 +4,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { AntDesign, Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
 import * as Print from 'expo-print';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 
   

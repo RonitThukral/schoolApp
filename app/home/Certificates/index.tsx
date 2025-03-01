@@ -86,8 +86,11 @@ import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-na
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import * as Print from 'expo-print';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 
 
@@ -109,10 +112,10 @@ const index = () => {
 
   const fetchInitialData = async () => {
     try {
-      const classesResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/classes');
+      const classesResponse = await axios.get(`${baseUrl}/classes`);
       setClasses(classesResponse.data || []);
       
-      const yearResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/yeargroup');
+      const yearResponse = await axios.get(`${baseUrl}/yeargroup`);
       setYears(yearResponse.data || []);
     } catch (err) {
       console.error('Error fetching initial data:', err);

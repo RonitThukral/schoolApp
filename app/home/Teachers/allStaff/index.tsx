@@ -6,8 +6,11 @@ import { useRouter } from 'expo-router';
 import axios from 'axios';
 import * as Print from 'expo-print';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

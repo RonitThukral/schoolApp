@@ -4,9 +4,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
+import Constants from 'expo-constants';
 
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 const index = () => {

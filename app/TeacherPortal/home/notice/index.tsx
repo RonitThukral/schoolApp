@@ -5,8 +5,14 @@ import dayjs from 'dayjs';
   import { Dropdown } from 'react-native-element-dropdown';
   import Entypo from '@expo/vector-icons/Entypo';
   import { useRouter } from 'expo-router';
-  import axios from 'axios'; // Assuming axios is installed
+  import axios from 'axios'; 
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 
@@ -48,7 +54,6 @@ import { responsiveWidth } from 'react-native-responsive-dimensions';
 //       }
 //     ]
 
-const baseUrl = "https://dreamscloudtechbackend.onrender.com/api";
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

@@ -1,11 +1,16 @@
 import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, ActivityIndicator, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';  // Make sure Axios is installed
+import axios from 'axios'; 
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const index = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +23,7 @@ const index = () => {
     // Fetch data from API on component mount
     useEffect(() => {
         setLoading(true)
-        axios.get(`${API_BASE_URL}/dormitories`)  // Replace with your actual API endpoint
+        axios.get(`${baseUrl}/dormitories`)  // Replace with your actual API endpoint
             .then(response => {
                 setTransports(response.data);
                 setLoading(false)
@@ -33,7 +38,7 @@ const index = () => {
     const handleAdd = () => {
         setLoading(true)
 
-        axios.post(`${API_BASE_URL}/dormitories/create`, { name: transport })  // API call to create transport
+        axios.post(`${baseUrl}/dormitories/create`, { name: transport })  // API call to create transport
             .then(response => {
                 // console.log(response.data);  // Log the response for debugging
                 setTransports([response.data, ...transports]);
@@ -75,7 +80,7 @@ const index = () => {
             {
               text: "Delete",
               onPress: () => {
-                axios.delete(`${API_BASE_URL}/dormitories/delete/${id}`)
+                axios.delete(`${baseUrl}/dormitories/delete/${id}`)
                   .then(response => {
                     setTransports(transports.filter(item => item._id !== id));
                   })
@@ -100,7 +105,7 @@ const index = () => {
     const saveEdit = () => {
         setLoading(true)
 
-        axios.put(`${API_BASE_URL}/dormitories/update/${currentId}`, { name: transport })  // API call to update transport
+        axios.put(`${baseUrl}/dormitories/update/${currentId}`, { name: transport })  // API call to update transport
             .then(response => {
                 // console.log(response.data);  // Log the response for debugging
                 setTransports(transports.map(item =>

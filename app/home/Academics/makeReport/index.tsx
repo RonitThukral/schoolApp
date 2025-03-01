@@ -5,9 +5,12 @@ import React, { useEffect, useState,useCallback } from 'react';
 // import { useRouter } from 'expo-router';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const term = [
   {label: "1", value: '1'},
@@ -17,133 +20,10 @@ const term = [
 
 
 
-  // const studentData = [
-  //   {
-  //     "id": "BK202408",
-  //     "name": "Deepak Kumar",
-  //     "class": "10A",
-  //     "course": "Course 1",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 1"
-  //   },
-  //   {
-  //     "id": "BK202409",
-  //     "name": "Rohan Sharma",
-  //     "class": "10A",
-  //     "course": "Course 2",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 2"
-  //   },
-  //   {
-  //     "id": "3",
-  //     "name": "John Doe",
-  //     "class": "10A",
-  //     "course": "Course 3",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 3"
-  //   },
-  //   {
-  //     "id": "4",
-  //     "name": "John Doe",
-  //     "class": "10A",
-  //     "course": "Course 4",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 1"
-  //   },
-  //   {
-  //     "id": "5",
-  //     "name": "Jane Smith",
-  //     "class": "9B",
-  //     "course": "Course 5",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 2"
-  //   },
-  //   {
-  //     "id": "6",
-  //     "name": "Michael Brown",
-  //     "class": "11C",
-  //     "course": "Course 6",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 3"
-  //   },
-  //   {
-  //     "id": "7",
-  //     "name": "Emily Davis",
-  //     "class": "10A",
-  //     "course": "Course 7",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 1"
-  //   },
-  //   {
-  //     "id": "8",
-  //     "name": "Daniel Johnson",
-  //     "class": "8A",
-  //     "course": "Course 8",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 2"
-  //   },
-  //   {
-  //     "id": "9",
-  //     "name": "Sophia Wilson",
-  //     "class": "12B",
-  //     "course": "Course 9",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 3"
-  //   },
-  //   {
-  //     "id": "10",
-  //     "name": "Matthew Miller",
-  //     "class": "9C",
-  //     "course": "Course 10",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 1"
-  //   },
-  //   {
-  //     "id": "11",
-  //     "name": "James Taylor",
-  //     "class": "8B",
-  //     "course": "Course 11",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 2"
-  //   },
-  //   {
-  //     "id": "12",
-  //     "name": "Charlotte",
-  //     "class": "10C",
-  //     "course": "Course 12",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 3"
-  //   },
-  //   {
-  //     "id": "13",
-  //     "name": "Aarav Gupta",
-  //     "class": "11A",
-  //     "course": "Course 13",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 1"
-  //   },
-  //   {
-  //     "id": "14",
-  //     "name": "Ishita Kapoor",
-  //     "class": "9A",
-  //     "course": "Course 14",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 2"
-  //   },
-  //   {
-  //     "id": "15",
-  //     "name": "Nikhil Verma",
-  //     "class": "12A",
-  //     "course": "Course 15",
-  //     "academicYear": "2024-2025",
-  //     "term": "Term 3"
-  //   }
-  // ]
   
   const DropdownComponent = () => {
     const [examPercentage, setExamPercentage] = useState(null)
-    // const [examwork, setExamwork] = useState(null)
-    // const [classWork, setClassWork] = useState(null)
+  
     const [classMarks, setClassMarks] = useState(null)
     const [examMarks, setExamMarks] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -179,10 +59,10 @@ const [isVisible, setIsVisible] = useState(false)
 
     const fetchInitialData = async () => {
       try {
-        const classesResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/classes');
+        const classesResponse = await axios.get(`${baseUrl}/classes`);
         setClasses(classesResponse.data || []);
         
-        const yearResponse = await axios.get('https://dreamscloudtechbackend.onrender.com/api/yeargroup');
+        const yearResponse = await axios.get(`${baseUrl}/yeargroup`);
         setYears(yearResponse.data || []);
         
       } catch (err) {
@@ -246,7 +126,7 @@ const [isVisible, setIsVisible] = useState(false)
       try {
         const updatedStudents = updateStudentPercentages(filteredStudents, newExamMark, newClassWorkMark, examPercentage, classWorkPercentage);
         
-        await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
+        await axios.put(`${baseUrl}/sba/update/${data?._id}`, {
           exam: newExamMark,
           classWork: newClassWorkMark,
           examPercentage,
@@ -315,7 +195,7 @@ const [isVisible, setIsVisible] = useState(false)
     try {
       const updatedStudents = updateStudentPercentages(filteredStudents, examMarks, classMarks, newExamPercentage, newClassWorkPercentage);
       
-      await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
+      await axios.put(`https://api.dreameducation.org.in/api/sba/update/${data?._id}`, {
         examPercentage: examPercentage1,
         classWorkPercentage: classWorkPercentage1,
         // students: updatedStudents,
@@ -355,7 +235,7 @@ const [isVisible, setIsVisible] = useState(false)
       // console.log(selectedstu)
       const updatedStudents = updateStudentPercentages(newStudents, examMarks, classMarks, examPercentage1, classWorkPercentage1);
       
-      await axios.put(`https://dreamscloudtechbackend.onrender.com/api/sba/update/${data?._id}`, {
+      await axios.put(`https://api.dreameducation.org.in/api/sba/update/${data?._id}`, {
         students: updatedStudents,
         examPercentage1,
         classWorkPercentage1,

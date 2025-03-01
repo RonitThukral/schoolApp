@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

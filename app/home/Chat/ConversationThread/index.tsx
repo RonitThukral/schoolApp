@@ -6,6 +6,7 @@ import { responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
 import { getUserData } from '@/app/utils/storage';
 import HeaderLarge from '@/app/components/Header';
+import Constants from 'expo-constants';
 
 type SingeChatMessage = {
   isViewed: boolean,
@@ -15,7 +16,9 @@ type SingeChatMessage = {
   channelID: string,
   date: string,
 }
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 type UserInfo = {
   userID: string,

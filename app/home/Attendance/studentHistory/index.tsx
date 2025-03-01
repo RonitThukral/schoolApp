@@ -4,7 +4,9 @@
 // import { Calendar } from 'react-native-calendars';
 // import { Dropdown } from 'react-native-element-dropdown';
 
-// const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+// const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 // const StudentHistory = () => {
 //   const [isFocus, setIsFocus] = useState<string | null>(null);
@@ -300,13 +302,16 @@
 import AttendanceReportTable from '@/app/components/AttendanceReportTable';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
+import Constants from 'expo-constants';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const StudentHistory = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

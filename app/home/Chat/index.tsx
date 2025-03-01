@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { getUserData } from '@/app/utils/storage';
 import { UserInfo } from '@/app/utils/app.types';
 import HeaderLarge from '@/app/components/Header';
+import Constants from 'expo-constants';
 
 export type ChatsResponseItem = {
   _id: string,
@@ -35,7 +36,9 @@ export type UserDataResponseItem = {
 
 export type UsersStore = Map<string, UserDataResponseItem>;
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const Conversation = () => {
 
@@ -88,7 +91,7 @@ const Conversation = () => {
         axios.get(`${baseUrl}/teachers`),
         axios.get(`${baseUrl}/students`),
       ]);
-      // const response = await axios.get('https://dreamscloudtechbackend.onrender.com/api/chats');
+      // const response = await axios.get('https://api.dreameducation.org.in/api/chats');
       setData(chatsResponse.data); // Set the data to state
       let userMap = new Map<string, UserDataResponseItem>();
       teacherResponse.data.forEach((item: UserDataResponseItem) => {

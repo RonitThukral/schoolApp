@@ -1,10 +1,13 @@
 import { View, Text, ImageBackground, TouchableOpacity, Image, SafeAreaView, StyleSheet, FlatList, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native'
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios'; // Assuming axios is installed
+import axios from 'axios'; 
+import Constants from 'expo-constants';
+
+// Assuming axios is installed
 
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api"; // Base API URL
+const API_BASE_URL = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 

@@ -5,7 +5,12 @@ import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-const API_BASE_URL = "https://dreamscloudtechbackend.onrender.com/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const index = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +24,7 @@ const index = () => {
   useEffect(() => {
     const fetchCampuses = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/campuses`);
+        const response = await axios.get(`${baseUrl}/campuses`);
         setCampuses(response.data);
       } catch (error) {
         console.error("Error fetching campuses:", error);
@@ -33,7 +38,7 @@ const index = () => {
   const handleAdd = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${API_BASE_URL}/campuses/create`, { name, location: city });
+      const response = await axios.post(`${baseUrl}/campuses/create`, { name, location: city });
       setCampuses([response.data.doc, ...campuses]);
       setIsOpen(false);
       setCity('');
@@ -61,7 +66,7 @@ const index = () => {
           onPress: async () => {
             try {
               setLoading(true);
-              await axios.delete(`${API_BASE_URL}/campuses/delete/${id}`);
+              await axios.delete(`${baseUrl}/campuses/delete/${id}`);
               setCampuses(campuses.filter((item) => item._id !== id));
             } catch (error) {
               console.error("Error deleting campus:", error);
@@ -88,7 +93,7 @@ const index = () => {
   const saveEdit = async () => {
     try {
       setLoading(true);
-      const response = await axios.put(`${API_BASE_URL}/campuses/update/${currentId}`, { name, location: city });
+      const response = await axios.put(`${baseUrl}/campuses/update/${currentId}`, { name, location: city });
       setCampuses(campuses.map((item) => (item._id === currentId ? response.data.doc : item)));
       setEdit(false);
       setName('');

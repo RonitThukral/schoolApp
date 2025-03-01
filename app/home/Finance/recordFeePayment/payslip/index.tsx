@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 const dummyData = {

@@ -3,9 +3,12 @@ import React, { useEffect } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import { useState } from 'react';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
   
-  const baseUrl = 'https://dreamscloudtechbackend.onrender.com/api'
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 const index = () => {
