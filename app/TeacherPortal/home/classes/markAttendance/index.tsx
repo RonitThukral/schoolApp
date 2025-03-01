@@ -1,11 +1,14 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert, Platform } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Dropdown } from 'react-native-element-dropdown';
 
-const baseUrl = 'https://api.dreameducation.org.in/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 const StudentRecord = () => {
   const { classId } = useLocalSearchParams();
 

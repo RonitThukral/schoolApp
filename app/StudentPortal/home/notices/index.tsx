@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-  import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert, SafeAreaView, Platform} from 'react-native';
-  import DateTimePicker from 'react-native-ui-datepicker';
+import { StyleSheet, Text, View , TouchableOpacity,Image,ScrollView,TextInput, Alert, SafeAreaView, Platform} from 'react-native';
+import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
-  import { Dropdown } from 'react-native-element-dropdown';
-  import Entypo from '@expo/vector-icons/Entypo';
-  import { useRouter } from 'expo-router';
-  import axios from 'axios'; // Assuming axios is installed
+import { Dropdown } from 'react-native-element-dropdown';
+import Entypo from '@expo/vector-icons/Entypo';
+import { useRouter } from 'expo-router';
+import axios from 'axios'; 
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
 
 
 
@@ -48,7 +53,6 @@ import { responsiveWidth } from 'react-native-responsive-dimensions';
 //       }
 //     ]
 
-const baseUrl = "https://api.dreameducation.org.in/api";
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

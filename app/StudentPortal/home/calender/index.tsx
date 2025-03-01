@@ -728,7 +728,12 @@ import { Calendar } from 'react-native-calendars';
 import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 
-const baseUrl = 'https://api.dreameducation.org.in/api/calendar';
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState({});
@@ -745,7 +750,7 @@ const CalendarComponent = () => {
   // Fetch events from API
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(baseUrl);
+      const response = await axios.get(`${baseUrl}/calendar`);
       const eventData = response.data.reduce((acc, event) => {
         const eventDate = event.day.split('T')[0]; // Extract YYYY-MM-DD
         if (!acc[eventDate]) acc[eventDate] = [];

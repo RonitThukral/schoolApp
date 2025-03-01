@@ -9,6 +9,12 @@ import Animated, {
   runOnJS
 } from 'react-native-reanimated';
 import { Dropdown } from 'react-native-element-dropdown';
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 // Get screen dimensions
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -41,7 +47,7 @@ const BalanceSheet = () => {
 
   // Fetch Data from API
   useEffect(() => {
-    axios.get('https://api.dreameducation.org.in/api/nonbillpayment')
+    axios.get(`${baseUrl}/nonbillpayment`)
       .then(response => {
         setData(response.data);
         setFilteredData(response.data);

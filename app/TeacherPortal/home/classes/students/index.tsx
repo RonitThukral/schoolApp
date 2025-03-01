@@ -8,9 +8,12 @@ import axios from 'axios';
 import { parse } from '@babel/core';
 import Attendance from '@/app/home/Reports/attendance';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
 
-const baseUrl = 'https://api.dreameducation.org.in/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 const DropdownComponent = () => {

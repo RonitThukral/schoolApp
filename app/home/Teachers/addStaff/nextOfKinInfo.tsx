@@ -5,7 +5,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { getUserPostBody, UserDetailsType } from './params.types';
 import axios from 'axios';
 
-const baseUrl = "https://api.dreameducation.org.in/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 const nextOfKin = () => {
   const params = useLocalSearchParams();
   const usercontactdetails = JSON.parse(params.userdetails as string);

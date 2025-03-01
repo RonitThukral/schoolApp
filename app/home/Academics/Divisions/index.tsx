@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
   import { Dropdown } from 'react-native-element-dropdown';  
   import Entypo from '@expo/vector-icons/Entypo';
 import { Alert } from 'react-native';
-import axios from 'axios'; // Assuming axios is installed
+import axios from 'axios'; 
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
+import Constants from 'expo-constants';
 
+const baseUrl = Constants.expoConfig.extra.API_URL;
 
-const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 

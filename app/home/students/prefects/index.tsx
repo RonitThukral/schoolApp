@@ -7,13 +7,13 @@ import { setOptions } from "expo-splash-screen";
 import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
 import { BlurView } from "expo-blur";
 
-const baseUrl = "https://api.dreameducation.org.in/api"; // Replace with your actual base URL
+import Constants from 'expo-constants';
 
-const classOptions = [
-  { label: "Class 10A", value: "10A" },
-  { label: "Class 10B", value: "10B" },
-  { label: "Class 10C", value: "10C" },
-];
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
+
 
 const roles = [
   { "name": "Head Boy" },

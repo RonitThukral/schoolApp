@@ -10,7 +10,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Dropdown } from 'react-native-element-dropdown';
 
-const baseUrl = "https://api.dreameducation.org.in/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 // Get screen dimensions
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');

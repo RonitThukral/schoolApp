@@ -1,6 +1,10 @@
+import Constants from "expo-constants";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, FlatList, StyleSheet, ScrollView } from "react-native";
+
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
 
 const SalesReceipt = () => {
   const [salesData, setSalesData] = useState(null);
@@ -11,7 +15,7 @@ const SalesReceipt = () => {
     const fetchSalesData = async () => {
       try {
         const response = await fetch(
-          `https://api.dreameducation.org.in/api/store/sales/${saleId}`
+          `${baseUrl}/store/sales/${saleId}`
         );
         const data = await response.json();
         if (data.success) {
@@ -33,7 +37,7 @@ const SalesReceipt = () => {
   if (!salesData) return <Text style={styles.errorText}>No sales data found</Text>;
 
   const { seller, createdAt, amountPaid, totalCost, items } = salesData;
-  const change = amountPaid - totalCost;
+  const change =  totalCost - amountPaid;
 
   return (
     <View style={styles.screenContainer}>
@@ -47,7 +51,7 @@ const SalesReceipt = () => {
           <View style={styles.tableContainer}>
   {/* Table Headers */}
   <View style={styles.tableHeader}>
-    <Text style={styles.tableHeaderText}>#</Text>
+    <Text style={styles.tableHeaderText}>Sr No.</Text>
     <Text style={styles.tableHeaderText}>Item</Text>
     <Text style={styles.tableHeaderText}>Rate</Text>
     <Text style={styles.tableHeaderText}>Qty</Text>
@@ -59,7 +63,7 @@ const SalesReceipt = () => {
     data={items}
     keyExtractor={(item) => item._id}
     renderItem={({ item, index }) => (
-      <View style={styles.tableRow}>
+      <View style={[index % 2 === 0 ? styles.tableRow : styles.oddTableRow]}>
         <Text style={styles.tableCell}>{index + 1}</Text>
         <Text style={styles.tableCell}>{item.name}</Text>
         <Text style={styles.tableCell}>{item.rate}</Text>
@@ -107,36 +111,48 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
+    color:'#58a8f9'
   },
   schoolName: {
     fontSize: 18,
     fontWeight: "600",
     textAlign: "center",
     marginBottom: 10,
+    color:'red'
   },
   date: {
     fontSize: 16,
     marginBottom: 5,
+    fontWeight:'500'
   },
   cashier: {
     fontSize: 16,
     marginBottom: 10,
+    fontWeight:'500'
+
   },
   tableHeader: {
     flexDirection: "row",
     borderBottomWidth: 1,
     paddingVertical: 5,
-    backgroundColor: "#ddd",
+    backgroundColor: "#58a8f9",
   },
   tableHeaderText: {
     flex: 1,
     fontWeight: "bold",
     textAlign: "center",
+    color:'white'
   },
   tableRow: {
     flexDirection: "row",
     paddingVertical: 5,
     borderBottomWidth: 0.5,
+  },
+  oddTableRow: {
+    flexDirection: "row",
+    paddingVertical: 5,
+    borderBottomWidth: 0.5,
+    backgroundColor:'#daedff'
   },
   tableCell: {
     flex: 1,
@@ -158,7 +174,7 @@ const styles = StyleSheet.create({
   },
   tableContainer: {
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#58a8f9",
     borderRadius: 5,
     marginVertical: 10,
     overflow: "hidden",

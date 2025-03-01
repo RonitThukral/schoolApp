@@ -6,7 +6,12 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const baseUrl = "https://api.dreameducation.org.in/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const months = [
   { label: 'January', value: '1' },

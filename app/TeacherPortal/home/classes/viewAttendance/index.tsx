@@ -43,7 +43,9 @@ export default AttendanceReportStudentView;
 // import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, SafeAreaView, Alert,Platform } from 'react-native';
 // import { Calendar } from 'react-native-calendars';
 
-// const baseUrl = 'https://api.dreameducation.org.in/api';
+// const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 // const StudentHistory = () => {
 //   const { classId } = useLocalSearchParams();

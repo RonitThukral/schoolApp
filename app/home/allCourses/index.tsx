@@ -6,7 +6,9 @@
 // import axios from 'axios';
 
 
-// const baseUrl = 'https://api.dreameducation.org.in/api'
+// const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 
@@ -371,8 +373,11 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://api.dreameducation.org.in/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const DropdownComponent = () => {
   const [isFocus, setIsFocus] = useState<string | null>(null);

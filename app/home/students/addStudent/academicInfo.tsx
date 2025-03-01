@@ -5,6 +5,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Feather from '@expo/vector-icons/Feather';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 const dummyData = {
     class: [
@@ -59,7 +60,9 @@ const dummyData = {
     ],
   };
 
-  const baseUrl = 'https://api.dreameducation.org.in/api'
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
   
 

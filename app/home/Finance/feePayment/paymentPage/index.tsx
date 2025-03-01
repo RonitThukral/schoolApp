@@ -4,8 +4,11 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Dropdown } from 'react-native-element-dropdown';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://api.dreameducation.org.in/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const dummyData = {
   paymentType: [

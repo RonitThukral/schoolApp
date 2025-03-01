@@ -7,7 +7,12 @@ import { AttendanceRecordType, AttendanceUserRecordType } from '@/app/components
 import { getStudentInfo } from '../utils/storage';
 import { StudentInfoType } from '../utils/app.types';
 
-const baseUrl = "https://api.dreameducation.org.in/api";
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const AttendanceDayReportTable = ({ headerHeight, attendanceId, edit, mode }: {
   headerHeight: number,

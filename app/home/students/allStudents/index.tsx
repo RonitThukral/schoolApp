@@ -5,10 +5,13 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import * as Print from 'expo-print';
 import { responsiveWidth, responsiveHeight, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Constants from 'expo-constants';
 
 
 
-  const baseUrl = 'https://api.dreameducation.org.in/api'
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
   const DropdownComponent = () => {
     const [selectedValue, setSelectedValue] = useState('');

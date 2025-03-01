@@ -91,6 +91,12 @@ import { useRouter, useLocalSearchParams, router } from 'expo-router';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const months = [
   { label: 'January', value: '1' },
@@ -116,7 +122,6 @@ const AcademicYear = [
   { label: '2029', value: '2029' }
 ];
 
-const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
 
 
 const SalaryPayment = () => {

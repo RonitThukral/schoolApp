@@ -9,6 +9,7 @@ import { parse } from '@babel/core';
 import Attendance from '@/app/home/Reports/attendance';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
+import Constants from 'expo-constants';
 
 
   const studentData =[
@@ -175,7 +176,9 @@ import { BlurView } from 'expo-blur';
   //   [key: string]: string | null;
   // }
 
-  const baseUrl = 'https://api.dreameducation.org.in/api'
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
   const DropdownComponent = () => {

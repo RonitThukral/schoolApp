@@ -9,6 +9,12 @@
 //   runOnJS
 // } from 'react-native-reanimated';
 // import DateTimePicker from '@react-native-community/datetimepicker';
+// import Constants from 'expo-constants';
+
+
+//   const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 // // Get screen dimensions
 // const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -74,7 +80,7 @@
 //   // Fetch Data from API
 //   useEffect(() => {
 //     // Actual API endpoint for transactions
-//     axios.get('https://api.dreameducation.org.in/api/transactions')
+//     axios.get(`${baseUrl}/transactions`)
 //       .then(response => {
 //         console.log(response.data, "data");
 //         // Filter to get only expenditure type transactions

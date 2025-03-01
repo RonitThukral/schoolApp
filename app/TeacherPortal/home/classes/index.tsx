@@ -5,13 +5,16 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 
   // interface Values {
   //   [key: string]: string | null;
   // }
 
-  const baseUrl = 'https://api.dreameducation.org.in/api'
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
   const DropdownComponent = () => {

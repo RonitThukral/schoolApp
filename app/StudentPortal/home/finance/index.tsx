@@ -416,7 +416,12 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { responsiveWidth } from "react-native-responsive-dimensions";
-const baseUrl = "https://api.dreameducation.org.in/api"; // Base API URL
+import Constants from 'expo-constants';
+
+
+  const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const tuitionData = [
   { month: "April", amount: "6500", paid: "600", status: "Paid" },

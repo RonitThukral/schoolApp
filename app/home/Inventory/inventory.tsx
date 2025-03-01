@@ -1,13 +1,18 @@
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, TextInput, Platform, Modal, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import axios for API calls
+import axios from 'axios'; 
+import Constants from 'expo-constants';
+
+// Import axios for API calls
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { BlurView } from 'expo-blur';
 
-// API URL
-const apiUrl = 'https://api.dreameducation.org.in/api/store/items';
 
+// API URL
+
+const baseUrl = Constants.expoConfig.extra.API_URL;
+// console.log(API_URL);
 const Inventory = () => {
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
@@ -27,7 +32,7 @@ const Inventory = () => {
   const fetchItems = async () => {
     try {
 
-      const response = await axios.get(apiUrl)
+      const response = await axios.get(`${baseUrl}/store/items`)
       setAllItems(response.data);
       setFilteredItems(response.data);
 
@@ -70,7 +75,8 @@ const Inventory = () => {
 
     setLoading(true);
     try{
-    const response = await axios.post(`${apiUrl}/create`, newItem)
+
+    const response = await axios.post(`${baseUrl}/store/items/create`, newItem)
         setLoading(false);
         fetchItems()
         const updatedItems = [...allItems, response.data];
@@ -89,6 +95,7 @@ const Inventory = () => {
   };
 
   const handleEdit = (id) => {
+    
     const item = allItems.find(e => e._id === id);
     if (item) {
       setName(item.name || '');
@@ -122,7 +129,8 @@ const Inventory = () => {
 
     setLoading(true);
     try {
-      const response = await axios.put(`${apiUrl}/update/${editID}`, updatedItem);
+      
+      const response = await axios.put(`${baseUrl}/store/items/update/${editID}`, updatedItem);
       const editedItem = response.data;
       
       // Immediately update the state with the edited item
@@ -177,7 +185,7 @@ const handleDelete = (id) => {
       {
         text: "Delete",
         onPress: () => {
-          axios.delete(`${apiUrl}/delete/${id}`)
+          axios.delete(`${baseUrl}/store/items/delete/${id}`)
             .then(res => {
               if (res.data.error) {
                 return Alert.alert("Error", res.data.error);
@@ -253,9 +261,9 @@ const handleDelete = (id) => {
               </Text>
               <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Name" : "Name"} onChangeText={handleName} value={name} />
               <TextInput style={styles.inputDesc} placeholderTextColor={'grey'} placeholder={edit ? "Edit Description" : "Add Description"} multiline textAlignVertical='top' onChangeText={handleDescription} value={description} />
-              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Units (e.g kg)" : "Units (e.g kg)"} onChangeText={handleUnits} value={units} />
-              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Price" : "Price"} onChangeText={handlePrice} value={price} />
-              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Quantity" : "Quantity"} onChangeText={handleQuantity} value={quantity} />
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Units (e.g kg)" : "Units (e.g kg)"} onChangeText={handleUnits} value={units} keyboardType='numeric'/>
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Price" : "Price"} onChangeText={handlePrice} value={price} keyboardType='numeric' />
+              <TextInput style={styles.input} placeholderTextColor={'grey'} placeholder={edit ? "Edit Quantity" : "Quantity"} onChangeText={handleQuantity} value={quantity} keyboardType='numeric' />
 
               <TouchableOpacity style={styles.closeBtn} onPress={handleClose}>
                 <Text style={{ color: '#58A8F9', fontSize: 16 }}>Cancel</Text>

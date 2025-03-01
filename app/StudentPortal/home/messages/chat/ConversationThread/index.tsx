@@ -5,6 +5,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
 import HeaderLarge from '@/app/components/Header';
+import Constants from 'expo-constants';
 
 type SingeChatMessage = {
   isViewed: boolean,
@@ -14,7 +15,9 @@ type SingeChatMessage = {
   channelID: string,
   date: string,
 }
-const baseUrl = 'https://api.dreameducation.org.in/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const ConversationThread = () => {
 

@@ -6,9 +6,12 @@ import React, { useEffect, useState,useCallback, useLayoutEffect } from 'react';
 import axios from 'axios';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { useLocalSearchParams } from 'expo-router';
+import Constants from 'expo-constants';
 
 
-const baseUrl = 'https://api.dreameducation.org.in/api'
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 const term = [
   {label: "1", value: '1'},

@@ -3,7 +3,8 @@ import React from 'react'
 import { useLocalSearchParams } from 'expo-router';
 import AttendanceDayReportTable from '@/app/components/AttendanceDayStudentReportTable';
 
-const baseUrl = "https://api.dreameducation.org.in/api";
+
+
 
 const AttendanceDayView = () => {
   const { attendanceId, className } = useLocalSearchParams();

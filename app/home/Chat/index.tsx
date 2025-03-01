@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { getUserData } from '@/app/utils/storage';
 import { UserInfo } from '@/app/utils/app.types';
 import HeaderLarge from '@/app/components/Header';
+import Constants from 'expo-constants';
 
 export type ChatsResponseItem = {
   _id: string,
@@ -35,7 +36,9 @@ export type UserDataResponseItem = {
 
 export type UsersStore = Map<string, UserDataResponseItem>;
 
-const baseUrl = 'https://api.dreameducation.org.in/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const Conversation = () => {
 

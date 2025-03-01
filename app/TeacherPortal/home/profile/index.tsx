@@ -17,7 +17,6 @@ import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-
 import { parse } from '@babel/core';
 
 
-const baseUrl = "https://api.dreameducation.org.in/api";
 
 
 const StaffDetails = () => {

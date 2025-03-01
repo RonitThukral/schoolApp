@@ -13,7 +13,9 @@
 // import { useRoute } from '@react-navigation/native';
 // import { useLocalSearchParams } from 'expo-router';
 
-// const baseUrl = 'https://api.dreameducation.org.in/api'
+// const baseUrl = Constants.expoConfig.extra.API_URL;
+
+
 
 
 
@@ -390,8 +392,11 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { responsiveScreenWidth, responsiveWidth } from 'react-native-responsive-dimensions';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://api.dreameducation.org.in/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const formatDate = (dateString) => {
   if (!dateString) return 'N/A'; // Handle null or undefined dates

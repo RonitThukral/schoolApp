@@ -5,8 +5,11 @@ import axios from 'axios';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import AttendanceReportTable from '@/app/components/AttendanceReportTable';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Constants from 'expo-constants';
 
-const baseUrl = 'https://api.dreameducation.org.in/api';
+const baseUrl = Constants.expoConfig.extra.API_URL;
+
+;
 
 const StaffHistory = () => {
   const [selectedDate, setSelectedDate] = useState('');
