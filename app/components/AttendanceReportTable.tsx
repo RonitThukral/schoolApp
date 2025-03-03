@@ -215,7 +215,7 @@ const AttendanceReportTable = ({ headerheight, classFilterPreSelected, viewRoute
             ]}>
               <Text style={styles.cell}>{getdatereprasation(item.createdAt)}</Text>
               <View style={styles.verticalLine} />
-              <Text style={styles.cell}>{item.classID}</Text>
+              <Text style={styles.cell}>{item.classID.toUpperCase()}</Text>
               <View style={styles.verticalLine} />
               <Text style={styles.cell}>{item.users.length}</Text>
               <View style={styles.verticalLine} />
