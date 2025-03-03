@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)", // This sets the dim background overlay
+    backgroundColor: "rgba(0,0,0,0.1)", // This sets the dim background overlay
     justifyContent: "center",
     alignItems: "center",
   },
