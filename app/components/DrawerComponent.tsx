@@ -90,7 +90,7 @@ const DrawerComponent = ({ drawerOpen, setDrawerOpen, settingsRoute }: {
               <View style={styles.bannercontainer}>
                 <Image source={require('../../assets/images/images/Vector.png')} style={styles.banner} />
                 <View style={styles.profilecontainer}>
-                  <Image source={require('../../assets/images/images/image.png')} style={styles.profilepic} />
+                  <Image source={require('../../assets/images/icon.png')} style={styles.profilepic} />
                   <View style={styles.profileinfo}>
                     <Text style={styles.profilename}>{currentUser?.name} </Text>
                     <Text style={styles.profilerole}>{currentUser?.role} </Text>
@@ -174,8 +174,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   profilepic: {
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
+    borderRadius:100
   },
   profileinfo: {
     justifyContent: "center",
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#58a8f9",
     fontWeight: "bold",
+    width:'70%'
   },
   profilerole: {
     fontSize: 12,

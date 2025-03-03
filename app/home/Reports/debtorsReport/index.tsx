@@ -68,11 +68,21 @@ fetchClasses()
     { label: '2025', value: '2025' }
   ];
   
-  const terms = [
-    { label: 'Term 1', value: '1' },
-    { label: 'Term 2', value: '2' },
-    { label: 'Term 3', value: '3' }
+  const months = [
+    { label: 'January', value: 'January' },
+    { label: 'February', value: 'February' },
+    { label: 'March', value: 'March' },
+    { label: 'April', value: 'April' },
+    { label: 'May', value: 'May' },
+    { label: 'June', value: 'June' },
+    { label: 'July', value: 'July' },
+    { label: 'August', value: 'August' },
+    { label: 'September', value: 'September' },
+    { label: 'October', value: 'October' },
+    { label: 'November', value: 'November' },
+    { label: 'December', value: 'December' }
   ];
+  
 
   // Cell and content dimensions
   const cellWidth = 120;
@@ -255,11 +265,11 @@ fetchClasses()
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
-                data={terms}
+                data={months}
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder="Select Term"
+                placeholder="Select Month"
                 value={term}
                 onChange={item => setTerm(item.value)}
               />
@@ -305,7 +315,7 @@ fetchClasses()
                   ]}
                 >
                   <View style={[loading ? styles.noheading : styles.heading]}>
-                    <Text style={styles.title}>DEBTORS LIST FOR TERM: {term} And YEAR: {year}</Text>
+                    <Text style={styles.title}>DEBTORS LIST FOR MONTH: {term} And YEAR: {year}</Text>
                   </View>
                   
                   {/* Loader */}
@@ -329,7 +339,7 @@ fetchClasses()
                           ]}>
                             <Text style={styles.cell}>{item.userID}</Text>
                             <Text style={styles.cell}>{item.name}</Text>
-                            <Text style={styles.cell}>{item.classID}</Text>
+                            <Text style={styles.cell}>{item.classID.toUpperCase()}</Text>
                             <Text style={styles.cell}>{item.bill}</Text>
                             <Text style={styles.cell}>{item.amount || '-'}</Text>
                             <Text style={styles.cell}>{item.owe}</Text>

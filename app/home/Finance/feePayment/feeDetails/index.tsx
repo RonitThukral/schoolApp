@@ -169,7 +169,7 @@ const FeeDetails = () => {
   }
 
   return (
-    <>
+    <ScrollView style={{flex:1}} contentContainerStyle={{paddingBottom:30}}>
       <View style={styles.container}>
         <ImageBackground
           source={require('../../../../../assets/images/images/union.png')}
@@ -210,7 +210,7 @@ const FeeDetails = () => {
         {balance > 0 && <TouchableOpacity style={styles.paybtn} onPress={handlePress}>
             <Text style={{color:'white',fontSize:18}}>Pay Now</Text>
           </TouchableOpacity>}
-    </>
+    </ScrollView>
   );
 };
 
@@ -410,15 +410,15 @@ const styles = StyleSheet.create({
     },
    
     paybtn:{
-      width:100,
+      width:'25%',
       height:40,
       backgroundColor:'#58a8f9',
       borderRadius:10,
       justifyContent:'center',
       alignItems:'center',
-      alignSelf:'flex-end',
-      marginRight:70,
-      marginVertical:20
+      alignSelf:'center',
+      // marginRight:70,
+      marginVertical:'2%'
     }
     
     

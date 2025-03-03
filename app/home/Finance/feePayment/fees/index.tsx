@@ -7,13 +7,11 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import FeeDetails from "../feeDetails";
-
 import Constants from 'expo-constants';
 
 
 const baseUrl = Constants.expoConfig.extra.API_URL;
 
-// let globaltotalFee;
 
 
 

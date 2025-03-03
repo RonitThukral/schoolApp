@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image, SafeAreaView, Platform, StatusBar } from 'react-native'
 import 'react-native-reanimated';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -16,47 +16,65 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import DrawerComponent from '../components/DrawerComponent';
 import HeaderLarge from '../components/Header';
+import axios from 'axios';
+import Constants from 'expo-constants';
+import InfiniteScrollingNotice from '../components/AnimatedNotice'; // Adjust path as needed
+import StatisticsSec from '../components/statisticsSec';
 
+
+
+
+
+const baseUrl = Constants.expoConfig?.extra?.API_URL || 'https://api.dreameducation.org.in/api';
 
 
 export default function Home(): any {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [notice, setNotice] = useState(null);
 
   const formattedDate = new Date().toISOString().slice(0, 10)
 
   const date = formattedDate.split('-').reverse().join('-');
 
+  useEffect(()=>{
+    const result= axios.get(`${baseUrl}/notification`)
+    .then(response => {
+      // console.log(response.data[0], "data");
+      setNotice(response.data[0])
+  })
+  },[])
+  
   const Item = [
 
     {
       name: "Students",
-      icon: <Image source={require('../../assets/images/images/Vector3.png')} style={{ width: 28, height: 22 }} />,
+      icon: <Image source={require('../../assets/images/images/1.png')} style={{ width: 21, height: 18 }} />,
       content: 300
     },
     {
       name: "Teachers",
-      icon: <Image source={require('../../assets/images/images/teachersss.png')} />,
+      icon: <Image source={require('../../assets/images/images/2.png')} style={{ width: 17, height: 20 }} />,
       content: 70
     },
     {
       name: "Messages",
-      icon: <Image source={require('../../assets/images/images/message.png')} />,
+      icon: <Image source={require('../../assets/images/images/3.png')} style={{ width: 17, height: 17 }} />,
       content: 50
     },
     {
       name: "Classes",
-      icon: <Image source={require('../../assets/images/images/classes.png')} />,
+      icon: <Image source={require('../../assets/images/images/4.jpg')} style={{ width: 17, height: 17  }} />,
       content: 36
     },
     {
       name: "Courses",
-      icon: <Image source={require('../../assets/images/images/courses.png')} />,
+      icon: <Image source={require('../../assets/images/images/5.jpg')} style={{ width: 17, height: 17 }} />,
       content: 27
     },
     {
       name: "Buses",
-      icon: <Image source={require('../../assets/images/images/bus.png')} />,
+      icon: <Image source={require('../../assets/images/images/6.png')} style={{ width: 19, height: 16 }} />,
       content: 20
     }
   ]
@@ -73,6 +91,8 @@ export default function Home(): any {
 
 
   const navigation = useNavigation() as any;
+
+ 
 
 
   return (
@@ -95,33 +115,22 @@ export default function Home(): any {
             </View>
 
             {/* Statistics section */}
-            <View style={styles.container}>
-              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '90%' }}>
-                <Text style={styles.heading}>Statistics</Text>
-                <Text style={{ fontSize: 13, position: 'relative', width: 'auto', marginTop: 25 }}>{`${date}`}</Text>
-              </View>
-              <View style={styles.innercontainer}>
-                {Item.map((item, index): any => {
-                  return (
-                    <TouchableOpacity style={styles.Card} key={index}>
+            
+             <StatisticsSec/>
 
-                      <Text style={styles.cardHeading}>{item.name}</Text>
-                      <View style={styles.cardContent}>
-                        {item.icon}
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 5 }}>{item.content}</Text>
-                      </View>
-
-                    </TouchableOpacity>
-                  )
-                })}
-
-              </View>
-            </View>
 
             {/* notice section */}
             <View style={styles.noticesSection}>
-              <Text style={styles.noticeText}>These are the notices that are added by admin {`${'>'}`}</Text>
-            </View>
+  <InfiniteScrollingNotice 
+    notice={notice}
+    style={{ width: '100%' }}
+    textStyle={[styles.noticeText, { 
+      whiteSpace: 'nowrap',
+      fontSize: 12,
+      color: '#7e7e7e',
+    }]}
+  />
+</View>
 
             {/* main card grid section */}
             <View style={{ position: 'relative', top: '5%' }}>
@@ -300,7 +309,7 @@ export const styles = StyleSheet.create({
   noticeText: {
     fontSize: 12,
     color: '#7e7e7e',
-
+fontWeight:'600',
     ...Platform.select({
       ios: {
         fontSize: 12

@@ -33,7 +33,7 @@ const BalanceSheet = () => {
 
   // Cell and content dimensions
   const cellWidth = 90;
-  const columnHeaders = ["Student", "Year", "Term", "Amount", "Bank", "Payment Type"];
+  const columnHeaders = ["Student ID", "Year", "Month", "Amount", "Bank", "Payment Type"];
   const columnCount = columnHeaders.length;
   const tableWidth = columnCount * cellWidth;
 
@@ -181,7 +181,7 @@ const BalanceSheet = () => {
         </View>
         
         <View style={styles.dropdownContainer}>
-          <Text style={styles.dropdownLabel}>Term:</Text>
+          <Text style={styles.dropdownLabel}>Month:</Text>
           <Dropdown
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
@@ -192,7 +192,7 @@ const BalanceSheet = () => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder="Select Term"
+            placeholder="Select Month"
             searchPlaceholder="Search..."
             onFocus={() => handleFocus('term')}
             onBlur={handleBlur}
@@ -219,7 +219,7 @@ const BalanceSheet = () => {
                   ]}
                 >
                   {/* Title and Date */}
-                  <Text style={styles.title}>Head Wise Report</Text>
+                  <Text style={styles.title}>Fee Payment Report</Text>
                   <Text style={styles.date}>Date: 26-Feb-2024 to 26-Feb-2025</Text>
 
                   {/* Loader */}
@@ -237,7 +237,10 @@ const BalanceSheet = () => {
                       {/* Data Rows */}
                       {filteredData.length > 0 ? (
                         filteredData.map((item, rowIndex) => (
-                          <View key={rowIndex} style={styles.row}>
+                          <View key={rowIndex} style={[
+                            styles.row, 
+                            rowIndex % 2 === 1 ? { backgroundColor: '#daedff' } : {}
+                          ]}>
                             <Text style={styles.cell}>{item.userID}</Text>
                             <Text style={styles.cell}>{item.academicYear}</Text>
                             <Text style={styles.cell}>{item.term}</Text>
@@ -384,6 +387,7 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: 'bold',
     backgroundColor: '#58a8f9',
+    color:'white'
   },
   noData: {
     textAlign: 'center',

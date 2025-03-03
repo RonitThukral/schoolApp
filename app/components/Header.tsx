@@ -8,6 +8,7 @@ import { useRouter } from 'expo-router';
 import { UserInfo } from '../utils/app.types';
 import { getUserData } from '../utils/storage';
 import { useNavigation } from '@react-navigation/native';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat, handlePressNotification, openDrawer }: {
   menuIcon?: boolean;
@@ -59,7 +60,7 @@ const HeaderLarge = ({ menuIcon, chatIcon, notificationIcon, handlePressChat, ha
           <Text style={styles.userName}>{currentUser?.name}</Text>
           <Text style={styles.userRole}>{currentUser?.role}</Text>
         </View>
-        <Image source={require('../../assets/images/images/image.png')} style={styles.avatar} />
+        <Image source={require('../../assets/images/icon.png')} style={styles.avatar} />
       </View>
     </View>
   )
@@ -70,11 +71,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 35,
+    paddingHorizontal: responsiveHeight(4),
     backgroundColor: 'rgba(255, 255, 255, 0)',
     zIndex: 300,
     position: 'relative',
-    top: 25
+    top: 25,
+    maxWidth: responsiveHeight(200)
 
 
   },

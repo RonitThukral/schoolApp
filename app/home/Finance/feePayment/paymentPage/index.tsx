@@ -8,7 +8,7 @@ import Constants from 'expo-constants';
 
 const baseUrl = Constants.expoConfig.extra.API_URL;
 
-;
+
 
 const dummyData = {
   paymentType: [
@@ -92,8 +92,7 @@ const Index = () => {
 
       Alert.alert('Success', 'Payment successfully recorded');
       router.back();
-      router.back();
-      router.back();
+     
     } catch (error) {
       setLoading(false);
       console.error('Payment error:', error);

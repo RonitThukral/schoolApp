@@ -144,8 +144,6 @@
 
 
 
-
-
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -174,7 +172,7 @@ export default function Finance() {
   return (
     <ScrollView style={styles.container1}>
       <TouchableOpacity style={styles.list} onPress={() => handlePress('b')}>
-        <Text style={styles.text}>Bill Payment Reminder</Text>
+        <Text style={styles.text}>Fee Payment Report</Text>
         <AntDesign name="right" size={22} color="#58a8f9" style={styles.icon} />
       </TouchableOpacity>
       <View style={styles.ruler}></View>
@@ -192,7 +190,7 @@ export default function Finance() {
       <View style={styles.ruler}></View>
 
       <TouchableOpacity style={styles.list} onPress={() => handlePress('i')}>
-        <Text style={styles.text}>Supplementary Income Report</Text>
+        <Text style={styles.text}>Income Report</Text>
         <AntDesign name="right" size={22} color="#58a8f9" style={styles.icon} />
       </TouchableOpacity>
       <View style={styles.ruler}></View>

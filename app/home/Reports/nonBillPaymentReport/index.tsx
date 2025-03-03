@@ -93,70 +93,62 @@ const BalanceSheet = () => {
     setFilteredData(results);
   };
 
-  // Calculate initial scale to fit all columns
-  const getInitialScale = () => Math.min(1, screenWidth / tableWidth);
-
-  // Shared values for gestures
-  const scale = useSharedValue(getInitialScale());
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-  const lastScale = useSharedValue(getInitialScale());
-
-  // Update when column count changes
-  useEffect(() => {
-    const newScale = getInitialScale();
-    scale.value = newScale;
-    lastScale.value = newScale;
-    translateX.value = 0;
-    translateY.value = 0;
-    runOnJS(setCurrentScale)(newScale);
-  }, []);
-
-  // Handle pinch (zoom) gesture
-  const pinchHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => {
-      ctx.startScale = scale.value;
-    },
-    onActive: (event, ctx) => {
-      const newScale = Math.max(0.1, Math.min(ctx.startScale * event.scale, 2));
-      scale.value = newScale;
-      runOnJS(setCurrentScale)(newScale);
-    },
-    onEnd: () => {
-      lastScale.value = scale.value;
-    }
-  });
-
-  // Handle pan (drag) gesture
-  const panHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx) => {
-      ctx.startX = translateX.value;
-      ctx.startY = translateY.value;
-    },
-    onActive: (event, ctx) => {
-      if (scale.value < 1) return;
-
-      const scaledWidth = tableWidth * scale.value;
-      const scaledHeight = screenHeight * scale.value;
-
-      const maxX = Math.max(0, (scaledWidth - screenWidth) / 2);
-      const maxY = Math.max(0, (scaledHeight - screenHeight) / 2);
-
-      translateX.value = Math.min(maxX, Math.max(-maxX, ctx.startX + event.translationX));
-      translateY.value = Math.min(maxY, Math.max(-maxY, ctx.startY + event.translationY));
-    },
-  });
-
-  // Animated styles for the content
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { translateY: translateY.value },
-        { scale: scale.value }
-      ]
-    };
-  });
+ // Calculate initial scale to fit all columns
+   const getInitialScale = () => Math.min(0.8, screenWidth / tableWidth);
+ 
+   // Shared values for gestures
+   const scale = useSharedValue(getInitialScale());
+   const translateX = useSharedValue(0);
+   const translateY = useSharedValue(0);
+   const lastScale = useSharedValue(getInitialScale());
+ 
+   // Update when column count changes
+   useEffect(() => {
+     const newScale = getInitialScale();
+     scale.value = newScale;
+     lastScale.value = newScale;
+     translateX.value = 0;
+     translateY.value = 0;
+     runOnJS(setCurrentScale)(newScale);
+   }, []);
+ 
+   // Handle pinch (zoom) gesture
+   const pinchHandler = useAnimatedGestureHandler({
+     onStart: (_, ctx) => {
+       ctx.startScale = scale.value;
+     },
+     onActive: (event, ctx) => {
+       const newScale = Math.max(0.4, Math.min(ctx.startScale * event.scale, 2));
+       scale.value = newScale;
+       runOnJS(setCurrentScale)(newScale);
+     },
+     onEnd: () => {
+       lastScale.value = scale.value;
+     }
+   });
+ 
+   // Handle pan (drag) gesture
+   const panHandler = useAnimatedGestureHandler({
+     onStart: (_, ctx) => {
+       ctx.startX = translateX.value;
+       ctx.startY = translateY.value;
+     },
+     onActive: (event, ctx) => {
+       translateX.value = ctx.startX + event.translationX;
+       translateY.value = ctx.startY + event.translationY;
+     },
+   });
+ 
+   // Animated styles for the content
+   const animatedStyles = useAnimatedStyle(() => {
+     return {
+       transform: [
+         { translateX: translateX.value },
+         { translateY: translateY.value },
+         { scale: scale.value }
+       ]
+     };
+   });
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -222,7 +214,7 @@ const BalanceSheet = () => {
                   ]}
                 >
                   {/* Title and Date */}
-                  <Text style={styles.title}>Head Wise Report</Text>
+                  <Text style={styles.title}>Non Bill Payment Report</Text>
                   <Text style={styles.date}>Date: 26-Feb-2024 to 26-Feb-2025</Text>
 
                   {/* Loader */}
@@ -240,7 +232,10 @@ const BalanceSheet = () => {
                       {/* Data Rows */}
                       {filteredData.length > 0 ? (
                         filteredData.map((item, rowIndex) => (
-                          <View key={rowIndex} style={styles.row}>
+                          <View key={rowIndex} style={[
+                            styles.row, 
+                            rowIndex % 2 === 1 ? { backgroundColor: '#daedff' } : {}
+                          ]}>
                             <Text style={styles.cell}>{item.student}</Text>
                             <Text style={styles.cell}>{item.year}</Text>
                             <Text style={styles.cell}>{item.term}</Text>
@@ -257,8 +252,6 @@ const BalanceSheet = () => {
                     </View>
                   )}
 
-                  {/* Footer */}
-                  <Text style={styles.footer}>Principal Sign.</Text>
                 </Animated.View>
               </Animated.View>
             </PinchGestureHandler>
@@ -386,6 +379,7 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: 'bold',
     backgroundColor: '#58a8f9',
+    color:'white'
   },
   noData: {
     textAlign: 'center',
