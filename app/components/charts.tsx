@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, Modal, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
- 
+
 // Sample events data
 // const sampleEvents = {
 //   '2024-12-05': [
@@ -151,6 +151,10 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 //   );
 // };
 
+const HOLIDAY_EVENT = ['Holiday',
+  // 'Break',     // Need to ask about the school vacation on Break?
+  // 'Easter Break'
+];
 
 const EventModal = ({ visible, events, date, onClose }: any): any => {
   return (
@@ -173,8 +177,8 @@ const EventModal = ({ visible, events, date, onClose }: any): any => {
                       event.resource === 'Holiday'
                         ? '#EA4747'
                         : event.resource === 'Trip'
-                        ? '#47EA47'
-                        : '#4775EA',
+                          ? '#47EA47'
+                          : '#4775EA',
                   },
                 ]}
               />
@@ -228,7 +232,17 @@ const Calendar = () => {
 
   const hasEvents = (day: any): any => {
     const date = formatDate(day);
-    return date && events.some((event: any) => new Date(event.day).toISOString().split('T')[0] === date);
+    return date && (
+      events.some((event: any) => new Date(event.day).toISOString().split('T')[0] === date)
+      || new Date(currentYear, currentMonth, day).getDay() === 0);
+  };
+
+  const hasHolidayEvents = (day: any): any => {
+    const date = formatDate(day);
+    return date &&
+      (events.some((event: any) => new Date(event.day).toISOString().split('T')[0] === date &&
+        HOLIDAY_EVENT.includes(event.resource))
+        || new Date(currentYear, currentMonth, day).getDay() === 0);
   };
 
   const handleDayPress = (day: number | null) => {
@@ -287,14 +301,16 @@ const Calendar = () => {
             {week.map((day, dayIndex) => (
               <TouchableOpacity
                 key={dayIndex}
-                style={[styles.dayCell, hasEvents(day) && styles.hasDayEvents]}
+                style={[styles.dayCell, day && styles.dayActiveCell, hasEvents(day) && styles.hasDayEvents, hasHolidayEvents(day) && styles.hasHolidayEvents]}
                 onPress={() => handleDayPress(day)}
                 disabled={!day}
               >
                 {day && (
-                  <View>
-                    <Text style={styles.dayText}>{day}</Text>
-                    {hasEvents(day) && <View style={styles.eventDot} />}
+                  <View style={{
+                    alignItems: "center",
+                  }}>
+                    <Text style={[styles.dayText, hasEvents(day) && styles.eventDayText]}>{day}</Text>
+                    {/* {hasEvents(day) && <View style={hasHolidayEvents(day) ? styles.eventDotHoliday : styles.eventDot} />} */}
                   </View>
                 )}
               </TouchableOpacity>
@@ -351,7 +367,7 @@ const FinanceChart = () => {
       </View>
       <LineChart
         data={data}
-        width={Dimensions.get('window').width -5}
+        width={Dimensions.get('window').width - 5}
         height={220}
         chartConfig={{
           backgroundColor: '#ffffff',
@@ -388,7 +404,7 @@ const Dashboard = () => {
 
 // Styles
 const styles = StyleSheet.create({
-  
+
   financeContainer: {
     backgroundColor: 'white',
     margin: 16,
@@ -405,118 +421,141 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 16,
     // backgroundColor:'red'
-   marginRight:responsiveHeight(2),
-   marginLeft:responsiveHeight(-2)
+    marginRight: responsiveHeight(2),
+    marginLeft: responsiveHeight(-2)
   },
   modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      modalContent: {
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 20,
-        width: '80%',
-        maxHeight: '80%',
-      },
-      modalHeader: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 15,
-        textAlign: 'center',
-      },
-      eventItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-      },
-      eventTitle: {
-        fontSize: 16,
-        fontWeight: '500',
-        marginLeft: 10,
-      },
-      eventTime: {
-        fontSize: 14,
-        color: '#666',
-        marginLeft: 10,
-      },
-      closeButton: {
-        marginTop: 15,
-        padding: 10,
-        backgroundColor: '#4775EA',
-        borderRadius: 10,
-        alignItems: 'center',
-      },
-      closeButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '500',
-      },
-      container: {
-            flex: 1,
-            backgroundColor: 'white',
-          },
-          calendarContainer: {
-            padding: 25,
-          },
-          calendarHeader: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 25,
-          },
-          calendarTitle: {
-            fontSize: 20,
-            fontWeight: 'bold',
-          },
-          monthYear: {
-            fontSize: 16,
-            color: '#666',
-          },
-          weekDaysContainer: {
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginBottom: 10,
-          },
-          weekDay: {
-            fontSize: 12,
-            color: '#666',
-          },
-          daysContainer: {
-            borderWidth: 1,
-            borderColor: '#eee',
-            borderRadius: 10,
-          },
-          weekRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingVertical: 10,
-          },
-          dayCell: {
-            width: 30,
-            height: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-            
-          },
-          hasDayEvents: {
-            backgroundColor: '#f0f7ff',
-            borderRadius: 15,
-          },
-          dayText: {
-            fontSize: 14,
-          },
-          eventDot: {
-            width: 4,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: '#4775EA',
-            marginTop: 2,
-          },
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    width: '80%',
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  eventItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  eventTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginLeft: 10,
+  },
+  eventTime: {
+    fontSize: 14,
+    color: '#666',
+    marginLeft: 10,
+  },
+  closeButton: {
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: '#4775EA',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  calendarContainer: {
+    padding: 25,
+  },
+  calendarHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  calendarTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  monthYear: {
+    fontSize: 16,
+    color: '#666',
+  },
+  weekDaysContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  weekDay: {
+    fontSize: 12,
+    color: '#666',
+  },
+  daysContainer: {
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 10,
+  },
+  weekRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
+  dayCell: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dayActiveCell: {
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#58a8f9"
+
+  },
+  hasDayEvents: {
+    backgroundColor: '#58a8f9',
+    borderRadius: 15,
+  },
+  hasHolidayEvents: {
+    backgroundColor: '#FF3131aa',
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#FF3131',
+  },
+  dayText: {
+    fontSize: 14,
+  },
+  eventDayText: {
+    color: "#ffffff",
+    fontWeight: "bold",
+  },
+  eventDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#4775EA',
+    marginTop: 2,
+  },
+  eventDotHoliday: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'red',
+    marginTop: 2,
+  },
+
 });
 
 export default Dashboard;

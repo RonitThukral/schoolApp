@@ -47,15 +47,18 @@ const DrawerComponent = ({ drawerOpen, setDrawerOpen, settingsRoute }: {
     return () => backHandler.remove();
   }, [drawerOpen]);
 
-  const handlesettingPress = () => {
+  const goToSettings = (toPassword: boolean) => {
     setDrawerOpen(false);
-    // router.navigate(settingsRoute);
 
-    const params = currentUser?.role === "admin"
+    const preparams = currentUser?.role === "admin"
       ? { admin: JSON.stringify(currentUser) }
       : currentUser?.role === "student"
         ? { student: JSON.stringify(currentUser) }
         : { teacher: JSON.stringify(currentUser) };
+    const params = {
+      ...preparams,
+      scrollToPassword: JSON.stringify(toPassword),
+    };
     router.push({
       pathname: settingsRoute,
       params,  // Use 'params' here instead of 'query'
@@ -100,11 +103,14 @@ const DrawerComponent = ({ drawerOpen, setDrawerOpen, settingsRoute }: {
               </View>
 
               <View style={styles.setting}>
-                <TouchableOpacity onPress={handlesettingPress} style={styles.item}>
-                  <FontAwesome6 name="gear" size={30} color="#58a8f9" /><Text style={styles.itemtext}>Settings</Text>
+                <TouchableOpacity onPress={() => goToSettings(false)} style={styles.item}>
+                  <FontAwesome6 name="gear" size={24} color="#58a8f9" /><Text style={styles.itemtext}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => goToSettings(true)} style={styles.item}>
+                  <FontAwesome6 name="key" size={24} color="#58a8f9" /><Text style={styles.itemtext}>Change password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleLogout1} style={styles.item}>
-                  <MaterialCommunityIcons name="logout" size={30} color="#58a8f9" /><Text style={styles.itemtext}>Logout</Text>
+                  <MaterialCommunityIcons name="logout" size={24} color="red" /><Text style={styles.itemtext}>Logout</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -140,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemtext: {
-    fontSize: 20,
+    fontSize: 18,
   },
   drawer: {
     position: 'absolute',
@@ -174,9 +180,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   profilepic: {
+<<<<<<< HEAD
     width: 90,
     height: 90,
     borderRadius:100
+=======
+    width: 80,
+    height: 80,
+>>>>>>> b8cf413996dbb9e742989654b1bff56231979cff
   },
   profileinfo: {
     justifyContent: "center",
