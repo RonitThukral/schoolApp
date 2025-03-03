@@ -180,14 +180,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   profilepic: {
-<<<<<<< HEAD
     width: 90,
     height: 90,
     borderRadius:100
-=======
-    width: 80,
-    height: 80,
->>>>>>> b8cf413996dbb9e742989654b1bff56231979cff
   },
   profileinfo: {
     justifyContent: "center",

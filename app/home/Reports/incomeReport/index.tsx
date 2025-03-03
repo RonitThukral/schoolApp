@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, SafeAreaView, ActivityIndicator, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import axios from 'axios';
 import { GestureHandlerRootView, PinchGestureHandler, PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, { 
@@ -132,7 +132,7 @@ const IncomeReport = () => {
   useEffect(() => {
     axios.get(`${baseUrl}/transactions`)
       .then(response => {
-        console.log(response.data, "data");
+        // console.log(response.data, "data");
 
         // Filter to get only income type transactions
         let results = response.data.filter((i) => i.type === "income");
@@ -240,32 +240,47 @@ const IncomeReport = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Date Filter Controls */}
-      <View style={styles.filterContainer}>
-        <View style={styles.datePickerSection}>
-          <Text style={styles.dropdownLabel}>Start Date:</Text>
-          <TouchableOpacity 
-            style={styles.datePicker}
-            onPress={() => setShowStartDatePicker(true)}
-          >
-            <Text style={styles.selectedTextStyle}>{formatDate(startDate.toISOString())}</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.datePickerSection}>
-          <Text style={styles.dropdownLabel}>End Date:</Text>
-          <TouchableOpacity 
-            style={styles.datePicker}
-            onPress={() => setShowEndDatePicker(true)}
-          >
-            <Text style={styles.selectedTextStyle}>{formatDate(endDate.toISOString())}</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <TouchableOpacity style={styles.filterButton} onPress={applyDateFilter}>
-          <Text style={styles.filterButtonText}>Filter</Text>
-        </TouchableOpacity>
-      </View>
+       {/* Date Filter Controls */}
+           <View style={styles.filterContainer}>
+             <View style={styles.datePickerSection}>
+               <Text style={styles.dropdownLabel}>Start Date:</Text>
+               <TouchableOpacity 
+                 style={styles.datePicker}
+                 onPress={() => setShowStartDatePicker(true)}
+               >
+                 <Text style={styles.selectedTextStyle}>{formatDate(startDate.toISOString())}</Text>
+               </TouchableOpacity>
+               
+               <CustomDatePicker
+                 visible={showStartDatePicker}
+                 value={startDate}
+                 onConfirm={onStartDateChange}
+                 onCancel={() => setShowStartDatePicker(false)}
+               />
+             </View>
+             
+             <View style={styles.datePickerSection}>
+               <Text style={styles.dropdownLabel}>End Date:</Text>
+               <TouchableOpacity 
+                 style={styles.datePicker}
+                 onPress={() => setShowEndDatePicker(true)}
+               >
+                 <Text style={styles.selectedTextStyle}>{formatDate(endDate.toISOString())}</Text>
+               </TouchableOpacity>
+               
+               <CustomDatePicker
+                 visible={showEndDatePicker}
+                 value={endDate}
+                 onConfirm={onEndDateChange}
+                 onCancel={() => setShowEndDatePicker(false)}
+               />
+             </View>
+             
+             <TouchableOpacity style={styles.filterButton} onPress={applyDateFilter}>
+               <Text style={styles.filterButtonText}>Filter</Text>
+             </TouchableOpacity>
+           </View>
+           
       
       <GestureHandlerRootView style={styles.container}>
         <PanGestureHandler onGestureEvent={panHandler}>
